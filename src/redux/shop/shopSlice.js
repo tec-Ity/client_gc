@@ -16,6 +16,8 @@ const initialState = {
   prodStatusQuery: "idle",
   prodErrorQuery: "",
 };
+/**Populate ProdList */
+const ProdPop = '&populateObjs=[{"path":"Skus", "select":"attrs"}]';
 
 export const fetchCategList = createAsyncThunk(
   "shop/fetchCategList",
@@ -43,7 +45,7 @@ export const fetchProdListHome = createAsyncThunk(
       // console.log(categs[i].Categ_sons[0]._id);
       if (categs[i].Categ_sons.length > 0) {
         const prodListResult = await get_Prom(
-          "/Prods?pagesize=6&Categs=" + categs[i].Categ_sons[0]._id
+          "/Prods?pagesize=6&Categs=" + categs[i].Categ_sons[0]._id + ProdPop
         );
         // console.log(prodListResult);
 
@@ -66,10 +68,11 @@ export const fetchProdListHome = createAsyncThunk(
 export const fetchProdListQuery = createAsyncThunk(
   "shop/fetchProdListQuery",
   async (query) => {
+    console.log(ProdPop);
     if (query) {
       // console.log('query', query)
-      const prodsRes = await get_Prom("/Prods" + query);
-      // console.log(prodsRes);
+      const prodsRes = await get_Prom("/Prods" + query + ProdPop);
+      console.log(prodsRes.data.objects);
       if (prodsRes.status === 200) {
         return prodsRes.data.objects;
       } else {

@@ -10,6 +10,7 @@ import {
   setCurShop,
 } from "../../redux/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchCartByShop } from "../../redux/cart/cartSlice";
 
 export default function ShopPage() {
   const { _id } = useParams();
@@ -19,20 +20,25 @@ export default function ShopPage() {
   const prevShopId = useSelector((state) => state.shop.curShop);
   const categStatus = useSelector((state) => state.shop.categStatus);
   const categError = useSelector((state) => state.shop.categError);
-
+  const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   useEffect(() => {
     // console.log('shopPage')
     // 会渲染好几次sideBar并console好几次
     if (prevShopId !== _id) {
       // console.log("enter new shop");
-      dispatch(fetchCategList());
+      //call cart
+      (curCartStatus === "idle" || curCartStatus === "error") &&
+        dispatch(fetchCartByShop(_id));
+      //call categ
+      (categStatus === "idle" || categStatus === "error") &&
+        dispatch(fetchCategList());
       // console.log("status", categStatus);
       if (categStatus === "succeed") {
         dispatch(fetchProdListHome(categs));
         dispatch(setCurShop(_id));
       }
     }
-  }, [_id, categStatus, categs, dispatch, prevShopId]);
+  }, [_id, categStatus, curCartStatus, categs, dispatch, prevShopId]);
 
   return (
     <div style={{ border: "1px solid" }}>
