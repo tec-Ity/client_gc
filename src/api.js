@@ -1,9 +1,10 @@
 import axios from "axios";
 
 // const api_DNS = "https://172.20.10.3:4000";//green
-const api_DNS = "https://192.168.43.187:4000";//hy8
+// const api_DNS = "https://192.168.43.20:4000"; //ge
+// const api_DNS = "https://192.168.43.187:4000";//hy8
 // const api_DNS = "https://192.168.1.55:4000";//FOM
-
+const api_DNS = "https://207.154.213.244:9000"; //server
 const api_version = "/api/v1";
 
 export const get_DNS = () => {

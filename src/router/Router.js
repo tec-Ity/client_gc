@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import LoginPage from "../view/login/LoginPage";
-import RegisterPage from "../view/register/RegisterPage";
+import LoginModal from "../modal/login/LoginModal";
+import RegisterModal from "../modal/register/RegisterModal";
 
 const HomePage = lazy(() => import("../view/home/HomePage"));
 const ShopPage = lazy(() => import("../view/shop/ShopPage"));
@@ -13,10 +13,10 @@ export default function Router() {
     <Suspense fallback={<div>Loading...</div>}>
       <Switch>
         <Route exact path='/login'>
-          <LoginPage />
+          <LoginModal />
         </Route>
         <Route exact path='/register'>
-          <RegisterPage />
+          <RegisterModal />
         </Route>
         <Route exact path='/home'>
           <HomePage />

@@ -1,5 +1,5 @@
 import React from "react";
-import { delete_Prom } from "../../api";
+import { delete_Prom } from "../../../api";
 
 export default function NavTopGlobal() {
   const handleLogout = async () => {

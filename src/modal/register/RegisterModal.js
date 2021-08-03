@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { get_Prom, post_Prom } from "../../api";
 import RegisterUI from "./RegisterUI";
 
-export default function RegisterPage(props) {
+export default function RegisterModal(props) {
   const [showPhonePre, setShowPhonePre] = useState(false);
   const [nations, setNations] = useState([]);
   const [registerData, setRegisterData] = useState({
@@ -12,6 +12,7 @@ export default function RegisterPage(props) {
     passwordConfirm:'',
     otp: "",
   });
+
 
   useEffect(() => {
     async function getNation() {

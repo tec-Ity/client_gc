@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import InputAccount from "../../component/input/InputAccount";
+
+import InputAccount from '../../component/input/InputAccount'
 import InputPassword from "../../component/input/InputPassword";
 import { Grid } from "@material-ui/core";
 

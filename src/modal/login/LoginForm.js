@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import InputAccount from "../../component/input/InputAccount";
+import InputPassword from "../../component/input/InputPassword";
 import { Button, Grid } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import InputPassword from "../../component/input/InputPassword";
 import { green } from "@material-ui/core/colors";
 const ColorButton = withStyles((theme) => ({
   root: {

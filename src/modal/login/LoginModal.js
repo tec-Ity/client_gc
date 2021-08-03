@@ -1,11 +1,11 @@
 // import { Link } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { delete_Prom, post_Prom, get_Prom } from "../../api";
+import {  post_Prom, get_Prom } from "../../api";
 import ThirdParty from "./ThirdParty";
 import LoginForm from "./LoginForm";
 import { Grid, makeStyles, Paper } from "@material-ui/core";
-export default function LoginPage() {
+export default function LoginModal() {
   const [showPhonePre, setShowPhonePre] = useState(false);
   const [nations, setNations] = useState([]);
   const [loginData, setLoginData] = useState({
