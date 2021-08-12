@@ -25,18 +25,31 @@ export default function CartModal() {
 
   useEffect(() => {
     if (cartsStatus === "idle" || cartsStatus === "error") {
-      dispatch(fetchCarts());
+      if (cartsStatus === "error") {
+        setTimeout(() => {
+          dispatch(fetchCarts());
+        }, 2000);
+      } else {
+        dispatch(fetchCarts());
+      }
     }
   }, [dispatch, cartsStatus]);
 
   const displayCarts = () => {
+    const cartsSkuCount = 3;
+    const shopCartSkuCount = 100;
     let cartsTemp;
     if (inShop === false) {
       //show carts
       if (cartsStatus === "succeed") {
         if (carts?.length > 0) {
-          cartsTemp = carts.map((cart) => {
-            return <CartCard key={cart._id} cart={cart}/>;
+          const cartsValid = carts.filter((cart) => {
+            return cart.OrderProds.length > 0;
+          });
+          cartsTemp = cartsValid.map((cart) => {
+            return (
+              <CartCard key={cart._id} cart={cart} count={cartsSkuCount} />
+            );
           });
         } else {
           cartsTemp = <div>暂无购物车</div>;

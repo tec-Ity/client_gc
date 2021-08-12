@@ -18,36 +18,44 @@ const initialState = {
   skuPutStatus: "idle",
 };
 
-const oSkusPop =
-  '"populate":{"path":"OrderSkus", "select":"Sku price quantity price_regular "}';
+const oSkuObj = {
+  path: "OrderSkus",
+  select: "Sku price quantity price_regular attrs",
+};
+const ShopObj = {
+  path: "Shop",
+  select: "nome",
+};
 
-const ShopPop = '{"path":"Shop", "select":"nome"}';
+const cartObj = [
+  {
+    path: "OrderProds",
+    select: "Prod OrderSkus nome unit Shop",
+    populate: oSkuObj,
+  },
+  ShopObj,
+];
 
-const cartPop =
-  '&populateObjs=[{"path":"OrderProds", "select":"Prod OrderSkus nome unit Shop", ' +
-  oSkusPop +
-  "}," +
-  ShopPop +
-  "]";
-
-  /**
-   * 
-   * '&populateObjs=[{
-   * "path":"OrderProds", 
-   * "select":"Prod OrderSkus nome unit Shop",
-  *   "populate":{
-  *       "path":"OrderSkus", 
-  *        "select":"Sku price quantity price_regular "
-  *         }
-  *   },
-  * {
-  * "path":"Shop",
-  *  "select":"nome"
-  * }];
-   */
+/**
+ *
+ * '&populateObjs=[{
+ * "path":"OrderProds",
+ * "select":"Prod OrderSkus nome unit Shop",
+ *   "populate":{
+ *       "path":"OrderSkus",
+ *        "select":"Sku price quantity price_regular "
+ *         }
+ *   },
+ * {
+ * "path":"Shop",
+ *  "select":"nome"
+ * }];
+ */
 
 export const fetchCarts = createAsyncThunk("cart/fetchCarts", async () => {
-  const cartsResult = await fetch_Prom("/Carts?" + cartPop);
+  const cartsResult = await fetch_Prom(
+    "/Carts?populateObjs=" + JSON.stringify(cartObj)
+  );
   console.log(cartsResult);
   if (cartsResult.status === 200) {
     return cartsResult.data.objects;
@@ -69,7 +77,9 @@ export const fetchCartByShop = createAsyncThunk(
         return [];
       }
     } else {
-      const cartsResult = await fetch_Prom("/Carts?Shop=" + shopId + cartPop);
+      const cartsResult = await fetch_Prom(
+        "/Carts?Shop=" + shopId + JSON.stringify(cartObj)
+      );
       if (cartsResult.status === 200) {
         console.log("cartResult", cartsResult.data.objects[0]);
         return cartsResult.data.objects?.length > 0
@@ -101,13 +111,30 @@ export const fetchSkuPut = createAsyncThunk(
     console.log("orderSkuID", orderSkuId);
     const obj = {};
     obj.quantity = Qty;
-    const skuPutRes = await fetch_Prom("/OrderSkuPut/" + orderSkuId, "PUT", { obj });
+    const skuPutRes = await fetch_Prom("/OrderSkuPut/" + orderSkuId, "PUT", {
+      obj,
+    });
     console.log("skuPutRes", skuPutRes);
     if (skuPutRes.status === 200) {
       return skuPutRes.data;
     } else console.log(skuPutRes.message);
   }
 );
+
+const CalCartPrice = (OrderProds) => {
+  let totPrice = 0;
+  for (let i = 0; i < OrderProds.length; i++) {
+    const op = OrderProds[i];
+    for (let j = 0; j < op.OrderSkus.length; j++) {
+      const oSku = op.OrderSkus[j];
+      console.log("osku", oSku);
+      const totSkuPrice = oSku.price * oSku.quantity;
+      oSku.price_tot = totSkuPrice;
+      totPrice += totSkuPrice;
+    }
+  }
+  return totPrice;
+};
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -124,7 +151,16 @@ export const cartSlice = createSlice({
     },
     [fetchCarts.fulfilled]: (state, action) => {
       state.cartsStatus = "succeed";
-      state.carts = action.payload;
+      const cartsObjs = [...action.payload];
+      console.log(cartsObjs);
+      for (let i = 0; i < cartsObjs.length; i++) {
+        const cart = cartsObjs[i];
+        if (cart.OrderProds.length > 0) {
+          const totPrice = CalCartPrice(cart.OrderProds);
+          cart.cartTotPrice = totPrice;
+        }
+      }
+      state.carts = cartsObjs;
     },
     [fetchCarts.rejected]: (state, action) => {
       state.cartsStatus = "error";

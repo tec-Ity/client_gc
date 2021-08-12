@@ -19,22 +19,20 @@ const useStyle = makeStyles((theme) => ({
       borderTop: "1px solid",
       borderBottom: "1px solid",
       borderColor: "#C0E57B",
+      textAlign: "center",
     },
     "& :nth-child(1)": {
       textAlign: "left",
       width: "35%",
     },
     "& :nth-child(2)": {
-      textAlign: "left",
-      width: "25%",
+      width: "15%",
     },
     "& :nth-child(3)": {
-      textAlign: "left",
       width: "25%",
     },
     "& :nth-child(4)": {
-      textAlign: "right",
-      width: "15%",
+      width: "25%",
     },
   },
   tableRow: {
@@ -43,93 +41,90 @@ const useStyle = makeStyles((theme) => ({
     "& td": {
       paddingTop: "10px",
       fontSize: "15px",
+      "& div:nth-child(1)": {
+        textAlign: "center",
+      },
     },
     "& :nth-child(1)": {
+      textAlign: "left",
       "& :nth-child(1)": {
+        textAlign: "left",
         fontWeight: "700",
       },
       "& :nth-child(2)": {
+        textAlign: "left",
         fontSize: "12.5px",
       },
     },
     "& :nth-child(2)": {},
     "& :nth-child(3)": {},
     "& :nth-child(4)": {
-      textAlign: "center",
       fontWeight: "700",
     },
   },
 }));
 
-export default function CartTable(props) {
+const TableRow = ({ oSku, prodName }) => {
   const classes = useStyle();
+  return (
+    <tr className={classes.tableRow}>
+      <td>
+        <div title={prodName} style={{ overflow: "hidden" }}>
+          {prodName}
+        </div>
+        <div>{oSku.attrs}&nbsp;</div>
+      </td>
+      <td>
+        <div>{oSku.quantity}</div>
+        <div>&nbsp;</div>
+      </td>
+      <td>
+        <div>€{oSku.price}</div>
+        <div>&nbsp;</div>
+      </td>
+      <td>
+        <div>€{oSku.price_tot}</div>
+        <div>&nbsp;</div>
+      </td>
+    </tr>
+  );
+};
+
+export default function CartTable({ OrderProds, count }) {
+  const classes = useStyle();
+
+  // const shortenName = (prodName) =>{
+
+  // }
+
+  const tableBody = () => {
+    const rows = [];
+    const tbody = <tbody>{rows}</tbody>;
+    for (let i = 0; i < OrderProds.length; i++) {
+      const op = OrderProds[i];
+      for (let j = 0; j < op.OrderSkus.length; j++) {
+        const oSku = op.OrderSkus[j];
+        if (rows.length < count) {
+          rows.push(<TableRow key={oSku._id} oSku={oSku} prodName={op.nome} />);
+        } else return tbody;
+      }
+    }
+
+    return tbody;
+  };
+
   return (
     <div className={classes.root}>
       <table className={classes.tableStyle}>
         <thead className={classes.tableHead}>
           <tr className={classes.tableHeadRow}>
             <th scope='col'>Prodotto</th>
+            <th scope='col'>Quantità</th>
             <th scope='col'>Prezzo Unità</th>
             <th scope='col'>Prezzo Totale</th>
-            <th scope='col'>Quantità</th>
           </tr>
         </thead>
-        <tbody>
-          <tr className={classes.tableRow}>
-            <td>
-              <div>PROD. NOME</div>
-              <div>Prod. descrizione</div>
-            </td>
-            <td>
-              <div>$00,00</div>
-              <div>&nbsp;</div>
-            </td>
-            <td>
-              <div>$00,00</div>
-              <div>&nbsp;</div>
-            </td>
-            <td>
-              <div>00</div>
-              <div>&nbsp;</div>
-            </td>
-          </tr>
-          <tr className={classes.tableRow}>
-            <td>
-              <div>PROD. NOME</div>
-              <div>Prod. descrizione</div>
-            </td>
-            <td>
-              <div>$00,00</div>
-              <div>&nbsp;</div>
-            </td>
-            <td>
-              <div>$00,00</div>
-              <div>&nbsp;</div>
-            </td>
-            <td>
-              <div>00</div>
-              <div>&nbsp;</div>
-            </td>
-          </tr>
-          <tr className={classes.tableRow}>
-            <td>
-              <div>PROD. NOME</div>
-              <div>Prod. descrizione</div>
-            </td>
-            <td>
-              <div>$00,00</div>
-              <div>&nbsp;</div>
-            </td>
-            <td>
-              <div>$00,00</div>
-              <div>&nbsp;</div>
-            </td>
-            <td>
-              <div>00</div>
-              <div>&nbsp;</div>
-            </td>
-          </tr>
-        </tbody>
+        {tableBody()}
       </table>
     </div>
   );

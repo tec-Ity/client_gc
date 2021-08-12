@@ -85,13 +85,11 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function CartCard({cart}) {
-  const { Shop, OrderProds } = cart;
+export default function CartCard(props) {
+  const {cart, count} = props
+  const { Shop, cartTotPrice, OrderProds} = cart;
   const classes = useStyle();
-  
-  React.useEffect(() => {
-    
-  }, [])
+  React.useEffect(() => {}, []);
 
   return (
     <div className={classes.root}>
@@ -105,7 +103,7 @@ export default function CartCard({cart}) {
           </div>
         </Grid>
         <Grid item className={classes.gridItem}>
-          <CartTable />
+          <CartTable OrderProds={OrderProds} count={count}/>
         </Grid>
         <Grid item className={classes.gridItem}>
           <div className={clsx(classes.moreInfo, classes.margin)}>
@@ -115,7 +113,7 @@ export default function CartCard({cart}) {
           </div>
           <div className={clsx(classes.totalAmount, classes.marginFoot)}>
             <div>TOTALE</div>
-            <div>$0000,00</div>
+            <div>€{cartTotPrice}</div>
           </div>
         </Grid>
       </Grid>
