@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { get_Prom } from "../../api";
+import { fetch_Prom } from "../../api";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import Input from "@material-ui/core/Input";
@@ -81,7 +81,7 @@ export default function HomePage() {
   useEffect(() => {
     async function getCitys() {
       try {
-        const resultCitys = await get_Prom("/Citas");
+        const resultCitys = await fetch_Prom("/Citas");
         if (resultCitys.status === 200) {
           setCitys(resultCitys.data.objects);
         } else {

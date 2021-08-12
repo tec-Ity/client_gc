@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { get_Prom } from "../../api";
+import { fetch_Prom } from "../../api";
 
 const initialState = {
   curShop: "",
@@ -22,7 +22,7 @@ const ProdPop = '&populateObjs=[{"path":"Skus", "select":"attrs"}]';
 export const fetchCategList = createAsyncThunk(
   "shop/fetchCategList",
   async () => {
-    const categListResult = await get_Prom(
+    const categListResult = await fetch_Prom(
       '/Categs?populateObjs=[{"path":"Categ_sons", "select":"code"}]'
     );
     // console.log(categListResult);
@@ -44,7 +44,7 @@ export const fetchProdListHome = createAsyncThunk(
       // console.log("index", i);
       // console.log(categs[i].Categ_sons[0]._id);
       if (categs[i].Categ_sons.length > 0) {
-        const prodListResult = await get_Prom(
+        const prodListResult = await fetch_Prom(
           "/Prods?pagesize=6&Categs=" + categs[i].Categ_sons[0]._id + ProdPop
         );
         // console.log(prodListResult);
@@ -70,7 +70,7 @@ export const fetchProdListQuery = createAsyncThunk(
     // console.log(ProdPop);
     if (query) {
       // console.log('query', query)
-      const prodsRes = await get_Prom("/Prods" + query + ProdPop);
+      const prodsRes = await fetch_Prom("/Prods" + query + ProdPop);
       // console.log(prodsRes.data.objects);
       if (prodsRes.status === 200) {
         return prodsRes.data.objects;

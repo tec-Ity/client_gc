@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
-import { get_Prom, get_DNS } from "../../api";
+import { fetch_Prom, get_DNS } from "../../api";
 
 export default function ProdPage() {
   const { _id } = useParams();
@@ -11,7 +11,7 @@ export default function ProdPage() {
   useEffect(() => {
     async function getProdInfo() {
       try {
-        const resultProdInfo = await get_Prom("/Prod/" + _id);
+        const resultProdInfo = await fetch_Prom("/Prod/" + _id);
         console.log(resultProdInfo);
         if (resultProdInfo.status === 200) {
           setProdInfo(resultProdInfo.data.object);

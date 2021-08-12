@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { get_Prom, post_Prom } from "../../api";
+import { fetch_Prom } from "../../api";
 import RegisterModalUI from "./RegisterModalUI";
 
 export default function RegisterModal(props) {
@@ -15,7 +15,7 @@ export default function RegisterModal(props) {
 
   useEffect(() => {
     async function getNation() {
-      const result = await get_Prom("/Nations");
+      const result = await fetch_Prom("/Nations");
       const nations = result.data.objects;
       setNations(nations);
     }
@@ -56,11 +56,11 @@ export default function RegisterModal(props) {
   const handleSendCode = async () => {
     const result =
       showPhonePre === true
-        ? await post_Prom("/obtain_otp", {
+        ? await fetch_Prom("/obtain_otp", "POST", {
             phone: registerData.account,
             phonePre: registerData.phonePre,
           })
-        : await post_Prom("/obtain_otp", {
+        : await fetch_Prom("/obtain_otp", "POST", {
             email: registerData.account,
           });
     console.log(result);
@@ -78,7 +78,7 @@ export default function RegisterModal(props) {
     }
     obj.otp = registerData.otp;
     console.log(obj);
-    const result = await post_Prom("/register", obj);
+    const result = await fetch_Prom("/register", "POST", obj);
     console.log(result);
     if (result.status === 200) {
       console.log("success");

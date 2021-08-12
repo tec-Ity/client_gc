@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router";
-import { get_Prom } from "../../api";
+import { fetch_Prom } from "../../api";
 
 export default function City() {
   const { _id } = useParams();
@@ -10,7 +10,7 @@ export default function City() {
   useEffect(() => {
     async function getShops() {
       try {
-        const resultShops = await get_Prom("/Shops?serve_Citas=" + [_id]);
+        const resultShops = await fetch_Prom("/Shops?serve_Citas=" + [_id]);
         if (resultShops.status === 200) {
           // console.log(resultShops.data.objects);
           setShops(resultShops.data.objects);

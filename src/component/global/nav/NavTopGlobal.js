@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { delete_Prom } from "../../../api";
+import { logout_Prom } from "../../../api";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -55,15 +55,8 @@ export default function NavTopGlobal() {
           window.FB.logout(function (response) {
             console.log(response);
             async function func() {
-              const result = await delete_Prom("/logout");
-              if (result.status === 200) {
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("refreshToken");
-                localStorage.removeItem("crClient");
-                localStorage.removeItem("thirdPartyLogin");
-
-                window.location.reload();
-              } else {
+              const result = await logout_Prom();
+              if (result.status !== 200) {
                 alert(result.message);
               }
               // setRefresh(r=>r+1)
@@ -90,19 +83,10 @@ export default function NavTopGlobal() {
             auth2.signOut().then(function () {
               console.log("用户注销成功");
               async function func() {
-                const result = await delete_Prom("/logout");
-                if (result.status === 200) {
-                  localStorage.removeItem("accessToken");
-                  localStorage.removeItem("refreshToken");
-                  localStorage.removeItem("crClient");
-                  localStorage.removeItem("google");
-                  localStorage.removeItem("thirdPartyLogin");
-
-                  window.location.reload();
-                } else {
+                const result = await logout_Prom();
+                if (result.status !== 200) {
                   alert(result.message);
                 }
-                // setRefresh(r=>r+1)
               }
               func();
             });
@@ -113,15 +97,8 @@ export default function NavTopGlobal() {
         return;
 
       default:
-        const result = await delete_Prom("/logout");
-        if (result.status === 200) {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          localStorage.removeItem("crClient");
-          localStorage.removeItem("thirdPartyLogin");
-
-          window.location.reload();
-        } else {
+        const result = await logout_Prom();
+        if (result.status !== 200) {
           alert(result.message);
         }
         return;

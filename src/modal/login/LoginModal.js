@@ -1,7 +1,7 @@
 // import { Link } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { post_Prom, get_Prom } from "../../api";
+import { fetch_Prom } from "../../api";
 import {
   setAccessToken,
   setCurClientInfo,
@@ -32,7 +32,8 @@ export default function LoginModal() {
 
   useEffect(() => {
     async function getNation() {
-      const result = await get_Prom("/Nations");
+      const result = await fetch_Prom("/Nations");
+      console.log(result)
       const nations = result.data.objects;
       setNations(nations);
     }
@@ -89,7 +90,7 @@ export default function LoginModal() {
 
     system.pwd = loginData.password;
     console.log(system);
-    const result = await post_Prom("/login", { system });
+    const result = await fetch_Prom("/login", "POST", { system });
     console.log(result);
     if (result.status === 200) {
       dispatch(setCurClientInfo(result.data?.curClient));

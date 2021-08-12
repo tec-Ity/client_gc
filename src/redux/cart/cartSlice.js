@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { get_Prom, post_Prom, put_Prom } from "../../api";
+import { fetch_Prom } from "../../api";
 
 const initialState = {
   //show
@@ -47,7 +47,7 @@ const cartPop =
    */
 
 export const fetchCarts = createAsyncThunk("cart/fetchCarts", async () => {
-  const cartsResult = await get_Prom("/Carts?" + cartPop);
+  const cartsResult = await fetch_Prom("/Carts?" + cartPop);
   console.log(cartsResult);
   if (cartsResult.status === 200) {
     return cartsResult.data.objects;
@@ -69,7 +69,7 @@ export const fetchCartByShop = createAsyncThunk(
         return [];
       }
     } else {
-      const cartsResult = await get_Prom("/Carts?Shop=" + shopId + cartPop);
+      const cartsResult = await fetch_Prom("/Carts?Shop=" + shopId + cartPop);
       if (cartsResult.status === 200) {
         console.log("cartResult", cartsResult.data.objects[0]);
         return cartsResult.data.objects?.length > 0
@@ -87,7 +87,7 @@ export const fetchSkuPost = createAsyncThunk(
     const obj = {};
     obj.Sku = skuId;
     obj.quantity = Qty;
-    const skuPostRes = await post_Prom("/OrderSkuPost", { obj });
+    const skuPostRes = await fetch_Prom("/OrderSkuPost", "POST", { obj });
     console.log("skuPostRes", skuPostRes);
     if (skuPostRes.status === 200) {
       return skuPostRes.data;
@@ -101,7 +101,7 @@ export const fetchSkuPut = createAsyncThunk(
     console.log("orderSkuID", orderSkuId);
     const obj = {};
     obj.quantity = Qty;
-    const skuPutRes = await put_Prom("/OrderSkuPut/" + orderSkuId, { obj });
+    const skuPutRes = await fetch_Prom("/OrderSkuPut/" + orderSkuId, "PUT", { obj });
     console.log("skuPutRes", skuPutRes);
     if (skuPutRes.status === 200) {
       return skuPutRes.data;

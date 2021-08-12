@@ -7,6 +7,7 @@ const HomePage = lazy(() => import("../view/home/HomePage"));
 const ShopPage = lazy(() => import("../view/shop/ShopPage"));
 const CityPage = lazy(() => import("../view/city/CityPage"));
 const ProdPage = lazy(() => import("../view/prod/ProdPage"));
+const OrdersPage = lazy(() => import("../view/order/OrdersPage"));
 
 export default function Router() {
   return (
@@ -27,6 +28,9 @@ export default function Router() {
         </Route>
         <Route exact path='/prod/:_id'>
           <ProdPage />
+        </Route>
+        <Route exact path='/orders'>
+          <OrdersPage />
         </Route>
 
         <Redirect to='/home' />

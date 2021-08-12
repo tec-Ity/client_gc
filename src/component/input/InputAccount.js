@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { get_Prom } from "../../api";
+import { fetch_Prom } from "../../api";
 import {
   InputAdornment,
   InputLabel,
@@ -65,7 +65,7 @@ export default function InputAccount(props) {
 
   useEffect(() => {
     async function getNation() {
-      const result = await get_Prom("/Nations");
+      const result = await fetch_Prom("/Nations");
       const nations = result.data.objects;
       setNations(nations);
     }
