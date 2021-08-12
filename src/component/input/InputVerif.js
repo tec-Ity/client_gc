@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   FormControl,
   InputLabel,
   OutlinedInput,
   InputAdornment,
-  IconButton,
+  Button,
 } from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,32 +45,58 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   notchedOutline: {},
+
+  recieveButton: {
+    width: "68px",
+    height: "22px",
+    border: "2px solid",
+    background: "#1D1D38",
+    borderRadius: "26.5px 26.5px 26.5px 0",
+    borderColor: "#1d1d38",
+    color: "#f0f0f0",
+    fontFamily: "Montserrat",
+    fontSize: "14px",
+    "&:hover": {
+      background: "#1d1d38",
+    },
+    "&:disabled": {
+      background: "#fff",
+    },
+  },
+  recieveButtonOnClicked: {
+    width: "68px",
+    height: "22px",
+    border: "2px solid",
+    background: "#1D1D38",
+    borderRadius: "26.5px 26.5px 26.5px 0",
+    borderColor: "#1d1d38",
+    color: "#f0f0f0",
+    fontFamily: "Montserrat",
+    fontSize: "14px",
+    "&:hover": {
+      background: "#1D1D38",
+    },
+  },
 }));
 
-const EndADM = ({ showPwd, toggleShowPwd }) => {
-  return (
+export default function InputVerif(props) {
+  const { handleSendCode, handleChange, verifCode } = props;
+  const classes = useStyles();
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  console.log(classes.recieveButton);
+  const EndADM = (
     <InputAdornment position='end'>
-      <IconButton
-        aria-label='toggle password visibility'
-        onClick={toggleShowPwd}
-        onMouseDown={(e) => e.preventDefault()}
-        edge='end'>
-        {showPwd ? <Visibility /> : <VisibilityOff />}
-      </IconButton>
+      <Button
+        disabled={btnDisabled}
+        className={classes.recieveButton}
+        onClick={() => {
+          setBtnDisabled(true);
+          handleSendCode();
+        }}>
+        RICEVI
+      </Button>
     </InputAdornment>
   );
-};
-
-export default function InputPassword(props) {
-  const {
-    pwdLabel = "Password",
-    pwdLabelWidth = 70,
-    password,
-    handleChange,
-  } = props;
-  const [showPwd, setShowPwd] = useState(false);
-
-  const classes = useStyles();
   return (
     <FormControl
       className={clsx(classes.margin, classes.textField)}
@@ -81,29 +105,17 @@ export default function InputPassword(props) {
         classes={{ root: classes.labelStyle }}
         // htmlFor='outlined-adornment-password'
       >
-        {pwdLabel}
+        Codice di verifica:
       </InputLabel>
       <OutlinedInput
         classes={{
           root: classes.inputStyle,
           notchedOutline: classes.notchedOutline,
         }}
-        type={showPwd ? "text" : "password"}
-        value={password}
-        onChange={
-          pwdLabel === "Password"
-            ? handleChange("password")
-            : handleChange("passwordConfirm")
-        }
-        endAdornment={
-          <EndADM
-            showPwd={showPwd}
-            toggleShowPwd={() => {
-              setShowPwd((prev) => !prev);
-            }}
-          />
-        }
-        labelWidth={pwdLabelWidth + 10}
+        value={verifCode}
+        onChange={handleChange("otp")}
+        endAdornment={EndADM}
+        labelWidth={150}
       />
     </FormControl>
   );

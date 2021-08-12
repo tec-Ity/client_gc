@@ -1,11 +1,16 @@
 // import { Link } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import {  post_Prom, get_Prom } from "../../api";
-import ThirdParty from "./ThirdParty";
-import LoginForm from "./LoginForm";
-import { Grid, makeStyles, Paper } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { post_Prom, get_Prom } from "../../api";
+import {
+  setAccessToken,
+  setCurClientInfo,
+  setIsLogin,
+} from "../../redux/curClient/curClientSlice";
+import LoginModalUI from "./LoginModalUI";
+
 export default function LoginModal() {
+  const dispatch = useDispatch();
   const [showPhonePre, setShowPhonePre] = useState(false);
   const [nations, setNations] = useState([]);
   const [loginData, setLoginData] = useState({
@@ -31,7 +36,6 @@ export default function LoginModal() {
       const nations = result.data.objects;
       setNations(nations);
     }
-
     getNation();
   }, []);
 
@@ -88,61 +92,22 @@ export default function LoginModal() {
     const result = await post_Prom("/login", { system });
     console.log(result);
     if (result.status === 200) {
+      dispatch(setCurClientInfo(result.data?.curClient));
       localStorage.setItem("accessToken", result.data?.accessToken);
-      localStorage.setItem("crClient", result.data?.crClient);
       localStorage.setItem("refreshToken", result.data?.refreshToken);
       localStorage.setItem("thirdPartyLogin", "");
-      window.location.replace('/home');
+      // window.location.replace("/home");
+      dispatch(setIsLogin(true));
     }
   };
-
-  const classes = useStyles();
+  
   return (
-    <div>
-      {!localStorage.getItem("accessToken") && (
-        <Paper elevation={3} className={classes.paperStyle}>
-          <Grid container direction='column' alignItems='center' spacing={2}>
-            <Grid item className={classes.loginForm}>
-              <LoginForm
-                loginData={loginData}
-                handleLogin={handleLogin}
-                handleChange={handleChange}
-                showPhonePre={showPhonePre}
-                nations={nations}
-              />
-            </Grid>
-            <Grid item>
-              <span>or</span>
-            </Grid>
-            <Grid item>
-              <ThirdParty />
-            </Grid>
-            <Grid item>
-              <hr style={{ width: "500px" }} />
-            </Grid>
-            <Grid item style={{ marginBottom: "25px" }}>
-              <span>Don't Have an Account? &nbsp;</span>
-              <Link to='/register'>Register</Link>
-            </Grid>
-          </Grid>
-        </Paper>
-      )}
-    </div>
+    <LoginModalUI
+      loginData={loginData}
+      handleLogin={handleLogin}
+      handleChange={handleChange}
+      showPhonePre={showPhonePre}
+      nations={nations}
+    />
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
-  paperStyle: {
-    margin: "100px 300px",
-  },
-  loginForm: {
-    width: "500px",
-  },
-  ThirdParty: {},
-}));

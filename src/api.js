@@ -1,14 +1,93 @@
 import axios from "axios";
 
-// const api_DNS = "https://172.20.10.3:4000";//green
-// const api_DNS = "https://192.168.43.20:4000"; //ge
-// const api_DNS = "https://192.168.43.187:4000";//hy8
-// const api_DNS = "https://192.168.1.55:4000";//FOM
-const api_DNS = "https://207.154.213.244:9000"; //server
+// const api_DNS = "https://172.20.10.3:9000";//green
+const api_DNS = "https://172.20.10.3:9000";//feng
+// const api_DNS = "https://192.168.43.20:9000"; //ge
+// const api_DNS = "https://192.168.43.187:9000"; //hy8
+// const api_DNS = "https://192.168.1.55:9000";//FOM
+// const api_DNS = "https://207.154.213.244:9000"; //server
 const api_version = "/api/v1";
 
 export const get_DNS = () => {
   return api_DNS;
+};
+
+const fetchProm = (method, api, bodyObj) => {
+  return new Promise(async (resolve) => {
+    try {
+      const api_server = api_DNS + api_version + api;
+      const token = localStorage.getItem("accessToken");
+      const fetchObj = {
+        method,
+        headers: {
+          "content-type": "application/json",
+          authorization: "Bear " + token,
+        },
+      };
+      if (method === "GET" || method === "DELETE") {
+      } else if (method === "POST" || method === "PUT") {
+        fetchObj.body = JSON.stringify(bodyObj);
+      } else {
+        resolve({ status: 400, message: `[front] method Error` });
+      }
+      const resPromise = await fetch(api_server, fetchObj);
+      const result = await resPromise.json();
+      resolve(result);
+    } catch (error) {
+      resolve({ status: 500, message: `[front] fetchProm Error: ${error}` });
+    }
+  });
+};
+export const fetch_Prom = (method, api, bodyObj) => {
+  return new Promise(async (resolve) => {
+    try {
+      method = method.toUpperCase();
+
+      let result = await fetchProm(method, api, bodyObj);
+      //unauthorized user
+      if (result.status === 401) {
+        const auth_res = await refreshToken_Prom();
+        if (auth_res.status === 200) {
+          result = await fetchProm(method, api, bodyObj);
+        } else {
+          result.status = auth_res.status;
+          result.message = auth_res.message;
+        }
+      }
+      return resolve(result);
+    } catch (error) {
+      return resolve({
+        status: 500,
+        message: `[front] fetch_Prom Error: ${error}`,
+      });
+    }
+  });
+};
+
+export const refreshToken_Prom = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const token = localStorage.getItem("refreshToken");
+      const api = api_DNS + api_version + "/refreshtoken";
+      const resPromise = await fetch(api, {
+        headers: {
+          "content-type": "application/json",
+          authorization: "accessToken " + token,
+        },
+        method: "GET",
+      });
+      const result = await resPromise.json();
+      if (result.status === 200) {
+        localStorage.setItem("accessToken", result.data?.accessToken);
+      } else {
+        localStorage.removeItem("refreshToken");
+        window.location.reload();
+      }
+      resolve(result);
+    } catch (error) {
+      reject({ message: "fetchGet_Prom error", error });
+    }
+  });
 };
 
 export const axios_Prom = async (type, api_router, formData) => {
@@ -49,7 +128,8 @@ const fetchPost_Prom = (api_router, bodyObj) => {
     try {
       const accessToken = localStorage.getItem("accessToken");
       const api = api_DNS + api_version + api_router;
-
+      console.log("api", api);
+      console.log("bodyObj", bodyObj);
       const resPromise = await fetch(api, {
         body: JSON.stringify(bodyObj),
         headers: {
@@ -156,7 +236,8 @@ const fetchPut_Prom = (api_router, bodyObj) => {
     try {
       const accessToken = localStorage.getItem("accessToken");
       const api = api_DNS + api_version + api_router;
-
+      console.log("api", api);
+      console.log("bodyObj", bodyObj);
       const resPromise = await fetch(api, {
         body: JSON.stringify(bodyObj),
         headers: {
@@ -301,28 +382,6 @@ const delete_Prom = (api_router) => {
   });
 };
 
-const refreshToken_Prom = () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const token = localStorage.getItem("refreshToken");
-      const api = api_DNS + api_version + "/refreshtoken";
-      const resPromise = await fetch(api, {
-        headers: {
-          "content-type": "application/json",
-          authorization: "accessToken " + token,
-        },
-        method: "GET",
-      });
-      const result = await resPromise.json();
-      if (result.status === 200) {
-        localStorage.setItem("accessToken", result.data?.accessToken);
-      }
-      resolve(result);
-    } catch (error) {
-      reject({ message: "fetchGet_Prom error", error });
-    }
-  });
-};
 const logout_Prom = () => {
   return new Promise(async (resolve, reject) => {
     try {

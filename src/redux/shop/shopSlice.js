@@ -51,10 +51,9 @@ export const fetchProdListHome = createAsyncThunk(
 
         if (prodListResult.status === 200) {
           prodsArr.push({
-            [categs[i].Categ_sons[0]._id]: {
-              far: categs[i].code,
-              list: prodListResult.data.objects,
-            },
+            id: categs[i].Categ_sons[0]._id,
+            far: { id: categs[i]._id, code: categs[i].code },
+            list: prodListResult.data.objects,
           });
         } else {
           return prodListResult.message;
@@ -68,11 +67,11 @@ export const fetchProdListHome = createAsyncThunk(
 export const fetchProdListQuery = createAsyncThunk(
   "shop/fetchProdListQuery",
   async (query) => {
-    console.log(ProdPop);
+    // console.log(ProdPop);
     if (query) {
       // console.log('query', query)
       const prodsRes = await get_Prom("/Prods" + query + ProdPop);
-      console.log(prodsRes.data.objects);
+      // console.log(prodsRes.data.objects);
       if (prodsRes.status === 200) {
         return prodsRes.data.objects;
       } else {

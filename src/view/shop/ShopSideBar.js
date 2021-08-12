@@ -7,6 +7,7 @@ import {
   setQuery,
   setTitle,
   setBackToFirst,
+  goBack,
 } from "../../redux/filter/filterSlice";
 
 export default function ShopSideBar(props) {
@@ -58,7 +59,8 @@ export default function ShopSideBar(props) {
       sendFirstCategData(_id, code);
       dispatch(setBackToFirst(false));
     }
-  }, [backToFirst, firstCategData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [backToFirst, firstCategData, dispatch]);
 
   const sendSecondCategData = (categId, categCode) => {
     if (categId !== selSecondCateg) {
@@ -119,10 +121,11 @@ export default function ShopSideBar(props) {
       return (
         <li key={categ._id}>
           <span
-            id={categ._id}
+            id={categ._id+"categBar"}
             onClick={() => {
-              selFirstCateg !== categ._id &&
-                sendFirstCategData(categ._id, categ.code);
+              selFirstCateg !== categ._id
+                ? sendFirstCategData(categ._id, categ.code)
+                : dispatch(goBack());
             }}>
             {categ.code}
           </span>

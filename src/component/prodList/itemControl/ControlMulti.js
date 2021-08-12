@@ -1,39 +1,46 @@
 import React, { useState, useEffect } from "react";
 import ControlMultiSkus from "./ControlMultiSkus";
+import { useSelector } from "react-redux";
+import { selectCurProdInCart } from "../../../redux/cart/cartSlice";
 
 export default function ControlMulti(props) {
-  const { curProdInCart, Skus, onSkuChange } = props;
+  const { skus, onSkuChange, prodId, shop } = props;
   const [showSkuList, setShowSkuList] = useState(false);
-  const [totCount, setTotCount] = useState(0);
+  const [totCount, setTotCount] = useState();
+  console.log('MULTI')
+  const curProdInCart = useSelector(selectCurProdInCart(prodId, shop));
 
   useEffect(() => {
+    
     const displayTotalCount = () => {
       if (curProdInCart) {
         //sum sku quantity
         let count = 0;
         for (let i = 0; i < curProdInCart.OrderSkus.length; i++) {
-          if (Skus.find((sku) => sku._id === curProdInCart.OrderSkus[i].Sku)) {
-            count += curProdInCart.OrderSkus[i].Sku.quantity;
+          if (skus.find((sku) => sku._id === curProdInCart.OrderSkus[i].Sku)) {
+            count += curProdInCart.OrderSkus[i].quantity;
           }
         }
         setTotCount(count);
       }
     };
     displayTotalCount();
-  }, [Skus, curProdInCart]);
+  }, [skus, curProdInCart]);
 
   return (
     <div>
-      <button
-        onClick={() => {
-          setShowSkuList(true);
-        }}>
-        选{curProdInCart && `(${totCount})`}
-      </button>
+      {showSkuList === false && (
+        <button
+          onClick={() => {
+            setShowSkuList(true);
+          }}>
+          选 {curProdInCart && totCount && `(${totCount})`}
+        </button>
+      )}
 
       {showSkuList === true && (
         <ControlMultiSkus
-          Skus={Skus}
+          skus={skus}
           curProdInCart={curProdInCart}
           showSkuList={showSkuList}
           onHide={() => setShowSkuList(false)}

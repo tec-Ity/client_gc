@@ -1,13 +1,12 @@
 import React from "react";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import InputAccount from "../../component/input/InputAccount";
 import InputPassword from "../../component/input/InputPassword";
-import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import { Link } from "react-router-dom";
+import InputVerif from "../../component/input/InputVerif";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
+const useStyle = makeStyles((theme) => ({
   welcome: {
     fontFamily: "Montserrat",
     fontWeight: "bold",
@@ -23,26 +22,11 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  forgetPwd: {
-    width: "fit-content",
-    position: "absolute",
-    right: "5%",
-  },
-  forgetLink: {
-    textDecoration: "none",
-    fontSize: "9px",
-    opacity: "0.7",
-    "&:visited": {
-      color: "#1d1d38",
-    },
-    "&:hover": {
-      opacity: "1",
-    },
-  },
-  loginButton: {
-    marginTop: theme.spacing(6),
+
+  registerButton: {
+    marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    width: "98%",
+    width: "97%",
     height: "35.63%",
     border: "2px solid",
     borderRadius: "26.5px 26.5px 26.5px 0",
@@ -58,9 +42,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginForm(props) {
-  const { handleLogin, handleChange, loginData, showPhonePre } = props;
-  const classes = useStyles();
+export default function RegisterForm(props) {
+  const classes = useStyle();
+  const {
+    showPhonePre,
+    registerData,
+    handleChange,
+    handleSubmit,
+    handleSendCode,
+  } = props;
 
   return (
     <form autoComplete='off'>
@@ -72,42 +62,51 @@ export default function LoginForm(props) {
         <Grid item xs={6}>
           <div className={classes.welcome}>CIAO!</div>
         </Grid>
+
         <Grid item xs={10} className={classes.gridItem}>
           <InputAccount
             showPhonePre={showPhonePre}
-            phonePre={loginData.phonePre}
-            account={loginData.account}
+            phonepre={registerData.phonePre}
+            account={registerData.account}
             handleChange={handleChange}
           />
         </Grid>
 
         <Grid item xs={10} className={classes.gridItem}>
           <InputPassword
-            pwdLabel='Password'
-            password={loginData.password}
+            password={registerData.password}
             handleChange={handleChange}
           />
-          <div style={{ width: "400px", position: "relative" }}>
-            <div className={classes.forgetPwd}>
-              <Link to='/' className={classes.forgetLink}>
-                hai dimenticato la tua password?
-              </Link>
-            </div>
-          </div>
         </Grid>
 
-        <Grid item xs={10} className={clsx(classes.gridItem)}>
+        <Grid item xs={10} className={classes.gridItem}>
+          <InputPassword
+            pwdLabel='Confirm Password'
+            pwdLabelWidth={135}
+            password={registerData.passwordConfirm}
+            handleChange={handleChange}
+          />
+        </Grid>
+
+        <Grid item xs={10} className={classes.gridItem}>
+          <InputVerif
+            handleChange={handleChange}
+            handleSendCode={handleSendCode}
+          />
+        </Grid>
+
+        <Grid item xs={10} className={classes.gridItem}>
           <div className={classes.margin}>
             <Button
               classes={{
-                root: classes.loginButton,
+                root: classes.registerButton,
               }}
               variant='outlined'
               type='submit'
               size='large'
               // color='primary'
-              onClick={handleLogin}>
-              ACCEDI
+              onClick={handleSubmit}>
+              REGISTRA
             </Button>
           </div>
         </Grid>

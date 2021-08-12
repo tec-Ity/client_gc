@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setIsHome,
-  setSelFirstCateg,
-  setQuery,
-  setTitle,
-  setSearch,
-  setSelSecondCateg,
-  setBackToFirst,
-} from "../../redux/filter/filterSlice";
-import { fetchProdListQuery } from "../../redux/shop/shopSlice";
+import { goBack } from "../../redux/filter/filterSlice";
 import ProdList from "../prodList/ProdList";
+import MoreButton from "./MoreButton";
+import ExpandTitle from "./Tilte";
 
-export default function ShopSectionExpand(props) {
+export default function ProdExpand(props) {
   const dispatch = useDispatch();
-  const selFirstCateg = useSelector((state) => state.filter.selFirstCateg);
-  const selSecondCateg = useSelector((state) => state.filter.selSecondCateg);
   const title = useSelector((state) => state.filter.title);
   const query = useSelector((state) => state.filter.query);
   const [queryURL, setQueryURL] = useState(null);
@@ -43,33 +34,32 @@ export default function ShopSectionExpand(props) {
     }
   }, [dispatch, query]);
 
-  const goBack = () => {
-    if (selSecondCateg !== null) {
-      dispatch(setSelSecondCateg(null));
-      dispatch(setBackToFirst(true));
-    } else if (selFirstCateg !== null) {
-      dispatch(setSelFirstCateg(null));
-      dispatch(setIsHome(true));
-      dispatch(setSearch());
-      dispatch(setQuery());
-      dispatch(setTitle());
-    }
+  const Back = () => {
+    dispatch(goBack());
   };
-  const sectionTitle = title.desp && (
-    <div>
-      <div>---{title.desp}---</div>
-      {title.img ? <img src={title.img} alt={title.desp} /> : <div></div>}
-    </div>
-  );
 
   return (
-    <div>
+    <div style={{ border: "1px solid" }}>
       Expand Section
-      <div>{sectionTitle}</div>
       <div>
-        {queryURL?<ProdList queryURL={queryURL} />:<div>暂无产品</div>}
+        {queryURL || props.prods ? (
+          queryURL ? (
+            <>
+              <ExpandTitle title={title} />
+              <ProdList queryURL={queryURL} />
+            </>
+          ) : (
+            <>
+              <ExpandTitle title={props.title} />
+              <ProdList prods={props.prods} />
+            </>
+          )
+        ) : (
+          <div>暂无产品</div>
+        )}
       </div>
-      <button onClick={goBack}>back</button>
+      <>{props.prods && <MoreButton farId={props.far.id} />}</>
+      {queryURL && <button onClick={Back}>back</button>}
     </div>
   );
 }

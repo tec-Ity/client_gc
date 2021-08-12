@@ -1,0 +1,51 @@
+import React from "react";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import Modal from "@material-ui/core/Modal";
+import Fade from "@material-ui/core/Fade";
+import Backdrop from "@material-ui/core/Backdrop";
+
+const useStyle = makeStyles((theme) => ({
+  root: {},
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  backTemplate: {
+    width: "500px",
+    height: "600px",
+    padding: "3px",
+    borderRadius: "20px 0",
+    background:
+      " linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
+  },
+
+  paperStyle: {
+    width: "auto",
+    height: "100%",
+    backgroundColor: "#fff",
+    borderRadius: "20px 0",
+    fontFamily: "Montserrat",
+    // boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
+  },
+}));
+
+export default function CustomModal(props) {
+  const { children, show, handleClose } = props;
+  const classes = useStyle();
+  return (
+    <Modal
+      className={classes.modal}
+      open={show}
+      onClose={handleClose}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{ timeout: 500 }}>
+      <Fade in={show}>
+        <div className={classes.backTemplate}>
+          <div className={classes.paperStyle}>{children}</div>
+        </div>
+      </Fade>
+    </Modal>
+  );
+}

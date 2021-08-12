@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ProdExpandMoreButton() {
+export default function CustomAlert() {
     return (
         <div>
-            button
+            
         </div>
     )
 }

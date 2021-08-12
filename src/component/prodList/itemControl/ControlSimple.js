@@ -1,34 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
+import { selectCurProdInCart } from "../../../redux/cart/cartSlice";
 
 export default function ControlSimple(props) {
-  const { Skus, curProdInCart, onSkuChange } = props;
+  const { skus, prodId, shop, onSkuChange } = props;
+  const skuPostStatus = useSelector((state) => state.cart.skuPostStatus);
+  const skuPutStatus = useSelector((state) => state.cart.skuPutStatus);
 
-  const [skuQty, setSkuQty] = useState(curProdInCart?.OrderSkus[0].quantity);
+  console.log("SIMPLE");
 
+  const curSkuInCart = useSelector(selectCurProdInCart(prodId, shop))
+    ?.OrderSkus[0];
 
-
+  console.log("curPord", curSkuInCart);
+  console.log("skus", skus);
   return (
     <div>
-      {curProdInCart ? (
+      {curSkuInCart ? (
         <>
           <button
+            disabled={skuPutStatus === "loading"}
             onClick={() => {
-              onSkuChange(curProdInCart.OrderSkus[0], skuQty - 1);
-              setSkuQty((prev) => prev - 1);
+              onSkuChange(curSkuInCart?._id, null, curSkuInCart.quantity - 1);
             }}>
-            -
+            {curSkuInCart.quantity === 1 ? "删除" : "-"}
           </button>
-          {skuQty}
+          {curSkuInCart.quantity}
           <button
+            disabled={skuPutStatus === "loading"}
             onClick={() => {
-              onSkuChange(curProdInCart.OrderSkus[0], skuQty + 1);
-              setSkuQty((prev) => prev + 1);
+              onSkuChange(curSkuInCart?._id, null, curSkuInCart.quantity + 1);
             }}>
             +
           </button>
         </>
       ) : (
-        <button onClick={() => onSkuChange(Skus[0]._id, 1)}>+</button>
+        <button
+          disabled={skuPostStatus === "loading"}
+          onClick={() => onSkuChange(null, skus[0]._id, 1)}>
+          +
+        </button>
       )}
     </div>
   );

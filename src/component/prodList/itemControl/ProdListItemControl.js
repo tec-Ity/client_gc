@@ -1,26 +1,28 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { lazy, Suspense } from "react";
+import { useDispatch } from "react-redux";
 import { fetchSkuPost, fetchSkuPut } from "../../../redux/cart/cartSlice";
 
 const ControlMulti = lazy(() => import("./ControlMulti"));
 const ControlSimple = lazy(() => import("./ControlSimple"));
 
 export default function ProdListItemControl(props) {
-  const { Skus, is_simple: isSimple, _id: ProdId, Shop } = props.prod;
-
+  const {
+    Skus: skus,
+    is_simple: isSimple,
+    _id: prodId,
+    Shop: shop,
+  } = props.prod;
+  // console.log('prod', props.prod)
   //return only when the current prod is in the cart
-  const curProdInCart = useSelector((state) => {
-    const prod = state.cart.curCart.OrderProds?.find((op) => op.Prod === ProdId);
-    if (prod?.Shop === Shop) return prod;
-    else return null;
-  });
+
   const dispatch = useDispatch();
 
-  const onSkuChange = (orderSkuId=null, skuId, Qty) => {
+  const onSkuChange = (orderSkuId = null, skuId, Qty) => {
+    // console.log("qty", Qty);
     if (orderSkuId) {
-      dispatch(fetchSkuPut(orderSkuId, Qty));
+      dispatch(fetchSkuPut({ orderSkuId, Qty }));
     } else {
-      dispatch(fetchSkuPost(skuId, Qty));
+      dispatch(fetchSkuPost({ skuId, Qty }));
     }
   };
 
@@ -28,15 +30,17 @@ export default function ProdListItemControl(props) {
     <Suspense fallback={<div>Loading......</div>}>
       {isSimple === true ? (
         <ControlSimple
-          Skus={Skus}
+          prodId={prodId}
+          skus={skus}
+          shop={shop}
           onSkuChange={onSkuChange}
-          curProdInCart={curProdInCart}
         />
       ) : (
         <ControlMulti
-          Skus={Skus}
+          prodId={prodId}
+          skus={skus}
+          shop={shop}
           onSkuChange={onSkuChange}
-          curProdInCart={curProdInCart}
         />
       )}
     </Suspense>

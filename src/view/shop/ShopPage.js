@@ -19,7 +19,7 @@ export default function ShopPage() {
   const categs = useSelector((state) => state.shop.categList);
   const prevShopId = useSelector((state) => state.shop.curShop);
   const categStatus = useSelector((state) => state.shop.categStatus);
-  const categError = useSelector((state) => state.shop.categError);
+  // const categError = useSelector((state) => state.shop.categError);
   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   useEffect(() => {
     // console.log('shopPage')
@@ -27,6 +27,7 @@ export default function ShopPage() {
     if (prevShopId !== _id) {
       // console.log("enter new shop");
       //call cart
+      // console.log("curCartStatus", curCartStatus);
       (curCartStatus === "idle" || curCartStatus === "error") &&
         dispatch(fetchCartByShop(_id));
       //call categ
@@ -62,11 +63,11 @@ export default function ShopPage() {
       <ShopSelection />
 
       {categs.length > 0 && (
-        <>
+        <div style={{display:"flex", marginTop:"20px"}}>
           <ShopSideBar categs={categs} />
 
           <ShopProdSection />
-        </>
+        </div>
       )}
     </div>
   );

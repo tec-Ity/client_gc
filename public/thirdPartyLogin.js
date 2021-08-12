@@ -1,7 +1,8 @@
-// const api_DNS = "https://172.20.10.3:4000";//green
-// const api_DNS = "https://192.168.43.20:4000"; //ge
-const api_DNS = "https://192.168.43.187:4000";//hy8
-// const api_DNS = "https://192.168.1.55:4000";//FOM
+// const api_DNS = "https://172.20.10.3:9000";//green
+// const api_DNS = "https://172.20.10.3:9000";//feng
+// const api_DNS = "https://192.168.43.20:9000"; //ge
+const api_DNS = "https://192.168.43.187:9000"; //hy8
+// const api_DNS = "https://192.168.1.55:9000";//FOM
 // const api_DNS = "https://207.154.213.244:9000"; //server
 
 const api_version = "/api/v1";
@@ -77,7 +78,7 @@ const responseFacebook = async (response, accessToken) => {
     localStorage.setItem("accessToken", result.data?.accessToken);
     localStorage.setItem("crClient", result.data?.crClient);
     localStorage.setItem("refreshToken", result.data?.refreshToken);
-    localStorage.setItem("thirdPartyLogin", 'facebook');
+    localStorage.setItem("thirdPartyLogin", "facebook");
 
     window.location.reload();
   } else {
@@ -123,10 +124,6 @@ function checkLoginState() {
     statusChangeCallback(response);
   });
 }
-
-
-
-
 
 /* ===================================== google ===================================== */
 
@@ -194,11 +191,10 @@ function onSignIn(googleUser) {
       localStorage.setItem("accessToken", result.data?.accessToken);
       localStorage.setItem("crClient", result.data?.crClient);
       localStorage.setItem("refreshToken", result.data?.refreshToken);
-      localStorage.setItem("thirdPartyLogin", 'google');
+      localStorage.setItem("thirdPartyLogin", "google");
       const result2 = await fetchGet_Prom("/get_social_AppId");
-      localStorage.setItem('google', result2.data.google)
-      
-      
+      localStorage.setItem("google", result2.data.google);
+
       window.location.reload();
     } else {
       console.log(result.message);

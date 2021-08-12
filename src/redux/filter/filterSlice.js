@@ -14,7 +14,7 @@ const initialState = {
   /*select categs*/
   selFirstCateg: null,
   selSecondCateg: null,
-  
+
   backToFirst: false,
 
   isHome: true,
@@ -51,6 +51,18 @@ export const filterSilce = createSlice({
     setIsHome: (state, action) => {
       state.isHome = action.payload;
     },
+    goBack: (state) => {
+      if (state.selSecondCateg !== null) {
+        state.selSecondCateg = null;
+        state.backToFirst = true;
+      } else if (state.selFirstCateg !== null) {
+        state.selFirstCateg = null;
+        state.isHome = true;
+        state.search = initialState.search;
+        state.query = initialState.query;
+        state.title = initialState.title;
+      }
+    },
   },
 });
 
@@ -62,6 +74,7 @@ export const {
   setSelFirstCateg,
   setSelSecondCateg,
   setIsHome,
+  goBack,
 } = filterSilce.actions;
 
 export default filterSilce.reducer;

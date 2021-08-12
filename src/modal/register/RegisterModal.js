@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { get_Prom, post_Prom } from "../../api";
-import RegisterUI from "./RegisterUI";
+import RegisterModalUI from "./RegisterModalUI";
 
 export default function RegisterModal(props) {
   const [showPhonePre, setShowPhonePre] = useState(false);
@@ -9,10 +9,9 @@ export default function RegisterModal(props) {
     phonePre: "0039",
     account: "",
     password: "",
-    passwordConfirm:'',
+    passwordConfirm: "",
     otp: "",
   });
-
 
   useEffect(() => {
     async function getNation() {
@@ -54,8 +53,7 @@ export default function RegisterModal(props) {
     }
   };
 
-  const handleSendCode = async (e) => {
-    e.preventDefault();
+  const handleSendCode = async () => {
     const result =
       showPhonePre === true
         ? await post_Prom("/obtain_otp", {
@@ -89,15 +87,13 @@ export default function RegisterModal(props) {
   };
 
   return (
-    <>
-      <RegisterUI
-        registerData={registerData}
-        nations={nations}
-        showPhonePre={showPhonePre}
-        handleChange={handleChange}
-        handleSendCode={handleSendCode}
-        handleSubmit={handleSubmit}
-      />
-    </>
+    <RegisterModalUI
+      registerData={registerData}
+      nations={nations}
+      showPhonePre={showPhonePre}
+      handleChange={handleChange}
+      handleSendCode={handleSendCode}
+      handleSubmit={handleSubmit}
+    />
   );
 }

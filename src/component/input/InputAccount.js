@@ -6,10 +6,11 @@ import {
   InputLabel,
   FormControl,
   OutlinedInput,
+  TextField,
   Select,
   MenuItem,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,27 @@ const useStyles = makeStyles((theme) => ({
       borderColor: "white",
     },
   },
+  labelStyle: {
+    color: "#1D1D38",
+    fontFamily: "Montserrat",
+    "&.Mui-focused": {
+      color: "#1D1D38",
+    },
+  },
+  inputStyle: {
+    borderRadius: "100px 100px 100px 0px",
+    "& $notchedOutline": {
+      borderColor: "#1D1D38",
+    },
+    "&.Mui-focused $notchedOutline": {
+      borderColor: "#1D1D38",
+    },
+    "&:hover $notchedOutline": {
+      borderWidth: "2px",
+      borderColor: "#1D1D38",
+    },
+  },
+  notchedOutline: {},
 }));
 
 export default function InputAccount(props) {
@@ -55,10 +77,16 @@ export default function InputAccount(props) {
     <FormControl
       className={clsx(classes.margin, classes.textField)}
       variant='outlined'>
-      <InputLabel htmlFor='input-account-label'>Code/Email/Phone</InputLabel>
+      <InputLabel
+        classes={{ root: classes.labelStyle }}
+        htmlFor='outlined-adornment-password'>
+        Code / Email / Num. di telefono:
+      </InputLabel>
       <OutlinedInput
-        id='input-account-label'
-        type='text'
+        classes={{
+          root: classes.inputStyle,
+          notchedOutline: classes.notchedOutline,
+        }}
         value={account}
         onChange={handleChange("account")}
         startAdornment={
@@ -86,7 +114,7 @@ export default function InputAccount(props) {
             </InputAdornment>
           )
         }
-        labelWidth={140}
+        labelWidth={280}
       />
     </FormControl>
   );

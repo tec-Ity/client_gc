@@ -10,27 +10,33 @@ export default function ProdList(props) {
   const prodErrorQuery = useSelector((state) => state.shop.prodErrorQuery);
 
   useEffect(() => {
-    dispatch(fetchProdListQuery(queryURL));
+    queryURL && dispatch(fetchProdListQuery(queryURL));
   }, [queryURL, dispatch]);
 
   const displayResult = () => {
-    console.log("status", prodStatusQuery);
+    // console.log("status", prodStatusQuery);
     if (prodStatusQuery === "loading") {
       return <div>Loading......</div>;
     } else if (prodStatusQuery === "succeed") {
-      return prodListQuery.length > 0 ? getProdList() : <div>暂无产品</div>;
+      return prodListQuery.length > 0 ? (
+        getProdList(prodListQuery)
+      ) : (
+        <div>暂无产品</div>
+      );
     } else if (prodStatusQuery === "error") {
       return <div>{prodErrorQuery}</div>;
     }
   };
 
-  const getProdList = () => {
+  const getProdList = (prodList) => {
     if (style === "card") {
-      return prodListQuery.map((prod) => {
+      return prodList.map((prod) => {
         return <ProdListItem prod={prod} key={prod._id} />;
       });
     }
   };
 
-  return <div>{displayResult()}</div>;
+  // const displayProdsFromParent = () => {};
+
+  return <div>{queryURL ? displayResult() : getProdList(props.prods)}</div>;
 }

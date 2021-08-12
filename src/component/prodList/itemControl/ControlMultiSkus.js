@@ -1,35 +1,40 @@
 import React, { useEffect, useState } from "react";
-
+import { useSelector } from "react-redux";
 export default function ControlMultiSkus(props) {
-  const { Skus, curProdInCart, showSkuList, onHide, onSkuChange } = props;
-  const [skuList, setSkuList] = useState([]);
+  const { skus, curProdInCart, showSkuList, onHide, onSkuChange } = props;
+  const [skuList, setSkuList] = useState();
+  const skuPostStatus = useSelector((state) => state.cart.skuPostStatus);
+  const skuPutStatus = useSelector((state) => state.cart.skuPutStatus);
+
   useEffect(() => {
     const generateList = () => {
-      if (showSkuList === true && Skus.length > 0) {
+      if (showSkuList === true && skus.length > 0) {
         const tempSkuList = [];
-        Skus.forEach((sku) => {
-          let curSkuQtyInCart = 0;
-          let curSkuInCartTemp = null;
-          if (curProdInCart) {
-            curSkuInCartTemp = curProdInCart.OrderSkus.find(
-              (os) => os.Sku === sku._id
-            );
-            if (curSkuInCartTemp) {
-              curSkuQtyInCart = curSkuInCartTemp.quantity;
+        skus.forEach((sku) => {
+          if (sku.attrs) {
+            let curSkuQtyInCart = null;
+            let curSkuInCartTemp = null;
+            if (curProdInCart) {
+              curSkuInCartTemp = curProdInCart.OrderSkus.find(
+                (os) => os.Sku === sku._id
+              );
+              if (curSkuInCartTemp) {
+                curSkuQtyInCart = curSkuInCartTemp.quantity;
+              }
             }
+            tempSkuList.push({
+              id: sku._id,
+              quantity: curSkuQtyInCart,
+              attrs: sku.attrs,
+              orderSkuId: curSkuInCartTemp?._id,
+            });
           }
-          tempSkuList.push({
-            id: sku._id,
-            quantity: curSkuQtyInCart,
-            attrs: sku.attrs,
-            orderSkuId: curSkuInCartTemp._id,
-          });
         });
         setSkuList(tempSkuList);
       }
     };
     generateList();
-  }, [Skus, curProdInCart, showSkuList]);
+  }, [skus, curProdInCart, showSkuList]);
 
   const modifySkuCount = (skuId, qty) => {
     /**
@@ -55,19 +60,21 @@ export default function ControlMultiSkus(props) {
 
   const buttonDec = (sku) => (
     <button
+      disabled={skuPutStatus === "loading"}
       onClick={() => {
         onSkuChange(sku.orderSkuId, null, sku.quantity - 1);
         modifySkuCount(sku.id, sku.quantity - 1);
       }}>
-      -
+      {sku.quantity === 1 ? "删除" : "-"}
     </button>
   );
 
   const buttonInc = (sku) => (
     <button
+      disabled={skuPutStatus === "loading"}
       onClick={() => {
         onSkuChange(sku.orderSkuId, null, sku.quantity + 1);
-        modifySkuCount(sku.id, sku.quantity - 1);
+        modifySkuCount(sku.id, sku.quantity + 1);
       }}>
       +
     </button>
@@ -75,6 +82,7 @@ export default function ControlMultiSkus(props) {
 
   const buttonNew = (sku) => (
     <button
+      disabled={skuPostStatus === "loading"}
       onClick={() => {
         onSkuChange(null, sku.id, 1);
         modifySkuCount(sku.id, 1);
@@ -84,28 +92,34 @@ export default function ControlMultiSkus(props) {
   );
 
   return (
-    <>
+    <div style={{ border: "1px solid" }}>
       {skuList?.map((sku) => {
+        console.log(sku);
         return (
-          <React.Fragment key={sku.id}>
-            <span>
-              {sku.attrs.map((attr) => {
+          <div key={sku.id}>
+            {sku.attrs &&
+              sku.attrs.map((attr) => {
                 return (
                   <span key={attr.nome}>
-                    <span>{attr.nome}</span>
-                    <span>{attr.option}</span>
+                    <span>{attr.nome}</span>:<span>{attr.option}</span>
+                    &nbsp;
                   </span>
                 );
               })}
-            </span>
-            {sku.orderSkuId}
-            {buttonDec(sku)}
-            {sku.quantity}
-            {buttonInc(sku)}
-          </React.Fragment>
+
+            {sku.orderSkuId && sku.quantity > 0 ? (
+              <>
+                <>{buttonDec(sku)}</>
+                <>{sku.quantity}</>
+                <>{buttonInc(sku)}</>
+              </>
+            ) : (
+              <>{buttonNew(sku)}</>
+            )}
+          </div>
         );
       })}
       <button onClick={onHide}>确认</button>
-    </>
+    </div>
   );
 }
