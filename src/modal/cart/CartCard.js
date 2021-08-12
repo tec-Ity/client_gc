@@ -4,10 +4,17 @@ import Grid from "@material-ui/core/Grid";
 import { Button } from "@material-ui/core";
 import CartTable from "./CartTable";
 import clsx from "clsx";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchCartByShop,
+  setCurCart,
+  setIsExpand,
+} from "../../redux/cart/cartSlice";
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    maxHeight: "270px",
+    // maxHeight: "270px",
+    // height:'1000px',
     width: "443px",
     boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
     borderRadius: "20px 20px 20px 0px",
@@ -83,13 +90,39 @@ const useStyle = makeStyles((theme) => ({
       fontWeight: "700",
     },
   },
+  orderBtnXL: {
+    height: "40px",
+    width: "400px",
+    background: "#1D1D38",
+    borderRadius: "19.5312px 19.5312px 19.5312px 0px",
+    fontFamily: "Montserrat",
+    color: "#fff",
+    fontSize: "24px",
+    fontWeight: "700",
+    opacity: "0.8",
+    marginBottom: "24px",
+    "&:hover": {
+      opacity: "1",
+      background: "#1D1D38",
+    },
+    "&:focus": {
+      background: "#e47f10",
+    },
+  },
 }));
 
 export default function CartCard(props) {
-  const {cart, count} = props
-  const { Shop, cartTotPrice, OrderProds} = cart;
+  const { cart, count, isExpand } = props;
+  const { Shop, cartTotPrice, OrderProds } = cart;
+  const dispatch = useDispatch();
+  const curCart = useSelector((state) => state.cart.curCart);
   const classes = useStyle();
   React.useEffect(() => {}, []);
+
+  const expandMore = () => {
+    dispatch(setCurCart(Shop._id));
+    dispatch(setIsExpand(Shop._id));
+  };
 
   return (
     <div className={classes.root}>
@@ -103,19 +136,30 @@ export default function CartCard(props) {
           </div>
         </Grid>
         <Grid item className={classes.gridItem}>
-          <CartTable OrderProds={OrderProds} count={count}/>
+          {isExpand ? (
+            <CartTable OrderProds={curCart.OrderProds} count={count} />
+          ) : (
+            <CartTable OrderProds={OrderProds} count={count} />
+          )}
         </Grid>
-        <Grid item className={classes.gridItem}>
-          <div className={clsx(classes.moreInfo, classes.margin)}>
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
-          </div>
-          <div className={clsx(classes.totalAmount, classes.marginFoot)}>
-            <div>TOTALE</div>
-            <div>€{cartTotPrice}</div>
-          </div>
-        </Grid>
+        {isExpand ? (
+          <>
+            <Grid item className={classes.gridItem}>
+              <div className={clsx(classes.moreInfo, classes.margin)}>^</div>
+              <div className={clsx(classes.totalAmount, classes.marginFoot)}>
+                <div>TOTALE</div>
+                <div>€{curCart?.cartTotPrice.toFixed(2)}</div>
+              </div>
+            </Grid>
+            <Grid item className={classes.gridItem}>
+              <Button className={classes.orderBtnXL}>ORDINARE</Button>
+            </Grid>
+          </>
+        ) : (
+          <Grid item className={classes.gridItem}>
+            <button onClick={expandMore}>more</button>
+          </Grid>
+        )}
       </Grid>
     </div>
   );

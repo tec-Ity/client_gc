@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 const useStyle = makeStyles((theme) => ({
   root: {
-    height: "600px",   
+    height: "600px",
   },
   topIconBar: {
     width: "500px",
@@ -13,23 +13,24 @@ const useStyle = makeStyles((theme) => ({
   },
   wrapDiv: {
     width: "100%",
-    maxHeight:'485px',
-    minHeight:'300px',
+    maxHeight: "485px",
+    minHeight: "300px",
     display: "flex",
-    flexWrap:'wrap',
+    flexWrap: "wrap",
     justifyContent: "center",
     overflow: "auto",
-    '&::-webkit-scrollbar':{
-        display:'none'
-    }
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
   },
 }));
 export default function CardWraper(props) {
   const classes = useStyle();
-  const { children } = props;
+  const { children, isExpand, handleCollapse } = props;
   return (
     <div className={classes.root}>
       <div className={classes.topIconBar}>
+        {isExpand && <button onClick={handleCollapse}>back</button>}
         <div style={{ border: "1px solid" }}>Cart</div>
       </div>
       <div className={classes.wrapDiv}>{children}</div>

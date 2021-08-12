@@ -33,8 +33,8 @@ export default function LoginModal() {
   useEffect(() => {
     async function getNation() {
       const result = await fetch_Prom("/Nations");
-      console.log(result)
-      const nations = result.data.objects;
+      console.log(result);
+      const nations = result.data?.objects;
       setNations(nations);
     }
     getNation();
@@ -101,7 +101,7 @@ export default function LoginModal() {
       dispatch(setIsLogin(true));
     }
   };
-  
+
   return (
     <LoginModalUI
       loginData={loginData}

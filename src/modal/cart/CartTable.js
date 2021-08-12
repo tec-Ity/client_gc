@@ -1,5 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchSkuPut } from "../../redux/cart/cartSlice";
+import CartSkuCtrl from "./CartSkuCtrl";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -53,18 +56,31 @@ const useStyle = makeStyles((theme) => ({
       },
       "& :nth-child(2)": {
         textAlign: "left",
-        fontSize: "12.5px",
+        fontSize: "10px",
       },
     },
-    "& :nth-child(2)": {},
-    "& :nth-child(3)": {},
+    "& :nth-child(2)": {
+      "& :nth-child(2)": {
+        fontSize: "10px",
+      },
+    },
+    "& :nth-child(3)": {
+      "& :nth-child(2)": {
+        fontSize: "10px",
+      },
+    },
     "& :nth-child(4)": {
       fontWeight: "700",
+      "& :nth-child(2)": {
+        fontSize: "10px",
+      },
     },
   },
 }));
 
 const TableRow = ({ oSku, prodName }) => {
+  const isExpand = useSelector((state) => state.cart.isExpand);
+
   const classes = useStyle();
   return (
     <tr className={classes.tableRow}>
@@ -75,15 +91,15 @@ const TableRow = ({ oSku, prodName }) => {
         <div>{oSku.attrs}&nbsp;</div>
       </td>
       <td>
-        <div>{oSku.quantity}</div>
+        <div>{isExpand ? <CartSkuCtrl oSku={oSku} /> : oSku.quantity}</div>
         <div>&nbsp;</div>
       </td>
       <td>
-        <div>€{oSku.price}</div>
+        <div>€{oSku.price.toFixed(2)}</div>
         <div>&nbsp;</div>
       </td>
       <td>
-        <div>€{oSku.price_tot}</div>
+        <div>€{oSku.price_tot.toFixed(2)}</div>
         <div>&nbsp;</div>
       </td>
     </tr>

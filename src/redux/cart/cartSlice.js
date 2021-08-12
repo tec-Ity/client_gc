@@ -6,6 +6,8 @@ const initialState = {
   showCarts: false,
   //is in single shop
   inShop: false,
+  //expand?
+  isExpand: null, // sotre shopId for expand
   //carts
   carts: [],
   cartsStatus: "idle",
@@ -36,22 +38,6 @@ const cartObj = [
   ShopObj,
 ];
 
-/**
- *
- * '&populateObjs=[{
- * "path":"OrderProds",
- * "select":"Prod OrderSkus nome unit Shop",
- *   "populate":{
- *       "path":"OrderSkus",
- *        "select":"Sku price quantity price_regular "
- *         }
- *   },
- * {
- * "path":"Shop",
- *  "select":"nome"
- * }];
- */
-
 export const fetchCarts = createAsyncThunk("cart/fetchCarts", async () => {
   const cartsResult = await fetch_Prom(
     "/Carts?populateObjs=" + JSON.stringify(cartObj)
@@ -67,14 +53,14 @@ export const fetchCartByShop = createAsyncThunk(
   async (shopId, { getState }) => {
     const carts = getState().cart.carts;
     //check existing carts
-    console.log("carts", carts);
     if (carts.length > 0) {
-      const foundCart = carts.find((cart) => cart._id === shopId);
+      // console.log("carts", carts);
+      const foundCart = carts.find((cart) => cart.Shop._id === shopId);
       if (foundCart) {
         return foundCart;
       } else {
         /*if carts called and no cart found, return [] directly without call API*/
-        return [];
+        return {};
       }
     } else {
       const cartsResult = await fetch_Prom(
@@ -143,6 +129,15 @@ export const cartSlice = createSlice({
     setShowCarts: (state, action) => {
       state.showCarts = action.payload;
     },
+    setIsExpand: (state, action) => {
+      state.isExpand = action.payload;
+    },
+    setCurCart: (state, action) => {
+      const cart = state.carts.find((cart) => {
+        return cart.Shop._id === action.payload;
+      });
+      state.curCart = cart;
+    },
   },
   extraReducers: {
     /*carts */
@@ -171,7 +166,13 @@ export const cartSlice = createSlice({
     },
     [fetchCartByShop.fulfilled]: (state, action) => {
       state.curCartStatus = "succeed";
-      state.curCart = action.payload;
+      const cartObj = { ...action.payload };
+      if (cartObj.OrderProds.length > 0) {
+        const totPrice = CalCartPrice(cartObj.OrderProds);
+        cartObj.cartTotPrice = totPrice;
+      }
+      console.log("suc", cartObj);
+      state.curCart = cartObj;
     },
     [fetchCartByShop.rejected]: (state, action) => {
       state.curCartStatus = "error";
@@ -282,6 +283,6 @@ export const selectCurProdInCart = (prodId, shop) => (state) => {
   else return null;
 };
 
-export const { setShowCarts } = cartSlice.actions;
+export const { setShowCarts, setIsExpand, setCurCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
