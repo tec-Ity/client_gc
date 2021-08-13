@@ -6,7 +6,7 @@ import CartTable from "./CartTable";
 import clsx from "clsx";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  fetchCartByShop,
+  // fetchCartByShop,
   setCurCart,
   setIsExpand,
 } from "../../redux/cart/cartSlice";
@@ -113,7 +113,11 @@ const useStyle = makeStyles((theme) => ({
 
 export default function CartCard(props) {
   const { cart, count, isExpand } = props;
-  const { Shop, cartTotPrice, OrderProds } = cart;
+  const { 
+    Shop,
+    //  cartTotPrice, 
+     OrderProds
+     } = cart;
   const dispatch = useDispatch();
   const curCart = useSelector((state) => state.cart.curCart);
   const classes = useStyle();

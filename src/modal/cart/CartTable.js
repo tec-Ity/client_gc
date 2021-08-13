@@ -1,7 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchSkuPut } from "../../redux/cart/cartSlice";
+import {
+   useSelector, 
+  //  useDispatch 
+  } from "react-redux";
+// import { fetchSkuPut } from "../../redux/cart/cartSlice";
 import CartSkuCtrl from "./CartSkuCtrl";
 
 const useStyle = makeStyles((theme) => ({

@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import LoginModal from "../modal/login/LoginModal";
+// import LoginModal from "../modal/login/LoginModal";
 import RegisterModal from "../modal/register/RegisterModal";
 
 const HomePage = lazy(() => import("../view/home/HomePage"));

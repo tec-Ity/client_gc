@@ -1,9 +1,12 @@
 // import { Link } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { 
+  useDispatch,
+  // useSelector
+} from "react-redux";
 import { fetch_Prom } from "../../api";
 import {
-  setAccessToken,
+  // setAccessToken,
   setCurClientInfo,
   setIsLogin,
 } from "../../redux/curClient/curClientSlice";

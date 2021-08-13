@@ -28,9 +28,10 @@ const fetchProm = ( api, method, bodyObj) => {
       } else {
         resolve({ status: 400, message: `[front] method Error` });
       }
-      console.log(api_server)
-      console.log(method)
+      // console.log(api_server)
+      // console.log(method)
       const resPromise = await fetch(api_server, fetchObj);
+      // console.log("resPromise: ", resPromise)
       const result = await resPromise.json();
       resolve(result);
     } catch (error) {
@@ -39,6 +40,8 @@ const fetchProm = ( api, method, bodyObj) => {
   });
 };
 export const fetch_Prom = ( api, method="GET", bodyObj) => {
+  // console.log(api);
+  // console.log(method);
   return new Promise(async (resolve) => {
     try {
       method = method.toUpperCase();
