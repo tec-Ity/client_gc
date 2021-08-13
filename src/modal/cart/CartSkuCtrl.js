@@ -20,6 +20,9 @@ const useStyle = makeStyles((theme) => ({
     border: "none",
     // textAlign: "center",
     backgroundColor: "transparent",
+    '&::disabled':{
+        backgroundColor:'#000'
+    }
   },
   buttonRT: {
     margin: "auto",
@@ -57,9 +60,16 @@ export default function CartSkuCtrl({ oSku }) {
             fetchSkuPut({ orderSkuId: oSku?._id, Qty: oSku?.quantity - 1 })
           )
         }>
-        <div style={{ margin: "auto" }}>
+        <span
+          style={{
+            position: "relative",
+            left: "3.5px",
+            bottom: "2px",
+            fontFamily:'Montserrat',
+            fontWeight:'700',
+          }}>
           {oSku?.quantity === 1 ? "删除" : "-"}
-        </div>
+        </span>
       </button>
       <input
         className={classes.ctrlInput}
@@ -77,9 +87,16 @@ export default function CartSkuCtrl({ oSku }) {
             fetchSkuPut({ orderSkuId: oSku?._id, Qty: oSku?.quantity + 1 })
           )
         }>
-        <div style={{ height: "10px", weight: "10px", border: "1px solid" }}>
+        <span
+          style={{
+            position: "relative",
+            right: "5px",
+            bottom: "1.5px",
+            fontFamily:'Montserrat',
+            fontWeight:'700'
+          }}>
           +
-        </div>
+        </span>
       </button>
     </div>
   );
