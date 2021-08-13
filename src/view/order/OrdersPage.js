@@ -5,7 +5,8 @@ export default function OrdersPage() {
         const [Orders, setOrders] = useState([]);
         const getOrders = async(queryObj, isReload=false) => {
                 try {
-                        const Orders_res = await fetch_Prom("/Orders");
+                        const populateObjs = [{path: "OrderProds", select: "OrderSkus nome unit", populate: {path: "OrderSkus", select: "price"}}];
+                        const Orders_res = await fetch_Prom("/Orders?populateObjs="+JSON.stringify(populateObjs));
                         // console.log(Orders_res)
                         if(Orders_res.status === 200) {
                                 if(isReload) {
