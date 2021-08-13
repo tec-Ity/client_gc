@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import Input from "@material-ui/core/Input";
 import { setShowLogin } from "../../redux/curClient/curClientSlice";
+import CartSkuCtrl from "../../modal/cart/CartSkuCtrl";
 // import { OutlinedInput } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -13,10 +14,10 @@ const useStyles = makeStyles({
     background:
       "linear-gradient(290.29deg, #91E8B3 -12.39%, #C0E57B 21.51%, #D6E57B 110.42%, #C0E57B 110.42%)",
     position: "absolute",
-    height: "500px",
+    height: "409px",
     left: "0px",
     right: "0px",
-    top: "0px",
+    top: "91px",
     borderRadius: "0px 0px 80px 0px",
   },
   ben: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles({
     width: "508.03px",
     height: "69.45px",
     left: "calc(50% - 508.03px/2 + 1.28px)",
-    top: "218px",
+    top: "127px",
     fontFamily: "'Montserrat', sans-serif",
     fontStyle: "normal",
     fontWeight: "bold",
@@ -41,7 +42,7 @@ const useStyles = makeStyles({
     width: " 450px",
     height: " 53px",
     left: " calc(50% - 450px/2)",
-    top: " 307px",
+    top: " 216px",
     border: "none",
     background: " #FFFFFF",
     /* 0,0,20,0 - 10% */
@@ -69,6 +70,11 @@ const useStyles = makeStyles({
     //   // borderColor:"white",
     //   color:"black",
     // },
+  },
+  testComp: {
+    position: "absolute",
+    top: "200px",
+    left: "50px",
   },
 });
 export default function HomePage() {
