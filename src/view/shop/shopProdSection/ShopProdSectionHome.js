@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 import ProdExpand from "../../../component/prodExpand/ProdExpand";
 
 export default function ShopProdSectionHome(props) {
-  const hist = useHistory();
+  // const hist = useHistory();
   const prodList = useSelector((state) => state.shop.prodList);
   const prodListStatus = useSelector((state) => state.shop.prodStatus);
   const prodListerror = useSelector((state) => state.shop.prodError);

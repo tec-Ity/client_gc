@@ -6,13 +6,13 @@ import {
   fetchCarts,
   setIsExpand,
 } from "../../redux/cart/cartSlice";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import CartCard from "./CartCard";
 import CardWraper from "../../component/global/modal/component/CardWraper";
 
-const useStyle = makeStyles((theme) => ({
-  root: {},
-}));
+// const useStyle = makeStyles((theme) => ({
+//   root: {},
+// }));
 
 export default function CartModal() {
   const showCarts = useSelector((state) => state.cart.showCarts);
