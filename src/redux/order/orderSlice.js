@@ -16,7 +16,7 @@ const populateObjs = [
 
 export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
-  async ({ queryURL, isReload = false }, { getState }) => {
+  async ({ queryURL="", isReload = false }, { getState }) => {
     const Orders_res = await fetch_Prom(
       "/Orders?populateObjs=" + JSON.stringify(populateObjs) + queryURL
     );

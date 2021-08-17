@@ -1,6 +1,6 @@
-import React, { 
-  // useState, 
-  useEffect
+import React, {
+  // useState,
+  useEffect,
 } from "react";
 import { logout_Prom } from "../../../api";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,7 +15,6 @@ import { setShowCarts } from "../../../redux/cart/cartSlice";
 const useStyle = makeStyles({
   root: {
     /* Rectangle 442 */
-    zIndex: "1",
     position: "fixed",
     height: "91px",
     left: "0px",
@@ -120,34 +119,37 @@ export default function NavTopGlobal() {
   }, [dispatch, isLogin]);
 
   return (
-    <div className={classes.root}>
-      <div style={{ marginLeft: "6.25%" }}>
-        <Link to='/home'>
-          <img
-            className={classes.navIcon}
-            src={process.env.PUBLIC_URL + "/icon/logo.png"}
-            alt='logo'
-          />
-        </Link>
+    <>
+      <div className={classes.root}>
+        <div style={{ marginLeft: "6.25%" }}>
+          <Link to='/home'>
+            <img
+              className={classes.navIcon}
+              src={process.env.PUBLIC_URL + "/icon/logo.png"}
+              alt='logo'
+            />
+          </Link>
+        </div>
+        {isLogin ? (
+          <div className={classes.menuStyle}>
+            <button onClick={() => dispatch(setShowCarts(true))}>购物车</button>
+            <button>订单</button>
+            <button>个人中心</button>
+            <button onClick={handleLogout}>Log Out</button>
+          </div>
+        ) : (
+          <div className={classes.loginButton}>
+            <button
+              onClick={() => {
+                dispatch(setShowLogin(true));
+                console.log("login open");
+              }}>
+              Login
+            </button>
+          </div>
+        )}
       </div>
-      {isLogin ? (
-        <div className={classes.menuStyle}>
-          <button onClick={() => dispatch(setShowCarts(true))}>购物车</button>
-          <button>订单</button>
-          <button>个人中心</button>
-          <button onClick={handleLogout}>Log Out</button>
-        </div>
-      ) : (
-        <div className={classes.loginButton}>
-          <button
-            onClick={() => {
-              dispatch(setShowLogin(true));
-              console.log("login open");
-            }}>
-            Login
-          </button>
-        </div>
-      )}
-    </div>
+      <div style={{ height: "91px" }}></div>
+    </>
   );
 }
