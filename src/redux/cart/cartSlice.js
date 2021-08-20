@@ -38,19 +38,24 @@ const cartObj = [
   ShopObj,
 ];
 
-export const fetchCarts = createAsyncThunk("cart/fetchCarts", async () => {
-  const cartsResult = await fetch_Prom(
-    "/Carts?populateObjs=" + JSON.stringify(cartObj)
-  );
-  console.log(cartsResult);
-  if (cartsResult.status === 200) {
-    return cartsResult.data.objects;
+export const fetchCarts = createAsyncThunk(
+  "cart/fetchCarts",
+  async (foo = null, { rejectWithValue }) => {
+    const cartsResult = await fetch_Prom(
+      "/Carts?populateObjs=" + JSON.stringify(cartObj)
+    );
+    if (cartsResult.status === 200) {
+      return cartsResult.data.objects;
+    } else {
+      console.log(cartsResult);
+      return rejectWithValue(cartsResult.message);
+    }
   }
-});
+);
 
 export const fetchCartByShop = createAsyncThunk(
   "cart/fetchCartByShop",
-  async (shopId, { getState }) => {
+  async (shopId, { getState, rejectWithValue }) => {
     const carts = getState().cart.carts;
     //check existing carts
     if (carts.length > 0) {
@@ -64,21 +69,24 @@ export const fetchCartByShop = createAsyncThunk(
       }
     } else {
       const cartsResult = await fetch_Prom(
-        "/Carts?Shop=" + shopId + JSON.stringify(cartObj)
+        "/Carts?Shop=" + shopId + "&populateObjs=" + JSON.stringify(cartObj)
       );
       if (cartsResult.status === 200) {
         console.log("cartResult", cartsResult.data.objects[0]);
         return cartsResult.data.objects?.length > 0
           ? cartsResult.data.objects[0]
           : {};
-      } else console.log(cartsResult.message);
+      } else {
+        console.log(cartsResult.message);
+        return rejectWithValue(cartsResult.message);
+      }
     }
   }
 );
 
 export const fetchSkuPost = createAsyncThunk(
   "cart/fetchSkuPost",
-  async ({ skuId, Qty }) => {
+  async ({ skuId, Qty }, { rejectWithValue }) => {
     // console.log("quanti", Qty);
     const obj = {};
     obj.Sku = skuId;
@@ -87,7 +95,10 @@ export const fetchSkuPost = createAsyncThunk(
     console.log("skuPostRes", skuPostRes);
     if (skuPostRes.status === 200) {
       return skuPostRes.data;
-    } else console.log(skuPostRes.message);
+    } else {
+      console.log(skuPostRes.message);
+      return rejectWithValue(skuPostRes.message);
+    }
   }
 );
 
@@ -107,19 +118,31 @@ export const fetchSkuPut = createAsyncThunk(
   }
 );
 
-const CalCartPrice = (OrderProds) => {
+const calCartPrice = (OrderProds) => {
   let totPrice = 0;
   for (let i = 0; i < OrderProds.length; i++) {
     const op = OrderProds[i];
-    for (let j = 0; j < op.OrderSkus.length; j++) {
-      const oSku = op.OrderSkus[j];
-      console.log("osku", oSku);
-      const totSkuPrice = oSku.price * oSku.quantity;
-      oSku.price_tot = totSkuPrice;
-      totPrice += totSkuPrice;
-    }
+    if (op.orderSkus)
+      for (let j = 0; j < op.OrderSkus.length; j++) {
+        const oSku = op.OrderSkus[j];
+        console.log("osku", oSku);
+        const totSkuPrice = oSku.price * oSku.quantity;
+        oSku.price_tot = totSkuPrice;
+        totPrice += totSkuPrice;
+      }
   }
   return totPrice;
+};
+
+const unshiftCart = (carts, curCart) => {
+  if (carts.length > 0) {
+    for (let i = 0; i < carts.length; i++) {
+      if (carts[i]._id === curCart._id) {
+        carts.splice(i, 1);
+        carts.unshift(curCart);
+      }
+    }
+  }
 };
 
 export const cartSlice = createSlice({
@@ -131,6 +154,9 @@ export const cartSlice = createSlice({
     },
     setIsExpand: (state, action) => {
       state.isExpand = action.payload;
+    },
+    setInShop: (state, action) => {
+      state.inShop = action.payload;
     },
     setCurCart: (state, action) => {
       const cart = state.carts.find((cart) => {
@@ -151,7 +177,7 @@ export const cartSlice = createSlice({
       for (let i = 0; i < cartsObjs.length; i++) {
         const cart = cartsObjs[i];
         if (cart.OrderProds.length > 0) {
-          const totPrice = CalCartPrice(cart.OrderProds);
+          const totPrice = calCartPrice(cart.OrderProds);
           cart.cartTotPrice = totPrice;
         }
       }
@@ -159,6 +185,7 @@ export const cartSlice = createSlice({
     },
     [fetchCarts.rejected]: (state, action) => {
       state.cartsStatus = "error";
+      console.log("error", action.error.message);
     },
     /*curCart */
     [fetchCartByShop.pending]: (state) => {
@@ -167,11 +194,11 @@ export const cartSlice = createSlice({
     [fetchCartByShop.fulfilled]: (state, action) => {
       state.curCartStatus = "succeed";
       const cartObj = { ...action.payload };
-      if (cartObj.OrderProds.length > 0) {
-        const totPrice = CalCartPrice(cartObj.OrderProds);
+      console.log(cartObj);
+      if (cartObj.OrderProds?.length > 0) {
+        const totPrice = calCartPrice(cartObj.OrderProds);
         cartObj.cartTotPrice = totPrice;
       }
-      console.log("suc", cartObj);
       state.curCart = cartObj;
     },
     [fetchCartByShop.rejected]: (state, action) => {
@@ -190,12 +217,12 @@ export const cartSlice = createSlice({
         case 1:
           console.log('case "1"');
           if (Order._id === curCart._id) {
-            curCart.OrderProds.forEach((op) => {
+            for (const op of curCart.OrderProds) {
               if (op._id === OrderProd._id) {
                 op.OrderSkus.unshift(OrderSku);
-                return;
+                break;
               }
-            });
+            }
           }
           break;
         case 2:
@@ -216,6 +243,8 @@ export const cartSlice = createSlice({
         default:
           break;
       }
+      //finally unshift the curCart into carts
+      unshiftCart(state.carts, curCart);
     },
     [fetchSkuPost.rejected]: (state, action) => {
       state.skuPostStatus = "error";
@@ -229,7 +258,7 @@ export const cartSlice = createSlice({
       const curCart = state.curCart;
       const { Order, OrderProd, OrderSku, type_putSku, type_delSku } =
         action.payload;
-      // state.curCart = action.payload;
+      //only sku quantity changed
       if (type_putSku === 1) {
         if (Order._id === curCart._id) {
           curCart.OrderProds.forEach((op) => {
@@ -237,23 +266,29 @@ export const cartSlice = createSlice({
               op.OrderSkus.forEach((os) => {
                 if (os._id === OrderSku._id) {
                   os.quantity = OrderSku.quantity;
+                  //finally unshift the curCart into carts
+                  unshiftCart(state.carts, curCart);
                   return;
                 }
               });
             }
           });
         }
-      } else if (type_delSku === 2) {
+      } //delete whole product
+      else if (type_delSku === 2) {
         if (Order === curCart._id) {
           for (let i = 0; i < curCart.OrderProds.length; i++) {
             if (curCart.OrderProds[i]._id === OrderProd) {
               curCart.OrderProds.splice(i, 1);
+              //finally unshift the curCart into carts
+              unshiftCart(state.carts, curCart);
               return;
             }
           }
-          delete curCart.OrderProds[OrderProd];
+          // delete curCart.OrderProds[OrderProd];
         }
-      } else if (type_delSku === 1) {
+      } //only delete one sku in a product
+      else if (type_delSku === 1) {
         if (Order === curCart._id) {
           for (let i = 0; i < curCart.OrderProds.length; i++) {
             const curPord = curCart.OrderProds[i];
@@ -261,6 +296,9 @@ export const cartSlice = createSlice({
               for (let j = 0; j < curPord.OrderSkus.length; j++) {
                 if (curPord.OrderSkus[j]._id === OrderSku) {
                   curCart.OrderProds[i].OrderSkus.splice(j, 1);
+                  //finally unshift the curCart into carts
+                  unshiftCart(state.carts, curCart);
+                  return;
                 }
               }
             }
@@ -275,14 +313,15 @@ export const cartSlice = createSlice({
 });
 
 export const selectCurProdInCart = (prodId, shop) => (state) => {
-  console.log("call select prod");
-  console.log(state.cart.curCart.OrderProds);
+  // console.log("call select prod");
+  // console.log(state.cart.curCart.OrderProds);
   const prod = state.cart.curCart.OrderProds?.find((op) => op.Prod === prodId);
-  console.log("prod", prod);
+  // console.log("prod", prod);
   if (prod?.Shop === shop) return prod;
   else return null;
 };
 
-export const { setShowCarts, setIsExpand, setCurCart } = cartSlice.actions;
+export const { setShowCarts, setIsExpand, setCurCart, setInShop } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

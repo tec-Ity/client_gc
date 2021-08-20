@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-   useSelector, 
-  //  useDispatch 
-  } from "react-redux";
+  useSelector,
+  //  useDispatch
+} from "react-redux";
 // import { fetchSkuPut } from "../../redux/cart/cartSlice";
 import CartSkuCtrl from "./CartSkuCtrl";
 
@@ -19,7 +19,7 @@ const useStyle = makeStyles((theme) => ({
   },
   tableHeadRow: {
     fontSize: "10px",
-    fontWeight: "700",
+    fontWeight: "400",
     color: "#C0E57B",
     "& th": {
       borderTop: "1px solid",
@@ -98,11 +98,11 @@ const TableRow = ({ oSku, prodName }) => {
         <div>&nbsp;</div>
       </td>
       <td>
-        <div>€{oSku.price.toFixed(2)}</div>
+        <div>€{oSku.price?.toFixed(2)}</div>
         <div>&nbsp;</div>
       </td>
       <td>
-        <div>€{oSku.price_tot.toFixed(2)}</div>
+        <div>€{oSku.price_tot?.toFixed(2)}</div>
         <div>&nbsp;</div>
       </td>
     </tr>
@@ -111,10 +111,6 @@ const TableRow = ({ oSku, prodName }) => {
 
 export default function CartTable({ OrderProds, count }) {
   const classes = useStyle();
-
-  // const shortenName = (prodName) =>{
-
-  // }
 
   const tableBody = () => {
     const rows = [];
@@ -128,23 +124,24 @@ export default function CartTable({ OrderProds, count }) {
         } else return tbody;
       }
     }
-
     return tbody;
   };
 
   return (
     <div className={classes.root}>
-      <table className={classes.tableStyle}>
-        <thead className={classes.tableHead}>
-          <tr className={classes.tableHeadRow}>
-            <th scope='col'>Prodotto</th>
-            <th scope='col'>Quantità</th>
-            <th scope='col'>Prezzo Unità</th>
-            <th scope='col'>Prezzo Totale</th>
-          </tr>
-        </thead>
-        {tableBody()}
-      </table>
+      {OrderProds && (
+        <table className={classes.tableStyle}>
+          <thead className={classes.tableHead}>
+            <tr className={classes.tableHeadRow}>
+              <th scope='col'>Prodotto</th>
+              <th scope='col'>Quantità</th>
+              <th scope='col'>Prezzo Unità</th>
+              <th scope='col'>Prezzo Totale</th>
+            </tr>
+          </thead>
+          {tableBody()}
+        </table>
+      )}
     </div>
   );
 }

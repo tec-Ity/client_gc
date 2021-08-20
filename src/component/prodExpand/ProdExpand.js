@@ -4,6 +4,7 @@ import { goBack } from "../../redux/filter/filterSlice";
 import ProdList from "../prodList/ProdList";
 import MoreButton from "./MoreButton";
 import ExpandTitle from "./Tilte";
+import Container from "@material-ui/core/Container";
 
 export default function ProdExpand(props) {
   const dispatch = useDispatch();
@@ -23,11 +24,11 @@ export default function ProdExpand(props) {
         queryUrl += "&Nations=" + query.nations;
         callQuery = true;
       }
-      if (query.isDiscount !== null) {
-        queryUrl += "&is_discount=" + query.isDiscount;
+      if (query.isDiscount === true) {
+        queryUrl += "&is_discount=true";
         callQuery = true;
       }
-
+      // console.log("query", queryUrl);
       callQuery === true ? setQueryURL(queryUrl) : setQueryURL(null);
     } catch (e) {
       console.log(e);
@@ -39,8 +40,13 @@ export default function ProdExpand(props) {
   };
 
   return (
-    <div style={{ border: "1px solid" }}>
-      Expand Section
+    <Container
+      style={{
+        minHeight: "400px",
+        padding: 0,
+        marginBottom: "30px",
+        marginTop: "15px",
+      }}>
       <div>
         {queryURL || props.prods ? (
           queryURL ? (
@@ -60,6 +66,6 @@ export default function ProdExpand(props) {
       </div>
       <>{props.prods && <MoreButton farId={props.far.id} />}</>
       {queryURL && <button onClick={Back}>back</button>}
-    </div>
+    </Container>
   );
 }

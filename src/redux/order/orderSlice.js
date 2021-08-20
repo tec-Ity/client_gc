@@ -4,6 +4,12 @@ import { fetch_Prom } from "../../api";
 const initialState = {
   orders: [],
   orderStatus: "idle",
+
+  //show modal
+  showOrders: false,
+
+  //expand?
+  isExpand: null, // sotre shopId for expand
 };
 
 const populateObjs = [
@@ -16,7 +22,7 @@ const populateObjs = [
 
 export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
-  async ({ queryURL="", isReload = false }, { getState }) => {
+  async ({ queryURL = "", isReload = false }, { getState }) => {
     const Orders_res = await fetch_Prom(
       "/Orders?populateObjs=" + JSON.stringify(populateObjs) + queryURL
     );
@@ -36,7 +42,14 @@ export const fetchOrders = createAsyncThunk(
 export const orderSlice = createSlice({
   name: "order",
   initialState,
-  reducers: {},
+  reducers: {
+    setShowOrders: (state, action) => {
+      state.showOrders = action.payload;
+    },
+    setIsExpand: (state, action) => {
+      state.isExpand = action.payload;
+    },
+  },
   extraReducers: {
     [fetchOrders.pending]: (state, action) => {
       state.orderStatus = "loading";
@@ -51,6 +64,6 @@ export const orderSlice = createSlice({
   },
 });
 
-
+export const { setShowOrders, setIsExpand } = orderSlice.actions;
 
 export default orderSlice.reducer;

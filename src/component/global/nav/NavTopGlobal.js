@@ -11,17 +11,17 @@ import {
 } from "../../../redux/curClient/curClientSlice";
 import { Link } from "react-router-dom";
 import { setShowCarts } from "../../../redux/cart/cartSlice";
+import { setShowOrders } from "../../../redux/order/orderSlice";
 
 const useStyle = makeStyles({
   root: {
-    /* Rectangle 442 */
+    zIndex: "1",
     position: "fixed",
     height: "91px",
     left: "0px",
     right: "0px",
     top: "0px",
     background: "#c0e57b",
-    /* 0,0,20,0 - 10% */
     boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
     display: "flex",
     alignItems: "center",
@@ -133,7 +133,7 @@ export default function NavTopGlobal() {
         {isLogin ? (
           <div className={classes.menuStyle}>
             <button onClick={() => dispatch(setShowCarts(true))}>购物车</button>
-            <button>订单</button>
+            <button onClick={() => dispatch(setShowOrders(true))}>订单</button>
             <button>个人中心</button>
             <button onClick={handleLogout}>Log Out</button>
           </div>
@@ -149,7 +149,7 @@ export default function NavTopGlobal() {
           </div>
         )}
       </div>
-      <div style={{ height: "91px" }}></div>
+      <div style={{ height: "83px" }}></div>
     </>
   );
 }

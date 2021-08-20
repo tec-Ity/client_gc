@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     height: "409px",
     left: "0px",
     right: "0px",
-    top: "91px",
+    // top: "91px",
     borderRadius: "0px 0px 80px 0px",
   },
   ben: {
@@ -88,6 +88,7 @@ export default function HomePage() {
     async function getCitys() {
       try {
         const resultCitys = await fetch_Prom("/Citas");
+        console.log("citas", resultCitys);
         if (resultCitys.status === 200) {
           setCitys(resultCitys.data.objects);
         } else {
@@ -101,8 +102,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div>
-      <h1>HOME PAGE</h1>
+    <>
       <div className={classes.root}>
         <div className={classes.ben}>
           <div>Benvenuti!</div>
@@ -120,20 +120,22 @@ export default function HomePage() {
           />
         </div>
       </div>
-      {citys &&
-        citys.map((city) => {
-          return (
-            <button
-              key={city._id}
-              id={city._id}
-              onClick={(e) => {
-                console.log(e.target.id);
-                hist.push("/city/" + e.target.id);
-              }}>
-              {city.nome}
-            </button>
-          );
-        })}
-    </div>
+      <div style={{ position: "relative", top: "409px" }}>
+        {citys &&
+          citys.map((city) => {
+            return (
+              <button
+                key={city._id}
+                id={city._id}
+                onClick={(e) => {
+                  console.log(e.target.id);
+                  hist.push("/city/" + e.target.id);
+                }}>
+                {city.nome}
+              </button>
+            );
+          })}
+      </div>
+    </>
   );
 }

@@ -34,12 +34,12 @@ const fetchProm = ( api, method, bodyObj) => {
   });
 };
 export const fetch_Prom = ( api, method="GET", bodyObj) => {
-  // console.log(api);
-  // console.log(method);
+  console.log(api);
+  console.log(method);
   return new Promise(async (resolve) => {
     try {
       method = method.toUpperCase();
-
+      
       let result = await fetchProm( api, method, bodyObj);
       //unauthorized user
       if (result.status === 401) {
@@ -80,8 +80,8 @@ export const logout_Prom = () => {
         localStorage.removeItem("crClient");
         localStorage.removeItem("google");
         localStorage.removeItem("thirdPartyLogin");
-        
-        window.location.reload();
+        window.location.replace('/home');
+        // window.location.reload();
       }
       resolve(result);
     } catch (error) {

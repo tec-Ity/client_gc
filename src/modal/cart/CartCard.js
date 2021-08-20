@@ -97,8 +97,8 @@ const useStyle = makeStyles((theme) => ({
     borderRadius: "19.5312px 19.5312px 19.5312px 0px",
     fontFamily: "Montserrat",
     color: "#fff",
-    fontSize: "24px",
-    fontWeight: "700",
+    fontSize: "18px",
+    fontWeight: "600",
     opacity: "0.8",
     marginBottom: "24px",
     "&:hover": {
@@ -113,11 +113,7 @@ const useStyle = makeStyles((theme) => ({
 
 export default function CartCard(props) {
   const { cart, count, isExpand } = props;
-  const { 
-    Shop,
-    //  cartTotPrice, 
-     OrderProds
-     } = cart;
+  const { Shop, OrderProds } = cart;
   const dispatch = useDispatch();
   const curCart = useSelector((state) => state.cart.curCart);
   const classes = useStyle();
@@ -133,7 +129,7 @@ export default function CartCard(props) {
       <Grid container>
         <Grid item className={classes.gridItem}>
           <div className={clsx(classes.shopTitle, classes.marginHead)}>
-            SHOP NO. <span title={Shop.nome}>{Shop.nome}</span>
+            SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
           </div>
           <div className={classes.marginHead}>
             <Button className={classes.orderBtn}>ORDINARE</Button>
@@ -152,7 +148,7 @@ export default function CartCard(props) {
               <div className={clsx(classes.moreInfo, classes.margin)}>^</div>
               <div className={clsx(classes.totalAmount, classes.marginFoot)}>
                 <div>TOTALE</div>
-                <div>€{curCart?.cartTotPrice.toFixed(2)}</div>
+                <div>€{curCart.cartTotPrice?.toFixed(2)}</div>
               </div>
             </Grid>
             <Grid item className={classes.gridItem}>

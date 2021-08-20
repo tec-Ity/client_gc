@@ -34,7 +34,7 @@ export const filterSilce = createSlice({
     },
     setQuery: (state, action) => {
       state.query = action.payload
-        ? { ...state.query, ...action.payload }
+        ? { ...initialState.query, ...action.payload }
         : initialState.query;
     },
     setSearch: (state, action) => {
@@ -62,6 +62,7 @@ export const filterSilce = createSlice({
         state.query = initialState.query;
         state.title = initialState.title;
       }
+      
     },
   },
 });

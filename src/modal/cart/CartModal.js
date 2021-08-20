@@ -6,20 +6,15 @@ import {
   fetchCarts,
   setIsExpand,
 } from "../../redux/cart/cartSlice";
-// import { makeStyles } from "@material-ui/core/styles";
 import CartCard from "./CartCard";
 import CardWraper from "../../component/global/modal/component/CardWraper";
-
-// const useStyle = makeStyles((theme) => ({
-//   root: {},
-// }));
 
 export default function CartModal() {
   const showCarts = useSelector((state) => state.cart.showCarts);
   const cartsStatus = useSelector((state) => state.cart.cartsStatus);
   const carts = useSelector((state) => state.cart.carts);
   const curCart = useSelector((state) => state.cart.curCart);
-  const inShop = useSelector((state) => state.cart.inShop);
+  const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   const isExpand = useSelector((state) => state.cart.isExpand);
   const dispatch = useDispatch();
   const cartsSkuCount = 3;
@@ -28,12 +23,12 @@ export default function CartModal() {
   const handleClose = () => {
     console.log("close");
     dispatch(setShowCarts(false));
-    dispatch(setIsExpand(null));
   };
 
   const handleCollapse = () => {
     dispatch(setIsExpand(null));
   };
+
   useEffect(() => {
     if (cartsStatus === "idle" || cartsStatus === "error") {
       if (cartsStatus === "error") {
@@ -44,43 +39,52 @@ export default function CartModal() {
         dispatch(fetchCarts());
       }
     }
-  }, [dispatch, cartsStatus]);
+  }, []);
 
   const displayCarts = () => {
+    console.log("curCartStatus", curCartStatus);
+    console.log("cartsStatus", cartsStatus);
     let cartsTemp;
     if (isExpand) {
-      console.log(curCart)
-      cartsTemp = curCart && (
-        <CartCard cart={curCart} count={CartSkuCountShop} isExpand={isExpand} />
-      );
+      if (curCartStatus === "error") {
+        cartsTemp = <div>加载错误，请重试</div>;
+      } else if (curCartStatus === "succeed") {
+        console.log(curCart);
+        cartsTemp =
+          curCart && curCart.OrderProds?.length > 0 ? (
+            <CartCard
+              cart={curCart}
+              count={CartSkuCountShop}
+              isExpand={isExpand}
+            />
+          ) : (
+            <div>此门店暂无购物车</div>
+          );
+      }
     } else {
-      if (inShop === false) {
-        //show carts
-        if (cartsStatus === "succeed") {
-          if (carts?.length > 0) {
-            const cartsValid = carts.filter((cart) => {
-              return cart.OrderProds.length > 0;
-            });
-            cartsTemp = cartsValid.map((cart) => {
-              return (
-                <CartCard
-                  key={cart._id}
-                  cart={cart}
-                  count={cartsSkuCount}
-                  isExpand={isExpand}
-                />
-              );
-            });
-          } else {
-            cartsTemp = <div>暂无购物车</div>;
-          }
-        } else if (cartsStatus === "loading") {
-          cartsTemp = <div>Loading......</div>;
-        } else if (cartsStatus === "error") {
-          cartsTemp = <div>加载错误，请重试</div>;
+      //show carts
+      if (cartsStatus === "succeed") {
+        if (carts?.length > 0) {
+          const cartsValid = carts.filter((cart) => {
+            return cart.OrderProds.length > 0;
+          });
+          cartsTemp = cartsValid.map((cart) => {
+            return (
+              <CartCard
+                key={cart._id}
+                cart={cart}
+                count={cartsSkuCount}
+                isExpand={isExpand}
+              />
+            );
+          });
+        } else {
+          cartsTemp = <div>暂无购物车</div>;
         }
-      } else if (inShop === true) {
-        //show cart
+      } else if (cartsStatus === "loading") {
+        cartsTemp = <div>Loading......</div>;
+      } else if (cartsStatus === "error") {
+        cartsTemp = <div>加载错误，请重试</div>;
       }
     }
 
@@ -89,7 +93,10 @@ export default function CartModal() {
 
   return (
     <CustomModal show={showCarts} handleClose={handleClose}>
-      <CardWraper isExpand={isExpand} handleCollapse={handleCollapse}>
+      <CardWraper
+        isExpand={isExpand}
+        handleCollapse={handleCollapse}
+        title={"Cart"}>
         {displayCarts()}
       </CardWraper>
     </CustomModal>

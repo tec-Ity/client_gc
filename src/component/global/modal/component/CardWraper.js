@@ -26,12 +26,12 @@ const useStyle = makeStyles((theme) => ({
 }));
 export default function CardWraper(props) {
   const classes = useStyle();
-  const { children, isExpand, handleCollapse } = props;
+  const { children, isExpand, handleCollapse, title } = props;
   return (
     <div className={classes.root}>
       <div className={classes.topIconBar}>
         {isExpand && <button onClick={handleCollapse}>back</button>}
-        <div style={{ border: "1px solid" }}>Cart</div>
+        <div style={{ border: "1px solid" }}>{title}</div>
       </div>
       <div className={classes.wrapDiv}>{children}</div>
     </div>

@@ -8,7 +8,6 @@ export default function ShopProdSection(props) {
 
   return (
     <div>
-      ProdSection
       {isHome === false ? <ProdSectionExpand /> : <ProdSectionHome />}
     </div>
   );

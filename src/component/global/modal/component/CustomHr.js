@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
 const useStyle = makeStyles((theme) => ({
   hrStyle: {
@@ -11,7 +12,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomHr() {
+export default function CustomHr({position}) {
   const classes = useStyle();
-  return <div className={classes.hrStyle}></div>;
+  return <div className={clsx(classes.hrStyle, position)}></div>;
 }

@@ -15,6 +15,10 @@ const initialState = {
   prodListQuery: [],
   prodStatusQuery: "idle",
   prodErrorQuery: "",
+  /*prodSelection */
+  // prodListSel: [],
+  // prodListSelStatus: "idle",
+  // prodListSelError: "",
 };
 /**Populate ProdList */
 const ProdPop = '&populateObjs=[{"path":"Skus", "select":"attrs"}]';
@@ -30,7 +34,7 @@ export const fetchCategList = createAsyncThunk(
       return categListResult.data.objects;
     } else {
       console.log(categListResult.message);
-      return categListResult.message;
+      // return categListResult.message;
     }
   }
 );
@@ -56,7 +60,7 @@ export const fetchProdListHome = createAsyncThunk(
             list: prodListResult.data.objects,
           });
         } else {
-          return prodListResult.message;
+          console.log(prodListResult.message);
         }
       }
     }
@@ -69,14 +73,15 @@ export const fetchProdListQuery = createAsyncThunk(
   async (query) => {
     // console.log(ProdPop);
     if (query) {
-      // console.log('query', query)
-      const prodsRes = await fetch_Prom("/Prods" + query + ProdPop);
+      console.log('query', query)
+      const prodsRes = await fetch_Prom("/Prods?" + query + ProdPop);
       // console.log(prodsRes.data.objects);
+      console.log("prodsRes", prodsRes);
       if (prodsRes.status === 200) {
         return prodsRes.data.objects;
       } else {
         // console.log([]);
-        return prodsRes.message;
+        console.log(prodsRes.message);
       }
     } else {
       return [];
