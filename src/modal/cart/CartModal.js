@@ -42,14 +42,11 @@ export default function CartModal() {
   }, []);
 
   const displayCarts = () => {
-    console.log("curCartStatus", curCartStatus);
-    console.log("cartsStatus", cartsStatus);
     let cartsTemp;
     if (isExpand) {
       if (curCartStatus === "error") {
         cartsTemp = <div>加载错误，请重试</div>;
       } else if (curCartStatus === "succeed") {
-        console.log(curCart);
         cartsTemp =
           curCart && curCart.OrderProds?.length > 0 ? (
             <CartCard
@@ -64,6 +61,7 @@ export default function CartModal() {
     } else {
       //show carts
       if (cartsStatus === "succeed") {
+        console.log(1111111)
         if (carts?.length > 0) {
           const cartsValid = carts.filter((cart) => {
             return cart.OrderProds.length > 0;

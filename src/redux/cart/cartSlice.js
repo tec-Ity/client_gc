@@ -24,6 +24,10 @@ const oSkuObj = {
   path: "OrderSkus",
   select: "Sku price quantity price_regular attrs",
 };
+const prodObj = {
+  path: "Prod",
+  select: "img_urls",
+};
 const ShopObj = {
   path: "Shop",
   select: "nome",
@@ -33,7 +37,7 @@ const cartObj = [
   {
     path: "OrderProds",
     select: "Prod OrderSkus nome unit Shop",
-    populate: oSkuObj,
+    populate: [oSkuObj, prodObj],
   },
   ShopObj,
 ];
@@ -67,7 +71,7 @@ export const fetchCartByShop = createAsyncThunk(
         /*if carts called and no cart found, return [] directly without call API*/
         return {};
       }
-    } else {
+    } else if (getState().cart.curcart.Shop._id !== shopId) {
       const cartsResult = await fetch_Prom(
         "/Carts?Shop=" + shopId + "&populateObjs=" + JSON.stringify(cartObj)
       );
@@ -80,6 +84,25 @@ export const fetchCartByShop = createAsyncThunk(
         console.log(cartsResult.message);
         return rejectWithValue(cartsResult.message);
       }
+    }
+  }
+);
+
+export const fetchCartById = createAsyncThunk(
+  "cart/fetchCartById",
+  async (_id, { rejectWithValue }) => {
+    const cartResult = await fetch_Prom(
+      "/Carts?includes=" + _id + "&populateObjs=" + JSON.stringify(cartObj)
+    );
+    console.log(cartResult);
+    if (cartResult.status === 200) {
+      if (cartResult.data.objects?.length > 0) {
+        return cartResult.data.objects[0];
+      } else {
+        return {};
+      }
+    } else {
+      return rejectWithValue(cartResult.message);
     }
   }
 );
@@ -119,12 +142,17 @@ export const fetchSkuPut = createAsyncThunk(
 );
 
 const calCartPrice = (OrderProds) => {
+  console.log(22);
   let totPrice = 0;
   for (let i = 0; i < OrderProds.length; i++) {
+    console.log(33);
     const op = OrderProds[i];
-    if (op.orderSkus)
+    if (op.OrderSkus?.length > 0)
       for (let j = 0; j < op.OrderSkus.length; j++) {
         const oSku = op.OrderSkus[j];
+        if (oSku.price_tot) {
+          return -1;
+        }
         console.log("osku", oSku);
         const totSkuPrice = oSku.price * oSku.quantity;
         oSku.price_tot = totSkuPrice;
@@ -173,7 +201,6 @@ export const cartSlice = createSlice({
     [fetchCarts.fulfilled]: (state, action) => {
       state.cartsStatus = "succeed";
       const cartsObjs = [...action.payload];
-      console.log(cartsObjs);
       for (let i = 0; i < cartsObjs.length; i++) {
         const cart = cartsObjs[i];
         if (cart.OrderProds.length > 0) {
@@ -187,12 +214,13 @@ export const cartSlice = createSlice({
       state.cartsStatus = "error";
       console.log("error", action.error.message);
     },
-    /*curCart */
+    /*curCart with Shop ID*/
     [fetchCartByShop.pending]: (state) => {
       state.curCartStatus = "loading";
     },
     [fetchCartByShop.fulfilled]: (state, action) => {
       state.curCartStatus = "succeed";
+      console.log(999);
       const cartObj = { ...action.payload };
       console.log(cartObj);
       if (cartObj.OrderProds?.length > 0) {
@@ -202,6 +230,28 @@ export const cartSlice = createSlice({
       state.curCart = cartObj;
     },
     [fetchCartByShop.rejected]: (state, action) => {
+      state.curCartStatus = "error";
+    },
+    //curCart with Cart ID
+    [fetchCartById.pending]: (state) => {
+      state.curCartStatus = "loading";
+    },
+    [fetchCartById.fulfilled]: (state, action) => {
+      state.curCartStatus = "succeed";
+      const cartObj = { ...action.payload };
+      if (Object.keys(cartObj).length > 0) {
+        if (cartObj.OrderProds?.length > 0) {
+          console.log(11);
+          //return -1 if sku.price_tot and totPrice has been init
+          const totPrice = calCartPrice(cartObj.OrderProds);
+          console.log(44);
+          cartObj.cartTotPrice = totPrice!==-1 && totPrice;
+        }
+        console.log(cartObj);
+        state.curCart = cartObj;
+      }
+    },
+    [fetchCartById.rejected]: (state, action) => {
       state.curCartStatus = "error";
     },
     /*add first sku */

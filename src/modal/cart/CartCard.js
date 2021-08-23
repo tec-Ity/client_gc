@@ -6,10 +6,12 @@ import CartTable from "./CartTable";
 import clsx from "clsx";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  fetchCartByShop,
   // fetchCartByShop,
-  setCurCart,
   setIsExpand,
+  setShowCarts,
 } from "../../redux/cart/cartSlice";
+import { useHistory } from "react-router";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -115,12 +117,15 @@ export default function CartCard(props) {
   const { cart, count, isExpand } = props;
   const { Shop, OrderProds } = cart;
   const dispatch = useDispatch();
+  const hist = useHistory();
   const curCart = useSelector((state) => state.cart.curCart);
   const classes = useStyle();
   React.useEffect(() => {}, []);
 
   const expandMore = () => {
-    dispatch(setCurCart(Shop._id));
+    if (curCart.Shop._id !== Shop._id) {
+      dispatch(fetchCartByShop(Shop._id));
+    }
     dispatch(setIsExpand(Shop._id));
   };
 
@@ -132,15 +137,19 @@ export default function CartCard(props) {
             SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
           </div>
           <div className={classes.marginHead}>
-            <Button className={classes.orderBtn}>ORDINARE</Button>
+            <Button
+              className={classes.orderBtn}
+              onClick={() => {
+                expandMore();
+                dispatch(setShowCarts(false));
+                hist.push("/cart/" + cart._id);
+              }}>
+              ORDINARE
+            </Button>
           </div>
         </Grid>
         <Grid item className={classes.gridItem}>
-          {isExpand ? (
-            <CartTable OrderProds={curCart.OrderProds} count={count} />
-          ) : (
-            <CartTable OrderProds={OrderProds} count={count} />
-          )}
+          <CartTable OrderProds={OrderProds} count={count} />
         </Grid>
         {isExpand ? (
           <>
@@ -152,7 +161,15 @@ export default function CartCard(props) {
               </div>
             </Grid>
             <Grid item className={classes.gridItem}>
-              <Button className={classes.orderBtnXL}>ORDINARE</Button>
+              <Button
+                className={classes.orderBtnXL}
+                onClick={() => {
+                  expandMore();
+                  dispatch(setShowCarts(false));
+                  hist.push("/cart/" + cart._id);
+                }}>
+                ORDINARE
+              </Button>
             </Grid>
           </>
         ) : (
