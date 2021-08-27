@@ -4,6 +4,7 @@ import ProdListItemControl from "./itemControl/ProdListItemControl";
 import CustomHr from "../global/modal/component/CustomHr";
 import { Grid, Paper } from "@material-ui/core";
 import api_DNS from "../../conf/dns";
+import { useHistory, Link } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -55,10 +56,10 @@ const useStyle = makeStyles((theme) => ({
     height: "100%",
   },
   smallHr: {
-    maxWidth: "207.34px",
+    // maxWidth: "220px",
     position: "absolute",
     top: "208.64px",
-    width: "80%",
+    width: "87%",
   },
   infoBox: {
     maxWidth: "207.43px",
@@ -86,32 +87,47 @@ const useStyle = makeStyles((theme) => ({
     bottom: "16px",
     right: "17.5px",
   },
+  LinkStyle: {
+    "&:visited": {
+      color: "#1d1d38",
+    },
+  },
 }));
 
 export default function ProdListItem(props) {
   const { prod, rule } = props;
   const classes = useStyle();
-  console.log("prod", prod);
+  const hist = useHistory();
+
+  const handleClickItem = () => {
+    hist.push("/prod/" + prod._id);
+  };
+
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>
       <Paper className={classes.innerBoxBg} square>
         <Paper className={classes.innerBox} square>
-          <div className={classes.imgBox}>
-            <div className={classes.imgBoxInner}>
-              {prod.img_urls && (
-                <img
-                  className={classes.img}
-                  src={api_DNS + prod.img_urls}
-                  alt={prod.nome}
-                />
-              )}
+          {/* click area div */}
+          <Link to={"/prod/" + prod._id} className={classes.LinkStyle}>
+            <div className={classes.imgBox}>
+              <div className={classes.imgBoxInner}>
+                {prod.img_urls && (
+                  <img
+                    className={classes.img}
+                    src={api_DNS + prod.img_urls}
+                    alt={prod.nome}
+                  />
+                )}
+              </div>
             </div>
-          </div>
-          <CustomHr position={classes.smallHr} />
-          <div className={classes.infoBox}>
-            <div>{prod.nome}</div>
-            <div>description: {prod.desp}</div>
-          </div>
+
+            <CustomHr position={classes.smallHr} />
+
+            <div className={classes.infoBox}>
+              <div>{prod.nome}</div>
+              <div>description: {prod.desp}</div>
+            </div>
+          </Link>
           <div>
             <div className={classes.priceStyle}>
               {prod.price_max === prod.price_min

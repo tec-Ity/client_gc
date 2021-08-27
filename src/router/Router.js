@@ -8,7 +8,8 @@ const ShopPage = lazy(() => import("../view/shop/ShopPage"));
 const CityPage = lazy(() => import("../view/city/CityPage"));
 const ProdPage = lazy(() => import("../view/prod/ProdPage"));
 const OrdersPage = lazy(() => import("../view/order/OrdersPage"));
-const CartDetail = lazy(() => import("../view/order/CartDetail"));
+const CartDetailPage = lazy(() => import("../view/order/CartDetailPage"));
+const OrderDetailPage = lazy(() => import("../view/order/OrderDetailPage"));
 
 export default function Router() {
   return (
@@ -31,7 +32,10 @@ export default function Router() {
           <ProdPage />
         </Route>
         <Route exact path='/cart/:_id'>
-          <CartDetail />
+          <CartDetailPage />
+        </Route>
+        <Route exact path='/order/:_id'>
+          <OrderDetailPage />
         </Route>
         <Route exact path='/orders'>
           <OrdersPage />

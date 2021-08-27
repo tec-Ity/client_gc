@@ -2,6 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import { Container } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const useStyle = makeStyles((theme) => ({
   root: {},
@@ -18,13 +20,20 @@ const useStyle = makeStyles((theme) => ({
   },
   backLink: {
     position: "absolute",
-    width: "154px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "250px",
     height: "15px",
+    textDecoration: "none",
     left: "76px",
     top: "38px",
-
-    fontSize: "12px",
-    lineHeight: "15px",
+    fontSize: "15px",
+    color: "white",
+    // lineHeight: "15px",
+    "&:visited": {
+      color: "white",
+    },
   },
   shopDetailBox: {
     position: "absolute",
@@ -67,13 +76,14 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 export default function ShopDetail(props) {
-  const { goBack } = props;
+  const { shopInfo } = props;
   const classes = useStyle();
   return (
     <Container maxWidth={false} className={classes.bannerStyle}>
-      <div className={classes.backLink} onClick={goBack}>
+      <Link to='/home' className={classes.backLink}>
+        <ArrowBackIcon />
         DIETRO A TUTTI I NEGOZI
-      </div>
+      </Link>
       <div className={classes.shopDetailBox}>
         <div className={classes.shopInfo}>
           <div>NO.001</div>

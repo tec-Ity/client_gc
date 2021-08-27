@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import ControlMultiSkus from "./ControlMultiSkus";
 import { useSelector } from "react-redux";
 import { selectCurProdInCart } from "../../../redux/cart/cartSlice";
+import CustomShoppingButton from "../../global/button/CustomShoppingButton";
 
 export default function ControlMulti(props) {
-  const { skus, onSkuChange, prodId, shop } = props;
-  const [showSkuList, setShowSkuList] = useState(false);
+  const { skus, //shopslice prodlistQuery .prod .skus
+     onSkuChange, prodId, shop } = props;
+  const [showSkusModal, setShowSkusModal] = useState(false);
   const [totCount, setTotCount] = useState();
-  console.log('MULTI')
+  // console.log('MULTI')
   const curProdInCart = useSelector(selectCurProdInCart(prodId, shop));
 
   useEffect(() => {
-    
     const displayTotalCount = () => {
       if (curProdInCart) {
         //sum sku quantity
@@ -29,21 +30,22 @@ export default function ControlMulti(props) {
 
   return (
     <div>
-      {showSkuList === false && (
-        <button
-          onClick={() => {
-            setShowSkuList(true);
-          }}>
-          选 {curProdInCart && totCount && `(${totCount})`}
-        </button>
+      {showSkusModal === false && (
+        <CustomShoppingButton
+          multi
+          handleFunc={() => {
+            setShowSkusModal(true);
+          }}
+          count={curProdInCart && totCount && totCount}
+        />
       )}
 
-      {showSkuList === true && (
+      {showSkusModal === true && (
         <ControlMultiSkus
+          show={showSkusModal}
+          handleClose={() => setShowSkusModal(false)}
           skus={skus}
           curProdInCart={curProdInCart}
-          showSkuList={showSkuList}
-          onHide={() => setShowSkuList(false)}
           onSkuChange={onSkuChange}
         />
       )}

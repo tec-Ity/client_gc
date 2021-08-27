@@ -11,6 +11,7 @@ const useStyle = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  //default LG
   backTemplate: {
     width: "500px",
     height: "600px",
@@ -19,8 +20,24 @@ const useStyle = makeStyles((theme) => ({
     background:
       " linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
   },
-
   paperStyle: {
+    width: "auto",
+    height: "100%",
+    backgroundColor: "#fff",
+    borderRadius: "20px 0",
+    fontFamily: "Montserrat",
+    // boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
+  },
+  //custom Small
+  backTemplateSm: {
+    width: "500px",
+    height: "250px",
+    padding: "3px",
+    borderRadius: "20px 0",
+    background:
+      " linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
+  },
+  paperStyleSm: {
     width: "auto",
     height: "100%",
     backgroundColor: "#fff",
@@ -31,7 +48,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function CustomModal(props) {
-  const { children, show, handleClose } = props;
+  const { children, show, handleClose, small = null } = props;
   const classes = useStyle();
   return (
     <Modal
@@ -42,8 +59,10 @@ export default function CustomModal(props) {
       BackdropComponent={Backdrop}
       BackdropProps={{ timeout: 500 }}>
       <Fade in={show}>
-        <div className={classes.backTemplate}>
-          <div className={classes.paperStyle}>{children}</div>
+        <div className={small ? classes.backTemplateSm : classes.backTemplate}>
+          <div className={small ? classes.paperStyleSm : classes.paperStyle}>
+            {children}
+          </div>
         </div>
       </Fade>
     </Modal>

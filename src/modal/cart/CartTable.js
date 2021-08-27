@@ -8,7 +8,6 @@ import {
 import CartSkuCtrl from "./CartSkuCtrl";
 import { get_DNS } from "../../api";
 import { Grid } from "@material-ui/core";
-import { BorderBottom } from "@material-ui/icons";
 
 const useStyle = makeStyles((theme) => ({
   tableStyle: {
@@ -26,7 +25,7 @@ const useStyle = makeStyles((theme) => ({
   tableRow: {
     fontSize: "15px",
     textAlign: "center",
-    marginTop:'10px',
+    marginTop: "10px",
     "& :nth-child(1)": {
       "& :nth-child(1)": {
         textAlign: "left",
@@ -62,7 +61,7 @@ const TableRow = (props) => {
       item
       xs={12}
       className={customTableRowStyle ? customTableRowStyle : classes.tableRow}>
-      {img && showImg && (
+      {showImg && (
         <Grid item xs={2}>
           <img
             className={classes.imgStyle}
@@ -84,11 +83,11 @@ const TableRow = (props) => {
         </div>
         <div>&nbsp;</div>
       </Grid>
-      <Grid item xs={img && showImg ? 2 : 3}>
+      <Grid item xs={showImg ? 2 : 3}>
         <div>€{oSku.price?.toFixed(2)}</div>
         <div>&nbsp;</div>
       </Grid>
-      <Grid item xs={img && showImg ? 2 : 3}>
+      <Grid item xs={showImg ? 2 : 3}>
         <div>€{oSku.price_tot?.toFixed(2)}</div>
         <div>&nbsp;</div>
       </Grid>
@@ -114,7 +113,9 @@ export default function CartTable(props) {
     const rows = [];
     for (let i = 0; i < OrderProds.length; i++) {
       const op = OrderProds[i];
-      const img = op.Prod.img_urls.length > 0 && op.Prod.img_urls[0];
+      const img = op.Prod.img_urls?.length > 0 && op.Prod.img_urls[0];
+      console.log(op);
+      console.log("img", img);
       for (let j = 0; j < op.OrderSkus.length; j++) {
         const oSku = op.OrderSkus[j];
         if (rows.length < count) {

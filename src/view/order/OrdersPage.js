@@ -5,10 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 export default function OrdersPage() {
   const dispatch = useDispatch();
   const orders = useSelector((state) => state.order.orders);
-  const orderStatus = useSelector((state) => state.order.orderStatus);
+  const ordersStatus = useSelector((state) => state.order.ordersStatus);
 
   const getOrders = async (queryURL = "", isReload = false) => {
-    if (orderStatus === "idle") {
+    if (ordersStatus === "idle") {
       dispatch(fetchOrders(queryURL, isReload));
     }
   };

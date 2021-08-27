@@ -9,7 +9,11 @@ import {
   ListItem,
 } from "@material-ui/core";
 import CustomHr from "../../../component/global/modal/component/CustomHr";
-
+import { ReactComponent as China } from "../../../component/icon/china.svg";
+import { ReactComponent as Italy } from "../../../component/icon/italy.svg";
+import { ReactComponent as Japan } from "../../../component/icon/japan.svg";
+import { ReactComponent as Korea } from "../../../component/icon/south korea.svg";
+import { useSelector } from "react-redux";
 const useStyle = makeStyles((theme) => ({
   root: {
     // border: "1px solid",
@@ -58,6 +62,50 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   selCategStyle: {},
+  nationBtn: {
+    // border: "1px solid",
+    padding: "0",
+    borderRadius: "100%",
+    // maxWidth: "48px",
+    width: "64px",
+    height: "64px",
+    "&:hover": {
+      background: "transparent",
+    },
+    // background: "green",
+
+    "& .MuiButton-label": {
+      borderRadius: "100%",
+
+      width: "48px",
+      height: "48px",
+      "&:hover": {
+        backgroundImage:
+          "linear-gradient(270deg, rgba(145, 232, 179, 0.3) 0%, rgba(192, 229, 123, 0.3) 100%, rgba(192, 229, 123, 0.3) 100%)",
+        "& svg": {
+          borderRadius: "100%",
+        },
+      },
+    },
+  },
+  nationBtnSelected: {
+    padding: "0",
+    borderRadius: "100%",
+    width: "64px",
+    height: "64px",
+    "&:hover": {
+      background: "transparent",
+    },
+    "& .MuiButton-label": {
+      borderRadius: "100%",
+      width: "48px",
+      height: "48px",
+      background: "#c0e57b",
+      "& svg": {
+        borderRadius: "100%",
+      },
+    },
+  },
 }));
 
 export default function ShopSideBarUI(props) {
@@ -75,6 +123,7 @@ export default function ShopSideBarUI(props) {
   } = props;
   const classes = useStyle();
   const [categList, setCategList] = useState();
+  const nations = useSelector((state) => state.filter.query.nations);
 
   const childrenList = useCallback(
     //return a list of second categs
@@ -82,9 +131,7 @@ export default function ShopSideBarUI(props) {
       if (children && categID === children.far) {
         if (children.list.length > 0) {
           return (
-            <List component='div' 
-            key='childrenList'
-            disablePadding>
+            <List component='div' key='childrenList' disablePadding>
               {children.list.map((children) => {
                 return (
                   <ListItem
@@ -174,16 +221,49 @@ export default function ShopSideBarUI(props) {
       <CustomHr position={classes.customHr} />
       <Grid container className={classes.nationStyle}>
         <Grid item xs={3}>
-          <Button onClick={handleNation("CN")}>中</Button>
+          <Button
+            disableRipple
+            className={
+              nations.find((n) => n === "CN")
+                ? classes.nationBtnSelected
+                : classes.nationBtn
+            }
+            onClick={handleNation("CN")}>
+            <China />
+          </Button>
         </Grid>
         <Grid item xs={3}>
-          <Button onClick={handleNation("IT")}>意</Button>
+          <Button
+            className={
+              nations.find((n) => n === "IT")
+                ? classes.nationBtnSelected
+                : classes.nationBtn
+            }
+            onClick={handleNation("IT")}>
+            <Italy />
+          </Button>
         </Grid>
         <Grid item xs={3}>
-          <Button onClick={handleNation("JP")}>日</Button>
+          <Button
+            className={
+              nations.find((n) => n === "JP")
+                ? classes.nationBtnSelected
+                : classes.nationBtn
+            }
+            onClick={handleNation("JP")}>
+            <Japan />
+          </Button>
         </Grid>
         <Grid item xs={3}>
-          <Button onClick={handleNation("KR")}>韩</Button>
+          <Button
+            className={
+              nations.find((n) => n === "KR")
+                ? classes.nationBtnSelected
+                : classes.nationBtn
+            }
+            onClick={handleNation("KR")}>
+            <Korea />
+          </Button>
         </Grid>
       </Grid>
       <CustomHr position={classes.customHr} />

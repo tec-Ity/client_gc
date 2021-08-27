@@ -12,6 +12,7 @@ import {
   setShowCarts,
 } from "../../redux/cart/cartSlice";
 import { useHistory } from "react-router";
+import CustomButton from "../../component/global/modal/component/CustomButton";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -47,20 +48,7 @@ const useStyle = makeStyles((theme) => ({
   orderBtn: {
     height: "21px",
     width: "86px",
-    background: "#1D1D38",
-    borderRadius: "8.4375px 8.4375px 8.4375px 0px",
-    fontFamily: "Montserrat",
-    color: "#fff",
     fontSize: "12px",
-    fontWeight: "700",
-    opacity: "0.8",
-    "&:hover": {
-      opacity: "1",
-      background: "#1D1D38",
-    },
-    "&:focus": {
-      background: "#e47f10",
-    },
   },
   moreInfo: {
     position: "relative",
@@ -95,21 +83,9 @@ const useStyle = makeStyles((theme) => ({
   orderBtnXL: {
     height: "40px",
     width: "400px",
-    background: "#1D1D38",
-    borderRadius: "19.5312px 19.5312px 19.5312px 0px",
-    fontFamily: "Montserrat",
-    color: "#fff",
     fontSize: "18px",
     fontWeight: "600",
-    opacity: "0.8",
     marginBottom: "24px",
-    "&:hover": {
-      opacity: "1",
-      background: "#1D1D38",
-    },
-    "&:focus": {
-      background: "#e47f10",
-    },
   },
 }));
 
@@ -123,10 +99,20 @@ export default function CartCard(props) {
   React.useEffect(() => {}, []);
 
   const expandMore = () => {
-    if (curCart.Shop._id !== Shop._id) {
+    if (curCart.Shop) {
+      if (curCart.Shop._id !== Shop._id) {
+        dispatch(fetchCartByShop(Shop._id));
+      }
+    } else {
       dispatch(fetchCartByShop(Shop._id));
     }
     dispatch(setIsExpand(Shop._id));
+  };
+
+  const handleOrderFunc = () => {
+    expandMore();
+    dispatch(setShowCarts(false));
+    hist.push("/cart/" + cart._id);
   };
 
   return (
@@ -137,15 +123,11 @@ export default function CartCard(props) {
             SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
           </div>
           <div className={classes.marginHead}>
-            <Button
-              className={classes.orderBtn}
-              onClick={() => {
-                expandMore();
-                dispatch(setShowCarts(false));
-                hist.push("/cart/" + cart._id);
-              }}>
-              ORDINARE
-            </Button>
+            <CustomButton
+              label='ORDINARE'
+              handleFunc={handleOrderFunc}
+              alterStyle={classes.orderBtn}
+            />
           </div>
         </Grid>
         <Grid item className={classes.gridItem}>
@@ -161,15 +143,11 @@ export default function CartCard(props) {
               </div>
             </Grid>
             <Grid item className={classes.gridItem}>
-              <Button
-                className={classes.orderBtnXL}
-                onClick={() => {
-                  expandMore();
-                  dispatch(setShowCarts(false));
-                  hist.push("/cart/" + cart._id);
-                }}>
-                ORDINARE
-              </Button>
+              <CustomButton
+                label='ORDINARE'
+                handleFunc={handleOrderFunc}
+                alterStyle={classes.orderBtnXL}
+              />
             </Grid>
           </>
         ) : (

@@ -18,6 +18,8 @@ const initialState = {
   backToFirst: false,
 
   isHome: true,
+
+  clickCategFromRemote: null,
 };
 
 export const filterSilce = createSlice({
@@ -62,7 +64,9 @@ export const filterSilce = createSlice({
         state.query = initialState.query;
         state.title = initialState.title;
       }
-      
+    },
+    setClickCategFromRemote: (state, action) => {
+      state.clickCategFromRemote = action.payload;
     },
   },
 });
@@ -76,6 +80,7 @@ export const {
   setSelSecondCateg,
   setIsHome,
   goBack,
+  setClickCategFromRemote,
 } = filterSilce.actions;
 
 export default filterSilce.reducer;

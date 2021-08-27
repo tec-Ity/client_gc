@@ -1,17 +1,16 @@
-import { Container, Grid } from "@material-ui/core";
+import {Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProdListQuery } from "../../redux/shop/shopSlice";
 import ProdListItem from "./ProdListItem";
+
+
 export default function ProdList(props) {
   const { style = "card", queryURL, type = "expand" } = props;
   const dispatch = useDispatch();
   const prodListQuery = useSelector((state) => state.shop.prodListQuery);
   const prodStatusQuery = useSelector((state) => state.shop.prodStatusQuery);
   const prodErrorQuery = useSelector((state) => state.shop.prodErrorQuery);
-  // const prodListSel = useSelector((state) => state.shop.prodListSel);
-  // const prodSelStatus = useSelector((state) => state.shop.prodSelStatus);
-  // const prodSelError = useSelector((state) => state.shop.prodSelError);
 
   const expandRule = { xs: 6, sm: 6, md: 4 };
   const notExpRule = { xs: 6, sm: 4, md: 3 };
@@ -35,9 +34,9 @@ export default function ProdList(props) {
     }
   };
 
-  const getProdList = (prodList) => {
+  const getProdList = (prodListQuery) => {
     if (style === "card") {
-      return prodList?.map((prod) => {
+      return prodListQuery?.map((prod) => {
         return (
           <ProdListItem
             prod={prod}

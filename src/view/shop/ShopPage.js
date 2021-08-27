@@ -3,17 +3,18 @@ import { useHistory, useParams } from "react-router";
 import ShopSideBar from "./ShopSideBar/ShopSideBar";
 import ShopBanner from "./ShopBanner";
 import ShopProdSection from "./shopProdSection/ShopProdSection";
-import ShopSelection from "./ShopSelection";
+// import ShopSelection from "./ShopSelection";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  fetchProdListHome,
+  fetchProdList,
   fetchCategList,
   setCurShop,
 } from "../../redux/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCartByShop, setInShop, setIsExpand } from "../../redux/cart/cartSlice";
+import { fetchCartByShop, setIsExpand } from "../../redux/cart/cartSlice";
 import { Container, Grid } from "@material-ui/core";
-import DemoSideBar from "./DemoSideBar";
+// import DemoSideBar from "./DemoSideBar";
+// import { setClickCategFromRemote } from "../../redux/filter/filterSlice";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,7 @@ export default function ShopPage() {
   // const categError = useSelector((state) => state.shop.categError);
   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   // const curShop = useSelector((state) => state.shop.curShop);
+
   useEffect(() => {
     // console.log('shopPage')
     // 会渲染好几次sideBar并console好几次
@@ -57,9 +59,9 @@ export default function ShopPage() {
         dispatch(fetchCategList());
       // console.log("status", categStatus);
       if (categStatus === "succeed") {
-        dispatch(fetchProdListHome(categs));
+        dispatch(fetchProdList(categs));
         dispatch(setCurShop(_id));
-        dispatch(setIsExpand(true));
+        dispatch(setIsExpand(_id));
       }
     }
   }, [_id, categStatus, curCartStatus, categs, dispatch, prevShopId]);

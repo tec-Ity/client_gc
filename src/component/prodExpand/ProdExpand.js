@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { goBack } from "../../redux/filter/filterSlice";
 import ProdList from "../prodList/ProdList";
-import MoreButton from "./MoreButton";
 import ExpandTitle from "./Tilte";
 import Container from "@material-ui/core/Container";
+import CustomButton from "../global/modal/component/CustomButton";
 
 export default function ProdExpand(props) {
   const dispatch = useDispatch();
@@ -39,6 +39,10 @@ export default function ProdExpand(props) {
     dispatch(goBack());
   };
 
+  const handleFunc = () => {
+    document.getElementById(props.far.id + "categBar").click();
+  };
+
   return (
     <Container
       style={{
@@ -64,7 +68,13 @@ export default function ProdExpand(props) {
           <div>暂无产品</div>
         )}
       </div>
-      <>{props.prods && <MoreButton farId={props.far.id} />}</>
+
+      <div style={{ marginTop: "20px" }}>
+        {props.prods && (
+          <CustomButton label='VEDI DI PIÙ' handleFunc={handleFunc} />
+        )}
+      </div>
+      
       {queryURL && <button onClick={Back}>back</button>}
     </Container>
   );

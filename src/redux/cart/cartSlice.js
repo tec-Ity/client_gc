@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { fetch_Prom } from "../../api";
 
 const initialState = {
@@ -18,19 +18,26 @@ const initialState = {
   skuPostStatus: "idle",
   //sku put
   skuPutStatus: "idle",
+
+  //proof
+  proofStatus: "idle",
+  proofObjs: [],
 };
 
 const oSkuObj = {
   path: "OrderSkus",
   select: "Sku price quantity price_regular attrs",
 };
+
+//why img url????????
 const prodObj = {
   path: "Prod",
   select: "img_urls",
 };
+
 const ShopObj = {
   path: "Shop",
-  select: "nome",
+  select: "nome addr",
 };
 
 const cartObj = [
@@ -62,8 +69,10 @@ export const fetchCartByShop = createAsyncThunk(
   async (shopId, { getState, rejectWithValue }) => {
     const carts = getState().cart.carts;
     //check existing carts
+    console.log(111);
+    // console.log(object);
     if (carts.length > 0) {
-      // console.log("carts", carts);
+      console.log("carts", carts);
       const foundCart = carts.find((cart) => cart.Shop._id === shopId);
       if (foundCart) {
         return foundCart;
@@ -71,17 +80,23 @@ export const fetchCartByShop = createAsyncThunk(
         /*if carts called and no cart found, return [] directly without call API*/
         return {};
       }
-    } else if (getState().cart.curcart.Shop._id !== shopId) {
+    } else if (
+      !getState().cart.curCart.Shop ||
+      getState().cart.curCart.Shop._id !== shopId
+    ) {
+      console.log(222);
       const cartsResult = await fetch_Prom(
         "/Carts?Shop=" + shopId + "&populateObjs=" + JSON.stringify(cartObj)
       );
+
+      console.log("cartResultByShop", cartsResult);
       if (cartsResult.status === 200) {
-        console.log("cartResult", cartsResult.data.objects[0]);
+        console.log(333);
         return cartsResult.data.objects?.length > 0
           ? cartsResult.data.objects[0]
           : {};
       } else {
-        console.log(cartsResult.message);
+        console.log("error", cartsResult.message);
         return rejectWithValue(cartsResult.message);
       }
     }
@@ -141,7 +156,18 @@ export const fetchSkuPut = createAsyncThunk(
   }
 );
 
-const calCartPrice = (OrderProds) => {
+export const fetchProofOrder = createAsyncThunk(
+  "cart/fetchProofOrder",
+  async (_id, { rejectWithValue }) => {
+    const proofRes = await fetch_Prom("/Order_proof/" + _id, "PUT");
+    console.log("proofRes", proofRes);
+    if (proofRes.status === 200) {
+      return proofRes.data.changeObjs;
+    } else return rejectWithValue(proofRes.message);
+  }
+);
+
+export const calCartPrice = (OrderProds) => {
   console.log(22);
   let totPrice = 0;
   for (let i = 0; i < OrderProds.length; i++) {
@@ -205,7 +231,7 @@ export const cartSlice = createSlice({
         const cart = cartsObjs[i];
         if (cart.OrderProds.length > 0) {
           const totPrice = calCartPrice(cart.OrderProds);
-          cart.cartTotPrice = totPrice;
+          cart.totPrice = totPrice;
         }
       }
       state.carts = cartsObjs;
@@ -220,12 +246,12 @@ export const cartSlice = createSlice({
     },
     [fetchCartByShop.fulfilled]: (state, action) => {
       state.curCartStatus = "succeed";
-      console.log(999);
+      console.log("cart by shop succeed");
       const cartObj = { ...action.payload };
       console.log(cartObj);
       if (cartObj.OrderProds?.length > 0) {
         const totPrice = calCartPrice(cartObj.OrderProds);
-        cartObj.cartTotPrice = totPrice;
+        cartObj.totPrice = totPrice;
       }
       state.curCart = cartObj;
     },
@@ -244,8 +270,8 @@ export const cartSlice = createSlice({
           console.log(11);
           //return -1 if sku.price_tot and totPrice has been init
           const totPrice = calCartPrice(cartObj.OrderProds);
-          console.log(44);
-          cartObj.cartTotPrice = totPrice!==-1 && totPrice;
+          console.log("totPrice", totPrice);
+          cartObj.totPrice = totPrice !== -1 && totPrice;
         }
         console.log(cartObj);
         state.curCart = cartObj;
@@ -264,6 +290,7 @@ export const cartSlice = createSlice({
       const { Order, OrderProd, OrderSku, type_postSku: type } = action.payload;
       let curCart = state.curCart;
       switch (type) {
+        // add new SKU
         case 1:
           console.log('case "1"');
           if (Order._id === curCart._id) {
@@ -275,13 +302,17 @@ export const cartSlice = createSlice({
             }
           }
           break;
+        //add new Prod
         case 2:
           console.log('case "2"');
           if (Order._id === curCart._id) {
             OrderProd.OrderSkus = [OrderSku];
+            console.log("case", OrderProd);
             curCart.OrderProds.unshift(OrderProd);
+            console.log("case", current(curCart.OrderProds));
           }
           break;
+        //add new Cart
         case 3:
           console.log("case 3");
           if (Order.Shop === curCart.Shop) {
@@ -359,16 +390,38 @@ export const cartSlice = createSlice({
     [fetchSkuPut.rejected]: (state, action) => {
       state.skuPutStatus = "error";
     },
+    [fetchProofOrder.pending]: (state) => {
+      state.proofStatus = "loading";
+    },
+    [fetchProofOrder.fulfilled]: (state, action) => {
+      state.proofStatus = "succeed";
+      state.proofObjs = action.payload;
+    },
+    [fetchProofOrder.rejected]: (state, action) => {
+      state.proofStatus = "error";
+    },
   },
 });
 
 export const selectCurProdInCart = (prodId, shop) => (state) => {
-  // console.log("call select prod");
-  // console.log(state.cart.curCart.OrderProds);
-  const prod = state.cart.curCart.OrderProds?.find((op) => op.Prod === prodId);
-  // console.log("prod", prod);
-  if (prod?.Shop === shop) return prod;
-  else return null;
+  if (
+    (state.cart.skuPutStatus !== "loading" ||
+      state.cart.skuPostStatus !== "loading") &&
+    state.cart.curCartStatus === "succeed"
+  ) {
+    console.log("call select prod");
+    // console.log(state.cart.curCart.OrderProds);
+    const prod = state.cart.curCart.OrderProds?.find((op) => {
+      if (op.Prod._id) {
+        return op.Prod._id === prodId;
+      } else {
+        return op.Prod === prodId;
+      }
+    });
+    console.log("prod", prod);
+    if (prod?.Shop === shop) return prod;
+    else return null;
+  } else return null;
 };
 
 export const { setShowCarts, setIsExpand, setCurCart, setInShop } =

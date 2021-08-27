@@ -5,6 +5,7 @@ import {
   setShowCarts,
   fetchCarts,
   setIsExpand,
+  fetchCartByShop,
 } from "../../redux/cart/cartSlice";
 import CartCard from "./CartCard";
 import CardWraper from "../../component/global/modal/component/CardWraper";
@@ -16,6 +17,7 @@ export default function CartModal() {
   const curCart = useSelector((state) => state.cart.curCart);
   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   const isExpand = useSelector((state) => state.cart.isExpand);
+  const curShop = useSelector((state) => state.shop.curShop);
   const dispatch = useDispatch();
   const cartsSkuCount = 3;
   const CartSkuCountShop = 100;
@@ -39,7 +41,22 @@ export default function CartModal() {
         dispatch(fetchCarts());
       }
     }
-  }, []);
+  }, [cartsStatus, dispatch]);
+
+  useEffect(() => {
+    console.log(isExpand);
+    if (isExpand) {
+      if (curCartStatus === "idle") {
+        dispatch(fetchCartByShop(curShop));
+      } else if (curCartStatus === "error") {
+        setTimeout(() => {
+          dispatch(fetchCartByShop(curShop));
+        }, 2000);
+      }
+    }
+  }, [curCartStatus, curShop, dispatch, isExpand]);
+
+  console.log(curCartStatus);
 
   const displayCarts = () => {
     let cartsTemp;
@@ -61,7 +78,7 @@ export default function CartModal() {
     } else {
       //show carts
       if (cartsStatus === "succeed") {
-        console.log(1111111)
+        console.log(1111111);
         if (carts?.length > 0) {
           const cartsValid = carts.filter((cart) => {
             return cart.OrderProds.length > 0;

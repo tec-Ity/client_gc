@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import CustomModal from "../../global/modal/CustomModal";
+import ControlMultiSkusUI from "./ControlMultiSkusUI";
+
 export default function ControlMultiSkus(props) {
-  const { skus, curProdInCart, showSkuList, onHide, onSkuChange } = props;
+  const { skus, curProdInCart, show, handleClose, onSkuChange } = props;
   const [skuList, setSkuList] = useState();
   const skuPostStatus = useSelector((state) => state.cart.skuPostStatus);
   const skuPutStatus = useSelector((state) => state.cart.skuPutStatus);
 
   useEffect(() => {
     const generateList = () => {
-      if (showSkuList === true && skus.length > 0) {
+      if (show === true && skus.length > 0) {
         const tempSkuList = [];
         skus.forEach((sku) => {
+          console.log('sku', sku)
           if (sku.attrs) {
             let curSkuQtyInCart = null;
             let curSkuInCartTemp = null;
@@ -27,6 +31,9 @@ export default function ControlMultiSkus(props) {
               quantity: curSkuQtyInCart,
               attrs: sku.attrs,
               orderSkuId: curSkuInCartTemp?._id,
+              price_regular:sku.price_regular,
+              price_sale:sku.price_sale,
+
             });
           }
         });
@@ -34,17 +41,9 @@ export default function ControlMultiSkus(props) {
       }
     };
     generateList();
-  }, [skus, curProdInCart, showSkuList]);
+  }, [skus, curProdInCart, show]);
 
   const modifySkuCount = (skuId, qty) => {
-    /**
-     * sku = {
-          id: sku._id,
-          quantity: curSkuQtyInCart,
-          attrs: sku.attrs,
-          orderSkuId: curSkuInCartTemp._id,
-        }
-     */
     const newSkuList = skuList.map((sku) => {
       if (sku.id === skuId) {
         return {
@@ -92,34 +91,14 @@ export default function ControlMultiSkus(props) {
   );
 
   return (
-    <div style={{ border: "1px solid" }}>
-      {skuList?.map((sku) => {
-        console.log(sku);
-        return (
-          <div key={sku.id}>
-            {sku.attrs &&
-              sku.attrs.map((attr) => {
-                return (
-                  <span key={attr.nome}>
-                    <span>{attr.nome}</span>:<span>{attr.option}</span>
-                    &nbsp;
-                  </span>
-                );
-              })}
-
-            {sku.orderSkuId && sku.quantity > 0 ? (
-              <>
-                <>{buttonDec(sku)}</>
-                <>{sku.quantity}</>
-                <>{buttonInc(sku)}</>
-              </>
-            ) : (
-              <>{buttonNew(sku)}</>
-            )}
-          </div>
-        );
-      })}
-      <button onClick={onHide}>确认</button>
-    </div>
+    <CustomModal show={show} handleClose={handleClose} small>
+      <ControlMultiSkusUI
+        skuList={skuList}
+        buttonInc={buttonInc}
+        buttonDec={buttonDec}
+        buttonNew={buttonNew}
+        handleClose={handleClose}
+      />
+    </CustomModal>
   );
 }
