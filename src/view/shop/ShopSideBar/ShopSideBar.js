@@ -154,6 +154,9 @@ export default function ShopSideBar(props) {
           newNations.splice(index, 1);
           console.log("new", newNations);
           dispatch(setQuery({ nations: newNations }));
+          if (newNations.length === 0) {
+            dispatch(setIsHome(true));
+          }
           dispatch(
             setTitle({
               desp: `Nationals ${newNations}`,

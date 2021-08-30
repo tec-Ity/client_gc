@@ -7,9 +7,12 @@ import CustomShoppingButton from "../../global/button/CustomShoppingButton";
 export default function ControlSimple(props) {
   const { skus, prodId, shop, onSkuChange } = props;
   const skuPostStatus = useSelector((state) => state.cart.skuPostStatus);
-  
-  const curSkuInCart = useSelector(selectCurProdInCart(prodId, shop))
+
+  console.log(shop)
+  const curSkuInCart = useSelector(selectCurProdInCart(prodId, shop._id))
     ?.OrderSkus[0];
+// console.log(prodId)
+  console.log(curSkuInCart);
 
   return (
     <div>

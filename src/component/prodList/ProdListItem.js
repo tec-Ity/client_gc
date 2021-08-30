@@ -97,11 +97,11 @@ const useStyle = makeStyles((theme) => ({
 export default function ProdListItem(props) {
   const { prod, rule } = props;
   const classes = useStyle();
-  const hist = useHistory();
+  // const hist = useHistory();
 
-  const handleClickItem = () => {
-    hist.push("/prod/" + prod._id);
-  };
+  // const handleClickItem = () => {
+  //   hist.push("/prod/" + prod._id);
+  // };
 
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>

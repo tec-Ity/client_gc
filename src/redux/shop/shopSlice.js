@@ -3,7 +3,8 @@ import { fetch_Prom } from "../../api";
 
 const initialState = {
   curShop: "",
-
+  curShopInfo: {},
+  curShopInfoStatus: "idle",
   /*categList*/
   categList: [],
   categStatus: "idle",
@@ -28,9 +29,6 @@ const initialState = {
   curProd: {},
   curProdStatus: "idle",
 };
-/**Populate ProdList */
-// const ProdPop =
-//   '&populateObjs=[{"path":"Skus", "select":"attrs price_regular price_sale"}]';
 
 const prodPopObj = [
   {
@@ -45,6 +43,17 @@ const prodPopObj = [
   },
   { path: "Shop", select: "nome addr" },
 ];
+
+export const fetchCurShopInfo = createAsyncThunk(
+  "shop/fetchCurShopInfo",
+  async (_id, { rejectWithValue }) => {
+    const shopInfoRes = await fetch_Prom("/Shop/" + _id);
+    console.log('shopInfoRes',shopInfoRes);
+    if (shopInfoRes.status === 200) {
+      return shopInfoRes.data.object;
+    } else return rejectWithValue(shopInfoRes.message);
+  }
+);
 
 export const fetchCategList = createAsyncThunk(
   "shop/fetchCategList",
@@ -169,6 +178,19 @@ export const shopSlice = createSlice({
     },
   },
   extraReducers: {
+    /*shopInfo */
+    [fetchCurShopInfo.pending]: (state) => {
+      state.curShopInfoStatus = "loading";
+    },
+    [fetchCurShopInfo.fulfilled]: (state, action) => {
+      state.curShopInfoStatus = "succeed";
+      state.curShopInfo = action.payload;
+    },
+    [fetchCurShopInfo.rejected]: (state, action) => {
+      state.curShopInfoStatus = "error";
+      state.curShopInfo ={};
+      // state.categError = action.payload;
+    },
     /*categList */
     [fetchCategList.pending]: (state) => {
       state.categStatus = "loading";

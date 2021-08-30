@@ -19,18 +19,28 @@ export default function OrderDetailPage() {
           dispatch(fetchOrderById(_id));
         }, 2000);
       }
+    } else {
+      if (curOrderStatus === "succeed" && curOrder._id !== _id) {
+        dispatch(fetchOrderById(_id));
+      }
     }
   }, [_id, curOrder, curOrderStatus, dispatch]);
 
+  const handleFunc = ()=>{
+    window.scrollTo(0,document.body.scrollHeight);
+  }
+
   return (
     <>
-      {curOrderStatus === "succeed" && (
+      {curOrderStatus === "succeed" && curOrder && (
         <DetailCard
           isOrder
           order={curOrder}
+          orderLogo={curOrder.status === 100 ? "pay" : "paid"}
           fetchStatus={curOrderStatus}
           // handleConfirmOrder={handleConfirmOrder}
           // // _id={_id}
+          handleFunc={handleFunc}
           header={{ backLink: "DIETRO", nextLink: "CHECK OUT" }}
           // isCart
         />

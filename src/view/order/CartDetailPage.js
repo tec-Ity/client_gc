@@ -46,7 +46,7 @@ export default function CartDetailPage() {
         <DetailCard
           order={curCart}
           fetchStatus={curCartStatus}
-          handleConfirmOrder={handleConfirmOrder}
+          handleFunc={handleConfirmOrder}
           // _id={_id}
           header={{ backLink: "DIETRO", nextLink: "CONFERMA" }}
           isCart

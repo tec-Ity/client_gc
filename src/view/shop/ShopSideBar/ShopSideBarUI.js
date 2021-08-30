@@ -9,11 +9,12 @@ import {
   ListItem,
 } from "@material-ui/core";
 import CustomHr from "../../../component/global/modal/component/CustomHr";
-import { ReactComponent as China } from "../../../component/icon/china.svg";
+import china from "../../../component/icon/china.svg";
 import { ReactComponent as Italy } from "../../../component/icon/italy.svg";
 import { ReactComponent as Japan } from "../../../component/icon/japan.svg";
 import { ReactComponent as Korea } from "../../../component/icon/south korea.svg";
 import { useSelector } from "react-redux";
+// import { setScrollNav } from "../../../redux/filter/filterSlice";
 const useStyle = makeStyles((theme) => ({
   root: {
     // border: "1px solid",
@@ -106,6 +107,14 @@ const useStyle = makeStyles((theme) => ({
       },
     },
   },
+  scrollNavStyle: {
+    height: "100%",
+    overflowY: "scroll",
+    border: "1px solid",
+  },
+  staticNavStyle: {
+    overflowY: "hidden",
+  },
 }));
 
 export default function ShopSideBarUI(props) {
@@ -123,7 +132,52 @@ export default function ShopSideBarUI(props) {
   } = props;
   const classes = useStyle();
   const [categList, setCategList] = useState();
+  const [scrollNav, setScrollNav] = useState(false);
   const nations = useSelector((state) => state.filter.query.nations);
+  // const dispatch = useDispatch()
+  const scrollList = React.useRef(null);
+  const sideBar = React.useRef(null);
+  React.useEffect(() => {
+    const handleScroll = () => {
+      // console.log(scrollList?.current);
+      // scrollList.style.height =
+      //   window.innerHeight - categList.current.getBoundingClientRect().top;
+      // // if (scrollList && scrollList.current) {
+      //   scrollList.current.style.height =
+      //     window.innerHeight - categList.current.getBoundingClientRect().top;
+      // }
+
+      // console.log(sideBar.current);
+      // console.log(window.pageYOffset);
+      // console.log(sideBar.current.getBoundingClientRect().top);
+      console.log(
+        "top",
+        window.pageYOffset - sideBar.current.getBoundingClientRect().top
+      );
+      if (
+        window.pageYOffset - sideBar.current.getBoundingClientRect().top >
+        240
+      ) {
+        sideBar.current.style.position = "fixed";
+        sideBar.current.style.top = "100px";
+        sideBar.current.style.border = "1px solid";
+        // sideBar.current.style.maxHeight =
+        //   window.innerHeight - sideBar.current.getBoundingClientRect().top;
+
+        setScrollNav(true);
+      } else {
+        if (sideBar.current.style.position === "fixed") {
+          sideBar.current.style.position = "static";
+          setScrollNav(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const childrenList = useCallback(
     //return a list of second categs
@@ -205,8 +259,8 @@ export default function ShopSideBarUI(props) {
   ]);
 
   return (
-    <Container className={classes.root} disableGutters>
-      <div>&nbsp;</div>
+    <Container className={classes.root} disableGutters ref={sideBar}>
+      {/* <div>&nbsp;</div> */}
       <CustomHr position={classes.customHr} />
       <List component='div' disablePadding>
         <ListItem
@@ -222,14 +276,14 @@ export default function ShopSideBarUI(props) {
       <Grid container className={classes.nationStyle}>
         <Grid item xs={3}>
           <Button
-            disableRipple
             className={
               nations.find((n) => n === "CN")
                 ? classes.nationBtnSelected
                 : classes.nationBtn
             }
             onClick={handleNation("CN")}>
-            <China />
+            {/* <China /> */}
+            <img src={china} alt='china' />
           </Button>
         </Grid>
         <Grid item xs={3}>
@@ -267,9 +321,19 @@ export default function ShopSideBarUI(props) {
         </Grid>
       </Grid>
       <CustomHr position={classes.customHr} />
-      <List component='nav' disablePadding>
-        {categList}
-      </List>
+      <div
+        ref={scrollList}
+        // style={{
+        //   height: 0.8*(window.innerHeight - sideBar.current.getBoundingClientRect().top),
+        // }}
+        className={
+          scrollNav === true ? classes.scrollNavStyle : classes.staticNavStyle
+        }>
+        <List component='nav' disablePadding>
+          {categList}
+        </List>
+      </div>
+      {console.log(window.innerHeight)}
     </Container>
   );
 }

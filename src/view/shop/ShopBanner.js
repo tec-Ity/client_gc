@@ -4,7 +4,7 @@ import CustomHr from "../../component/global/modal/component/CustomHr";
 import { Container } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-
+import { useSelector } from "react-redux";
 const useStyle = makeStyles((theme) => ({
   root: {},
   bannerStyle: {
@@ -75,8 +75,11 @@ const useStyle = makeStyles((theme) => ({
     },
   },
 }));
-export default function ShopDetail(props) {
-  const { shopInfo } = props;
+
+export default function ShopBanner() {
+  // const { shopInfo } = props;
+
+  const curShopInfo = useSelector((state) => state.shop.curShopInfo);
   const classes = useStyle();
   return (
     <Container maxWidth={false} className={classes.bannerStyle}>
@@ -86,8 +89,8 @@ export default function ShopDetail(props) {
       </Link>
       <div className={classes.shopDetailBox}>
         <div className={classes.shopInfo}>
-          <div>NO.001</div>
-          <div>Via Pistoiese, 199, 59100 Prato PO</div>
+          <div>{curShopInfo?.nome}</div>
+          <div>{curShopInfo?.addr}</div>
         </div>
 
         <CustomHr position={classes.customHr} />

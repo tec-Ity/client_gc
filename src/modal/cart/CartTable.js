@@ -51,8 +51,16 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 const TableRow = (props) => {
-  const { oSku, prodName, showCtrl, img, showImg, customTableRowStyle } = props;
-  const isExpand = useSelector((state) => state.cart.isExpand);
+  const {
+    oSku,
+    prodName,
+    showCtrl,
+    img,
+    showImg,
+    customTableRowStyle,
+    isExpand,
+  } = props;
+  // const isExpand = useSelector((state) => state.cart.isExpand);
 
   const classes = useStyle();
   return (
@@ -101,6 +109,7 @@ export default function CartTable(props) {
     count = 1000,
     showImg = false,
     showCtrl = false,
+    isExpand = null,
     showCusHeader = false,
     customTableStyle = null,
     customTableRowStyle = null,
@@ -114,8 +123,8 @@ export default function CartTable(props) {
     for (let i = 0; i < OrderProds.length; i++) {
       const op = OrderProds[i];
       const img = op.Prod.img_urls?.length > 0 && op.Prod.img_urls[0];
-      console.log(op);
-      console.log("img", img);
+      // console.log(op);
+      // console.log("img", img);
       for (let j = 0; j < op.OrderSkus.length; j++) {
         const oSku = op.OrderSkus[j];
         if (rows.length < count) {
@@ -124,6 +133,7 @@ export default function CartTable(props) {
               key={oSku._id}
               oSku={oSku}
               img={img}
+              isExpand={isExpand}
               prodName={op.nome}
               showImg={showImg}
               showCtrl={showCtrl}
@@ -134,7 +144,7 @@ export default function CartTable(props) {
       }
     }
     return rows;
-  }, [OrderProds, count, showCtrl, showImg, customTableRowStyle]);
+  }, [OrderProds, count, isExpand, showImg, showCtrl, customTableRowStyle]);
 
   React.useEffect(() => {
     const tb = showTableBody();

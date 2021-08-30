@@ -14,15 +14,17 @@ import {
 import { useHistory } from "react-router";
 import CustomButton from "../../component/global/modal/component/CustomButton";
 
-const useStyle = makeStyles((theme) => ({
+const useStyle = makeStyles((props) => ({
   root: {
     // maxHeight: "270px",
     // height:'1000px',
+    // height:'100%',
     width: "443px",
     boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
     borderRadius: "20px 20px 20px 0px",
     marginTop: "20px",
     marginBottom: "20px",
+    paddingBottom: "20px",
   },
   marginHead: {
     margin: "20px 0 10px 0",
@@ -47,8 +49,9 @@ const useStyle = makeStyles((theme) => ({
   },
   orderBtn: {
     height: "21px",
-    width: "86px",
-    fontSize: "12px",
+    width: "100px",
+    fontSize: "10px",
+    backgroundColor: (props) => props.handleBtn?.background,
   },
   moreInfo: {
     position: "relative",
@@ -90,13 +93,12 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function CartCard(props) {
-  const { cart, count, isExpand } = props;
+  const { cart, count = 3, isExpand = null, handleBtn = null } = props;
   const { Shop, OrderProds } = cart;
   const dispatch = useDispatch();
   const hist = useHistory();
   const curCart = useSelector((state) => state.cart.curCart);
-  const classes = useStyle();
-  React.useEffect(() => {}, []);
+  const classes = useStyle(props);
 
   const expandMore = () => {
     if (curCart.Shop) {
@@ -115,47 +117,47 @@ export default function CartCard(props) {
     hist.push("/cart/" + cart._id);
   };
 
+  console.log(handleBtn);
+
   return (
-    <div className={classes.root}>
-      <Grid container>
-        <Grid item className={classes.gridItem}>
-          <div className={clsx(classes.shopTitle, classes.marginHead)}>
-            SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
-          </div>
-          <div className={classes.marginHead}>
+    <Grid container item xs={11} className={classes.root}>
+      <Grid item className={classes.gridItem}>
+        <div className={clsx(classes.shopTitle, classes.marginHead)}>
+          SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
+        </div>
+        <div className={classes.marginHead}>
+          <CustomButton
+            label={handleBtn ? handleBtn.label : "ORDINARE"}
+            handleFunc={handleBtn ? handleBtn.handleFunc : handleOrderFunc}
+            alterStyle={classes.orderBtn}
+          />
+        </div>
+      </Grid>
+      <Grid item className={classes.gridItem}>
+        <CartTable OrderProds={OrderProds} count={count} isExpand={isExpand} />
+      </Grid>
+      {isExpand ? (
+        <>
+          <Grid item className={classes.gridItem}>
+            <div className={clsx(classes.moreInfo, classes.margin)}>^</div>
+            <div className={clsx(classes.totalAmount, classes.marginFoot)}>
+              <div>TOTALE</div>
+              <div>€{curCart.totPrice?.toFixed(2)}</div>
+            </div>
+          </Grid>
+          <Grid item className={classes.gridItem}>
             <CustomButton
               label='ORDINARE'
               handleFunc={handleOrderFunc}
-              alterStyle={classes.orderBtn}
+              alterStyle={classes.orderBtnXL}
             />
-          </div>
-        </Grid>
-        <Grid item className={classes.gridItem}>
-          <CartTable OrderProds={OrderProds} count={count} />
-        </Grid>
-        {isExpand ? (
-          <>
-            <Grid item className={classes.gridItem}>
-              <div className={clsx(classes.moreInfo, classes.margin)}>^</div>
-              <div className={clsx(classes.totalAmount, classes.marginFoot)}>
-                <div>TOTALE</div>
-                <div>€{curCart.cartTotPrice?.toFixed(2)}</div>
-              </div>
-            </Grid>
-            <Grid item className={classes.gridItem}>
-              <CustomButton
-                label='ORDINARE'
-                handleFunc={handleOrderFunc}
-                alterStyle={classes.orderBtnXL}
-              />
-            </Grid>
-          </>
-        ) : (
-          <Grid item className={classes.gridItem}>
-            <button onClick={expandMore}>more</button>
           </Grid>
-        )}
-      </Grid>
-    </div>
+        </>
+      ) : (
+        <Grid item className={classes.gridItem}>
+          <button onClick={expandMore}>more</button>
+        </Grid>
+      )}
+    </Grid>
   );
 }

@@ -20,6 +20,7 @@ const initialState = {
   isHome: true,
 
   clickCategFromRemote: null,
+  // scrollNav: false,
 };
 
 export const filterSilce = createSlice({
@@ -68,6 +69,9 @@ export const filterSilce = createSlice({
     setClickCategFromRemote: (state, action) => {
       state.clickCategFromRemote = action.payload;
     },
+    // setScrollNav:(state, action)=>{
+    //   state.scrollNav = action.payload;
+    // }
   },
 });
 
@@ -81,6 +85,7 @@ export const {
   setIsHome,
   goBack,
   setClickCategFromRemote,
+  // setScrollNav
 } = filterSilce.actions;
 
 export default filterSilce.reducer;

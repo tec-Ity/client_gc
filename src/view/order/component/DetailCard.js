@@ -15,10 +15,9 @@ import clsx from "clsx";
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    border: "1px solid",
     fontFamily: "Montserrat",
     color: "#1d1d38",
-    marginBottom: "1000px",
+    // marginBottom: "1000px",
   },
   headerStyle: {
     height: "73px",
@@ -115,8 +114,8 @@ const useStyle = makeStyles((theme) => ({
     minHeight: "0",
     marginTop: "10px",
     marginBottom: "10px",
-    display:'flex',
-    justifyContent:'center'
+    display: "flex",
+    justifyContent: "center",
   },
   cusButtonStyle: {
     width: "100%",
@@ -140,6 +139,7 @@ export default function DetailCard(props) {
   const classes = useStyle();
   const {
     // _id,
+    orderLogo = null,
     order,
     fetchStatus,
     header,
@@ -147,7 +147,7 @@ export default function DetailCard(props) {
     isCart = false,
     showOrderDetail,
     showDeliveryDetail,
-    handleConfirmOrder,
+    handleFunc,
     paymentMethod = null,
   } = props;
 
@@ -160,7 +160,7 @@ export default function DetailCard(props) {
         </Link>
         <CustomButton
           label={header.nextLink}
-          handleFunc={() => isCart && handleConfirmOrder()}
+          handleFunc={handleFunc}
           alterStyle={classes.confirmBtnSm}
         />
       </div>
@@ -168,6 +168,17 @@ export default function DetailCard(props) {
       {/* body */}
       <Container className={classes.detailCardStyle}>
         <Grid container className={classes.gridStyle}>
+          {orderLogo && (
+            <Grid
+              container
+              item
+              xs={12}
+              justifyContent='center'
+              alignItems='center'
+              style={{ minHeight: "150px" }}>
+              <div style={{ height: "80px", width: "80px", border:'1px solid' }}>{orderLogo}</div>
+            </Grid>
+          )}
           {/* order detail */}
           {isOrder && (
             <Grid item xs={12} className={classes.gridItemStyle}>
@@ -177,7 +188,13 @@ export default function DetailCard(props) {
                   line1: "NUMERO D’ORDINE",
                   line2: order.code,
                 }}
-                info2={{ line1: "DATA", line2: order.at_confirm.slice(0,10) +' ' + order.at_confirm.slice(12,19) }}
+                info2={{
+                  line1: "DATA",
+                  line2:
+                    order.at_confirm.slice(0, 10) +
+                    " " +
+                    order.at_confirm.slice(12, 19),
+                }}
               />
             </Grid>
           )}
@@ -227,20 +244,19 @@ export default function DetailCard(props) {
             <>
               <Grid container item xs={12} className={classes.gridItemStyle}>
                 <Grid
-                
                   item
                   xs={12}
                   className={clsx(classes.gridItemStyle, classes.btnGroup)}>
                   {/* <ConfirmOrderBtn /> */}
                   <CustomButton
                     label='CONFERMA L’ORDINE'
-                    handleFunc={handleConfirmOrder}
+                    handleFunc={handleFunc}
                     alterStyle={classes.cusButtonStyle}
                   />
                 </Grid>
 
                 <Grid
-                container
+                  container
                   item
                   justifyContent='center'
                   xs={12}

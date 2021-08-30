@@ -6,6 +6,7 @@ const initialState = {
   //orders
   orders: [],
   ordersStatus: "idle",
+
   //curOrder
   curOrder: {},
   curOrderStatus: "idle",
@@ -14,7 +15,7 @@ const initialState = {
   showOrders: false,
 
   //expand?
-  isExpand: null, // sotre shopId for expand
+  isExpand: null, // sotre order ID for expand
 
   //change status status
   changeStatusStatus: "idle",
@@ -44,19 +45,23 @@ const orderObj = [
 
 export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
-  async ({ queryURL = "", isReload = false }, { getState }) => {
+  async (
+    { queryURL = "", isReload = false },
+    { getState, rejectWithValue }
+  ) => {
     const Orders_res = await fetch_Prom(
       "/Orders?populateObjs=" + JSON.stringify(orderObj) + queryURL
     );
-    // console.log(Orders_res)
+    console.log(Orders_res)
     if (Orders_res.status === 200) {
       if (isReload) {
         return Orders_res.data.objects;
       } else {
-        return [...getState.orders, ...Orders_res.data.objects];
+        return [...getState().order.orders, ...Orders_res.data.objects];
       }
     } else {
       console.log("Orders", Orders_res.message);
+      rejectWithValue(Orders_res.message);
     }
   }
 );

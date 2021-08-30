@@ -10,7 +10,7 @@ export default function ControlMulti(props) {
   const [showSkusModal, setShowSkusModal] = useState(false);
   const [totCount, setTotCount] = useState();
   // console.log('MULTI')
-  const curProdInCart = useSelector(selectCurProdInCart(prodId, shop));
+  const curProdInCart = useSelector(selectCurProdInCart(prodId, shop._id));
 
   useEffect(() => {
     const displayTotalCount = () => {
