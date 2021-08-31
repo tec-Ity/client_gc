@@ -75,7 +75,7 @@ export const fetchProdList = createAsyncThunk(
   "shop/fetchProdList",
   async (categs, { rejectWithValue }) => {
     const prodsArr = [];
-    console.log("categs", categs);
+    // console.log("categs", categs);
     for (let i = 0; i < categs?.length; i++) {
       // console.log("index", i);
       // console.log(categs[i].Categ_sons[0]._id);
@@ -87,23 +87,23 @@ export const fetchProdList = createAsyncThunk(
             "&populateObjs=" +
             JSON.stringify(prodPopObj)
         );
-        console.log("prodListResult", prodListResult);
+        // console.log("prodListResult", prodListResult);
 
         if (prodListResult.status === 200) {
-          console.log(i);
+          // console.log(i);
           prodsArr.push({
             id: categs[i].Categ_sons[0]._id,
             far: { id: categs[i]._id, code: categs[i].code },
             list: prodListResult.data.objects,
           });
-          console.log("g", prodsArr);
+          // console.log("g", prodsArr);
         } else {
-          console.log(prodListResult.message);
+          // console.log(prodListResult.message);
           return rejectWithValue(prodListResult.message);
         }
       }
     }
-    console.log("test", prodsArr);
+    // console.log("test", prodsArr);
     return prodsArr;
   }
 );
