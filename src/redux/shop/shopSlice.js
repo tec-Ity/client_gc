@@ -79,12 +79,7 @@ export const fetchProdList = createAsyncThunk(
     for (let i = 0; i < categs?.length; i++) {
       // console.log("index", i);
       // console.log(categs[i].Categ_sons[0]._id);
-      console.log(
-        "/Prods?pagesize=6&Categs=" +
-          categs[i].Categ_sons[0]._id +
-          "&populateObjs=" +
-          JSON.stringify(prodPopObj)
-      );
+
       if (categs[i].Categ_sons.length > 0) {
         const prodListResult = await fetch_Prom(
           "/Prods?pagesize=6&Categs=" +
