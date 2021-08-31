@@ -109,8 +109,10 @@ const useStyle = makeStyles((theme) => ({
   },
   scrollNavStyle: {
     height: "100%",
-    overflowY: "scroll",
-    border: "1px solid",
+    overflowY: "auto",
+    // "&::-webkit-scrollbar": {
+    //   display: "none",
+    // },
   },
   staticNavStyle: {
     overflowY: "hidden",
@@ -139,31 +141,28 @@ export default function ShopSideBarUI(props) {
   const sideBar = React.useRef(null);
   React.useEffect(() => {
     const handleScroll = () => {
-      // console.log(scrollList?.current);
-      // scrollList.style.height =
-      //   window.innerHeight - categList.current.getBoundingClientRect().top;
-      // // if (scrollList && scrollList.current) {
-      //   scrollList.current.style.height =
-      //     window.innerHeight - categList.current.getBoundingClientRect().top;
-      // }
+      // console.log("top", scrollList.current.getBoundingClientRect().top);
+      // console.log(
+      //   "height",
+      //   window.innerHeight - scrollList.current.getBoundingClientRect().top
+      // );
+      scrollList.current.style.height =
+        window.innerHeight -
+        scrollList.current.getBoundingClientRect().top +
+        "px";
 
-      // console.log(sideBar.current);
       // console.log(window.pageYOffset);
       // console.log(sideBar.current.getBoundingClientRect().top);
-      console.log(
-        "top",
-        window.pageYOffset - sideBar.current.getBoundingClientRect().top
-      );
+      // console.log(
+      //   "top",
+      //   window.pageYOffset - sideBar.current.getBoundingClientRect().top
+      // );
       if (
         window.pageYOffset - sideBar.current.getBoundingClientRect().top >
         240
       ) {
         sideBar.current.style.position = "fixed";
         sideBar.current.style.top = "100px";
-        sideBar.current.style.border = "1px solid";
-        // sideBar.current.style.maxHeight =
-        //   window.innerHeight - sideBar.current.getBoundingClientRect().top;
-
         setScrollNav(true);
       } else {
         if (sideBar.current.style.position === "fixed") {
@@ -177,7 +176,7 @@ export default function ShopSideBarUI(props) {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [categList]);
 
   const childrenList = useCallback(
     //return a list of second categs
@@ -333,7 +332,6 @@ export default function ShopSideBarUI(props) {
           {categList}
         </List>
       </div>
-      {console.log(window.innerHeight)}
     </Container>
   );
 }

@@ -13,6 +13,7 @@ const useStyle = makeStyles((theme) => ({
     // minWidth:'135px',
     // width:'100%',
     // margin: "14px 0",
+    color:'#1d1d38'
   },
   innerBoxBg: {
     maxWidth: "241.69px",
@@ -88,6 +89,7 @@ const useStyle = makeStyles((theme) => ({
     right: "17.5px",
   },
   LinkStyle: {
+    color:'#1d1d38',
     "&:visited": {
       color: "#1d1d38",
     },

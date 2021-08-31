@@ -122,7 +122,8 @@ export default function CartTable(props) {
     const rows = [];
     for (let i = 0; i < OrderProds.length; i++) {
       const op = OrderProds[i];
-      const img = op.Prod.img_urls?.length > 0 && op.Prod.img_urls[0];
+      console.log('op',op)
+      const img = op.Prod?.img_urls?.length > 0 && op.Prod.img_urls[0];
       // console.log(op);
       // console.log("img", img);
       for (let j = 0; j < op.OrderSkus.length; j++) {

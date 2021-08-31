@@ -37,7 +37,7 @@ const prodPopObj = [
   },
   { path: "Attrs", select: "nome options" },
   {
-    path: "Categs",
+    path: "Categ",
     select: "code Categ_far",
     populate: [{ path: "Categ_far", select: "code" }],
   },
@@ -48,7 +48,7 @@ export const fetchCurShopInfo = createAsyncThunk(
   "shop/fetchCurShopInfo",
   async (_id, { rejectWithValue }) => {
     const shopInfoRes = await fetch_Prom("/Shop/" + _id);
-    console.log('shopInfoRes',shopInfoRes);
+    console.log("shopInfoRes", shopInfoRes);
     if (shopInfoRes.status === 200) {
       return shopInfoRes.data.object;
     } else return rejectWithValue(shopInfoRes.message);
@@ -73,12 +73,18 @@ export const fetchCategList = createAsyncThunk(
 
 export const fetchProdList = createAsyncThunk(
   "shop/fetchProdList",
-  async (categs) => {
+  async (categs, { rejectWithValue }) => {
     const prodsArr = [];
-    // console.log("categs", categs);
+    console.log("categs", categs);
     for (let i = 0; i < categs?.length; i++) {
       // console.log("index", i);
       // console.log(categs[i].Categ_sons[0]._id);
+      console.log(
+        "/Prods?pagesize=6&Categs=" +
+          categs[i].Categ_sons[0]._id +
+          "&populateObjs=" +
+          JSON.stringify(prodPopObj)
+      );
       if (categs[i].Categ_sons.length > 0) {
         const prodListResult = await fetch_Prom(
           "/Prods?pagesize=6&Categs=" +
@@ -89,16 +95,20 @@ export const fetchProdList = createAsyncThunk(
         console.log("prodListResult", prodListResult);
 
         if (prodListResult.status === 200) {
+          console.log(i);
           prodsArr.push({
             id: categs[i].Categ_sons[0]._id,
             far: { id: categs[i]._id, code: categs[i].code },
             list: prodListResult.data.objects,
           });
+          console.log("g", prodsArr);
         } else {
           console.log(prodListResult.message);
+          return rejectWithValue(prodListResult.message);
         }
       }
     }
+    console.log("test", prodsArr);
     return prodsArr;
   }
 );
@@ -188,7 +198,7 @@ export const shopSlice = createSlice({
     },
     [fetchCurShopInfo.rejected]: (state, action) => {
       state.curShopInfoStatus = "error";
-      state.curShopInfo ={};
+      state.curShopInfo = {};
       // state.categError = action.payload;
     },
     /*categList */
@@ -210,10 +220,11 @@ export const shopSlice = createSlice({
     },
     [fetchProdList.fulfilled]: (state, action) => {
       state.prodStatus = "succeed";
-      // console.log("fulfilled", action.payload);
+      console.log("fulfilled", action.payload);
       state.prodList = action.payload;
     },
     [fetchProdList.rejected]: (state, action) => {
+      console.log("error");
       state.prodStatus = "error";
       state.prodList = [];
       state.prodError = action.payload;

@@ -6,6 +6,7 @@ const useStyle = makeStyles((theme) => ({
   root: {
     height: "600px",
     color: "#1d1d38",
+    fontWeight:'700'
   },
   topIconBar: {
     width: "500px",

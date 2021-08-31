@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { refreshToken_Prom } from "../../api";
+import { fetch_Prom, refreshToken_Prom } from "../../api";
 
 const initialState = {
   isLogin: Boolean(localStorage.getItem("refreshToken")?.length > 0),
   showLogin: false,
   showRegister: false,
-  showCurClient: false,
+  showSelfCenter: false,
   accessToken: null,
   curClientInfo: {},
+  curClientInfoStatus: "idle",
 };
 
 export const fetchAccessToken = createAsyncThunk(
@@ -18,6 +19,17 @@ export const fetchAccessToken = createAsyncThunk(
       console.log(loginRes);
       return loginRes;
     }
+  }
+);
+
+export const fetchCurClientInfo = createAsyncThunk(
+  "curClient/fetchCurClientInfo",
+  async (foo, { rejectWithValue }) => {
+    const curClientRes = await fetch_Prom("/Client");
+    console.log(curClientRes);
+    if (curClientRes.status === 200) {
+      return curClientRes.data.object;
+    } else return rejectWithValue(curClientRes.message);
   }
 );
 
@@ -34,8 +46,8 @@ export const curClientSlice = createSlice({
     setShowRegister: (state, action) => {
       state.showRegister = action.payload;
     },
-    setShowCurClient: (state, action) => {
-      state.showCurClient = action.payload;
+    setShowSelfCenter: (state, action) => {
+      state.showSelfCenter = action.payload;
     },
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
@@ -44,13 +56,25 @@ export const curClientSlice = createSlice({
       state.curClientInfo = action.payload;
     },
   },
+  extraReducers: {
+    [fetchCurClientInfo.pending]: (state) => {
+      state.curClientInfoStatus = "loading";
+    },
+    [fetchCurClientInfo.fulfilled]: (state, action) => {
+      state.curClientInfoStatus = "succeed";
+      state.curClientInfo = action.payload;
+    },
+    [fetchCurClientInfo.rejected]: (state, action) => {
+      state.curClientInfoStatus = "error";
+    },
+  },
 });
 
 export const {
   setIsLogin,
   setShowLogin,
   setShowRegister,
-  setShowCurClient,
+  setShowSelfCenter,
   setAccessToken,
   setCurClientInfo,
 } = curClientSlice.actions;

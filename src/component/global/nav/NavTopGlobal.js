@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchAccessToken,
   setShowLogin,
+  setShowSelfCenter,
 } from "../../../redux/curClient/curClientSlice";
 import { Link } from "react-router-dom";
 import { setShowCarts } from "../../../redux/cart/cartSlice";
@@ -48,6 +49,21 @@ export default function NavTopGlobal() {
   const classes = useStyle();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.curClient.isLogin);
+
+  useEffect(() => {
+    if (localStorage.getItem("thirdPartyLogin")) {
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "./thirdPartyLogin.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "ThirdPartyLogin");
+    }
+  },[]);
+
   const handleLogout = async () => {
     const tpl = localStorage.getItem("thirdPartyLogin");
     switch (tpl) {
@@ -134,7 +150,9 @@ export default function NavTopGlobal() {
           <div className={classes.menuStyle}>
             <button onClick={() => dispatch(setShowCarts(true))}>购物车</button>
             <button onClick={() => dispatch(setShowOrders(true))}>订单</button>
-            <button>个人中心</button>
+            <button onClick={() => dispatch(setShowSelfCenter(true))}>
+              个人中心
+            </button>
             <button onClick={handleLogout}>Log Out</button>
           </div>
         ) : (
