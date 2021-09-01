@@ -33,6 +33,21 @@ export const fetchCurClientInfo = createAsyncThunk(
   }
 );
 
+export const fetchPutCurClient = createAsyncThunk(
+  'curClient/fetchPutCurClient',
+  async({type,value},{rejectWithValue})=>{
+    switch (type) {
+      case 'name':
+        const nameRes = await fetch_Prom('/ClientPut', 'PUT', )
+        break;
+    
+      default:
+        break;
+    }
+
+  }
+)
+
 export const curClientSlice = createSlice({
   name: "curClient",
   initialState,

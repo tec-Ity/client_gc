@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomModal from "../../component/global/modal/CustomModal";
 import CardWraper from "../../component/global/modal/component/CardWraper";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,19 +14,53 @@ import { Link } from "react-router-dom";
 import clsx from "clsx";
 import china from "../../component/icon/china.svg";
 import italy from "../../component/icon/italy.svg";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import InputModify from "../../component/input/InputModify";
 
 export default function SelfCenterModal() {
+  const dispatch = useDispatch();
+  const initialShowSubModal = {
+    name: false,
+    account: false,
+    social: false,
+    method: false,
+    addr: false,
+    pwd: false,
+  };
+
+  const [showSubModal, setShowSubModal] = useState(initialShowSubModal);
+  const [showMainModal, setShowMainModal] = useState(true);
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
   const curClientInfo = useSelector((state) => state.curClient.curClientInfo);
   const curClientInfoStatus = useSelector(
     (state) => state.curClient.curClientInfoStatus
   );
 
-  const dispatch = useDispatch();
-  const handleClose = () => {
+  const [tempInfo, setTempInfo] = useState(curClientInfo);
+
+  const handleCloseAll = () => {
     dispatch(setShowSelfCenter(false));
   };
+  const handleShowSub = (section) => () => {
+    setTempInfo(curClientInfo);
+    setShowSubModal((prev) => ({ ...prev, [section]: true }));
+    setShowMainModal(false);
+  };
 
+  const handleCloseSub = () => {
+    setShowMainModal(true);
+    setShowSubModal(initialShowSubModal);
+  };
+
+  const handleChange = (section, value) => {
+    setTempInfo((prev) => ({ ...prev, [section]: value }));
+  };
+
+  const handleSubmit = ()=>{
+    
+  }
+
+  //fetch cur Client info
   useEffect(() => {
     // console.log("e", curClientInfoStatus);
     if (curClientInfoStatus === "idle") {
@@ -40,77 +74,165 @@ export default function SelfCenterModal() {
 
   const classes = useStyle();
   return (
-    <CustomModal show={showSelfCenter} handleClose={handleClose}>
-      {curClientInfoStatus === "succeed" && curClientInfo && (
-        <CardWraper
-          title={
-            curClientInfo.nome
-              ? "CIAO! " + curClientInfo.nome
-              : "CIAO! " + curClientInfo.code
-          }>
-          <Grid container item xs={12} className={classes.gridItemStyle}>
-            <CustomHr position={classes.hrStyle} />
-          </Grid>
-          {/* info section */}
-          <Grid container item xs={12} className={classes.gridItemStyle}>
-            <Grid container item xs={12} className={classes.infoRowStyle}>
-              <SelfCenterRow
-                label='Nome:'
-                value={curClientInfo.nome || "Add your name"}
-              />
+    <>
+      <CustomModal
+        timeout={0}
+        show={showSelfCenter && showMainModal}
+        handleClose={handleCloseAll}>
+        {curClientInfoStatus === "succeed" && curClientInfo && (
+          <CardWraper
+            title={
+              curClientInfo.nome
+                ? "CIAO! " + curClientInfo.nome
+                : "CIAO! " + curClientInfo.code
+            }>
+            <Grid container item xs={12} className={classes.gridItemStyle}>
+              <CustomHr position={classes.hrStyle} />
             </Grid>
-            <Grid container item xs={12} className={classes.infoRowStyle}>
-              <SelfCenterRow label='Account:' value={curClientInfo.code} />
+            {/* info section */}
+            <Grid container item xs={12} className={classes.gridItemStyle}>
+              <Grid container item xs={12} className={classes.infoRowStyle}>
+                <SelfCenterRow
+                  handleFunc={handleShowSub("name")}
+                  label='Nome:'
+                  value={curClientInfo.nome || "Add your name"}
+                />
+              </Grid>
+              <Grid container item xs={12} className={classes.infoRowStyle}>
+                <SelfCenterRow
+                  handleFunc={handleShowSub("account")}
+                  label='Account:'
+                  value={curClientInfo.code}
+                />
+              </Grid>
+              <Grid container item xs={12} className={classes.infoRowStyle}>
+                <SelfCenterRow
+                  handleFunc={handleShowSub("social")}
+                  label='Social:'
+                  value={
+                    curClientInfo.socials.length > 0
+                      ? curClientInfo.socials.map((s) => s.social_type + " ")
+                      : "暂无第三方登录"
+                  }
+                />
+              </Grid>
+              <Grid container item xs={12} className={classes.infoRowStyle}>
+                <SelfCenterRow
+                  handleFunc={handleShowSub("method")}
+                  label='Metodo di pagamento:'
+                  value={"暂无支付方式"}
+                />
+              </Grid>
+              <Grid container item xs={12} className={classes.infoRowStyle}>
+                <SelfCenterRow
+                  handleFunc={handleShowSub("addr")}
+                  label='Indirizzi:'
+                  value={
+                    curClientInfo.addrs.length > 0
+                      ? curClientInfo.addrs[0]
+                      : "暂无地址"
+                  }
+                />
+              </Grid>
+              <Grid container item xs={12} className={classes.infoRowStyle}>
+                <LanguageRow />
+              </Grid>
+              <Grid container item xs={12} className={classes.infoRowStyle}>
+                <SelfCenterRow
+                  handleFunc={handleShowSub("pwd")}
+                  label='Password'
+                  value={"**********"}
+                />
+              </Grid>
             </Grid>
-            <Grid container item xs={12} className={classes.infoRowStyle}>
-              <SelfCenterRow
-                label='Social:'
-                value={
-                  curClientInfo.socials.length > 0
-                    ? curClientInfo.socials.map((s) => s.social_type + " ")
-                    : "暂无第三方登录"
-                }
-              />
+            <Grid container item xs={12} className={classes.gridItemStyle}>
+              <CustomHr position={classes.hrStyle} />
             </Grid>
-            <Grid container item xs={12} className={classes.infoRowStyle}>
-              <SelfCenterRow
-                label='Metodo di pagamento:'
-                value={"暂无支付方式"}
-              />
+            <Grid
+              container
+              item
+              xs={12}
+              className={clsx(classes.gridItemStyle, classes.logoutRow)}>
+              <div>User Center</div>
+              <Link onClick={() => ""}>LOG OUT</Link>
             </Grid>
-            <Grid container item xs={12} className={classes.infoRowStyle}>
-              <SelfCenterRow
-                label='Indirizzi:'
-                value={
-                  curClientInfo.addrs.length > 0
-                    ? curClientInfo.addrs[0]
-                    : "暂无地址"
-                }
-              />
-            </Grid>
-            <Grid container item xs={12} className={classes.infoRowStyle}>
-              <LanguageRow />
-            </Grid>
-            <Grid container item xs={12} className={classes.infoRowStyle}>
-              <SelfCenterRow label='Password' value={"**********"} />
-            </Grid>
-          </Grid>
-          <Grid container item xs={12} className={classes.gridItemStyle}>
-            <CustomHr position={classes.hrStyle} />
-          </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            className={clsx(classes.gridItemStyle, classes.logoutRow)}>
-            <div>User Center</div>
-            <Link onClick={() => ""}>LOG OUT</Link>
-          </Grid>
-        </CardWraper>
+          </CardWraper>
+        )}
+      </CustomModal>
+      {showSubModal.name === true && (
+        <RowModal
+          show={showSubModal.name}
+          handleClose={handleCloseSub}
+          label='Modifica il tuo nome:'>
+          <InputModify
+            value={tempInfo.nome || ""}
+            placeholder={!tempInfo.nome && "Add your name"}
+            handleChange={(value) => handleChange("nome", value)}
+          />
+        </RowModal>
       )}
-    </CustomModal>
+      {showSubModal.account === true && (
+        <RowModal
+          show={showSubModal.account}
+          handleClose={handleCloseSub}
+          label='Modifica il tuo account:'></RowModal>
+      )}
+      {showSubModal.social === true && (
+        <RowModal
+          show={showSubModal.social}
+          handleClose={handleCloseSub}
+          label='Modifica il tuo social:'></RowModal>
+      )}
+      {showSubModal.method === true && (
+        <RowModal
+          show={showSubModal.method}
+          handleClose={handleCloseSub}
+          label='Modifica i metodi di pagamento:'></RowModal>
+      )}
+      {showSubModal.addr === true && (
+        <RowModal
+          show={showSubModal.name}
+          handleClose={handleCloseSub}
+          label='Modifica i tuoi indirizzi:'></RowModal>
+      )}
+      {showSubModal.pwd === true}
+    </>
   );
 }
+
+const RowModal = (props) => {
+  const { show, handleClose, label, children } = props;
+  const classes = useStyle();
+  return (
+    <CustomModal timeout={0} show={show} handleClose={handleClose} small>
+      <Grid container justifyContent='center' className={classes.subModal}>
+        <Grid
+          container
+          item
+          xs={12}
+          alignItems='center'
+          className={classes.subHeader}>
+          <Link to='#'>
+            <ArrowBackIosIcon onClick={handleClose} />
+          </Link>
+          <div>{label}</div>
+        </Grid>
+
+        <Grid container item xs={12}>
+          <CustomHr position={classes.subHrStyle} />
+        </Grid>
+        <Grid
+          container
+          item
+          xs={12}
+          justifyContent='center'
+          style={{ marginTop: "20px" }}>
+          {children}
+        </Grid>
+      </Grid>
+    </CustomModal>
+  );
+};
 
 const SelfCenterRow = (props) => {
   const { label, value, handleFunc } = props;
@@ -163,7 +285,7 @@ const useStyle = makeStyles({
   gridItemStyle: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
     marginLeft: "7%",
     marginRight: "7%",
   },
@@ -172,7 +294,8 @@ const useStyle = makeStyles({
   },
   hrStyle: {
     width: "100%",
-    margin: "3px",
+    // padding: "3px",
+    maxHeight: "1px",
   },
   //row component
   desp: {
@@ -193,7 +316,7 @@ const useStyle = makeStyles({
   },
   logoutRow: {
     justifyContent: "space-between",
-    height: "80px",
+    // height: "80px",
     fontSize: "15px",
     "& :nth-child(1)": {
       fontWeight: "400",
@@ -259,5 +382,23 @@ const useStyle = makeStyles({
         borderRadius: "100%",
       },
     },
+  },
+  ///sub modal style
+  subModal: {
+    paddingLeft: "7%",
+    paddingRight: "7%",
+  },
+  subHeader: {
+    color: "#1d1d38",
+    fontSize: "15px",
+    marginTop: "20px",
+    "& :visited": {
+      color: "#1d1d38",
+    },
+  },
+  subHrStyle: {
+    width: "100%",
+    marginLeft: "0",
+    marginRight: "0",
   },
 });

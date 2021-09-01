@@ -13,13 +13,16 @@ const useStyle = makeStyles((theme) => ({
     // minWidth:'135px',
     // width:'100%',
     // margin: "14px 0",
-    color:'#1d1d38'
+    color: "#1d1d38",
   },
   innerBoxBg: {
-    maxWidth: "241.69px",
-    maxHeight: "318.69px",
-    width: "100%",
-    height: "100%",
+    // border: "1px solid",
+    maxWidth: "241px",
+    maxHeight: "318px",
+    // padding:'1px',
+    padding: "1px 0.5px",
+    // width: "100%",
+    // height: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -31,7 +34,7 @@ const useStyle = makeStyles((theme) => ({
     // margin: "1px 1px 1px 1px",
     maxWidth: "240px",
     width: "100%",
-    margin: "1px",
+    // margin: "1px",
     height: "317px",
     background: "#fff",
     position: "relative",
@@ -46,8 +49,9 @@ const useStyle = makeStyles((theme) => ({
     justifyContent: "center",
   },
   imgBoxInner: {
-    maxWidth: "137.43px",
-    width: "100%",
+    // border:'1px solid',
+    // maxWidth: "190px",
+    width: "90%",
     height: "100%",
     top: "25.43px",
   },
@@ -89,7 +93,7 @@ const useStyle = makeStyles((theme) => ({
     right: "17.5px",
   },
   LinkStyle: {
-    color:'#1d1d38',
+    color: "#1d1d38",
     "&:visited": {
       color: "#1d1d38",
     },
@@ -108,7 +112,7 @@ export default function ProdListItem(props) {
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>
       <Paper className={classes.innerBoxBg} square>
-        <Paper className={classes.innerBox} square>
+        <Paper className={classes.innerBox} square elevation={0}>
           {/* click area div */}
           <Link to={"/prod/" + prod._id} className={classes.LinkStyle}>
             <div className={classes.imgBox}>
@@ -127,7 +131,7 @@ export default function ProdListItem(props) {
 
             <div className={classes.infoBox}>
               <div>{prod.nome}</div>
-              <div>description: {prod.desp}</div>
+              <div>{prod.desp}</div>
             </div>
           </Link>
           <div>

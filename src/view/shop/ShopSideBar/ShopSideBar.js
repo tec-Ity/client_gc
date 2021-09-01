@@ -17,6 +17,7 @@ export default function ShopSideBar(props) {
   const [firstCategData, setFirstCategData] = useState({
     _id: "",
     code: "",
+    img: "",
   });
 
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ export default function ShopSideBar(props) {
   );
 
   const sendFirstCategData = useCallback(
-    (categId, categCode) => {
+    (categId, categCode, img) => {
       //find its children
       displayChildren(categId);
       //inform selection
@@ -48,7 +49,7 @@ export default function ShopSideBar(props) {
       dispatch(
         setTitle({
           desp: categCode,
-          img: "",
+          img,
         })
       );
 
@@ -78,7 +79,7 @@ export default function ShopSideBar(props) {
   );
 
   const sendSecondCategData = useCallback(
-    (categId, categCode) => {
+    (categId, categCode, img) => {
       //check first time seleciton
       if (categId !== selSecondCateg) {
         dispatch(setIsHome(false));
@@ -86,7 +87,7 @@ export default function ShopSideBar(props) {
         dispatch(
           setTitle({
             desp: categCode,
-            img: "",
+            img,
           })
         );
         dispatch(
@@ -107,8 +108,8 @@ export default function ShopSideBar(props) {
   useEffect(() => {
     //used for the back button in second categ expand section
     if (backToFirst === true) {
-      const { _id, code } = firstCategData;
-      sendFirstCategData(_id, code);
+      const { _id, code, img } = firstCategData;
+      sendFirstCategData(_id, code, img);
       dispatch(setBackToFirst(false));
     }
   }, [backToFirst, firstCategData, dispatch, sendFirstCategData]);

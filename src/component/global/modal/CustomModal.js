@@ -48,7 +48,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function CustomModal(props) {
-  const { children, show, handleClose, small = false } = props;
+  const { children, show, handleClose, small = false, timeout = 500 } = props;
   const classes = useStyle();
   return (
     <Modal
@@ -57,7 +57,7 @@ export default function CustomModal(props) {
       onClose={handleClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
-      BackdropProps={{ timeout: 500 }}>
+      BackdropProps={{ timeout }}>
       <Fade in={show}>
         <div className={small ? classes.backTemplateSm : classes.backTemplate}>
           <div className={small ? classes.paperStyleSm : classes.paperStyle}>

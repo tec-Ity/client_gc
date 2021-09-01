@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetch_Prom } from "../../api";
 
 const initialState = {
@@ -94,6 +94,7 @@ export const fetchProdList = createAsyncThunk(
           prodsArr.push({
             id: categs[i].Categ_sons[0]._id,
             far: { id: categs[i]._id, code: categs[i].code },
+            img: categs[i].img_url,
             list: prodListResult.data.objects,
           });
           // console.log("g", prodsArr);

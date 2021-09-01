@@ -146,10 +146,11 @@ export default function ShopSideBarUI(props) {
       //   "height",
       //   window.innerHeight - scrollList.current.getBoundingClientRect().top
       // );
-      scrollList.current.style.height =
-        window.innerHeight -
-        scrollList.current.getBoundingClientRect().top +
-        "px";
+      scrollList.current &&
+        (scrollList.current.style.height =
+          window.innerHeight -
+          scrollList.current.getBoundingClientRect().top +
+          "px");
 
       // console.log(window.pageYOffset);
       // console.log(sideBar.current.getBoundingClientRect().top);
@@ -158,7 +159,7 @@ export default function ShopSideBarUI(props) {
       //   window.pageYOffset - sideBar.current.getBoundingClientRect().top
       // );
       if (
-        window.pageYOffset - sideBar.current.getBoundingClientRect().top >
+        window.pageYOffset - sideBar.current?.getBoundingClientRect().top >
         240
       ) {
         sideBar.current.style.position = "fixed";
@@ -196,7 +197,11 @@ export default function ShopSideBarUI(props) {
                     onClick={(e) => {
                       e.preventDefault();
                       selSecondCateg !== children._id &&
-                        sendSecondCategData(children._id, children.code);
+                        sendSecondCategData(
+                          children._id,
+                          children.code,
+                          children.img_url
+                        );
                     }}>
                     {children.code}
                   </ListItem>
@@ -230,7 +235,7 @@ export default function ShopSideBarUI(props) {
               id={categ._id + "categBar"}
               onClick={() => {
                 selFirstCateg !== categ._id
-                  ? sendFirstCategData(categ._id, categ.code)
+                  ? sendFirstCategData(categ._id, categ.code, categ.img_url)
                   : goBackFunc();
               }}>
               {categ.code}

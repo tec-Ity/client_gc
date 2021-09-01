@@ -285,7 +285,7 @@ export default function ProdPage() {
                   // setClickCategFromRemote(curProd.Categs[0].Categ_far._id)
                   hist.goBack();
                 }}>
-                {curProd.Categs[0].Categ_far.code}
+                {curProd.Categ.Categ_far.code}
               </span>
               <span> &gt; </span>
               <span
@@ -293,7 +293,7 @@ export default function ProdPage() {
                   // dispatch(setClickCategFromRemote(curProd.Categs[0]._id));
                   hist.goBack();
                 }}>
-                {curProd.Categs[0].code}
+                {curProd.Categ.code}
               </span>
               <span> &gt; </span>
               <span>{curProd.nome}</span>
@@ -456,7 +456,7 @@ export default function ProdPage() {
                   type={null}
                   queryURL={
                     "?Categs=" +
-                    [curProd.Categs[0]._id] +
+                    [curProd.Categ._id] +
                     "&Shops=" +
                     curProd.Shop._id +
                     "&pagesize=4" +

@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomHr from "../global/modal/component/CustomHr";
+import { get_DNS } from "../../api";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -8,6 +9,10 @@ const useStyle = makeStyles((theme) => ({
     boxShadow: "0px 0px 31.1569px rgba(0, 0, 0, 0.1)",
     height: "200px",
     marginBottom: "21px",
+    display: "flex",
+    flexDirection:'column',
+    alignItems:'center',
+    color:'#1d1d38'
   },
   titleStyle: {
     width: "100%",
@@ -40,11 +45,17 @@ const useStyle = makeStyles((theme) => ({
       mixBlendMode: "overlay",
     },
   },
+  imgStyle: {
+    width: "97%",
+    height: "145px",
+    objectFit: "cover",
+  },
 }));
 
 export default function ExpandTilte(props) {
   const { title } = props;
   const classes = useStyle();
+  console.log("title", title);
   return (
     <>
       {title.desp && (
@@ -52,7 +63,11 @@ export default function ExpandTilte(props) {
           <div className={classes.titleStyle}>{title.desp}</div>
           <CustomHr position={classes.hrStyle} />
           {title.img ? (
-            <img src={title.img} alt={title.desp} />
+            <img
+              className={classes.imgStyle}
+              src={get_DNS() + title.img}
+              alt={title.desp}
+            />
           ) : (
             <div className={classes.bannerDefault}>
               <div>{title.desp}</div>

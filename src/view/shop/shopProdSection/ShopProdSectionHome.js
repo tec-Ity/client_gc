@@ -17,7 +17,7 @@ export default function ShopProdSectionHome(props) {
         categ.list.length > 0 && (
           <ProdExpand
             prods={categ.list}
-            title={{ desp: categ.far.code }}
+            title={{ desp: categ.far.code, img: categ.img }}
             far={categ.far}
             key={categ.id}
           />
