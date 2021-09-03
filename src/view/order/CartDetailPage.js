@@ -15,6 +15,7 @@ export default function CartDetailPage() {
   const proofStatus = useSelector((state) => state.cart.proofStatus);
   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
 
+  /**proof call twice----------- */
   React.useEffect(() => {
     if (proofStatus === "idle") {
       dispatch(fetchProofOrder(_id));
@@ -30,14 +31,12 @@ export default function CartDetailPage() {
     setShowProof(false);
   };
 
-  console.log(_id);
+  // console.log(_id);
 
   const handleConfirmOrder = () => {
-    console.log("confirm!!");
+    // console.log("confirm!!");
     // window.scrollTo(0,document.body.scrollHeight);
     dispatch(fetchChangeStatus({ _id, action: "CONFIRM" }));
-
-    
   };
 
   return (

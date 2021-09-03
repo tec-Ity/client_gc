@@ -6,7 +6,7 @@ const useStyle = makeStyles((theme) => ({
   root: {
     height: "600px",
     color: "#1d1d38",
-    fontWeight:'700'
+    fontWeight: "700",
   },
   topIconBar: {
     width: "500px",
@@ -20,8 +20,8 @@ const useStyle = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     fontSize: "12.5px",
-
     textDecoration: "none",
+    color: "#1d1d38",
     "&:visited": {
       color: "#1d1d38",
     },
@@ -55,9 +55,10 @@ export default function CardWraper(props) {
         </Grid>
         <Grid item xs={4}>
           {title === "Order" ? (
-            <Link to='/orders' className={classes.allOrders}
-            onClick={handleFunc}
-            >
+            <Link
+              to='/orders'
+              className={classes.allOrders}
+              onClick={handleFunc}>
               <ArrowForwardIcon />
               <div> TUTTI GLI ORDINI</div>
             </Link>

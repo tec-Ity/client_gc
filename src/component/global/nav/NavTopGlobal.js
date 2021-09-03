@@ -2,7 +2,6 @@ import React, {
   // useState,
   useEffect,
 } from "react";
-import { logout_Prom } from "../../../api";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -13,6 +12,10 @@ import {
 import { Link } from "react-router-dom";
 import { setShowCarts } from "../../../redux/cart/cartSlice";
 import { setShowOrders } from "../../../redux/order/orderSlice";
+import { Button } from "@material-ui/core";
+import { ReactComponent as Cart } from "../../icon/cart.svg";
+import { ReactComponent as Order } from "../../icon/order.svg";
+import { ReactComponent as User } from "../../icon/user.svg";
 
 const useStyle = makeStyles({
   root: {
@@ -29,9 +32,6 @@ const useStyle = makeStyles({
     justifyContent: "space-between",
   },
   navIcon: {
-    // position: "absolute",
-    // left: "75px",
-    // top: "20px",
     width: "200px",
     height: "50px",
   },
@@ -39,9 +39,44 @@ const useStyle = makeStyles({
     position: "absolute",
     right: "0",
     bottom: "0",
+    minWidth: "100px",
   },
   loginButton: {
-    marginRight: "6.25%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    fontSize: "10px",
+  },
+  alertNum: {
+    position: "absolute",
+    background: "#E47F10",
+    borderRadius: "100px",
+    fontSize: "10px",
+    fontWeight: "700",
+    color: "#fff",
+    width: "20px",
+    height: "20px",
+    top: "-13px",
+    right: "-13px",
+    textAlign: "center",
+  },
+  alertDot: {
+    position: "absolute",
+    width: "10px",
+    height: "10px",
+    top: "-5px",
+    right: "-5px",
+    borderRadius: "100px",
+    background: "#E47F10",
+  },
+  btnStyle: {
+    '&:hover':{
+      background:"transparent"
+    }
+  },
+  btnsIcon: {
+    width: "30px",
+    height: "30px",
   },
 });
 
@@ -49,80 +84,8 @@ export default function NavTopGlobal() {
   const classes = useStyle();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.curClient.isLogin);
-
-  useEffect(() => {
-    if (localStorage.getItem("thirdPartyLogin")) {
-      (function (d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "./thirdPartyLogin.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "ThirdPartyLogin");
-    }
-  },[]);
-
-  const handleLogout = async () => {
-    const tpl = localStorage.getItem("thirdPartyLogin");
-    switch (tpl) {
-      case "facebook":
-        window.FB.getLoginStatus(async function (response) {
-          console.log(response);
-          window.FB.logout(function (response) {
-            console.log(response);
-            async function func() {
-              const result = await logout_Prom();
-              if (result.status !== 200) {
-                alert(result.message);
-              }
-              // setRefresh(r=>r+1)
-            }
-            func();
-          });
-        });
-        return;
-      case "google":
-        var auth2;
-        window.gapi.load("auth2", function () {
-          /**
-           * Retrieve the singleton for the GoogleAuth library and set up the
-           * client.
-           */
-          async function authInit() {
-            auth2 = await window.gapi.auth2.init({
-              client_id: localStorage.getItem("google"),
-            });
-
-            console.log(auth2);
-            auth2 = window.gapi.auth2.getAuthInstance();
-            console.log(auth2);
-            auth2.signOut().then(function () {
-              console.log("用户注销成功");
-              async function func() {
-                const result = await logout_Prom();
-                if (result.status !== 200) {
-                  alert(result.message);
-                }
-              }
-              func();
-            });
-          }
-          authInit();
-        });
-
-        return;
-
-      default:
-        const result = await logout_Prom();
-        if (result.status !== 200) {
-          alert(result.message);
-        }
-        return;
-    }
-  };
-
+  const curCartTotProd = useSelector((state) => state.cart.curCart.totProd);
+  const inShop = useSelector((state) => state.cart.inShop);
   useEffect(() => {
     function auth() {
       if (!isLogin) {
@@ -137,7 +100,7 @@ export default function NavTopGlobal() {
   return (
     <>
       <div className={classes.root}>
-        <div style={{ marginLeft: "6.25%" }}>
+        <div style={{ marginLeft: '80px' }}>
           <Link to='/home'>
             <img
               className={classes.navIcon}
@@ -147,23 +110,48 @@ export default function NavTopGlobal() {
           </Link>
         </div>
         {isLogin ? (
-          <div className={classes.menuStyle}>
-            <button onClick={() => dispatch(setShowCarts(true))}>购物车</button>
-            <button onClick={() => dispatch(setShowOrders(true))}>订单</button>
-            <button onClick={() => dispatch(setShowSelfCenter(true))}>
-              个人中心
-            </button>
-            <button onClick={handleLogout}>Log Out</button>
+          <div style={{ marginRight: "5%" }}>
+            <Button
+              classes={{ root: classes.btnStyle }}
+              onClick={() => dispatch(setShowCarts(true))}>
+              {/* <Cart /> */}
+              <div style={{ position: "relative" }}>
+                <Cart className={classes.btnsIcon} />
+                {inShop === true ? (
+                  <div className={classes.alertNum}>{curCartTotProd}</div>
+                ) : (
+                  <div className={classes.alertDot}></div>
+                )}
+              </div>
+            </Button>
+            <Button
+              classes={{ root: classes.btnStyle }}
+              onClick={() => dispatch(setShowOrders(true))}>
+              <div style={{ position: "relative" }}>
+                <Order className={classes.btnsIcon} />
+              </div>
+            </Button>
+            <Button
+              classes={{ root: classes.btnStyle }}
+              onClick={() => dispatch(setShowSelfCenter(true))}>
+              <div style={{ position: "relative" }}>
+                <User className={classes.btnsIcon} />
+              </div>
+            </Button>
           </div>
         ) : (
-          <div className={classes.loginButton}>
-            <button
+          <div style={{ marginRight: "5%" }}>
+            <Button
+              classes={{ root: classes.btnStyle }}
               onClick={() => {
                 dispatch(setShowLogin(true));
                 console.log("login open");
               }}>
-              Login
-            </button>
+              <div className={classes.loginButton}>
+                <User />
+                <div>login</div>
+              </div>
+            </Button>
           </div>
         )}
       </div>

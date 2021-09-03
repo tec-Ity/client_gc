@@ -1,6 +1,6 @@
 import React from "react";
 import CustomModal from "../../../component/global/modal/CustomModal";
-import { Grid, makeStyles, Button } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import CustomButton from "../../../component/global/modal/component/CustomButton";
 import { get_DNS } from "../../../api";
 

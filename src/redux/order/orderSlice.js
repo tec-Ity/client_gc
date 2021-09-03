@@ -19,6 +19,15 @@ const initialState = {
 
   //change status status
   changeStatusStatus: "idle",
+
+  //order selection button status
+  orderBtnSwitch: {
+    paid: true,
+    toPay: true,
+    inProgress: true,
+    completed: false,
+    canceled: false,
+  },
 };
 
 const oSkuObj = {
@@ -27,7 +36,7 @@ const oSkuObj = {
 };
 const prodObj = {
   path: "Prod",
-  select: "img_urls",
+  select: "img_urls desp",
 };
 const ShopObj = {
   path: "Shop",
@@ -37,7 +46,7 @@ const ShopObj = {
 const orderObj = [
   {
     path: "OrderProds",
-    select: "Prod OrderSkus nome unit Shop",
+    select: "Prod OrderSkus nome unit Shop desp",
     populate: [oSkuObj, prodObj],
   },
   ShopObj,
@@ -52,7 +61,8 @@ export const fetchOrders = createAsyncThunk(
     const Orders_res = await fetch_Prom(
       "/Orders?populateObjs=" + JSON.stringify(orderObj) + queryURL
     );
-    console.log(Orders_res)
+    console.log("orderRes", queryURL);
+    console.log("orderRes", Orders_res);
     if (Orders_res.status === 200) {
       if (isReload) {
         return Orders_res.data.objects;
@@ -109,6 +119,10 @@ export const orderSlice = createSlice({
     setIsExpand: (state, action) => {
       state.isExpand = action.payload;
     },
+    setOrderBtnSwitch: (state, action) => {
+      console.log("orderRes", action.payload);
+      state.orderBtnSwitch[action.payload.type] = action.payload.value;
+    },
   },
   extraReducers: {
     [fetchOrders.pending]: (state) => {
@@ -117,12 +131,16 @@ export const orderSlice = createSlice({
     [fetchOrders.fulfilled]: (state, action) => {
       state.ordersStatus = "succeed";
       // state.orders = action.payload;
-      const ordersObjs = [...action.payload];
-      for (let i = 0; i < ordersObjs.length; i++) {
-        const order = ordersObjs[i];
-        if (order.OrderProds.length > 0) {
-          const totPrice = calCartPrice(order.OrderProds);
-          order.totPrice = totPrice;
+      let ordersObjs = [];
+      if (action.payload.length > 0) {
+        ordersObjs = [...action.payload];
+        for (let i = 0; i < ordersObjs.length; i++) {
+          const order = ordersObjs[i];
+          if (order.OrderProds.length > 0) {
+            const { totPrice, totProd } = calCartPrice(order.OrderProds);
+            order.totPrice = totPrice;
+            order.totProd = totProd;
+          }
         }
       }
       state.orders = ordersObjs;
@@ -140,9 +158,9 @@ export const orderSlice = createSlice({
       if (Object.keys(orderObj).length > 0) {
         if (orderObj.OrderProds?.length > 0) {
           //return -1 if sku.price_tot and totPrice has been init
-          const totPrice = calCartPrice(orderObj.OrderProds);
-          console.log("totPrice", totPrice);
+          const { totPrice, totProd } = calCartPrice(orderObj.OrderProds);
           orderObj.totPrice = totPrice !== -1 && totPrice;
+          orderObj.totProd = totProd;
         }
         console.log(orderObj);
         state.curOrder = orderObj;
@@ -164,6 +182,7 @@ export const orderSlice = createSlice({
   },
 });
 
-export const { setShowOrders, setIsExpand } = orderSlice.actions;
+export const { setShowOrders, setIsExpand, setOrderBtnSwitch } =
+  orderSlice.actions;
 
 export default orderSlice.reducer;

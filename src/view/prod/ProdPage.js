@@ -5,15 +5,16 @@ import { get_DNS } from "../../api";
 import { fetchProdById } from "../../redux/shop/shopSlice";
 import { Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { Link } from "react-router-dom";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import ProdListItemControl from "../../component/prodList/itemControl/ProdListItemControl";
-import { fetchCartByShop } from "../../redux/cart/cartSlice";
+import { fetchCartByShop, setInShop } from "../../redux/cart/cartSlice";
 import CustomBgText from "../../component/global/background/CustomBgText";
 import ProdList from "../../component/prodList/ProdList";
 import clsx from "clsx";
 // import { setClickCategFromRemote } from "../../redux/filter/filterSlice";
 import moment from "moment";
+import { ReactComponent as ArrowLeft } from "../../component/icon/chevron-left.svg";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -21,18 +22,26 @@ const useStyle = makeStyles((theme) => ({
     fontSize: "15px",
     color: "#1d1d38",
     position: "relative",
+    // border:'1px solid',
+    overflow: "hidden",
   },
   headerStyle: {
-    height: "73px",
-    marginBottom: "20px",
+    backgroundColor: "transparent",
+    marginLeft: "60px",
+    marginTop: "80px",
+    // height: "px",
+    // marginBottom: "20px",
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
+    fontSize: "14px",
   },
   backStyle: {
+    background: "transparent",
     marginRight: "5%",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     "& :nth-child(1)": {
       height: "20px",
       width: "20px",
@@ -42,7 +51,11 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   backLink: {
-    paddingTop: "1px",
+    textDecoration: "none",
+    color: "#1d1d38",
+    "&:hover": {
+      color: "#1d1d38",
+    },
   },
   bread: {
     "& span": {
@@ -68,9 +81,13 @@ const useStyle = makeStyles((theme) => ({
   },
   imgContainer: {
     display: "flex",
-    justifyContent: "center",
-    maxHeight: "400px",
+    // justifyContent: "center",
+    paddingLeft: "8%",
+    // paddingTop:"7px",
+    maxHeight: "425px",
+    marginTop:'2px',
     overflowY: "scroll",
+    width: "600px",
     alignContent: "flex-start",
     "&::-webkit-scrollbar": {
       display: "none",
@@ -80,21 +97,29 @@ const useStyle = makeStyles((theme) => ({
   imgBox: {
     maxHeight: "86px",
     maxWidth: "86px",
-    height: "auto",
+    height: "100%",
     width: "86px",
     boxSizing: "border-box",
     borderRadius: "5px 5px 5px 0",
-    boxShadow: "0px 0px 30.8463px rgba(0, 0, 0, 0.1)",
-    marginTop: "15%",
+    boxShadow: "0px 0px 10.8463px rgba(0, 0, 0, 0.1)",
+    marginTop: "18px",
+    padding: "5px",
   },
   mainImgBox: {
+    marginTop: "20px",
     maxHeight: "400px",
+    height: "400px",
     width: "400px",
     maxWidth: "400px",
+    padding: "8px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     boxShadow: "0px 0px 30.8463px rgba(0, 0, 0, 0.1)",
     borderRadius: "20.5642px 20.5642px 20.5642px 0px",
   },
   mainImg: {
+    // border:'1px solid',
     width: "98%",
     height: "98%",
     objectFit: "scale-down",
@@ -223,11 +248,11 @@ export default function ProdPage() {
   const dispatch = useDispatch();
   const curProd = useSelector((state) => state.shop.curProd);
   const curProdStatus = useSelector((state) => state.shop.curProdStatus);
-  // const categStatus = useSelector((state) => state.shop.categStatus);
   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   const classes = useStyle();
 
   React.useEffect(() => {
+    dispatch(setInShop(true));
     const fetchProd = () => {
       if (
         //first time fetch
@@ -245,6 +270,9 @@ export default function ProdPage() {
       }
     };
     fetchProd();
+    return () => {
+      dispatch(setInShop(false));
+    };
   }, [_id, curProd, curProdStatus, dispatch]);
 
   React.useEffect(() => {
@@ -260,41 +288,39 @@ export default function ProdPage() {
   }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
 
   return (
-    <Container className={classes.root} maxWidth={false} disableGutters>
-      <div className={classes.bgMain}></div>
-      <div className={classes.bgTest}></div>
-
+    <>
       {/* header */}
-      <Container>
+      <Container maxWidth={false} style={{ background: "transparent" }}>
         <div className={classes.headerStyle}>
           {/* back link */}
           <div className={classes.backStyle}>
-            <div>
-              <ArrowBackIcon />
-            </div>
-            <div className={classes.backLink} onClick={() => hist.goBack()}>
+            <ArrowLeft />
+            &nbsp;
+            <Link className={classes.backLink} onClick={() => hist.goBack()}>
               BACK
-            </div>
+            </Link>
           </div>
           {/* bread nav */}
           {curProdStatus === "succeed" && (
             <div className={classes.bread}>
-              <span
+              <Link
+                className={classes.backLink}
                 onClick={() => {
                   dispatch();
                   // setClickCategFromRemote(curProd.Categs[0].Categ_far._id)
                   hist.goBack();
                 }}>
                 {curProd.Categ.Categ_far.code}
-              </span>
+              </Link>
               <span> &gt; </span>
-              <span
+              <Link
+                className={classes.backLink}
                 onClick={() => {
                   // dispatch(setClickCategFromRemote(curProd.Categs[0]._id));
                   hist.goBack();
                 }}>
                 {curProd.Categ.code}
-              </span>
+              </Link>
               <span> &gt; </span>
               <span>{curProd.nome}</span>
             </div>
@@ -302,177 +328,190 @@ export default function ProdPage() {
         </div>
       </Container>
 
-      {curProdStatus === "succeed" && (
-        <>
-          {/* prod img & attr */}
-          <Container className={classes.prodInfoContainer} disableGutters>
-            <Grid container justifyContent='space-evenly'>
-              {/* ------------side imgs ------------*/}
-              <Grid container item className={classes.imgContainer} xs={1}>
-                {curProd.img_urls?.map((img) => {
-                  return (
-                    <Grid item xs={12} key={img} className={classes.imgBox}>
-                      <img
-                        className={classes.mainImg}
-                        src={get_DNS() + img}
-                        alt={curProd.code}
-                      />
-                    </Grid>
-                  );
-                })}
-              </Grid>
+      <Container className={classes.root} disableGutters>
+        <div className={classes.bgMain}></div>
+        <div className={classes.bgTest}></div>
 
-              {/* ------------main imgs------------ */}
-              <Grid item xs={5} className={classes.mainImgBox}>
-                <img
-                  className={classes.mainImg}
-                  src={get_DNS() + curProd.img_urls[0]}
-                  alt={curProd.code}
-                />
-              </Grid>
-              {/* ------------detail------------ */}
+        {curProdStatus === "succeed" && (
+          <>
+            {/* prod img & attr */}
+            <Container className={classes.prodInfoContainer} disableGutters>
               <Grid
                 container
-                item
-                xs={6}
-                alignContent='space-between'
-                className={classes.prodDetailBox}>
-                <Grid container item xs={12}>
-                  {/* +++ name and hr+++ */}
-                  <Grid item xs={12} className={classes.prodDetailNameBox}>
-                    <div>{curProd.nome}</div>
-                    <CustomHr />
-                  </Grid>
-                  {/* +++attr and price section+++ */}
-                  <Grid container item xs={12} spacing={1}>
-                    {curProd.Attrs.map((attr) => {
-                      // +++ attr row +++
-                      return (
-                        <Grid
-                          container
-                          item
-                          xs={12}
-                          key={attr.nome}
-                          className={classes.attrRow}>
-                          <Grid container item xs={4}>
-                            {attr.nome}
-                          </Grid>
+                justifyContent='space-evenly'
+                style={{ paddingTop: "20px" }}>
+                {/* ------------side imgs ------------*/}
+                <Grid container item className={classes.imgContainer} xs={2}>
+                  {curProd.img_urls?.map((img) => {
+                    return (
+                      <Grid item xs={12} key={img} className={classes.imgBox}>
+                        <img
+                          className={classes.mainImg}
+                          src={get_DNS() + img}
+                          alt={curProd.code}
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+
+                {/* ------------main imgs------------ */}
+                <Grid item xs={5} className={classes.mainImgBox}>
+                  <img
+                    className={classes.mainImg}
+                    src={get_DNS() + curProd.img_urls[0]}
+                    alt={curProd.code}
+                  />
+                </Grid>
+                {/* ------------detail------------ */}
+                <Grid
+                  container
+                  item
+                  xs={5}
+                  alignContent='space-between'
+                  className={classes.prodDetailBox}>
+                  <Grid container item xs={12}>
+                    {/* +++ name and hr+++ */}
+                    <Grid item xs={12} className={classes.prodDetailNameBox}>
+                      <div>{curProd.nome}</div>
+                      <CustomHr />
+                    </Grid>
+                    {/* +++attr and price section+++ */}
+                    <Grid container item xs={12} spacing={1}>
+                      {curProd.Attrs.map((attr) => {
+                        // +++ attr row +++
+                        return (
                           <Grid
                             container
                             item
-                            xs={8}
-                            className={classes.attrList}>
-                            {attr.options.map((op) => {
-                              return (
-                                <Grid item xs={3}>
-                                  {op}
-                                </Grid>
-                              );
-                            })}
+                            xs={12}
+                            key={attr.nome}
+                            className={classes.attrRow}>
+                            <Grid container item xs={4}>
+                              {attr.nome}
+                            </Grid>
+                            <Grid
+                              container
+                              item
+                              xs={8}
+                              className={classes.attrList}>
+                              {attr.options.map((op) => {
+                                return (
+                                  <Grid item xs={3}>
+                                    {op}
+                                  </Grid>
+                                );
+                              })}
+                            </Grid>
                           </Grid>
+                        );
+                      })}
+                      {curProd.Attrs.length > 0 && (
+                        <Grid item xs={12}>
+                          <CustomHr />
                         </Grid>
-                      );
-                    })}
-                    {curProd.Attrs.length > 0 && (
-                      <Grid item xs={12}>
-                        <CustomHr />
-                      </Grid>
-                    )}
-                    {/* +++ price +++ */}
-                    <Grid container item xs={12} className={classes.attrRow}>
-                      <Grid container item xs={4}>
-                        <div className={classes.priceStyle}>PREZZO</div>
-                      </Grid>
-                      <Grid container item xs={8} className={classes.attrList}>
-                        {curProd.price_max === curProd.price_min ? (
-                          <div className={classes.priceStyle}>
-                            €{curProd.price.toFixed(2)}
-                          </div>
-                        ) : (
-                          <div className={classes.priceStyle}>
-                            <span>€{curProd.price_min.toFixed(2)}</span>
-                            <span>~</span>
-                            <span>€{curProd.price_max.toFixed(2)}</span>
-                          </div>
-                        )}
+                      )}
+                      {/* +++ price +++ */}
+                      <Grid container item xs={12} className={classes.attrRow}>
+                        <Grid container item xs={4}>
+                          <div className={classes.priceStyle}>PREZZO</div>
+                        </Grid>
+                        <Grid
+                          container
+                          item
+                          xs={8}
+                          className={classes.attrList}>
+                          {curProd.price_max === curProd.price_min ? (
+                            <div className={classes.priceStyle}>
+                              €{curProd.price.toFixed(2)}
+                            </div>
+                          ) : (
+                            <div className={classes.priceStyle}>
+                              <span>€{curProd.price_min.toFixed(2)}</span>
+                              <span>~</span>
+                              <span>€{curProd.price_max.toFixed(2)}</span>
+                            </div>
+                          )}
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-                <Grid container item xs={12} className={classes.btnStyle}>
-                  <ProdListItemControl prod={curProd} />
+                  <Grid container item xs={12} className={classes.btnStyle}>
+                    <ProdListItemControl prod={curProd} />
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </Container>
+            </Container>
 
-          {/*prod desp & recommendation & background  */}
-          <Container className={classes.moreInfoContainer}>
-            <Grid container style={{ marginTop: "60px" }}>
-              <Grid container item xs={12} className={classes.gridItem}>
-                <div style={{ position: "relative" }}>
-                  <CustomBgText
-                    label='Caratteristiche del prodotto'
-                    style={{
-                      box: classes.titleBox,
-                      bg: classes.titleBg,
-                    }}
+            {/*prod desp & recommendation & background  */}
+            <Container className={classes.moreInfoContainer}>
+              <Grid container style={{ marginTop: "60px" }}>
+                <Grid container item xs={12} className={classes.gridItem}>
+                  <div style={{ position: "relative" }}>
+                    <CustomBgText
+                      label='Caratteristiche del prodotto'
+                      style={{
+                        box: classes.titleBox,
+                        bg: classes.titleBg,
+                      }}
+                    />
+                  </div>
+                </Grid>
+                <Grid container item xs={12} className={classes.gridItem}>
+                  <div className={classes.desp}>
+                    Di origine ancora piuttosto incerta (sembra provenire dalla
+                    Siberia), il gruppo delle insalate era già conosciuto e
+                    coltivato dai Romani, che, ritenendole piuttosto insipide,
+                    preferivano consumarle associandole a foglie aromatizzanti
+                    di rucola. Pianta a ciclo di coltivazione annuale,
+                    appartenente alla famiglia delle Composite, l'iceberg
+                    presenta un apparato radicale superficiale, con fusto breve
+                    e carnoso su cui si inseriscono le foglie. Per quanto
+                    riguarda il terreno, questa specie vegetale non ha esigenze
+                    particolari e si adatta bene sia ai terreni sabbiosi che a
+                    quelli argillosi. L'iceberg appartiene alla subspecie
+                    capitata, caratterizzata da grumoli rotondeggianti, più o
+                    meno compatti e foglie lisce.
+                  </div>
+                </Grid>
+                <Grid container item xs={12} className={classes.gridItem}>
+                  <div style={{ position: "relative" }}>
+                    <CustomBgText
+                      label='Ti potrebbe interessare'
+                      style={{
+                        box: classes.titleBoxRec,
+                        bg: classes.titleBgRec,
+                      }}
+                    />
+                  </div>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  className={clsx(classes.gridItem, classes.prodRow)}>
+                  <ProdList
+                    type={null}
+                    queryURL={
+                      "?Categs=" +
+                      [curProd.Categ._id] +
+                      "&Shops=" +
+                      curProd.Shop._id +
+                      "&pagesize=4" +
+                      "&upd_after=" +
+                      moment(curProd.at_crt).format("MM/DD/YYYY") +
+                      "&excludes=" +
+                      [curProd._id] +
+                      "&sortKey=at_upd&sortVal=1"
+                    }
                   />
-                </div>
+                  {/* {console.log(moment(curProd.at_crt).format("MM/DD/YYYY"))} */}
+                </Grid>
               </Grid>
-              <Grid container item xs={12} className={classes.gridItem}>
-                <div className={classes.desp}>
-                  Di origine ancora piuttosto incerta (sembra provenire dalla
-                  Siberia), il gruppo delle insalate era già conosciuto e
-                  coltivato dai Romani, che, ritenendole piuttosto insipide,
-                  preferivano consumarle associandole a foglie aromatizzanti di
-                  rucola. Pianta a ciclo di coltivazione annuale, appartenente
-                  alla famiglia delle Composite, l'iceberg presenta un apparato
-                  radicale superficiale, con fusto breve e carnoso su cui si
-                  inseriscono le foglie. Per quanto riguarda il terreno, questa
-                  specie vegetale non ha esigenze particolari e si adatta bene
-                  sia ai terreni sabbiosi che a quelli argillosi. L'iceberg
-                  appartiene alla subspecie capitata, caratterizzata da grumoli
-                  rotondeggianti, più o meno compatti e foglie lisce.
-                </div>
-              </Grid>
-              <Grid container item xs={12} className={classes.gridItem}>
-                <div style={{ position: "relative" }}>
-                  <CustomBgText
-                    label='Ti potrebbe interessare'
-                    style={{
-                      box: classes.titleBoxRec,
-                      bg: classes.titleBgRec,
-                    }}
-                  />
-                </div>
-              </Grid>
-              <Grid
-                container
-                item
-                xs={12}
-                className={clsx(classes.gridItem, classes.prodRow)}>
-                <ProdList
-                  type={null}
-                  queryURL={
-                    "?Categs=" +
-                    [curProd.Categ._id] +
-                    "&Shops=" +
-                    curProd.Shop._id +
-                    "&pagesize=4" +
-                    "&upd_after=" +
-                    moment(curProd.at_crt).format("MM/DD/YYYY") +
-                    "&excludes=" +
-                    [curProd._id] +
-                    "&sortKey=at_upd&sortVal=1"
-                  }
-                />
-                {/* {console.log(moment(curProd.at_crt).format("MM/DD/YYYY"))} */}
-              </Grid>
-            </Grid>
-          </Container>
-        </>
-      )}
-    </Container>
+            </Container>
+          </>
+        )}
+      </Container>
+    </>
   );
 }

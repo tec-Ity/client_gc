@@ -166,7 +166,7 @@ export default function ShopSideBarUI(props) {
         sideBar.current.style.top = "100px";
         setScrollNav(true);
       } else {
-        if (sideBar.current.style.position === "fixed") {
+        if (sideBar.current && sideBar.current.style.position === "fixed") {
           sideBar.current.style.position = "static";
           setScrollNav(false);
         }
@@ -212,7 +212,7 @@ export default function ShopSideBarUI(props) {
         } else {
           return (
             <ul>
-              <li>暂无子分类</li>
+              <li key='noChild'>暂无子分类</li>
             </ul>
           );
         }
@@ -226,12 +226,11 @@ export default function ShopSideBarUI(props) {
       categs &&
       categs?.map((categ) => {
         return (
-          <>
+          <React.Fragment key={categ._id}>
             <ListItem
               classes={{ root: classes.liStyle }}
               button
               selected={selFirstCateg === categ._id}
-              key={categ._id}
               id={categ._id + "categBar"}
               onClick={() => {
                 selFirstCateg !== categ._id
@@ -247,7 +246,7 @@ export default function ShopSideBarUI(props) {
               unmountOnExit>
               {childrenList(categ._id)}
             </Collapse>
-          </>
+          </React.Fragment>
         );
       });
     setCategList(categList);
@@ -327,9 +326,6 @@ export default function ShopSideBarUI(props) {
       <CustomHr position={classes.customHr} />
       <div
         ref={scrollList}
-        // style={{
-        //   height: 0.8*(window.innerHeight - sideBar.current.getBoundingClientRect().top),
-        // }}
         className={
           scrollNav === true ? classes.scrollNavStyle : classes.staticNavStyle
         }>

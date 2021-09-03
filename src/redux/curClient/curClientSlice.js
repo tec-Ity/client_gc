@@ -34,19 +34,28 @@ export const fetchCurClientInfo = createAsyncThunk(
 );
 
 export const fetchPutCurClient = createAsyncThunk(
-  'curClient/fetchPutCurClient',
-  async({type,value},{rejectWithValue})=>{
+  "curClient/fetchPutCurClient",
+  async ({ type, value }, { rejectWithValue }) => {
+    const obj = {};
+    // console.log("type", typeof type);
+    // console.log("value", value);
     switch (type) {
-      case 'name':
-        const nameRes = await fetch_Prom('/ClientPut', 'PUT', )
-        break;
-    
+      case "nome":
+        obj.nome = value;
+        // console.log("obj", obj);
+        const nameRes = await fetch_Prom("/ClientPut", "PUT", { obj });
+        console.log(nameRes);
+        if (nameRes.status === 200) {
+          return nameRes.data.object;
+        } else {
+          return rejectWithValue(nameRes.message);
+        }
+
       default:
         break;
     }
-
   }
-)
+);
 
 export const curClientSlice = createSlice({
   name: "curClient",
@@ -80,6 +89,16 @@ export const curClientSlice = createSlice({
       state.curClientInfo = action.payload;
     },
     [fetchCurClientInfo.rejected]: (state, action) => {
+      state.curClientInfoStatus = "error";
+    },
+    [fetchPutCurClient.pending]: (state) => {
+      state.curClientInfoStatus = "loading";
+    },
+    [fetchPutCurClient.fulfilled]: (state, action) => {
+      state.curClientInfoStatus = "succeed";
+      state.curClientInfo = action.payload;
+    },
+    [fetchPutCurClient.rejected]: (state, action) => {
       state.curClientInfoStatus = "error";
     },
   },

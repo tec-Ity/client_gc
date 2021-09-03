@@ -17,7 +17,6 @@ const useStyle = makeStyles((theme) => ({
   root: {
     fontFamily: "Montserrat",
     color: "#1d1d38",
-    // marginBottom: "1000px",
   },
   headerStyle: {
     height: "73px",
@@ -47,7 +46,6 @@ const useStyle = makeStyles((theme) => ({
     borderRadius: "20px 20px 20px 0px",
   },
   gridStyle: {
-    // border: "1px solid",
     padding: theme.spacing(3),
     height: "100%",
     alignContent: "flex-start",
@@ -145,8 +143,8 @@ export default function DetailCard(props) {
     header,
     isOrder = false,
     isCart = false,
-    showOrderDetail,
-    showDeliveryDetail,
+    // showOrderDetail,
+    // showDeliveryDetail,
     handleFunc,
     paymentMethod = null,
   } = props;
@@ -176,7 +174,10 @@ export default function DetailCard(props) {
               justifyContent='center'
               alignItems='center'
               style={{ minHeight: "150px" }}>
-              <div style={{ height: "80px", width: "80px", border:'1px solid' }}>{orderLogo}</div>
+              <div
+                style={{ height: "80px", width: "80px", border: "1px solid" }}>
+                {orderLogo}
+              </div>
             </Grid>
           )}
           {/* order detail */}

@@ -3,7 +3,6 @@ import { useHistory, useParams } from "react-router";
 import ShopSideBar from "./ShopSideBar/ShopSideBar";
 import ShopBanner from "./ShopBanner";
 import ShopProdSection from "./shopProdSection/ShopProdSection";
-// import ShopSelection from "./ShopSelection";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   fetchProdList,
@@ -12,11 +11,12 @@ import {
   fetchCurShopInfo,
 } from "../../redux/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCartByShop, setIsExpand } from "../../redux/cart/cartSlice";
+import {
+  fetchCartByShop,
+  setInShop,
+  setIsExpand,
+} from "../../redux/cart/cartSlice";
 import { Container, Grid } from "@material-ui/core";
-// import DemoSideBar from "./DemoSideBar";
-// import { setClickCategFromRemote } from "../../redux/filter/filterSlice";
-
 const useStyle = makeStyles((theme) => ({
   root: {
     position: "absolute",
@@ -24,6 +24,7 @@ const useStyle = makeStyles((theme) => ({
     minWidth: "640px",
     left: "0",
     right: "0",
+    overflow: "hidden",
   },
   mainSecStyle: {
     padding: "50px",
@@ -47,16 +48,12 @@ export default function ShopPage() {
   const curShopInfoStatus = useSelector(
     (state) => state.shop.curShopInfoStatus
   );
-  // const curShop = useSelector((state) => state.shop.curShop);
 
   useEffect(() => {
-    // console.log('shopPage')
     // 会渲染好几次sideBar并console好几次
-    if (prevShopId !== _id) {
-      // console.log("enter new shop");
-      //call cart
-      // console.log("curCartStatus", curCartStatus);
+    dispatch(setInShop(true));
 
+    if (prevShopId !== _id) {
       //shopInfo
       (curShopInfoStatus === "idle" || curShopInfoStatus === "error") &&
         dispatch(fetchCurShopInfo(_id));
@@ -74,6 +71,9 @@ export default function ShopPage() {
         dispatch(setIsExpand(_id));
       }
     }
+    return () => {
+      dispatch(setInShop(false));
+    };
   }, [
     _id,
     categStatus,

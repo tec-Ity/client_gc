@@ -10,9 +10,9 @@ const useStyle = makeStyles((theme) => ({
     height: "200px",
     marginBottom: "21px",
     display: "flex",
-    flexDirection:'column',
-    alignItems:'center',
-    color:'#1d1d38'
+    flexDirection: "column",
+    alignItems: "center",
+    color: "#1d1d38",
   },
   titleStyle: {
     width: "100%",
@@ -52,10 +52,10 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function ExpandTilte(props) {
+export default function ExpandTitle(props) {
   const { title } = props;
   const classes = useStyle();
-  console.log("title", title);
+  // console.log("title", title);
   return (
     <>
       {title.desp && (

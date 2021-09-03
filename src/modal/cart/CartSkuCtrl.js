@@ -44,6 +44,13 @@ const useStyle = makeStyles((theme) => ({
       borderColor: "white",
     },
   },
+  btnLeft: {
+    position: "relative",
+    left: "3.5px",
+    bottom: "2px",
+    fontFamily: "Montserrat",
+    fontWeight: "700",
+  },
 }));
 
 export default function CartSkuCtrl({ oSku }) {
@@ -60,14 +67,7 @@ export default function CartSkuCtrl({ oSku }) {
             fetchSkuPut({ orderSkuId: oSku?._id, Qty: oSku?.quantity - 1 })
           )
         }>
-        <span
-          style={{
-            position: "relative",
-            left: "3.5px",
-            bottom: "2px",
-            fontFamily: "Montserrat",
-            fontWeight: "700",
-          }}>
+        <span>
           {oSku?.quantity === 1 ? (
             <svg
               width='9'

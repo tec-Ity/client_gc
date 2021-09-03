@@ -44,7 +44,7 @@ export default function CartModal() {
   }, [cartsStatus, dispatch]);
 
   useEffect(() => {
-    console.log(isExpand);
+    // console.log(isExpand);
     if (isExpand) {
       if (curCartStatus === "idle") {
         dispatch(fetchCartByShop(curShop));
@@ -56,7 +56,7 @@ export default function CartModal() {
     }
   }, [curCartStatus, curShop, dispatch, isExpand]);
 
-  console.log(curCartStatus);
+  // console.log(curCartStatus);
 
   const displayCarts = () => {
     let cartsTemp;
@@ -78,7 +78,6 @@ export default function CartModal() {
     } else {
       //show carts
       if (cartsStatus === "succeed") {
-        console.log(1111111);
         if (carts?.length > 0) {
           const cartsValid = carts.filter((cart) => {
             return cart.OrderProds.length > 0;

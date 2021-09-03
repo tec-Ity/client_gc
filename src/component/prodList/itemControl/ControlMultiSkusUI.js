@@ -1,7 +1,7 @@
 import React from "react";
 import CustomHr from "../../global/modal/component/CustomHr";
 import CustomButton from "../../global/modal/component/CustomButton";
-import { Container, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 

@@ -3,7 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import { Container } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+// import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { ReactComponent as ArrowLeft } from "../../component/icon/chevron-left.svg";
+
 import { useSelector } from "react-redux";
 const useStyle = makeStyles((theme) => ({
   root: {},
@@ -26,18 +28,18 @@ const useStyle = makeStyles((theme) => ({
     width: "250px",
     height: "15px",
     textDecoration: "none",
-    left: "76px",
+    left: "45px",
     top: "38px",
-    fontSize: "15px",
-    color: "white",
+    fontSize: "12px",
     // lineHeight: "15px",
+    color: "#1d1d38",
     "&:visited": {
-      color: "white",
+      color: "#1d1d38",
     },
   },
   shopDetailBox: {
     position: "absolute",
-    left: "60",
+    left: "85px",
     top: "112px",
     width: "499px",
     height: "156px",
@@ -84,8 +86,8 @@ export default function ShopBanner() {
   return (
     <Container maxWidth={false} className={classes.bannerStyle}>
       <Link to='/home' className={classes.backLink}>
-        <ArrowBackIcon />
-        DIETRO A TUTTI I NEGOZI
+        <ArrowLeft style={{ width: "20px", height: "20px" }} /> &nbsp; DIETRO A
+        TUTTI I NEGOZI
       </Link>
       <div className={classes.shopDetailBox}>
         <div className={classes.shopInfo}>

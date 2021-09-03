@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { goBack } from "../../redux/filter/filterSlice";
 import ProdList from "../prodList/ProdList";
-import ExpandTitle from "./Tilte";
+import ExpandTitle from "./ExpandTitle";
 import Container from "@material-ui/core/Container";
 import CustomButton from "../global/modal/component/CustomButton";
 

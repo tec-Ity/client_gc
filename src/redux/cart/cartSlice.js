@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current} from "@reduxjs/toolkit";
 import { fetch_Prom } from "../../api";
 
 const initialState = {
@@ -168,8 +168,8 @@ export const fetchProofOrder = createAsyncThunk(
 );
 
 export const calCartPrice = (OrderProds) => {
-  // console.log(22);
   let totPrice = 0;
+  let totProd = 0;
   for (let i = 0; i < OrderProds.length; i++) {
     // console.log(33);
     const op = OrderProds[i];
@@ -183,9 +183,10 @@ export const calCartPrice = (OrderProds) => {
         const totSkuPrice = oSku.price * oSku.quantity;
         oSku.price_tot = totSkuPrice;
         totPrice += totSkuPrice;
+        totProd += oSku.quantity;
       }
   }
-  return totPrice;
+  return { totPrice, totProd };
 };
 
 const unshiftCart = (carts, curCart) => {
@@ -230,8 +231,9 @@ export const cartSlice = createSlice({
       for (let i = 0; i < cartsObjs.length; i++) {
         const cart = cartsObjs[i];
         if (cart.OrderProds.length > 0) {
-          const totPrice = calCartPrice(cart.OrderProds);
+          const { totPrice, totProd } = calCartPrice(cart.OrderProds);
           cart.totPrice = totPrice;
+          cart.totProd = totProd;
         }
       }
       state.carts = cartsObjs;
@@ -250,8 +252,9 @@ export const cartSlice = createSlice({
       const cartObj = { ...action.payload };
       // console.log(cartObj);
       if (cartObj.OrderProds?.length > 0) {
-        const totPrice = calCartPrice(cartObj.OrderProds);
+        const { totPrice, totProd } = calCartPrice(cartObj.OrderProds);
         cartObj.totPrice = totPrice;
+        cartObj.totProd = totProd;
       }
       state.curCart = cartObj;
     },
@@ -267,13 +270,10 @@ export const cartSlice = createSlice({
       const cartObj = { ...action.payload };
       if (Object.keys(cartObj).length > 0) {
         if (cartObj.OrderProds?.length > 0) {
-          // console.log(11);
-          //return -1 if sku.price_tot and totPrice has been init
-          const totPrice = calCartPrice(cartObj.OrderProds);
-          // console.log("totPrice", totPrice);
-          cartObj.totPrice = totPrice !== -1 && totPrice;
+          const { totPrice, totProd } = calCartPrice(cartObj.OrderProds);
+          cartObj.totPrice = totPrice;
+          cartObj.totProd = totProd;
         }
-        // console.log(cartObj);
         state.curCart = cartObj;
       }
     },
@@ -309,7 +309,7 @@ export const cartSlice = createSlice({
             OrderProd.OrderSkus = [OrderSku];
             // console.log("case", OrderProd);
             curCart.OrderProds.unshift(OrderProd);
-            // console.log("case", current(curCart.OrderProds));
+            console.log("case", current(curCart.OrderProds));
           }
           break;
         //add new Cart

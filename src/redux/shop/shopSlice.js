@@ -48,7 +48,7 @@ export const fetchCurShopInfo = createAsyncThunk(
   "shop/fetchCurShopInfo",
   async (_id, { rejectWithValue }) => {
     const shopInfoRes = await fetch_Prom("/Shop/" + _id);
-    console.log("shopInfoRes", shopInfoRes);
+    // console.log("shopInfoRes", shopInfoRes);
     if (shopInfoRes.status === 200) {
       return shopInfoRes.data.object;
     } else return rejectWithValue(shopInfoRes.message);
@@ -216,7 +216,7 @@ export const shopSlice = createSlice({
     },
     [fetchProdList.fulfilled]: (state, action) => {
       state.prodStatus = "succeed";
-      console.log("fulfilled", action.payload);
+      // console.log("fulfilled", action.payload);
       state.prodList = action.payload;
     },
     [fetchProdList.rejected]: (state, action) => {

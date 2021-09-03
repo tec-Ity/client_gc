@@ -16,6 +16,8 @@ import china from "../../component/icon/china.svg";
 import italy from "../../component/icon/italy.svg";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import InputModify from "../../component/input/InputModify";
+import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
+import { logout_Prom } from "../../api";
 
 export default function SelfCenterModal() {
   const dispatch = useDispatch();
@@ -27,7 +29,6 @@ export default function SelfCenterModal() {
     addr: false,
     pwd: false,
   };
-
   const [showSubModal, setShowSubModal] = useState(initialShowSubModal);
   const [showMainModal, setShowMainModal] = useState(true);
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
@@ -35,9 +36,22 @@ export default function SelfCenterModal() {
   const curClientInfoStatus = useSelector(
     (state) => state.curClient.curClientInfoStatus
   );
-
   const [tempInfo, setTempInfo] = useState(curClientInfo);
 
+  useEffect(() => {
+    if (localStorage.getItem("thirdPartyLogin")) {
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "./thirdPartyLogin.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "ThirdPartyLogin");
+    }
+  }, []);
+  
   const handleCloseAll = () => {
     dispatch(setShowSelfCenter(false));
   };
@@ -56,9 +70,9 @@ export default function SelfCenterModal() {
     setTempInfo((prev) => ({ ...prev, [section]: value }));
   };
 
-  const handleSubmit = ()=>{
-    
-  }
+  const handleSubmit = (section) => () => {
+    dispatch(fetchPutCurClient({ type: section, value: tempInfo[section] }));
+  };
 
   //fetch cur Client info
   useEffect(() => {
@@ -154,7 +168,9 @@ export default function SelfCenterModal() {
               xs={12}
               className={clsx(classes.gridItemStyle, classes.logoutRow)}>
               <div>User Center</div>
-              <Link onClick={() => ""}>LOG OUT</Link>
+              <Link to='#' onClick={handleLogout}>
+                LOG OUT
+              </Link>
             </Grid>
           </CardWraper>
         )}
@@ -166,8 +182,10 @@ export default function SelfCenterModal() {
           label='Modifica il tuo nome:'>
           <InputModify
             value={tempInfo.nome || ""}
-            placeholder={!tempInfo.nome && "Add your name"}
+            iconType='done'
+            placeholder={tempInfo.nome ? null : "Add your name"}
             handleChange={(value) => handleChange("nome", value)}
+            handleFunc={handleSubmit("nome")}
           />
         </RowModal>
       )}
@@ -278,6 +296,65 @@ const LanguageRow = () => {
       </div>
     </Grid>
   );
+};
+
+const handleLogout = async () => {
+  const tpl = localStorage.getItem("thirdPartyLogin");
+  switch (tpl) {
+    case "facebook":
+      window.FB.getLoginStatus(async function (response) {
+        console.log(response);
+        window.FB.logout(function (response) {
+          console.log(response);
+          async function func() {
+            const result = await logout_Prom();
+            if (result.status !== 200) {
+              alert(result.message);
+            }
+            // setRefresh(r=>r+1)
+          }
+          func();
+        });
+      });
+      return;
+    case "google":
+      var auth2;
+      window.gapi.load("auth2", function () {
+        /**
+         * Retrieve the singleton for the GoogleAuth library and set up the
+         * client.
+         */
+        async function authInit() {
+          auth2 = await window.gapi.auth2.init({
+            client_id: localStorage.getItem("google"),
+          });
+
+          console.log(auth2);
+          auth2 = window.gapi.auth2.getAuthInstance();
+          console.log(auth2);
+          auth2.signOut().then(function () {
+            console.log("用户注销成功");
+            async function func() {
+              const result = await logout_Prom();
+              if (result.status !== 200) {
+                alert(result.message);
+              }
+            }
+            func();
+          });
+        }
+        authInit();
+      });
+
+      return;
+
+    default:
+      const result = await logout_Prom();
+      if (result.status !== 200) {
+        alert(result.message);
+      }
+      return;
+  }
 };
 
 const useStyle = makeStyles({

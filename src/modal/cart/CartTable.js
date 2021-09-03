@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  useSelector,
+  // useSelector,
   //  useDispatch
 } from "react-redux";
 // import { fetchSkuPut } from "../../redux/cart/cartSlice";
@@ -122,7 +122,7 @@ export default function CartTable(props) {
     const rows = [];
     for (let i = 0; i < OrderProds.length; i++) {
       const op = OrderProds[i];
-      console.log('op',op)
+      // console.log('op',op)
       const img = op.Prod?.img_urls?.length > 0 && op.Prod.img_urls[0];
       // console.log(op);
       // console.log("img", img);

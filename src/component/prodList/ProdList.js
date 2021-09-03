@@ -6,7 +6,7 @@ import ProdListItem from "./ProdListItem";
 
 
 export default function ProdList(props) {
-  const { style = "card", queryURL, type = "expand" } = props;
+  const { style = "card", queryURL, type = "expand",prods } = props;
   const dispatch = useDispatch();
   const prodListQuery = useSelector((state) => state.shop.prodListQuery);
   const prodStatusQuery = useSelector((state) => state.shop.prodStatusQuery);
@@ -52,7 +52,7 @@ export default function ProdList(props) {
 
   return (
     <Grid container justifyContent='flex-start' alignItems='center' spacing={6}>
-      {queryURL ? displayResult() : getProdList(props.prods)}
+      {queryURL ? displayResult() : getProdList(prods)}
     </Grid>
   );
 }

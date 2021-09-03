@@ -4,7 +4,7 @@ import ProdListItemControl from "./itemControl/ProdListItemControl";
 import CustomHr from "../global/modal/component/CustomHr";
 import { Grid, Paper } from "@material-ui/core";
 import api_DNS from "../../conf/dns";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -120,7 +120,7 @@ export default function ProdListItem(props) {
                 {prod.img_urls && (
                   <img
                     className={classes.img}
-                    src={api_DNS + prod.img_urls}
+                    src={api_DNS + prod.img_urls[0]}
                     alt={prod.nome}
                   />
                 )}
