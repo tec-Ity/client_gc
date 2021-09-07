@@ -16,7 +16,7 @@ const useStyle = makeStyles((theme) => ({
     height: "40px",
   },
   titleText: {
-    fontSize: "30px",
+    fontSize: "20px",
     fontFamily: "Montserrat",
     fontWeight: "700",
     position: "absolute",

@@ -114,7 +114,7 @@ export const fetchProdListQuery = createAsyncThunk(
   async (query) => {
     // console.log(ProdPop);
     if (query) {
-      console.log("query", query);
+      // console.log("query", query);
       const prodsRes = await fetch_Prom(
         "/Prods?" + query + "&populateObjs=" + JSON.stringify(prodPopObj)
       );
@@ -137,7 +137,7 @@ export const fetchProdById = createAsyncThunk(
   async (_id, { getState, rejectWithValue }) => {
     //search prodListHome
     const prodList = getState().shop.prodList;
-    console.log(prodList);
+    // console.log(prodList);
     if (prodList.length > 0) {
       for (let i = 0; i < prodList.length; i++) {
         const foundProd = prodList[i].list.find((prod) => {
@@ -168,7 +168,7 @@ export const fetchProdById = createAsyncThunk(
     const prodRes = await fetch_Prom(
       "/Prod/" + _id + "?populateObjs=" + JSON.stringify(prodPopObj)
     );
-    console.log(prodRes);
+    console.log("prodRes", prodRes);
     if (prodRes.status === 200) {
       return prodRes.data.object;
     } else return rejectWithValue(prodRes.message);

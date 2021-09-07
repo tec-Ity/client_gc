@@ -93,7 +93,13 @@ const useStyle = makeStyles((props) => ({
 }));
 
 export default function CartCard(props) {
-  const { cart, count = 3, isExpand = null, handleBtn = null } = props;
+  const {
+    cart,
+    count = 3,
+    isExpand = null,
+    handleBtn = null,
+    orderCard,
+  } = props;
   const { Shop, OrderProds } = cart;
   const dispatch = useDispatch();
   const hist = useHistory();
@@ -134,7 +140,12 @@ export default function CartCard(props) {
         </div>
       </Grid>
       <Grid item className={classes.gridItem}>
-        <CartTable OrderProds={OrderProds} count={count} isExpand={isExpand} />
+        <CartTable
+          orderCard={orderCard}
+          OrderProds={OrderProds}
+          count={count}
+          isExpand={isExpand}
+        />
       </Grid>
       {isExpand ? (
         <>

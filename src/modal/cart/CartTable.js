@@ -1,9 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  // useSelector,
-  //  useDispatch
-} from "react-redux";
+import // useSelector,
+//  useDispatch
+"react-redux";
 // import { fetchSkuPut } from "../../redux/cart/cartSlice";
 import CartSkuCtrl from "./CartSkuCtrl";
 import { get_DNS } from "../../api";
@@ -24,6 +23,7 @@ const useStyle = makeStyles((theme) => ({
   },
   tableRow: {
     fontSize: "15px",
+    fontWeight: "400",
     textAlign: "center",
     marginTop: "10px",
     "& :nth-child(1)": {
@@ -38,6 +38,9 @@ const useStyle = makeStyles((theme) => ({
         fontSize: "12.5px",
       },
     },
+    "& :nth-child(4)": {
+      fontWeight: "700",
+    },
   },
   imgStyle: {
     display: "block",
@@ -45,9 +48,12 @@ const useStyle = makeStyles((theme) => ({
     height: "80px",
     width: "80px",
     margin: "auto",
-    background: "#c0e57b4c",
+    // background: "#c0e57b4c",
     borderRadius: "6.47619px 6.47619px 6.47619px 0px",
   },
+  orderRow:{
+    fontWeight:'400'
+  }
 }));
 
 const TableRow = (props) => {
@@ -56,6 +62,7 @@ const TableRow = (props) => {
     prodName,
     showCtrl,
     img,
+    orderCard,
     showImg,
     customTableRowStyle,
     isExpand,
@@ -64,42 +71,69 @@ const TableRow = (props) => {
 
   const classes = useStyle();
   return (
-    <Grid
-      container
-      item
-      xs={12}
-      className={customTableRowStyle ? customTableRowStyle : classes.tableRow}>
-      {showImg && (
-        <Grid item xs={2}>
-          <img
-            className={classes.imgStyle}
-            src={get_DNS() + img}
-            alt={prodName}
-          />
+    <>
+      {orderCard ? (
+        <Grid container item xs={12} className={classes.orderRow}>
+          <Grid item xs={4}>
+            <div title={prodName} style={{ overflow: "hidden" }}>
+              {prodName}
+            </div>
+            <div>{oSku.attrs}&nbsp;</div>
+          </Grid>
+          <Grid item xs={4}>
+            <div>x &nbsp; {oSku.quantity}</div>
+            <div>&nbsp;</div>
+          </Grid>
+          <Grid item xs={4}>
+            <div>€{oSku.price_tot?.toFixed(2)}</div>
+            <div>&nbsp;</div>
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid
+          container
+          item
+          xs={12}
+          className={
+            customTableRowStyle ? customTableRowStyle : classes.tableRow
+          }>
+          {showImg && (
+            <Grid item xs={2}>
+              <img
+                className={classes.imgStyle}
+                src={get_DNS() + img}
+                alt={prodName}
+              />
+            </Grid>
+          )}
+
+          <Grid item xs={4}>
+            <div title={prodName} style={{ overflow: "hidden" }}>
+              {prodName}
+            </div>
+            <div>{oSku.attrs}&nbsp;</div>
+          </Grid>
+          <Grid item xs={2}>
+            <div>
+              {isExpand || showCtrl ? (
+                <CartSkuCtrl oSku={oSku} />
+              ) : (
+                oSku.quantity
+              )}
+            </div>
+            <div>&nbsp;</div>
+          </Grid>
+          <Grid item xs={showImg ? 2 : 3}>
+            <div>€{oSku.price?.toFixed(2)}</div>
+            <div>&nbsp;</div>
+          </Grid>
+          <Grid item xs={showImg ? 2 : 3}>
+            <div>€{oSku.price_tot?.toFixed(2)}</div>
+            <div>&nbsp;</div>
+          </Grid>
         </Grid>
       )}
-
-      <Grid item xs={4}>
-        <div title={prodName} style={{ overflow: "hidden" }}>
-          {prodName}
-        </div>
-        <div>{oSku.attrs}&nbsp;</div>
-      </Grid>
-      <Grid item xs={2}>
-        <div>
-          {isExpand || showCtrl ? <CartSkuCtrl oSku={oSku} /> : oSku.quantity}
-        </div>
-        <div>&nbsp;</div>
-      </Grid>
-      <Grid item xs={showImg ? 2 : 3}>
-        <div>€{oSku.price?.toFixed(2)}</div>
-        <div>&nbsp;</div>
-      </Grid>
-      <Grid item xs={showImg ? 2 : 3}>
-        <div>€{oSku.price_tot?.toFixed(2)}</div>
-        <div>&nbsp;</div>
-      </Grid>
-    </Grid>
+    </>
   );
 };
 
@@ -110,6 +144,8 @@ export default function CartTable(props) {
     showImg = false,
     showCtrl = false,
     isExpand = null,
+    showHeader = true,
+    orderCard = false,
     showCusHeader = false,
     customTableStyle = null,
     customTableRowStyle = null,
@@ -134,6 +170,7 @@ export default function CartTable(props) {
               key={oSku._id}
               oSku={oSku}
               img={img}
+              orderCard={orderCard}
               isExpand={isExpand}
               prodName={op.nome}
               showImg={showImg}
@@ -145,7 +182,15 @@ export default function CartTable(props) {
       }
     }
     return rows;
-  }, [OrderProds, count, isExpand, showImg, showCtrl, customTableRowStyle]);
+  }, [
+    OrderProds,
+    count,
+    orderCard,
+    isExpand,
+    showImg,
+    showCtrl,
+    customTableRowStyle,
+  ]);
 
   React.useEffect(() => {
     const tb = showTableBody();
@@ -158,38 +203,39 @@ export default function CartTable(props) {
         <Grid
           container
           className={customTableStyle ? customTableStyle : classes.tableStyle}>
-          {showCusHeader === true ? (
-            //order page with img
-            <Grid container item xs={12} className={customTableHeaderStyle}>
-              <Grid item xs={2}></Grid>
-              <Grid item xs={4}></Grid>
-              <Grid item xs={2}>
-                Quantità
+          {orderCard === false &&
+            (showCusHeader === true ? (
+              //order page with img
+              <Grid container item xs={12} className={customTableHeaderStyle}>
+                <Grid item xs={2}></Grid>
+                <Grid item xs={4}></Grid>
+                <Grid item xs={2}>
+                  Quantità
+                </Grid>
+                <Grid item xs={2}>
+                  Prezzo Unità
+                </Grid>
+                <Grid item xs={2}>
+                  Prezzo Totale
+                </Grid>
               </Grid>
-              <Grid item xs={2}>
-                Prezzo Unità
+            ) : (
+              //cart modal without img
+              <Grid container item xs={12} className={classes.tableHeadRow}>
+                <Grid item xs={4}>
+                  Prodotto
+                </Grid>
+                <Grid item xs={2}>
+                  Quantità
+                </Grid>
+                <Grid item xs={3}>
+                  Prezzo Unità
+                </Grid>
+                <Grid item xs={3}>
+                  Prezzo Totale
+                </Grid>
               </Grid>
-              <Grid item xs={2}>
-                Prezzo Totale
-              </Grid>
-            </Grid>
-          ) : (
-            //cart modal without img
-            <Grid container item xs={12} className={classes.tableHeadRow}>
-              <Grid item xs={4}>
-                Prodotto
-              </Grid>
-              <Grid item xs={2}>
-                Quantità
-              </Grid>
-              <Grid item xs={3}>
-                Prezzo Unità
-              </Grid>
-              <Grid item xs={3}>
-                Prezzo Totale
-              </Grid>
-            </Grid>
-          )}
+            ))}
           {tableBody}
         </Grid>
       )}

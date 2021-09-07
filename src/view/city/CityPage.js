@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Container } from "@material-ui/core";
 import { useParams, useHistory } from "react-router";
 import { fetch_Prom } from "../../api";
+import HomeBanner from "../home/HomeBanner";
+import HomeList from "../home/HomeList";
 
 export default function City() {
   const { _id } = useParams();
@@ -25,30 +28,15 @@ export default function City() {
   }, [_id]);
 
   return (
-    <>
-      <h1>CITY</h1>
-      <div>display shoplist of city {_id}</div>
-      <button
-        onClick={() => {
-          hist.goBack();
-        }}>
-        返回
-      </button>
-
-      {shops &&
-        shops.map((shop) => {
-          return (
-            <button
-              key={shop._id}
-              id={shop._id}
-              onClick={(e) => {
-                console.log(e.target.id);
-                hist.push("/shop/" + e.target.id);
-              }}>
-              {shop.nome + " " + shop.addr}
-            </button>
-          );
-        })}
-    </>
+    <Container maxWidth={false} disableGutters>
+      <HomeBanner />
+      <HomeList
+        list={shops}
+        containerId='shopContainer'
+        handleFunc={(id) => () => {
+          hist.push("/shop/" + id);
+        }}
+      />
+    </Container>
   );
 }

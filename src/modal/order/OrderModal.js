@@ -37,7 +37,7 @@ export default function OrderModal() {
               key={od._id}
               cart={od}
               orderLogo='test'
-
+              orderCard={true}
               handleBtn={
                 od.status === 100
                   ? {

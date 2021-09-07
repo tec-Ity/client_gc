@@ -18,7 +18,8 @@ export default function ProdListItemControl(props) {
   const dispatch = useDispatch();
 
   const onSkuChange = (orderSkuId = null, skuId, Qty) => {
-    // console.log("qty", Qty);
+    console.log(skuId)
+    console.log("qty", Qty);
     if (orderSkuId) {
       dispatch(fetchSkuPut({ orderSkuId, Qty }));
     } else {

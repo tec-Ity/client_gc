@@ -85,7 +85,7 @@ const useStyle = makeStyles((theme) => ({
     paddingLeft: "8%",
     // paddingTop:"7px",
     maxHeight: "425px",
-    marginTop:'2px',
+    marginTop: "2px",
     overflowY: "scroll",
     width: "600px",
     alignContent: "flex-start",
@@ -202,12 +202,16 @@ const useStyle = makeStyles((theme) => ({
     position: "relative",
   },
   titleBox: {
-    width: "460px",
+    width: "350px",
     height: "40px",
-    fontSize: "30px",
+    fontSize: "20px",
   },
   titleBg: {
-    width: "460px",
+    width: "350px",
+    height: "24px",
+  },
+  titleTxt: {
+    top: "3px",
   },
   desp: {
     maxWidth: "750px",
@@ -222,12 +226,13 @@ const useStyle = makeStyles((theme) => ({
     position: "relative",
   },
   titleBoxRec: {
-    width: "460px",
+    width: "350px",
     height: "40px",
-    fontSize: "30px",
+    fontSize: "20px",
   },
   titleBgRec: {
-    width: "460px",
+    width: "350px",
+    height: "24px",
   },
   recommand: {
     maxWidth: "750px",
@@ -286,7 +291,6 @@ export default function ProdPage() {
       }
     }
   }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
-
   return (
     <>
       {/* header */}
@@ -296,7 +300,10 @@ export default function ProdPage() {
           <div className={classes.backStyle}>
             <ArrowLeft />
             &nbsp;
-            <Link className={classes.backLink} onClick={() => hist.goBack()}>
+            <Link
+              to=''
+              className={classes.backLink}
+              onClick={() => hist.goBack()}>
               BACK
             </Link>
           </div>
@@ -304,9 +311,9 @@ export default function ProdPage() {
           {curProdStatus === "succeed" && (
             <div className={classes.bread}>
               <Link
+                to=''
                 className={classes.backLink}
                 onClick={() => {
-                  dispatch();
                   // setClickCategFromRemote(curProd.Categs[0].Categ_far._id)
                   hist.goBack();
                 }}>
@@ -314,6 +321,7 @@ export default function ProdPage() {
               </Link>
               <span> &gt; </span>
               <Link
+                to=''
                 className={classes.backLink}
                 onClick={() => {
                   // dispatch(setClickCategFromRemote(curProd.Categs[0]._id));
@@ -436,6 +444,7 @@ export default function ProdPage() {
                       </Grid>
                     </Grid>
                   </Grid>
+                  {/* ---------------control------------ */}
                   <Grid container item xs={12} className={classes.btnStyle}>
                     <ProdListItemControl prod={curProd} />
                   </Grid>
@@ -453,6 +462,7 @@ export default function ProdPage() {
                       style={{
                         box: classes.titleBox,
                         bg: classes.titleBg,
+                        txt: classes.titleTxt,
                       }}
                     />
                   </div>
@@ -481,6 +491,7 @@ export default function ProdPage() {
                       style={{
                         box: classes.titleBoxRec,
                         bg: classes.titleBgRec,
+                        txt: classes.titleTxt,
                       }}
                     />
                   </div>

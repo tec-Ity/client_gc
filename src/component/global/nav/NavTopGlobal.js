@@ -70,9 +70,9 @@ const useStyle = makeStyles({
     background: "#E47F10",
   },
   btnStyle: {
-    '&:hover':{
-      background:"transparent"
-    }
+    "&:hover": {
+      background: "transparent",
+    },
   },
   btnsIcon: {
     width: "30px",
@@ -84,7 +84,8 @@ export default function NavTopGlobal() {
   const classes = useStyle();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.curClient.isLogin);
-  const curCartTotProd = useSelector((state) => state.cart.curCart.totProd);
+  const curCart = useSelector((state) => state.cart.curCart);
+  const curCartTotProd = curCart.totProd;
   const inShop = useSelector((state) => state.cart.inShop);
   useEffect(() => {
     function auth() {
@@ -100,7 +101,7 @@ export default function NavTopGlobal() {
   return (
     <>
       <div className={classes.root}>
-        <div style={{ marginLeft: '80px' }}>
+        <div style={{ marginLeft: "80px" }}>
           <Link to='/home'>
             <img
               className={classes.navIcon}
@@ -117,11 +118,12 @@ export default function NavTopGlobal() {
               {/* <Cart /> */}
               <div style={{ position: "relative" }}>
                 <Cart className={classes.btnsIcon} />
-                {inShop === true ? (
-                  <div className={classes.alertNum}>{curCartTotProd}</div>
-                ) : (
-                  <div className={classes.alertDot}></div>
-                )}
+                {curCart.OrderProds?.length>0 &&
+                  (inShop === true ? (
+                    <div className={classes.alertNum}>{curCartTotProd}</div>
+                  ) : (
+                    <div className={classes.alertDot}></div>
+                  ))}
               </div>
             </Button>
             <Button

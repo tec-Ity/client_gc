@@ -110,8 +110,9 @@ export default function OrdersPage() {
   return (
     <Container className={classes.root}>
       <div className={classes.headerStyle}>
+        {console.log(orders)}
         <Link
-          to={"/shop/" + String(orders && orders[0] && orders[0].Shop._id)}
+          to={"/city/60c4adb974daf75532866e6d"}
           className={classes.backToShop}>
           <ArrowBackIcon />
           <span className={classes.backLink}>CONTINUA LO SHOPPING</span>
