@@ -19,6 +19,15 @@ export default function App() {
   const showCarts = useSelector((state) => state.cart.showCarts);
   const showOrders = useSelector((state) => state.order.showOrders);
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
+
+  // React.useEffect(() => {
+  //   const setLocal = () => {
+  //     alert(1)
+  //     localStorage.setItem("test", parseInt(localStorage.getItem("test")) + 1 || 0);
+  //   };
+  //   window.addEventListener("onbeforeunload", setLocal());
+  // }, []);
+
   return (
     <BrowserRouter>
       <NavTopGlobal />

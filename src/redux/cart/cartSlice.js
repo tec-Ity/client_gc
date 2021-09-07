@@ -130,7 +130,7 @@ export const fetchSkuPost = createAsyncThunk(
     obj.Sku = skuId;
     obj.quantity = Qty;
     const skuPostRes = await fetch_Prom("/OrderSkuPost", "POST", { obj });
-    console.log("skuPostRes", skuPostRes);
+    // console.log("skuPostRes", skuPostRes);
     if (skuPostRes.status === 200) {
       return skuPostRes.data;
     } else {
@@ -149,7 +149,7 @@ export const fetchSkuPut = createAsyncThunk(
     const skuPutRes = await fetch_Prom("/OrderSkuPut/" + orderSkuId, "PUT", {
       obj,
     });
-    console.log("skuPutRes", skuPutRes);
+    // console.log("skuPutRes", skuPutRes);
     if (skuPutRes.status === 200) {
       return skuPutRes.data;
     } else console.log(skuPutRes.message);
