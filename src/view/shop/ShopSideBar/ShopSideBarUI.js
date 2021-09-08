@@ -262,7 +262,11 @@ export default function ShopSideBarUI(props) {
   ]);
 
   return (
-    <Container className={classes.root} disableGutters ref={sideBar}>
+    <Container
+      className={classes.root}
+      maxWidth='xs'
+      disableGutters
+      ref={sideBar}>
       {/* <div>&nbsp;</div> */}
       <CustomHr position={classes.customHr} />
       <List component='div' disablePadding>
