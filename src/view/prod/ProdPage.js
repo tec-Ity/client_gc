@@ -8,11 +8,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import ProdListItemControl from "../../component/prodList/itemControl/ProdListItemControl";
-import { fetchCartByShop, setInShop } from "../../redux/cart/cartSlice";
+import { setInShop } from "../../redux/cart/cartSlice";
 import CustomBgText from "../../component/global/background/CustomBgText";
 import ProdList from "../../component/prodList/ProdList";
 import clsx from "clsx";
-// import { setClickCategFromRemote } from "../../redux/filter/filterSlice";
 import moment from "moment";
 import { ReactComponent as ArrowLeft } from "../../component/icon/chevron-left.svg";
 
@@ -281,15 +280,15 @@ export default function ProdPage() {
   }, [_id, curProd, curProdStatus, dispatch]);
 
   React.useEffect(() => {
-    if (curProdStatus === "succeed" && curProd.Shop) {
-      if (curCartStatus === "idle") {
-        dispatch(fetchCartByShop(curProd.Shop));
-      } else if (curCartStatus === "error") {
-        setTimeout(() => {
-          dispatch(fetchCartByShop(curProd.Shop));
-        }, 2000);
-      }
-    }
+    // if (curProdStatus === "succeed" && curProd.Shop) {
+    //   if (curCartStatus === "idle") {
+    //     dispatch(fetchCartByShop(curProd.Shop));
+    //   } else if (curCartStatus === "error") {
+    //     setTimeout(() => {
+    //       dispatch(fetchCartByShop(curProd.Shop));
+    //     }, 2000);
+    //   }
+    // }
   }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
   return (
     <>

@@ -1,29 +1,28 @@
 import React, { lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
-import { fetchSkuPost, fetchSkuPut } from "../../../redux/cart/cartSlice";
+import {
+  cartSkuPost,
+  cartSkuPut,
+  cartSkuDelete,
+} from "../../../redux/cart/cartSlice";
 
 const ControlMulti = lazy(() => import("./ControlMulti"));
 const ControlSimple = lazy(() => import("./ControlSimple"));
 
 export default function ProdListItemControl(props) {
-  const {
-    Skus: skus,
-    is_simple: isSimple,
-    _id: prodId,
-    Shop: shop,
-  } = props.prod;
+  const { prod } = props;
+  const { Skus: skus, is_simple: isSimple, _id: prodId, Shop: shop } = prod;
   // console.log('prod', props.prod)
   //return only when the current prod is in the cart
 
   const dispatch = useDispatch();
 
-  const onSkuChange = (orderSku = null, sku, Qty) => {
-    console.log(sku)
-    console.log("qty", Qty);
-    if (orderSku) {
-      dispatch(fetchSkuPut({ orderSku, Qty }));
+  const onSkuChange = (oSkuId = null, sku, qty) => {
+    if (oSkuId) {
+      if (qty > 0) dispatch(cartSkuPut({ oSkuId, qty, prodId: prod._id }));
+      else dispatch(cartSkuDelete({ oSkuId, prodId: prod._id }));
     } else {
-      dispatch(fetchSkuPost({ sku, Qty }));
+      dispatch(cartSkuPost({ sku, qty, prod }));
     }
   };
 

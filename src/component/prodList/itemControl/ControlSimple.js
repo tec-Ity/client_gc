@@ -16,12 +16,12 @@ export default function ControlSimple(props) {
 
   return (
     <div>
-      {curSkuInCart ? (
-        <CartSkuCtrl oSku={curSkuInCart} />
+      {curSkuInCart && curSkuInCart.quantity > 0 ? (
+        <CartSkuCtrl oSku={curSkuInCart} handleFunc={onSkuChange} />
       ) : (
         <CustomShoppingButton
           disabled={skuPostStatus === "loading"}
-          handleFunc={() => onSkuChange(null, skus[0]._id, 1)}
+          handleFunc={() => onSkuChange(null, skus[0], 1)}
         />
       )}
     </div>

@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSkuPut } from "../../redux/cart/cartSlice";
 import { makeStyles } from "@material-ui/core/styles";
 // import button from "@material-ui/core/Button";
 
@@ -53,20 +52,14 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function CartSkuCtrl({ oSku }) {
-  const dispatch = useDispatch();
-  const skuPutStatus = useSelector((state) => state.cart.skuPutStatus);
+export default function CartSkuCtrl(props) {
+  const { oSku, handleFunc } = props;
   const classes = useStyle();
   return (
     <div className={classes.root}>
       <button
         className={classes.buttonLT}
-        disabled={skuPutStatus === "loading"}
-        onClick={() =>
-          dispatch(
-            fetchSkuPut({ orderSkuId: oSku?._id, Qty: oSku?.quantity - 1 })
-          )
-        }>
+        onClick={() => handleFunc(oSku?.Sku, null, oSku?.quantity - 1)}>
         <span>
           {oSku?.quantity === 1 ? (
             <svg
@@ -127,18 +120,17 @@ export default function CartSkuCtrl({ oSku }) {
         className={classes.ctrlInput}
         style={{ textAlign: "center" }}
         value={oSku?.quantity || "00"}
-        onChange={(e) =>
-          dispatch(fetchSkuPut({ orderSkuId: oSku?._id, Qty: e.target.value }))
-        }
+        onChange={(e) => {
+          if (e.target.value !== "") {
+            handleFunc(oSku?.Sku, null, e.target.value);
+          }else{
+            e.target.value = 0
+          }
+        }}
       />
       <button
         className={classes.buttonRT}
-        disabled={skuPutStatus === "loading"}
-        onClick={() =>
-          dispatch(
-            fetchSkuPut({ orderSkuId: oSku?._id, Qty: oSku?.quantity + 1 })
-          )
-        }>
+        onClick={() => handleFunc(oSku?.Sku, null, oSku?.quantity + 1)}>
         <span
           style={{
             position: "relative",
