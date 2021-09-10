@@ -19,7 +19,7 @@ const useStyle = makeStyles((theme) => ({
   root: {
     // border: "1px solid",
     fontSize: "14px",
-    maxWidth: "240px",
+    maxWidth: "200px",
     fontFamily: "Montserrat",
     color: "#1d1d38",
   },
@@ -162,7 +162,7 @@ export default function ShopSideBarUI(props) {
         window.pageYOffset - sideBar.current?.getBoundingClientRect().top >
         240
       ) {
-        sideBar.current.style.position = "fixed";
+        sideBar.current.style.position = "sticky";
         sideBar.current.style.top = "100px";
         setScrollNav(true);
       } else {
