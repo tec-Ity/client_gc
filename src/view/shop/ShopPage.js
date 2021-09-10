@@ -98,7 +98,7 @@ export default function ShopPage() {
         {/* <DemoSideBar /> */}
         {categs?.length > 0 && (
           <Grid container className={classes.mainSecStyle} spacing={3}>
-            <Grid item sm={4} md={3} className={classes.gridItemStyle}>
+            <Grid item sm={4} md={3} className={classes.gridItemStyle} >
               <ShopSideBar categs={categs} />
             </Grid>
             <Grid item xs={12} sm={8} md={9} className={classes.gridItemStyle}>

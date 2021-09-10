@@ -50,6 +50,7 @@ export default function ProdExpand(props) {
         padding: 0,
         marginBottom: "30px",
         marginTop: "15px",
+        maxWidth:'781px'
       }}>
       <div>
         {queryURL || props.prods ? (

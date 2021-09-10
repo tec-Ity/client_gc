@@ -12,6 +12,7 @@ import CustomBgText from "../../component/global/background/CustomBgText";
 const useStyle = makeStyles({
   root: {
     height: "330px",
+    marginTop:'50px'
     // marginLeft: "20px",
     // marginRight: "20px",
   },
@@ -28,8 +29,8 @@ const useStyle = makeStyles({
     overflowX: "hidden",
     transform: "rotate(-90deg)",
     transformOrigin: "top left",
-    width: "300px",
-    maxHeight: "1280px",
+    width: "350px",
+    // maxHeight: "1280px",
     "&::-webkit-scrollbar": {
       display: "none",
     },
@@ -60,6 +61,15 @@ const useStyle = makeStyles({
     justifyContent: "center",
     fontSize: "20px",
   },
+
+  bg: {
+    width: "200px",
+    height: "24px",
+  },
+  txt: {
+    fontSize: "30px",
+    paddingBottom:'6px'
+  },
 });
 
 export default function HomeList(props) {
@@ -70,7 +80,7 @@ export default function HomeList(props) {
   useEffect(() => {
     const setStyle = () => {
       ref.current.style.height =
-        document.getElementById("itemContainer")?.clientWidth + "px";
+        document.getElementById(containerId)?.clientWidth + "px";
     };
     window.addEventListener("resize", setStyle);
     return () => {
@@ -79,10 +89,17 @@ export default function HomeList(props) {
   });
 
   return (
-    <Container disableGutters className={classes.root} id={containerId}>
+    <Container
+      disableGutters
+      maxWidth={false}
+      className={classes.root}
+      id={containerId}>
       {label && (
         <div className={classes.labelBoxStyle}>
-          <CustomBgText label={label} />
+          <CustomBgText
+            label={label}
+            style={{ bg: classes.bg, txt: classes.txt }}
+          />
         </div>
       )}
       <Grid ref={ref} container className={classes.itemGrid} spacing={10}>

@@ -1,12 +1,11 @@
-import {Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProdListQuery } from "../../redux/shop/shopSlice";
 import ProdListItem from "./ProdListItem";
 
-
 export default function ProdList(props) {
-  const { style = "card", queryURL, type = "expand",prods } = props;
+  const { style = "card", queryURL, type = "expand", prods } = props;
   const dispatch = useDispatch();
   const prodListQuery = useSelector((state) => state.shop.prodListQuery);
   const prodStatusQuery = useSelector((state) => state.shop.prodStatusQuery);
@@ -51,7 +50,7 @@ export default function ProdList(props) {
   // const displayProdsFromParent = () => {};
 
   return (
-    <Grid container justifyContent='flex-start' alignItems='center' spacing={6}>
+    <Grid container justifyContent='center' alignItems='center' spacing={5}>
       {queryURL ? displayResult() : getProdList(prods)}
     </Grid>
   );

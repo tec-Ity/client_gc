@@ -28,7 +28,7 @@ export default function HomePage() {
     }
     getCitys();
   }, []);
-console.log('home')
+  console.log("home");
   return (
     <Container disableGutters maxWidth={false}>
       <HomeBanner
@@ -41,7 +41,7 @@ console.log('home')
       <HomeList
         label='I nostri locali'
         list={citys}
-        id='cityContainer'
+        containerId='cityContainer'
         handleFunc={(id) => () => hist.push("/city/" + id)}
       />
     </Container>
