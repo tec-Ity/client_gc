@@ -28,7 +28,6 @@ export default function HomePage() {
     }
     getCitys();
   }, []);
-  console.log("home");
   return (
     <Container disableGutters maxWidth={false}>
       <HomeBanner

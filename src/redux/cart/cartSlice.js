@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { fetch_Prom } from "../../api";
 
 const initialState = {
@@ -9,152 +9,128 @@ const initialState = {
   //expand?
   isExpand: null, // sotre shopId for expand
   //carts
-  carts: [],
-  cartsStatus: "idle",
+  carts: localStorage.getItem("carts")
+    ? JSON.parse(localStorage.getItem("carts"))
+    : [],
+
   //curCart
   curCart: {},
-  curCartStatus: "idle",
-  //sku post
-  skuPostStatus: "idle",
-  //sku put
-  skuPutStatus: "idle",
 
   //proof
   proofStatus: "idle",
   proofObjs: [],
 };
 
-const oSkuObj = {
-  path: "OrderSkus",
-  select: "Sku price quantity price_regular attrs",
-};
+// export const cartSkuPost = (sku, qty, prod) => (dispatch, getState) => {
+//   try {
+//     //create new sku template
+//     const oSkuTemp = {
+//       //--Sku
+//       Sku: sku._id,
+//       //--price
+//       price: sku.price_regular,
+//       //--attrs ---desp
+//       attrs: sku.attrs
+//         ? sku.attrs.map((attr) => attr.nome + ":" + attr.option + " ")
+//         : "",
+//       //--quantity
+//       quantity: qty,
+//       //--price_tot
+//       price_tot: sku.price_regular * qty,
+//     };
 
-//why img url????????
-const prodObj = {
-  path: "Prod",
-  select: "img_urls",
-};
+//     //create new prod template
+//     const opTemp = {
+//       //-Prod
+//       Prod: prod._id,
+//       img_url: prod.img_urls[0],
+//       nome: prod.nome,
+//       //-OrderSkus[{}]
+//       OrderSkus: [oSkuTemp],
+//       //Shop
+//     };
 
-const ShopObj = {
-  path: "Shop",
-  select: "nome addr",
-};
+//     const curCart = getState().cart.curCart;
+//     let curCartTemp = {};
 
-const cartObj = [
-  {
-    path: "OrderProds",
-    select: "Prod OrderSkus nome unit Shop",
-    populate: [oSkuObj, prodObj],
-  },
-  ShopObj,
-];
+//     //------------add new cart if empty cart or existing cart is other shop's--------------
+//     if (!curCart.OrderProds || curCart.Shop !== sku.Shop) {
+//       console.log("new cart");
+//       //Shop
+//       curCartTemp.Shop = sku.Shop;
+//       //Client
+//       curCartTemp.Client = getState().curClient.curClientInfo?._id;
+//       //OrderProds[{}]
+//       curCartTemp.OrderProds = [opTemp];
+//       //totPrice
+//       curCartTemp.totPrice = sku.price_regular * qty;
+//       //totItem
+//       curCartTemp.totItem = qty;
+//     } else if (curCart.OrderProds) {
+//       //modify orderProds
+//       curCartTemp = { ...curCart };
+//       let foundProd = false;
+//       for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
+//         const oProd = curCartTemp.OrderProds[i];
+//         if (oProd.Prod === prod._id) {
+//           //--------- add new sku -----------
+//           console.log("new sku");
+//           oProd.OrderSkus.push(oSkuTemp);
+//           foundProd = true;
+//           break;
+//         }
+//       }
+//       //--------- add new prod -----------
+//       if (!foundProd) {
+//         console.log("new prod");
+//         curCartTemp.OrderProds.push(opTemp);
+//       }
+//       //--------------modify cart properties --------------
+//       curCartTemp.totPrice += oSkuTemp.price_tot;
+//       curCartTemp.totItem += oSkuTemp.quantity;
+//     } else {
+//       throw new Error("failed adding sku");
+//     }
+//     console.log(curCartTemp);
+//     dispatch(updateCurCart(curCartTemp));
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
 
-export const fetchCarts = createAsyncThunk(
-  "cart/fetchCarts",
-  async (foo = null, { rejectWithValue }) => {
-    const cartsResult = await fetch_Prom(
-      "/Carts?populateObjs=" + JSON.stringify(cartObj)
-    );
-    if (cartsResult.status === 200) {
-      return cartsResult.data.objects;
-    } else {
-      // console.log(cartsResult);
-      return rejectWithValue(cartsResult.message);
-    }
-  }
-);
-
-export const fetchCartByShop = createAsyncThunk(
-  "cart/fetchCartByShop",
-  async (shopId, { getState, rejectWithValue }) => {
-    const carts = getState().cart.carts;
-    //check existing carts
-    // console.log(111);
-    // console.log(object);
-    if (carts.length > 0) {
-      // console.log("carts", carts);
-      const foundCart = carts.find((cart) => cart.Shop._id === shopId);
-      if (foundCart) {
-        return foundCart;
-      } else {
-        /*if carts called and no cart found, return [] directly without call API*/
-        return {};
-      }
-    } else if (
-      !getState().cart.curCart.Shop ||
-      getState().cart.curCart.Shop._id !== shopId
-    ) {
-      // console.log(222);
-      const cartsResult = await fetch_Prom(
-        "/Carts?Shop=" + shopId + "&populateObjs=" + JSON.stringify(cartObj)
-      );
-
-      // console.log("cartResultByShop", cartsResult);
-      if (cartsResult.status === 200) {
-        // console.log(333);
-        return cartsResult.data.objects?.length > 0
-          ? cartsResult.data.objects[0]
-          : {};
-      } else {
-        // console.log("error", cartsResult.message);
-        return rejectWithValue(cartsResult.message);
-      }
-    }
-  }
-);
-
-export const fetchCartById = createAsyncThunk(
-  "cart/fetchCartById",
-  async (_id, { rejectWithValue }) => {
-    const cartResult = await fetch_Prom(
-      "/Carts?includes=" + _id + "&populateObjs=" + JSON.stringify(cartObj)
-    );
-    // console.log(cartResult);
-    if (cartResult.status === 200) {
-      if (cartResult.data.objects?.length > 0) {
-        return cartResult.data.objects[0];
-      } else {
-        return {};
-      }
-    } else {
-      return rejectWithValue(cartResult.message);
-    }
-  }
-);
-
-export const fetchSkuPost = createAsyncThunk(
-  "cart/fetchSkuPost",
-  async ({ skuId, Qty }, { rejectWithValue }) => {
-    // console.log("quanti", Qty);
-    const obj = {};
-    obj.Sku = skuId;
-    obj.quantity = Qty;
-    const skuPostRes = await fetch_Prom("/OrderSkuPost", "POST", { obj });
-    console.log("skuPostRes", skuPostRes);
-    if (skuPostRes.status === 200) {
-      return skuPostRes.data;
-    } else {
-      // console.log(skuPostRes.message);
-      return rejectWithValue(skuPostRes.message);
-    }
-  }
-);
-
-export const fetchSkuPut = createAsyncThunk(
-  "cart/fetchSkuPut",
-  async ({ orderSkuId, Qty }) => {
-    // console.log("orderSkuID", orderSkuId);
-    const obj = {};
-    obj.quantity = Qty;
-    const skuPutRes = await fetch_Prom("/OrderSkuPut/" + orderSkuId, "PUT", {
-      obj,
-    });
-    console.log("skuPutRes", skuPutRes);
-    if (skuPutRes.status === 200) {
-      return skuPutRes.data;
-    } else console.log(skuPutRes.message);
-  }
-);
+// export const cartSkuPut = (oSkuId, qty, prodId) => (dispatch, getState) => {
+//   console.log(qty);
+//   try {
+//     if (getState().cart.curCart.OrderProds) {
+//       const curCartTemp = { ...getState().cart.curCart };
+//       for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
+//         const oProd = curCartTemp.OrderProds[i];
+//         //find existing prod
+//         if (oProd.Prod === prodId) {
+//           for (let j = 0; j < oProd.OrderSkus.length; j++) {
+//             const oSku = oProd.OrderSkus[j];
+//             //find existing sku
+//             if (oSku.Sku === oSkuId) {
+//               console.log(111);
+//               //modify quantity
+//               oSku.quantity = qty;
+//               //temporaryly remove this sku's tot price
+//               curCartTemp.totPrice -= oSku.price_tot;
+//               //change to new tot price
+//               oSku.price_tot = oSku.price_regular * qty;
+//               //add to cart again
+//               curCartTemp.totPrice += oSku.price_tot;
+//               break;
+//             }
+//           }
+//         }
+//       }
+//       dispatch(updateCurCart(curCartTemp));
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
 
 export const fetchProofOrder = createAsyncThunk(
   "cart/fetchProofOrder",
@@ -189,21 +165,24 @@ export const calCartPrice = (OrderProds) => {
   return { totPrice, totProd };
 };
 
-const unshiftCart = (carts, curCart) => {
-  if (carts.length > 0) {
-    for (let i = 0; i < carts.length; i++) {
-      if (carts[i]._id === curCart._id) {
-        carts.splice(i, 1);
-        carts.unshift(curCart);
-      }
-    }
-  }
-};
+// const unshiftCart = (carts, curCart) => {
+//   if (carts.length > 0) {
+//     for (let i = 0; i < carts.length; i++) {
+//       if (carts[i]._id === curCart._id) {
+//         carts.splice(i, 1);
+//         carts.unshift(curCart);
+//       }
+//     }
+//   }
+// };
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCarts: (state, action) => {
+      state.carts = action.payload;
+    },
     setShowCarts: (state, action) => {
       state.showCarts = action.payload;
     },
@@ -213,183 +192,231 @@ export const cartSlice = createSlice({
     setInShop: (state, action) => {
       state.inShop = action.payload;
     },
-    setCurCart: (state, action) => {
+    updateCurCart: (state, action) => {
+      const cartReturn = action.payload;
+      let foundCart = false;
+      for (let i = 0; i < state.carts.length; i++) {
+        let cartTemp = state.carts[i];
+        if (cartTemp.Shop === cartReturn.Shop) {
+          cartTemp = cartReturn;
+          foundCart = true;
+          break;
+        }
+      }
+      if (!foundCart) {
+        state.carts.push(cartReturn);
+      }
+      state.curCart = cartReturn;
+    },
+    setCurCartByShop: (state, action) => {
       const cart = state.carts.find((cart) => {
-        return cart.Shop._id === action.payload;
+        return cart.Shop === action.payload;
       });
-      state.curCart = cart;
+      state.curCart = cart || {};
+    },
+    setCurCartById: (state, action) => {
+      const cart = state.carts.find((cart) => {
+        return cart._id === action.payload;
+      });
+      state.curCart = cart || {};
+    },
+    cartSkuPost: (state, action) => {
+      console.log(action.payload);
+      const { sku, qty, prod } = action.payload;
+      try {
+        //create new sku template
+        const oSkuTemp = {
+          //--Sku
+          Sku: sku._id,
+          //--price
+          price: sku.price_regular,
+          //--attrs ---desp
+          attrs: sku.attrs
+            ? sku.attrs.map((attr) => attr.nome + ":" + attr.option + " ")
+            : "",
+          //--quantity
+          quantity: qty,
+          //--price_tot
+          price_tot: sku.price_regular * qty,
+        };
+
+        //create new prod template
+        const opTemp = {
+          //-Prod
+          Prod: prod._id,
+          img_url: prod.img_urls[0],
+          nome: prod.nome,
+          //-OrderSkus[{}]
+          OrderSkus: [oSkuTemp],
+          //Shop
+        };
+
+        const curCart = state.curCart;
+        let curCartTemp = {};
+
+        //------------add new cart if empty cart or existing cart is other shop's--------------
+        if (!curCart.OrderProds || curCart.Shop !== sku.Shop) {
+          console.log("new cart");
+          //Shop
+          curCartTemp.Shop = sku.Shop;
+          //OrderProds[{}]
+          curCartTemp.OrderProds = [opTemp];
+          //totPrice
+          curCartTemp.totPrice = sku.price_regular * qty;
+          //totItem
+          curCartTemp.totItem = qty;
+        } else if (curCart.OrderProds) {
+          //modify orderProds
+          curCartTemp = { ...curCart };
+          let foundProd = false;
+          for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
+            const oProd = curCartTemp.OrderProds[i];
+            if (oProd.Prod === prod._id) {
+              //--------- add new sku in exist prod-----------
+              console.log("new sku");
+              oProd.OrderSkus.push(oSkuTemp);
+              foundProd = true;
+              break;
+            }
+          }
+          //--------- add new prod -----------
+          if (!foundProd) {
+            console.log("new prod");
+            curCartTemp.OrderProds.push(opTemp);
+          }
+          //--------------modify cart properties --------------
+          curCartTemp.totPrice += oSkuTemp.price_tot;
+          curCartTemp.totItem += oSkuTemp.quantity;
+        } else {
+          throw new Error("failed adding sku");
+        }
+        console.log(curCartTemp);
+        //modify carts
+        let foundCart = false;
+        for (let i = 0; i < state.carts.length; i++) {
+          // let test = state.carts[i];
+          // make test = curCartTemp not working
+          //must use  state.carts[i] = curCartTemp; to change
+          if (state.carts[i].Shop === curCartTemp.Shop) {
+            state.carts[i] = curCartTemp;
+            foundCart = true;
+            break;
+          }
+        }
+        if (!foundCart) {
+          state.carts.unshift(curCartTemp);
+        }
+        state.curCart = curCartTemp;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    cartSkuPut: (state, action) => {
+      const { oSkuId, qty, prodId } = action.payload;
+      try {
+        if (state.curCart.OrderProds) {
+          const curCartTemp = { ...state.curCart };
+          for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
+            const oProd = curCartTemp.OrderProds[i];
+            //find existing prod
+            if (oProd.Prod === prodId) {
+              for (let j = 0; j < oProd.OrderSkus.length; j++) {
+                const oSku = oProd.OrderSkus[j];
+                //find existing sku
+                if (oSku.Sku === oSkuId) {
+                  //modify quantity
+                  curCartTemp.totItem -= oSku.quantity;
+                  curCartTemp.totItem += qty;
+                  oSku.quantity = qty;
+                  //modify price
+                  curCartTemp.totPrice -= oSku.price_tot;
+                  curCartTemp.totPrice += oSku.price * qty;
+                  oSku.price_tot = oSku.price * qty;
+                  break;
+                }
+              }
+              break;
+            }
+          }
+          //modify carts
+          let foundCart = false;
+          for (let i = 0; i < state.carts.length; i++) {
+            // let test = state.carts[i];
+            // make test = curCartTemp not working
+            //must use  state.carts[i] = curCartTemp; to change
+            if (state.carts[i].Shop === curCartTemp.Shop) {
+              state.carts[i] = curCartTemp;
+              foundCart = true;
+              break;
+            }
+          }
+          if (!foundCart) {
+            state.carts.push(curCartTemp);
+          }
+          state.curCart = curCartTemp;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    cartSkuDelete: (state, action) => {
+      const { oSkuId, prodId } = action.payload;
+      const curCartTemp = { ...state.curCart };
+      let delProdIndex = -1;
+      console.log(111);
+      for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
+        const oProd = curCartTemp.OrderProds[i];
+        if (oProd.Prod === prodId) {
+          let delSkuIndex = -1;
+          for (let j = 0; j < oProd.OrderSkus.length; j++) {
+            const oSku = oProd.OrderSkus[j];
+            if ((oSku.Sku = oSkuId)) {
+              delSkuIndex = j;
+              break;
+            }
+          }
+          if (delSkuIndex !== -1) {
+            oProd.OrderSkus.splice(delSkuIndex, 1);
+            if (oProd.OrderSkus.length <= 0) {
+              delProdIndex = i;
+            }
+            break;
+          }
+        }
+      }
+      if (delProdIndex !== -1) {
+        curCartTemp.OrderProds.splice(delProdIndex, 1);
+      }
+      //delete cart
+      let delCartIndex = -1;
+      //modify carts
+      let foundCart = false;
+      for (let i = 0; i < state.carts.length; i++) {
+        // let test = state.carts[i];
+        // make test = curCartTemp not working
+        //must use  state.carts[i] = curCartTemp; to change
+        if (state.carts[i].Shop === curCartTemp.Shop) {
+          if (curCartTemp.OrderProds.length <= 0) {
+            delCartIndex = i;
+          } else {
+            state.carts[i] = curCartTemp;
+            foundCart = true;
+          }
+          break;
+        }
+      }
+      if (delCartIndex !== -1) {
+        state.carts.splice(delCartIndex, 1);
+        state.curCart = {};
+      } else {
+        if (!foundCart) {
+          state.carts.push(curCartTemp);
+        }
+        state.curCart = curCartTemp;
+      }
     },
   },
   extraReducers: {
-    /*carts */
-    [fetchCarts.pending]: (state) => {
-      state.cartsStatus = "loading";
-    },
-    [fetchCarts.fulfilled]: (state, action) => {
-      state.cartsStatus = "succeed";
-      const cartsObjs = [...action.payload];
-      for (let i = 0; i < cartsObjs.length; i++) {
-        const cart = cartsObjs[i];
-        if (cart.OrderProds.length > 0) {
-          const { totPrice, totProd } = calCartPrice(cart.OrderProds);
-          cart.totPrice = totPrice;
-          cart.totProd = totProd;
-        }
-      }
-      state.carts = cartsObjs;
-    },
-    [fetchCarts.rejected]: (state, action) => {
-      state.cartsStatus = "error";
-      // console.log("error", action.error.message);
-    },
-    /*curCart with Shop ID*/
-    [fetchCartByShop.pending]: (state) => {
-      state.curCartStatus = "loading";
-    },
-    [fetchCartByShop.fulfilled]: (state, action) => {
-      state.curCartStatus = "succeed";
-      // console.log("cart by shop succeed");
-      const cartObj = { ...action.payload };
-      // console.log(cartObj);
-      if (cartObj.OrderProds?.length > 0) {
-        const { totPrice, totProd } = calCartPrice(cartObj.OrderProds);
-        cartObj.totPrice = totPrice;
-        cartObj.totProd = totProd;
-      }
-      state.curCart = cartObj;
-    },
-    [fetchCartByShop.rejected]: (state, action) => {
-      state.curCartStatus = "error";
-    },
-    //curCart with Cart ID
-    [fetchCartById.pending]: (state) => {
-      state.curCartStatus = "loading";
-    },
-    [fetchCartById.fulfilled]: (state, action) => {
-      state.curCartStatus = "succeed";
-      const cartObj = { ...action.payload };
-      if (Object.keys(cartObj).length > 0) {
-        if (cartObj.OrderProds?.length > 0) {
-          const { totPrice, totProd } = calCartPrice(cartObj.OrderProds);
-          cartObj.totPrice = totPrice;
-          cartObj.totProd = totProd;
-        }
-        state.curCart = cartObj;
-      }
-    },
-    [fetchCartById.rejected]: (state, action) => {
-      state.curCartStatus = "error";
-    },
-    /*add first sku */
-    [fetchSkuPost.pending]: (state) => {
-      state.skuPostStatus = "loading";
-    },
-    [fetchSkuPost.fulfilled]: (state, action) => {
-      state.skuPostStatus = "succeed";
-      // console.log('payload', action.payload)
-      const { Order, OrderProd, OrderSku, type_postSku: type } = action.payload;
-      let curCart = state.curCart;
-      switch (type) {
-        // add new SKU
-        case 1:
-          // console.log('case "1"');
-          if (Order._id === curCart._id) {
-            for (const op of curCart.OrderProds) {
-              if (op._id === OrderProd._id) {
-                op.OrderSkus.unshift(OrderSku);
-                break;
-              }
-            }
-          }
-          break;
-        //add new Prod
-        case 2:
-          // console.log('case "2"');
-          if (Order._id === curCart._id) {
-            OrderProd.OrderSkus = [OrderSku];
-            // console.log("case", OrderProd);
-            curCart.OrderProds.unshift(OrderProd);
-            console.log("case", current(curCart.OrderProds));
-          }
-          break;
-        //add new Cart
-        case 3:
-          // console.log("case 3");
-          if (Order.Shop === curCart.Shop) {
-            OrderProd.OrderSkus = [OrderSku];
-            Order.OrderProds = [OrderProd];
-            curCart = Order;
-          }
-          break;
-        default:
-          break;
-      }
-      //finally unshift the curCart into carts
-      unshiftCart(state.carts, curCart);
-    },
-    [fetchSkuPost.rejected]: (state, action) => {
-      state.skuPostStatus = "error";
-    },
-    /*update sku quantity*/
-    [fetchSkuPut.pending]: (state) => {
-      state.skuPutStatus = "loading";
-    },
-    [fetchSkuPut.fulfilled]: (state, action) => {
-      state.skuPutStatus = "succeed";
-      const curCart = state.curCart;
-      const { Order, OrderProd, OrderSku, type_putSku, type_delSku } =
-        action.payload;
-      //only sku quantity changed
-      if (type_putSku === 1) {
-        if (Order._id === curCart._id) {
-          curCart.OrderProds.forEach((op) => {
-            if (op._id === OrderProd._id) {
-              op.OrderSkus.forEach((os) => {
-                if (os._id === OrderSku._id) {
-                  os.quantity = OrderSku.quantity;
-                  //finally unshift the curCart into carts
-                  unshiftCart(state.carts, curCart);
-                  return;
-                }
-              });
-            }
-          });
-        }
-      } //delete whole product
-      else if (type_delSku === 2) {
-        if (Order === curCart._id) {
-          for (let i = 0; i < curCart.OrderProds.length; i++) {
-            if (curCart.OrderProds[i]._id === OrderProd) {
-              curCart.OrderProds.splice(i, 1);
-              //finally unshift the curCart into carts
-              unshiftCart(state.carts, curCart);
-              return;
-            }
-          }
-          // delete curCart.OrderProds[OrderProd];
-        }
-      } //only delete one sku in a product
-      else if (type_delSku === 1) {
-        if (Order === curCart._id) {
-          for (let i = 0; i < curCart.OrderProds.length; i++) {
-            const curPord = curCart.OrderProds[i];
-            if (curPord._id === OrderProd) {
-              for (let j = 0; j < curPord.OrderSkus.length; j++) {
-                if (curPord.OrderSkus[j]._id === OrderSku) {
-                  curCart.OrderProds[i].OrderSkus.splice(j, 1);
-                  //finally unshift the curCart into carts
-                  unshiftCart(state.carts, curCart);
-                  return;
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    [fetchSkuPut.rejected]: (state, action) => {
-      state.skuPutStatus = "error";
-    },
     [fetchProofOrder.pending]: (state) => {
       state.proofStatus = "loading";
     },
@@ -404,27 +431,27 @@ export const cartSlice = createSlice({
 });
 
 export const selectCurProdInCart = (prodId, shop) => (state) => {
-  if (
-    (state.cart.skuPutStatus !== "loading" ||
-      state.cart.skuPostStatus !== "loading") &&
-    state.cart.curCartStatus === "succeed"
-  ) {
-    // console.log("call select prod", prodId);
-    // console.log(state.cart.curCart.OrderProds);
-    const prod = state.cart.curCart.OrderProds?.find((op) => {
-      if (op.Prod._id) {
-        return op.Prod._id === prodId;
-      } else {
-        return op.Prod === prodId;
-      }
+  // console.log(state.cart.curCart);
+  // console.log("op", state.cart.curCart.OrderProds);
+  if (state.cart.curCart.Shop === shop) {
+    const foundOp = state.cart.curCart.OrderProds?.find((op) => {
+      return op.Prod === prodId;
     });
-    // console.log("prod", prod);
-    if (prod?.Shop === shop) return prod;
-    else return null;
-  } else return null;
+    foundOp && console.log("op", foundOp);
+    return foundOp;
+  }
 };
 
-export const { setShowCarts, setIsExpand, setCurCart, setInShop } =
-  cartSlice.actions;
+export const {
+  setShowCarts,
+  setIsExpand,
+  setCurCartByShop,
+  setCurCartById,
+  updateCurCart,
+  setInShop,
+  cartSkuPost,
+  cartSkuPut,
+  cartSkuDelete,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

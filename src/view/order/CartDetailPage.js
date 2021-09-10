@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCartById, fetchProofOrder } from "../../redux/cart/cartSlice";
+import {  fetchProofOrder } from "../../redux/cart/cartSlice";
 import DetailCard from "./component/DetailCard";
 import ProofModal from "./component/ProofModal";
 import { fetchChangeStatus } from "../../redux/order/orderSlice";
@@ -23,7 +23,7 @@ export default function CartDetailPage() {
       if (proofObjs.length > 0) {
         setShowProof(true);
       }
-      dispatch(fetchCartById(_id));
+      // dispatch(fetchCartById(_id));
     }
   }, [_id, dispatch, proofObjs.length, proofStatus]);
 

@@ -33,7 +33,7 @@ const initialState = {
 const prodPopObj = [
   {
     path: "Skus",
-    select: "attrs price_regular price_sale",
+    select: "attrs price_regular price_sale Shop",
   },
   { path: "Attrs", select: "nome options" },
   {

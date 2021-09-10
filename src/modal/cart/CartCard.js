@@ -6,7 +6,7 @@ import CartTable from "./CartTable";
 import clsx from "clsx";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  fetchCartByShop,
+  setCurCartByShop,
   // fetchCartByShop,
   setIsExpand,
   setShowCarts,
@@ -108,13 +108,15 @@ export default function CartCard(props) {
 
   const expandMore = () => {
     if (curCart.Shop) {
-      if (curCart.Shop._id !== Shop._id) {
-        dispatch(fetchCartByShop(Shop._id));
+      if (curCart.Shop !== Shop) {
+        // dispatch(fetchCartByShop(Shop._id));
+        setCurCartByShop(Shop);
       }
     } else {
-      dispatch(fetchCartByShop(Shop._id));
+      // dispatch(fetchCartByShop(Shop._id));
+      setCurCartByShop(Shop);
     }
-    dispatch(setIsExpand(Shop._id));
+    dispatch(setIsExpand(Shop));
   };
 
   const handleOrderFunc = () => {

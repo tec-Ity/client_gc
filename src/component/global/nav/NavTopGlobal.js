@@ -84,9 +84,10 @@ export default function NavTopGlobal() {
   const classes = useStyle();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.curClient.isLogin);
-  const curCart = useSelector((state) => state.cart.curCart);
-  const curCartTotProd = curCart.totProd;
+  const carts = useSelector((state) => state.cart.carts);
+  const curCartTotItem = useSelector((state) => state.cart.curCart.totItem);
   const inShop = useSelector((state) => state.cart.inShop);
+
   useEffect(() => {
     function auth() {
       if (!isLogin) {
@@ -118,12 +119,14 @@ export default function NavTopGlobal() {
               {/* <Cart /> */}
               <div style={{ position: "relative" }}>
                 <Cart className={classes.btnsIcon} />
-                {curCart.OrderProds?.length>0 &&
-                  (inShop === true ? (
-                    <div className={classes.alertNum}>{curCartTotProd}</div>
-                  ) : (
-                    <div className={classes.alertDot}></div>
-                  ))}
+                {/* cart alert */}
+                {inShop === true
+                  ? curCartTotItem && (
+                      <div className={classes.alertNum}>{curCartTotItem}</div>
+                    )
+                  : carts.length > 0 && (
+                      <div className={classes.alertDot}></div>
+                    )}
               </div>
             </Button>
             <Button

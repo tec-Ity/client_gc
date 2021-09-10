@@ -37,6 +37,7 @@ const useStyle = makeStyles((theme) => ({
     },
   },
 }));
+
 export default function CardWraper(props) {
   const classes = useStyle();
   const { children, isExpand, handleCollapse, title, handleFunc } = props;

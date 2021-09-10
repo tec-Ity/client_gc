@@ -1,12 +1,14 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import // useSelector,
-//  useDispatch
-"react-redux";
-// import { fetchSkuPut } from "../../redux/cart/cartSlice";
+import { useDispatch } from "react-redux";
 import CartSkuCtrl from "./CartSkuCtrl";
 import { get_DNS } from "../../api";
 import { Grid } from "@material-ui/core";
+import {
+  cartSkuPost,
+  cartSkuPut,
+  cartSkuDelete,
+} from "../../redux/cart/cartSlice";
 
 const useStyle = makeStyles((theme) => ({
   tableStyle: {
@@ -51,9 +53,9 @@ const useStyle = makeStyles((theme) => ({
     // background: "#c0e57b4c",
     borderRadius: "6.47619px 6.47619px 6.47619px 0px",
   },
-  orderRow:{
-    fontWeight:'400'
-  }
+  orderRow: {
+    fontWeight: "400",
+  },
 }));
 
 const TableRow = (props) => {
@@ -66,8 +68,17 @@ const TableRow = (props) => {
     showImg,
     customTableRowStyle,
     isExpand,
+    prod,
   } = props;
   // const isExpand = useSelector((state) => state.cart.isExpand);
+  const dispatch = useDispatch();
+
+  const onSkuChange = (oSkuId = null, sku, qty) => {
+    if (oSkuId) {
+      if (qty > 0) dispatch(cartSkuPut({ oSkuId, qty, prodId: prod.Prod }));
+      else dispatch(cartSkuDelete({ oSkuId, prodId: prod.Prod }));
+    }
+  };
 
   const classes = useStyle();
   return (
@@ -116,7 +127,7 @@ const TableRow = (props) => {
           <Grid item xs={2}>
             <div>
               {isExpand || showCtrl ? (
-                <CartSkuCtrl oSku={oSku} />
+                <CartSkuCtrl oSku={oSku} handleFunc={onSkuChange} />
               ) : (
                 oSku.quantity
               )}
@@ -144,7 +155,7 @@ export default function CartTable(props) {
     showImg = false,
     showCtrl = false,
     isExpand = null,
-    showHeader = true,
+    // showHeader = true,
     orderCard = false,
     showCusHeader = false,
     customTableStyle = null,
@@ -167,7 +178,7 @@ export default function CartTable(props) {
         if (rows.length < count) {
           rows.push(
             <TableRow
-              key={oSku._id}
+              key={oSku.Sku}
               oSku={oSku}
               img={img}
               orderCard={orderCard}
@@ -176,6 +187,7 @@ export default function CartTable(props) {
               showImg={showImg}
               showCtrl={showCtrl}
               customTableRowStyle={customTableRowStyle}
+              prod={op}
             />
           );
         } else return rows;

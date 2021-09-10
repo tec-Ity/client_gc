@@ -12,7 +12,7 @@ import {
 } from "../../redux/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchCartByShop,
+  setCurCartByShop,
   setInShop,
   setIsExpand,
 } from "../../redux/cart/cartSlice";
@@ -44,7 +44,6 @@ export default function ShopPage() {
   const prevShopId = useSelector((state) => state.shop.curShop);
   const categStatus = useSelector((state) => state.shop.categStatus);
   // const categError = useSelector((state) => state.shop.categError);
-  const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   const curShopInfoStatus = useSelector(
     (state) => state.shop.curShopInfoStatus
   );
@@ -58,8 +57,10 @@ export default function ShopPage() {
       (curShopInfoStatus === "idle" || curShopInfoStatus === "error") &&
         dispatch(fetchCurShopInfo(_id));
       //cart
-      (curCartStatus === "idle" || curCartStatus === "error") &&
-        dispatch(fetchCartByShop(_id));
+      // (curCartStatus === "idle" || curCartStatus === "error") &&
+      //   dispatch(fetchCartByShop(_id));
+
+      dispatch(setCurCartByShop(_id));
 
       //call categ
       (categStatus === "idle" || categStatus === "error") &&
@@ -74,15 +75,7 @@ export default function ShopPage() {
     return () => {
       dispatch(setInShop(false));
     };
-  }, [
-    _id,
-    categStatus,
-    curCartStatus,
-    categs,
-    dispatch,
-    prevShopId,
-    curShopInfoStatus,
-  ]);
+  }, [_id, categStatus, categs, dispatch, prevShopId, curShopInfoStatus]);
 
   const goBack = () => {
     hist.goBack();
