@@ -50,7 +50,7 @@ export default function ProdList(props) {
   // const displayProdsFromParent = () => {};
 
   return (
-    <Grid container justifyContent='center' alignItems='center' spacing={5}>
+    <Grid container alignItems='center' spacing={5}>
       {queryURL ? displayResult() : getProdList(prods)}
     </Grid>
   );

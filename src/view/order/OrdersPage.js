@@ -78,13 +78,13 @@ export default function OrdersPage() {
           "&status=" +
           [
             orderBtnSwitch.toPay ? 100 : "",
+            orderBtnSwitch.toPay ? 70 : "",
             orderBtnSwitch.paid ? 200 : "",
             orderBtnSwitch.inProgress ? 400 : "",
             orderBtnSwitch.inProgress ? 700 : "",
             orderBtnSwitch.completed ? 800 : "",
             orderBtnSwitch.canceled ? 10 : "",
             orderBtnSwitch.canceled ? 60 : "",
-            orderBtnSwitch.canceled ? 70 : "",
           ],
         isReload: true,
       })

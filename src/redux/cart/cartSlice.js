@@ -221,7 +221,7 @@ export const cartSlice = createSlice({
       state.curCart = cart || {};
     },
     cartSkuPost: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       const { sku, qty, prod } = action.payload;
       try {
         //create new sku template
@@ -256,7 +256,8 @@ export const cartSlice = createSlice({
 
         //------------add new cart if empty cart or existing cart is other shop's--------------
         if (!curCart.OrderProds || curCart.Shop !== sku.Shop) {
-          console.log("new cart");
+          // console.log("new cart");
+          curCartTemp._id = sku.Shop;
           //Shop
           curCartTemp.Shop = sku.Shop;
           //OrderProds[{}]
@@ -273,7 +274,7 @@ export const cartSlice = createSlice({
             const oProd = curCartTemp.OrderProds[i];
             if (oProd.Prod === prod._id) {
               //--------- add new sku in exist prod-----------
-              console.log("new sku");
+              // console.log("new sku");
               oProd.OrderSkus.push(oSkuTemp);
               foundProd = true;
               break;
@@ -281,7 +282,7 @@ export const cartSlice = createSlice({
           }
           //--------- add new prod -----------
           if (!foundProd) {
-            console.log("new prod");
+            // console.log("new prod");
             curCartTemp.OrderProds.push(opTemp);
           }
           //--------------modify cart properties --------------
@@ -363,7 +364,6 @@ export const cartSlice = createSlice({
       const { oSkuId, prodId } = action.payload;
       const curCartTemp = { ...state.curCart };
       let delProdIndex = -1;
-      console.log(111);
       for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
         const oProd = curCartTemp.OrderProds[i];
         if (oProd.Prod === prodId) {
@@ -377,6 +377,7 @@ export const cartSlice = createSlice({
           }
           if (delSkuIndex !== -1) {
             oProd.OrderSkus.splice(delSkuIndex, 1);
+            curCartTemp.totItem -= 1;
             if (oProd.OrderSkus.length <= 0) {
               delProdIndex = i;
             }
@@ -437,7 +438,7 @@ export const selectCurProdInCart = (prodId, shop) => (state) => {
     const foundOp = state.cart.curCart.OrderProds?.find((op) => {
       return op.Prod === prodId;
     });
-    foundOp && console.log("op", foundOp);
+    // foundOp && console.log("op", foundOp);
     return foundOp;
   }
 };

@@ -11,24 +11,23 @@ export default function OrderDetailPage() {
   const curOrderStatus = useSelector((state) => state.order.curOrderStatus);
 
   React.useEffect(() => {
-    if (Object.keys(curOrder).length === 0) {
-      if (curOrderStatus === "idle") {
+    if (curOrderStatus === "idle" || curOrderStatus==='succeed') {
+      dispatch(fetchOrderById(_id));
+    } else if (curOrderStatus === "error") {
+      setTimeout(() => {
         dispatch(fetchOrderById(_id));
-      } else if (curOrderStatus === "error") {
-        setTimeout(() => {
-          dispatch(fetchOrderById(_id));
-        }, 2000);
-      }
-    } else {
-      if (curOrderStatus === "succeed" && curOrder._id !== _id) {
-        dispatch(fetchOrderById(_id));
-      }
-    }
-  }, [_id, curOrder, curOrderStatus, dispatch]);
+      }, 2000);
+    } 
+  }, [_id]);
 
-  const handleFunc = ()=>{
-    window.scrollTo(0,document.body.scrollHeight);
-  }
+  const handleFunc = () => {
+    window.document.getElementsByTagName("html")[0].style.scrollBehavior =
+      "smooth";
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 100);
+    // window.document.html.style.scrollBehavior='smooth';
+  };
 
   return (
     <>

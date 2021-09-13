@@ -13,6 +13,7 @@ const useStyle = makeStyles((theme) => ({
   customHr: {
     width: "100%",
     marginLeft: "0",
+    height: "1px",
   },
   itemStyle: {
     display: "flex",
@@ -88,7 +89,7 @@ const DeliveryCost = ({ priceShip }) => {
       <Grid item xs={12} className={classes.itemStyle}>
         <div className={classes.deliveryTxt}>SPESA CONSEGNA</div>
         <div className={classes.deliveryPrice}>
-          {"€" + priceShip.toFixed(2)}
+          {"€" + priceShip?.toFixed(2)}
         </div>
       </Grid>
     </>

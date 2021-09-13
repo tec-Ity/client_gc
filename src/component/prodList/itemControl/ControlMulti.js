@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import ControlMultiSkus from "./ControlMultiSkus";
-import { useSelector } from "react-redux";
-import { selectCurProdInCart } from "../../../redux/cart/cartSlice";
 import CustomShoppingButton from "../../global/button/CustomShoppingButton";
 
 export default function ControlMulti(props) {
-  const { skus, //shopslice prodlistQuery .prod .skus
-     onSkuChange, prodId, shop } = props;
+  const {
+    skus, //shopslice prodlistQuery .prod .skus
+    onSkuChange,
+    curProdInCart,
+  } = props;
   const [showSkusModal, setShowSkusModal] = useState(false);
   const [totCount, setTotCount] = useState();
-  // console.log('MULTI')
-  const curProdInCart = useSelector(selectCurProdInCart(prodId, shop._id));
 
   useEffect(() => {
     const displayTotalCount = () => {

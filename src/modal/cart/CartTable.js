@@ -28,19 +28,19 @@ const useStyle = makeStyles((theme) => ({
     fontWeight: "400",
     textAlign: "center",
     marginTop: "10px",
-    "& :nth-child(1)": {
-      "& :nth-child(1)": {
+    "& >:nth-child(1)": {
+      "& >:nth-child(1)": {
         textAlign: "left",
         paddingRight: theme.spacing(1),
         fontWeight: "700",
         wordWrap: "break-word",
       },
-      "& :nth-child(2)": {
+      "& >:nth-child(2)": {
         textAlign: "left",
         fontSize: "12.5px",
       },
     },
-    "& :nth-child(4)": {
+    "& >:nth-child(4)": {
       fontWeight: "700",
     },
   },
@@ -79,7 +79,7 @@ const TableRow = (props) => {
       else dispatch(cartSkuDelete({ oSkuId, prodId: prod.Prod }));
     }
   };
-
+  // console.log(get_DNS() + img);
   const classes = useStyle();
   return (
     <>
@@ -124,6 +124,7 @@ const TableRow = (props) => {
             </div>
             <div>{oSku.attrs}&nbsp;</div>
           </Grid>
+
           <Grid item xs={2}>
             <div>
               {isExpand || showCtrl ? (
@@ -134,6 +135,7 @@ const TableRow = (props) => {
             </div>
             <div>&nbsp;</div>
           </Grid>
+
           <Grid item xs={showImg ? 2 : 3}>
             <div>€{oSku.price?.toFixed(2)}</div>
             <div>&nbsp;</div>
@@ -155,6 +157,7 @@ export default function CartTable(props) {
     showImg = false,
     showCtrl = false,
     isExpand = null,
+    isCart,
     // showHeader = true,
     orderCard = false,
     showCusHeader = false,
@@ -170,11 +173,12 @@ export default function CartTable(props) {
     for (let i = 0; i < OrderProds.length; i++) {
       const op = OrderProds[i];
       // console.log('op',op)
-      const img = op.Prod?.img_urls?.length > 0 && op.Prod.img_urls[0];
+      const img = isCart ? op.img_url : op.Prod?.img_urls[0];
       // console.log(op);
       // console.log("img", img);
-      for (let j = 0; j < op.OrderSkus.length; j++) {
+      for (let j = 0; j < op.OrderSkus?.length; j++) {
         const oSku = op.OrderSkus[j];
+
         if (rows.length < count) {
           rows.push(
             <TableRow
@@ -194,20 +198,14 @@ export default function CartTable(props) {
       }
     }
     return rows;
-  }, [
-    OrderProds,
-    count,
-    orderCard,
-    isExpand,
-    showImg,
-    showCtrl,
-    customTableRowStyle,
-  ]);
+  }, [OrderProds, isCart, count, orderCard, isExpand, showImg, showCtrl, customTableRowStyle]);
 
   React.useEffect(() => {
-    const tb = showTableBody();
-    setTableBody(tb);
-  }, [showTableBody]);
+    if (OrderProds) {
+      const tb = showTableBody();
+      setTableBody(tb);
+    }
+  }, [OrderProds, showTableBody]);
 
   return (
     <>

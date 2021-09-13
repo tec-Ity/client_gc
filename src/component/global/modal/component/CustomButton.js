@@ -9,8 +9,8 @@ const useStyle = makeStyles((theme) => ({
     borderRadius: "100px 100px 100px 0",
     background: "#1d1d38",
     fontSize: "20px",
-    fontFamily:'Montserrat',
-    fontWeight:'700',
+    fontFamily: "Montserrat",
+    fontWeight: "700",
     color: "#fff",
     opacity: "1",
     "&:hover": {
@@ -25,9 +25,12 @@ const useStyle = makeStyles((theme) => ({
 
 export default function CustomButton(props) {
   const classes = useStyle();
-  const { label, handleFunc, alterStyle = null } = props;
+  const { label, handleFunc, alterStyle = null, disableBtn } = props;
   return (
-    <Button onClick={handleFunc} className={clsx(classes.root, alterStyle)}>
+    <Button
+      onClick={handleFunc}
+      disabled={disableBtn}
+      className={clsx(classes.root, alterStyle)}>
       {label}
     </Button>
   );

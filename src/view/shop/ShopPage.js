@@ -24,7 +24,7 @@ const useStyle = makeStyles((theme) => ({
     minWidth: "640px",
     left: "0",
     right: "0",
-    overflow: "hidden",
+    // overflow: "hidden",
   },
   mainSecStyle: {
     padding: "50px",

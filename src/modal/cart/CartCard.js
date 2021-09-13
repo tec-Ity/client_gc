@@ -143,6 +143,7 @@ export default function CartCard(props) {
       </Grid>
       <Grid item className={classes.gridItem}>
         <CartTable
+          isCart
           orderCard={orderCard}
           OrderProds={OrderProds}
           count={count}

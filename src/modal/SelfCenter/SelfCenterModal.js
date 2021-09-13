@@ -21,6 +21,7 @@ import { logout_Prom } from "../../api";
 
 export default function SelfCenterModal() {
   const dispatch = useDispatch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const initialShowSubModal = {
     name: false,
     account: false,
@@ -37,7 +38,7 @@ export default function SelfCenterModal() {
     (state) => state.curClient.curClientInfoStatus
   );
   const [tempInfo, setTempInfo] = useState(curClientInfo);
-
+  const [justOpened, setJustOpened] = useState(null);
   useEffect(() => {
     if (localStorage.getItem("thirdPartyLogin")) {
       (function (d, s, id) {
@@ -51,7 +52,19 @@ export default function SelfCenterModal() {
       })(document, "script", "ThirdPartyLogin");
     }
   }, []);
-  
+
+  const handleCloseSub = React.useCallback(() => {
+    setShowMainModal(true);
+    setShowSubModal(initialShowSubModal);
+  }, [initialShowSubModal]);
+
+  useEffect(() => {
+    if (curClientInfoStatus === "succeed" && justOpened) {
+      handleCloseSub();
+      setJustOpened((prev) => null);
+    }
+  }, [curClientInfoStatus, handleCloseSub, justOpened]);
+
   const handleCloseAll = () => {
     dispatch(setShowSelfCenter(false));
   };
@@ -61,16 +74,12 @@ export default function SelfCenterModal() {
     setShowMainModal(false);
   };
 
-  const handleCloseSub = () => {
-    setShowMainModal(true);
-    setShowSubModal(initialShowSubModal);
-  };
-
   const handleChange = (section, value) => {
     setTempInfo((prev) => ({ ...prev, [section]: value }));
   };
 
   const handleSubmit = (section) => () => {
+    setJustOpened(section);
     dispatch(fetchPutCurClient({ type: section, value: tempInfo[section] }));
   };
 
@@ -373,6 +382,8 @@ const useStyle = makeStyles({
     width: "100%",
     // padding: "3px",
     maxHeight: "1px",
+    marginLeft: "0",
+    marginRight: "0",
   },
   //row component
   desp: {

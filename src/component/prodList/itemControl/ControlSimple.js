@@ -1,28 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import CartSkuCtrl from "../../../modal/cart/CartSkuCtrl";
-import { selectCurProdInCart } from "../../../redux/cart/cartSlice";
 import CustomShoppingButton from "../../global/button/CustomShoppingButton";
 
 export default function ControlSimple(props) {
-  const { skus, prodId, shop, onSkuChange } = props;
-  const skuPostStatus = useSelector((state) => state.cart.skuPostStatus);
-
-  // console.log(shop)
-  const curSkuInCart = useSelector(selectCurProdInCart(prodId, shop._id))
-    ?.OrderSkus[0];
-  // console.log(prodId)
-  // console.log(curSkuInCart);
+  const { sku, onSkuChange, curSkuInCart } = props;
 
   return (
     <div>
       {curSkuInCart && curSkuInCart.quantity > 0 ? (
         <CartSkuCtrl oSku={curSkuInCart} handleFunc={onSkuChange} />
       ) : (
-        <CustomShoppingButton
-          disabled={skuPostStatus === "loading"}
-          handleFunc={() => onSkuChange(null, skus[0], 1)}
-        />
+        <CustomShoppingButton handleFunc={() => onSkuChange(null, sku, 1)} />
       )}
     </div>
   );

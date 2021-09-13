@@ -19,6 +19,8 @@ const initialState = {
 
   //change status status
   changeStatusStatus: "idle",
+  //order post status
+  orderPostStatus: "idle",
 
   //order selection button status
   orderBtnSwitch: {
@@ -108,6 +110,27 @@ export const fetchChangeStatus = createAsyncThunk(
     } else return rejectWithValue(statusRes.message);
   }
 );
+export const fetchOrderPost = createAsyncThunk(
+  "order/fetchOrderPost",
+  async (obj, { rejectWithValue }) => {
+    // const obj = {};
+    if (obj) {
+      // obj.Shop = curCart.Shop;
+      // const opTemp
+      // obj.OrderProds = curCart.Shop;
+      // delete obj._id;
+      console.log(obj);
+      const orderPostRes = await fetch_Prom("/OrderPost", "POST", {
+        obj,
+      });
+      console.log("orderPostRes", orderPostRes);
+
+      if (orderPostRes.status === 200) {
+        return orderPostRes.data.object;
+      } else return rejectWithValue(orderPostRes.message);
+    }
+  }
+);
 
 export const orderSlice = createSlice({
   name: "order",
@@ -132,7 +155,7 @@ export const orderSlice = createSlice({
       state.ordersStatus = "succeed";
       // state.orders = action.payload;
       let ordersObjs = [];
-      if (action.payload.length > 0) {
+      if (action.payload?.length > 0) {
         ordersObjs = [...action.payload];
         for (let i = 0; i < ordersObjs.length; i++) {
           const order = ordersObjs[i];
@@ -162,7 +185,6 @@ export const orderSlice = createSlice({
           orderObj.totPrice = totPrice !== -1 && totPrice;
           orderObj.totProd = totProd;
         }
-        console.log(orderObj);
         state.curOrder = orderObj;
       }
     },
@@ -178,6 +200,16 @@ export const orderSlice = createSlice({
     },
     [fetchChangeStatus.rejected]: (state, action) => {
       state.changeStatusStatus = "error";
+    },
+    [fetchOrderPost.pending]: (state) => {
+      state.orderPostStatus = "loading";
+    },
+    [fetchOrderPost.fulfilled]: (state, action) => {
+      state.orderPostStatus = "succeed";
+      state.curOrder = action.payload;
+    },
+    [fetchOrderPost.rejected]: (state, action) => {
+      state.orderPostStatus = "error";
     },
   },
 });

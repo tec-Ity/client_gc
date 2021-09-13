@@ -4,6 +4,7 @@ import CustomButton from "../../global/modal/component/CustomButton";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+import CartSkuCtrl from "../../../modal/cart/CartSkuCtrl";
 
 const useStyle = makeStyles({
   root: {},
@@ -41,10 +42,14 @@ const useStyle = makeStyles({
   attrList: {
     minHeight: "0",
   },
+  btnStyle: {
+    width: "85%",
+  },
 });
 
 export default function ControlMultiSkusUI(props) {
-  const { skuList, buttonDec, buttonInc, buttonNew, handleClose } = props;
+  const { skuList, buttonNew, handleClose, onSkuChange } =
+    props;
   const classes = useStyle();
 
   return (
@@ -66,7 +71,11 @@ export default function ControlMultiSkusUI(props) {
                   sku.attrs.map((attr) => {
                     return (
                       // attrs
-                      <Grid container item xs={4}>
+                      <Grid
+                        container
+                        item
+                        xs={4}
+                        style={{ paddingLeft: "10px" }}>
                         <span key={attr.nome}>
                           <span>{attr.nome}</span>:<span>{attr.option}</span>
                         </span>
@@ -81,9 +90,7 @@ export default function ControlMultiSkusUI(props) {
               {/* ctrl */}
               {sku.orderSkuId && sku.quantity > 0 ? (
                 <Grid item xs={3} className={classes.gridItem}>
-                  <>{buttonDec(sku)}</>
-                  <>{sku.quantity}</>
-                  <>{buttonInc(sku)}</>
+                  <CartSkuCtrl handleFunc={onSkuChange} />
                 </Grid>
               ) : (
                 <Grid item xs={3} className={classes.gridItem}>
@@ -98,7 +105,11 @@ export default function ControlMultiSkusUI(props) {
         })}
       </Grid>
       <Grid item xs={12} className={classes.gridItem}>
-        <CustomButton label='OK' handleFun={handleClose} />
+        <CustomButton
+          label='OK'
+          handleFun={handleClose}
+          alterStyle={classes.btnStyle}
+        />
       </Grid>
     </Grid>
   );

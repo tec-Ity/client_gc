@@ -12,6 +12,9 @@ import PaymentSelBtn from "./PaymentSelBtn";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CustomButton from "../../../component/global/modal/component/CustomButton";
 import clsx from "clsx";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurShopInfo } from "../../../redux/shop/shopSlice";
+import { ReactComponent as LeftArrow } from "../../../component/icon/chevron-left.svg";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -19,6 +22,7 @@ const useStyle = makeStyles((theme) => ({
     color: "#1d1d38",
   },
   headerStyle: {
+    maxWidth: "850px",
     height: "73px",
     marginBottom: "20px",
     display: "flex",
@@ -38,7 +42,10 @@ const useStyle = makeStyles((theme) => ({
     fontSize: "15px",
   },
   detailCardStyle: {
+    position: "relative",
     marginBottom: theme.spacing(5),
+    paddingTop: "140px",
+    paddingBottom: "60px",
     width: "100%",
     minHeight: "500px",
     maxWidth: "850px",
@@ -74,8 +81,14 @@ const useStyle = makeStyles((theme) => ({
   },
   tableRowStyle: {
     marginBottom: "20px",
+    "& > div": {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
     //nome
-    "& :nth-child(2)": {
+    "& > :nth-child(2)": {
+      justifyContent: "flex-start",
       //nome
       "& :nth-child(1)": {
         fontSize: "20px",
@@ -87,23 +100,18 @@ const useStyle = makeStyles((theme) => ({
       },
     },
     //ctrl
-    "& :nth-child(3)": {
+    "& >:nth-child(3)": {
       "& input": {
         fontWeight: "700",
-      },
-      //make ctrl center
-      "& :nth-child(1)": {
-        "& :nth-child(1)": {
-          margin: "auto",
-        },
+        fontSize: "16px",
       },
     },
     //unit price
-    "& :nth-child(4)": {
+    "& >:nth-child(4)": {
       textAlign: "center",
     },
     //total price
-    "& :nth-child(5)": {
+    "& >:nth-child(5)": {
       fontWeight: "700",
       textAlign: "center",
     },
@@ -123,13 +131,61 @@ const useStyle = makeStyles((theme) => ({
   backToShop: {
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
+    fontSize: "8px",
+    opacity: "0.5",
+    color: "#1d1d38",
+
+    "& >:nth-child(1)": {
+      height: "50%",
+    },
     "&:visited": {
+      opacity: "0.5",
       color: "#1d1d38",
     },
     "&:hover": {
-      color: "#e47f10",
+      color: "#1d1d38",
+      opacity: "1",
     },
     // textDecoration:'none',
+  },
+  shopTag: {
+    position: "absolute",
+    left: "-10px",
+    height: "60px",
+    top: "60px",
+    width: "210px",
+    //green box
+    "& >:nth-child(1)": {
+      width: "210px",
+      height: "51px",
+      background: "#c0e57b",
+      borderRadius: "10px 0 0 0 ",
+      boxShadow: "1px 2px 3px rgba(0, 0, 0, 0.2) ",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+
+      "& :nth-child(1)": {
+        fontWeight: "700",
+        fontSize: "15px",
+      },
+      "& :nth-child(2)": {
+        fontSize: "12px",
+      },
+    },
+    //triangle
+    "& > :nth-child(2)": {
+      width: " 0",
+      height: " 0",
+      position: "relative",
+      bottom: "1px",
+      borderLeft: " 7.5px solid transparent",
+      borderRight: " 7.5px solid transparent",
+      borderBottom: " 7.5px solid #e47f10",
+      transform: "rotate(45deg )",
+    },
   },
 }));
 
@@ -139,147 +195,172 @@ export default function DetailCard(props) {
     // _id,
     orderLogo = null,
     order,
-    fetchStatus,
+    isCart = false,
     header,
     isOrder = false,
-    isCart = false,
     // showOrderDetail,
     // showDeliveryDetail,
     handleFunc,
     paymentMethod = null,
+    disableBtn,
   } = props;
+  const dispatch = useDispatch();
+  const curShopInfo = useSelector((state) => state.shop.curShopInfo);
+  const curShopInfoStatus = useSelector(
+    (state) => state.shop.curShopInfoStatus
+  );
+  // console.log(order)
+  React.useEffect(() => {
+    const getShopInfo = () => {
+      if (curShopInfoStatus === "idle") {
+        isCart
+          ? dispatch(fetchCurShopInfo(order?.Shop))
+          : dispatch(fetchCurShopInfo(order?.Shop?._id));
+      } else if (curShopInfoStatus === "error") {
+        setTimeout(() => {
+          isCart
+            ? dispatch(fetchCurShopInfo(order?.Shop))
+            : dispatch(fetchCurShopInfo(order?.Shop?._id));
+        }, 2000);
+      }
+    };
+    order?.Shop && getShopInfo();
+  }, [curShopInfoStatus, dispatch, isCart, order?.Shop]);
 
   return (
-    <Container className={classes.root}>
-      <div className={classes.headerStyle}>
-        <Link to={"/shop/" + order.Shop._id} className={classes.backToShop}>
-          <ArrowBackIcon />
-          <span className={classes.backLink}>{header.backLink}</span>
-        </Link>
-        <CustomButton
-          label={header.nextLink}
-          handleFunc={handleFunc}
-          alterStyle={classes.confirmBtnSm}
-        />
-      </div>
+    order && (
+      <Container className={classes.root}>
+        <Container disableGutters className={classes.headerStyle}>
+          <Link to={"/shop/" + order?.Shop} className={classes.backToShop}>
+            <ArrowBackIcon />
+            <span className={classes.backLink}>{header.backLink}</span>
+          </Link>
+          <CustomButton
+            label={header.nextLink}
+            handleFunc={handleFunc}
+            alterStyle={classes.confirmBtnSm}
+          />
+        </Container>
+        {/* body */}
+        <Container className={classes.detailCardStyle}>
+          <div className={classes.shopTag}>
+            <div>
+              <div>{curShopInfo.nome}</div>
+              <div>{curShopInfo.addr}</div>
+            </div>
+            <div></div>
+          </div>
+          <Grid container className={classes.gridStyle}>
+            {orderLogo && (
+              <Grid
+                container
+                item
+                xs={12}
+                justifyContent='center'
+                alignItems='center'
+                style={{ minHeight: "150px" }}>
+                <div
+                  style={{
+                    height: "80px",
+                    width: "80px",
+                    border: "1px solid",
+                  }}>
+                  {orderLogo}
+                </div>
+              </Grid>
+            )}
+            {/* order detail */}
+            {isOrder && (
+              <Grid item xs={12} className={classes.gridItemStyle}>
+                <InfoDetail
+                  title='DETTAGLIO ORDINE'
+                  info1={{
+                    line1: "NUMERO D’ORDINE",
+                    line2: order?.code,
+                  }}
+                  info2={{
+                    line1: "DATA",
+                    line2:
+                      order?.at_confirm?.slice(0, 10) +
+                      " " +
+                      order?.at_confirm?.slice(12, 19),
+                  }}
+                />
+              </Grid>
+            )}
 
-      {/* body */}
-      <Container className={classes.detailCardStyle}>
-        <Grid container className={classes.gridStyle}>
-          {orderLogo && (
-            <Grid
-              container
-              item
-              xs={12}
-              justifyContent='center'
-              alignItems='center'
-              style={{ minHeight: "150px" }}>
-              <div
-                style={{ height: "80px", width: "80px", border: "1px solid" }}>
-                {orderLogo}
-              </div>
-            </Grid>
-          )}
-          {/* order detail */}
-          {isOrder && (
+            {/* delivery detail */}
             <Grid item xs={12} className={classes.gridItemStyle}>
-              <InfoDetail
-                title='DETTAGLIO ORDINE'
-                info1={{
-                  line1: "NUMERO D’ORDINE",
-                  line2: order.code,
-                }}
-                info2={{
-                  line1: "DATA",
-                  line2:
-                    order.at_confirm.slice(0, 10) +
-                    " " +
-                    order.at_confirm.slice(12, 19),
-                }}
+              <DeliveryDetail />
+            </Grid>
+            {/* prods detail */}
+            <Grid item xs={12} className={classes.gridItemStyle}>
+              {Object.keys(order).length > 0 && (
+                <>
+                  <SectionHeader title='DETTAGLIO SPESA' />
+                  <CartTable
+                    OrderProds={order?.OrderProds}
+                    isCart={isCart}
+                    showImg
+                    showCtrl={isCart}
+                    showCusHeader={true}
+                    customTableStyle={classes.tableStyle}
+                    customTableRowStyle={classes.tableRowStyle}
+                    customTableHeaderStyle={classes.tableHeaderStyle}
+                  />
+                </>
+              )}
+            </Grid>
+            {/* cost details */}
+            <Grid container item xs={12} className={classes.gridItemStyle}>
+              <TotPriceDetail
+                paymentMethod={paymentMethod}
+                priceShip={curShopInfo?.price_ship}
+                priceTotal={order?.totPrice}
               />
             </Grid>
-          )}
-          {/* shop detail */}
-          <Grid item xs={12} className={classes.gridItemStyle}>
-            <InfoDetail
-              title='DETTAGLIO NEGOZIO'
-              info1={{
-                line1: "NOME DI NEGOZIO",
-                line2: order.Shop.nome,
-              }}
-              info2={{ line1: "ADDR", line2: order.Shop.addr }}
-            />
-          </Grid>
-
-          {/* delivery detail */}
-          <Grid item xs={12} className={classes.gridItemStyle}>
-            <DeliveryDetail />
-          </Grid>
-          {/* prods detail */}
-          <Grid item xs={12} className={classes.gridItemStyle}>
-            {fetchStatus === "succeed" && Object.keys(order).length > 0 && (
+            {/* confirm button and back to shop Link */}
+            {isCart && (
               <>
-                <SectionHeader title='DETTAGLIO SPESA' />
-                <CartTable
-                  OrderProds={order.OrderProds}
-                  showImg
-                  showCtrl={isCart}
-                  showCusHeader={true}
-                  customTableStyle={classes.tableStyle}
-                  customTableRowStyle={classes.tableRowStyle}
-                  customTableHeaderStyle={classes.tableHeaderStyle}
-                />
+                <Grid container item xs={12} className={classes.gridItemStyle}>
+                  <Grid
+                    item
+                    xs={12}
+                    className={clsx(classes.gridItemStyle, classes.btnGroup)}>
+                    {/* <ConfirmOrderBtn /> */}
+                    <CustomButton
+                      disableBtn={disableBtn}
+                      label='CONFERMA L’ORDINE'
+                      handleFunc={handleFunc}
+                      alterStyle={classes.cusButtonStyle}
+                    />
+                  </Grid>
+
+                  <Grid
+                    container
+                    item
+                    justifyContent='center'
+                    xs={12}
+                    className={clsx(classes.gridItemStyle, classes.btnGroup)}>
+                    <Link
+                      to={"/shop/" + order?.Shop}
+                      className={classes.backToShop}>
+                      <LeftArrow />
+                      <span> NON ADESSO, CONTINUA LO SHOPPING</span>
+                    </Link>
+                  </Grid>
+                </Grid>
               </>
             )}
-          </Grid>
-          {/* cost details */}
-          <Grid container item xs={12} className={classes.gridItemStyle}>
-            <TotPriceDetail
-              paymentMethod={paymentMethod}
-              priceShip={order.price_ship}
-              priceTotal={order.totPrice}
-            />
-          </Grid>
-          {/* confirm button and back to shop Link */}
-          {isCart && (
-            <>
+            {/* select payment type button group */}
+            {isOrder && (
               <Grid container item xs={12} className={classes.gridItemStyle}>
-                <Grid
-                  item
-                  xs={12}
-                  className={clsx(classes.gridItemStyle, classes.btnGroup)}>
-                  {/* <ConfirmOrderBtn /> */}
-                  <CustomButton
-                    label='CONFERMA L’ORDINE'
-                    handleFunc={handleFunc}
-                    alterStyle={classes.cusButtonStyle}
-                  />
-                </Grid>
-
-                <Grid
-                  container
-                  item
-                  justifyContent='center'
-                  xs={12}
-                  className={clsx(classes.gridItemStyle, classes.btnGroup)}>
-                  <Link
-                    to={"/shop/" + order.Shop._id}
-                    className={classes.backToShop}>
-                    <ArrowBackIcon />
-                    <span> NON ADESSO, CONTINUA LO SHOPPING</span>
-                  </Link>
-                </Grid>
+                <PaymentSelBtn />
               </Grid>
-            </>
-          )}
-          {/* select payment type button group */}
-          {isOrder && (
-            <Grid container item xs={12} className={classes.gridItemStyle}>
-              <PaymentSelBtn />
-            </Grid>
-          )}
-        </Grid>
+            )}
+          </Grid>
+        </Container>
       </Container>
-    </Container>
+    )
   );
 }

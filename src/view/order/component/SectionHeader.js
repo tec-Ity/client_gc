@@ -17,6 +17,7 @@ const useStyle = makeStyles((theme) => ({
   },
   hrStyle: {
     width: "70%",
+    height:'1px'
   },
 }));
 
