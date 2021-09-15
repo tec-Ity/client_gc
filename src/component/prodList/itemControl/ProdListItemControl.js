@@ -11,7 +11,7 @@ const ControlMulti = lazy(() => import("./ControlMulti"));
 const ControlSimple = lazy(() => import("./ControlSimple"));
 
 export default function ProdListItemControl(props) {
-  const { prod } = props;
+  const { prod, large = false } = props;
   const { Skus: skus, is_simple: isSimple, _id: prodId, Shop: shop } = prod;
 
   const dispatch = useDispatch();
@@ -31,12 +31,14 @@ export default function ProdListItemControl(props) {
     <Suspense fallback={<div>Loading......</div>}>
       {isSimple === true ? (
         <ControlSimple
+          large={large}
           sku={skus[0]}
           onSkuChange={onSkuChange}
           curSkuInCart={curProdInCart?.OrderSkus[0]}
         />
       ) : (
         <ControlMulti
+          large={large}
           skus={skus}
           onSkuChange={onSkuChange}
           curProdInCart={curProdInCart}

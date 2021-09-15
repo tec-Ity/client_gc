@@ -13,12 +13,19 @@ import {
 } from "../../redux/cart/cartSlice";
 import { useHistory } from "react-router";
 import CustomButton from "../../component/global/modal/component/CustomButton";
+import moment from "moment";
+import CustomHr from "../../component/global/modal/component/CustomHr";
 
 const useStyle = makeStyles((props) => ({
   root: {
     // maxHeight: "270px",
     // height:'1000px',
     // height:'100%',
+    // alignContent:'flex-start',
+    // border: "1px solid",
+    // "& >div": {
+    //   border: "1px solid",
+    // },
     width: "443px",
     boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
     borderRadius: "20px 20px 20px 0px",
@@ -27,17 +34,20 @@ const useStyle = makeStyles((props) => ({
     paddingBottom: "20px",
   },
   marginHead: {
-    margin: "20px 0 10px 0",
+    margin: "20px 0 0 0",
   },
   marginFoot: {
     margin: "9px 0 22px 0",
   },
   gridItem: {
+    // border:'1px solid',
     width: "400px",
     margin: "auto",
+    marginTop:'5px',
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: "0",
   },
   shopTitle: {
     fontFamily: "Montserrat",
@@ -90,6 +100,20 @@ const useStyle = makeStyles((props) => ({
     fontWeight: "600",
     marginBottom: "24px",
   },
+  //order info header
+  orderInfoHeader: {
+    height: "30px",
+    "& >:nth-child(1)": {
+      fontWeight: "400",
+      fontSize: "11px",
+    },
+    "& >:nth-child(2)": {
+      fontSize: "20px",
+    },
+  },
+  customHr: {
+    margin: "3px 0 0 0",
+  },
 }));
 
 export default function CartCard(props) {
@@ -129,7 +153,7 @@ export default function CartCard(props) {
 
   return (
     <Grid container item xs={11} className={classes.root}>
-      <Grid item className={classes.gridItem}>
+      <Grid item container className={classes.gridItem}>
         <div className={clsx(classes.shopTitle, classes.marginHead)}>
           SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
         </div>
@@ -141,7 +165,23 @@ export default function CartCard(props) {
           />
         </div>
       </Grid>
-      <Grid item className={classes.gridItem}>
+      {orderCard && (
+        <Grid
+          item
+          container
+          className={clsx(classes.gridItem, classes.orderInfoHeader)}>
+          <Grid item container xs={6}>
+            {moment(cart.at_upd).format("DD/MM/YYYY HH:mm")}
+          </Grid>
+          <Grid item container xs={6} justifyContent='flex-end'>
+            €{cart.total_sale?.toFixed(2)}
+          </Grid>
+          <Grid item container xs={12}>
+            <CustomHr position={classes.customHr} />
+          </Grid>
+        </Grid>
+      )}
+      <Grid item container className={classes.gridItem}>
         <CartTable
           isCart
           orderCard={orderCard}

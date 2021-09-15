@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DetailCard from "./component/DetailCard";
 import ProofModal from "./component/ProofModal";
 import { fetchOrderPost } from "../../redux/order/orderSlice";
-import { setCurCartById } from "../../redux/cart/cartSlice";
+import { cartDelete, setCurCartById } from "../../redux/cart/cartSlice";
 
 export default function CartDetailPage() {
   const { _id } = useParams();
@@ -43,9 +43,12 @@ export default function CartDetailPage() {
     if (orderPostStatus === "loading" || orderPostStatus === "error") {
       setDisableBtn(true);
     } else if (orderPostStatus === "succeed" && disableBtn === true) {
+      dispatch(cartDelete(_id));
+      console.log(_id);
       hist.push("/order/" + curOrder._id);
     }
-  }, [curOrder._id, hist, orderPostStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [curOrder._id, hist, orderPostStatus, _id, dispatch]);
 
   const handleClose = () => {
     setShowProof(false);

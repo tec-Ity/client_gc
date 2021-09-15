@@ -7,6 +7,7 @@ export default function ControlMulti(props) {
     skus, //shopslice prodlistQuery .prod .skus
     onSkuChange,
     curProdInCart,
+    large = false,
   } = props;
   const [showSkusModal, setShowSkusModal] = useState(false);
   const [totCount, setTotCount] = useState();
@@ -31,6 +32,7 @@ export default function ControlMulti(props) {
     <div>
       {showSkusModal === false && (
         <CustomShoppingButton
+          large={large}
           multi
           handleFunc={() => {
             setShowSkusModal(true);

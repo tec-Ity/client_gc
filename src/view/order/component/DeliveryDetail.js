@@ -31,6 +31,7 @@ const useStyle = makeStyles((theme) => ({
     background: "#c0e57b",
     color: "#fff",
     borderRadius: "13.5px 13.5px 13.5px 0",
+    fontFamily: "Montserrat",
     "&:hover": {
       background: "#c0e57b",
       backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.05) 0 0)",

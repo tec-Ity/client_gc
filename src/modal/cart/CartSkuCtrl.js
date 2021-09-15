@@ -1,25 +1,24 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 // import button from "@material-ui/core/Button";
 import { ReactComponent as Minus } from "../../component/icon/minus.svg";
 import { ReactComponent as Add } from "../../component/icon/add.svg";
 import { ReactComponent as Delete } from "../../component/icon/delete.svg";
 
-const useStyle = makeStyles((theme) => ({
+const useStyle = makeStyles({
   root: {
-    width: "74px",
-    height: "19.5px",
-    border: "0.78px solid #1D1D38",
+    width: (large) => (large ? "109.5px" : "73px"),
+    height: (large) => (large ? "36px" : "24px"),
+    border: (large) => (large ? "1.5px solid #1D1D38" : "0.78px solid #1D1D38"),
     // boxSizing: "border-box",
-    borderRadius: "14.733px",
+    borderRadius: "100px 100px 100px 0",
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",
   },
   ctrlButton: {
-    width: "14.6px",
-    height: "14.6px",
+    width: (large) => (large ? "22px" : "14.6px"),
+    height: (large) => (large ? "22px" : "14.6px"),
     display: "flex",
     justifyContent: "center",
     // alignItem: "center",
@@ -30,10 +29,10 @@ const useStyle = makeStyles((theme) => ({
 
   ctrlInput: {
     border: "none",
-    height: "14px",
-    width: "20px",
+    height: (large) => (large ? "21px" : "14px"),
+    width: (large) => (large ? "25px" : "20px"),
     background: "transparent",
-    fontSize: "16px",
+    fontSize: (large) => (large ? "19px" : "16px"),
     fontFamily: "Montserrat",
     "&:focused": {
       border: "none",
@@ -42,15 +41,15 @@ const useStyle = makeStyles((theme) => ({
   },
 
   iconStyle: {
-    height: "11px",
-    width: "11px",
+    height: (large) => (large ? "16px" : "11px"),
+    width: (large) => (large ? "16px" : "11px"),
     margin: "auto",
   },
-}));
+});
 
 export default function CartSkuCtrl(props) {
-  const { oSku, handleFunc } = props;
-  const classes = useStyle();
+  const { oSku, handleFunc, large = null } = props;
+  const classes = useStyle(large);
   const [qtyTemp, setQtyTemp] = React.useState(oSku?.quantity);
 
   const handleSubmit = (e) => {

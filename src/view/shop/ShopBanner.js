@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { ReactComponent as ArrowLeft } from "../../component/icon/chevron-left.svg";
 
 import { useSelector } from "react-redux";
+import BackLink from "../../component/global/link/BackLink";
 const useStyle = makeStyles((theme) => ({
   root: {},
   bannerStyle: {
@@ -85,10 +86,13 @@ export default function ShopBanner() {
   const classes = useStyle();
   return (
     <Container maxWidth={false} className={classes.bannerStyle}>
-      <Link to='/home' className={classes.backLink}>
-        <ArrowLeft style={{ width: "20px", height: "20px" }} /> &nbsp; DIETRO A
-        TUTTI I NEGOZI
-      </Link>
+      <div className={classes.backLink}>
+        <BackLink
+          label='DIETRO A
+        TUTTI I NEGOZI'
+          link='/home'
+        />
+      </div>
       <div className={classes.shopDetailBox}>
         <div className={classes.shopInfo}>
           <div>{curShopInfo?.nome}</div>

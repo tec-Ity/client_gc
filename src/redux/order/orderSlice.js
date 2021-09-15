@@ -119,7 +119,7 @@ export const fetchOrderPost = createAsyncThunk(
       // const opTemp
       // obj.OrderProds = curCart.Shop;
       // delete obj._id;
-      console.log(obj);
+      // console.log(obj);
       const orderPostRes = await fetch_Prom("/OrderPost", "POST", {
         obj,
       });
@@ -160,9 +160,7 @@ export const orderSlice = createSlice({
         for (let i = 0; i < ordersObjs.length; i++) {
           const order = ordersObjs[i];
           if (order.OrderProds.length > 0) {
-            const { totPrice, totProd } = calCartPrice(order.OrderProds);
-            order.totPrice = totPrice;
-            order.totProd = totProd;
+            calCartPrice(order.OrderProds);
           }
         }
       }
@@ -181,9 +179,7 @@ export const orderSlice = createSlice({
       if (Object.keys(orderObj).length > 0) {
         if (orderObj.OrderProds?.length > 0) {
           //return -1 if sku.price_tot and totPrice has been init
-          const { totPrice, totProd } = calCartPrice(orderObj.OrderProds);
-          orderObj.totPrice = totPrice !== -1 && totPrice;
-          orderObj.totProd = totProd;
+          calCartPrice(orderObj.OrderProds);
         }
         state.curOrder = orderObj;
       }

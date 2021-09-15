@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomModal from "../../component/global/modal/CustomModal";
 import {
   setShowCarts,
-  fetchCarts,
   setIsExpand,
-  fetchCartByShop,
+  setCurCartByShop,
 } from "../../redux/cart/cartSlice";
 import CartCard from "./CartCard";
 import CardWraper from "../../component/global/modal/component/CardWraper";
@@ -15,11 +14,11 @@ export default function CartModal() {
   const carts = useSelector((state) => state.cart.carts);
   const curCart = useSelector((state) => state.cart.curCart);
   const isExpand = useSelector((state) => state.cart.isExpand);
-  const curShop = useSelector((state) => state.shop.curShop);
+  // const curShop = useSelector((state) => state.shop.curShop);
   const dispatch = useDispatch();
   const cartsSkuCount = 3;
   const CartSkuCountShop = 100;
-  console.log('carts',carts)
+  // console.log("carts", carts);
   const handleClose = () => {
     dispatch(setShowCarts(false));
   };
@@ -28,8 +27,10 @@ export default function CartModal() {
     dispatch(setIsExpand(null));
   };
 
-  // console.log(curCartStatus);
-
+  React.useEffect(() => {
+    dispatch(setCurCartByShop(isExpand));
+  }, [dispatch, isExpand]);
+  console.log(isExpand);
   const displayCarts = () => {
     let cartsTemp;
     if (isExpand) {
@@ -45,24 +46,23 @@ export default function CartModal() {
         );
     } else {
       //show carts
-        if (carts?.length > 0) {
-          const cartsValid = carts.filter((cart) => {
-            return cart.OrderProds.length > 0;
-          });
-          cartsTemp = cartsValid.map((cart) => {
-            return (
-              <CartCard
-                key={cart._id}
-                cart={cart}
-                count={cartsSkuCount}
-                isExpand={isExpand}
-              />
-            );
-          });
-        } else {
-          cartsTemp = <div>暂无购物车</div>;
-        }
- 
+      if (carts?.length > 0) {
+        const cartsValid = carts.filter((cart) => {
+          return cart.OrderProds.length > 0;
+        });
+        cartsTemp = cartsValid.map((cart) => {
+          return (
+            <CartCard
+              key={cart._id}
+              cart={cart}
+              count={cartsSkuCount}
+              isExpand={isExpand}
+            />
+          );
+        });
+      } else {
+        cartsTemp = <div>暂无购物车</div>;
+      }
     }
     return cartsTemp;
   };

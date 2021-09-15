@@ -144,8 +144,6 @@ export const fetchProofOrder = createAsyncThunk(
 );
 
 export const calCartPrice = (OrderProds) => {
-  let totPrice = 0;
-  let totProd = 0;
   for (let i = 0; i < OrderProds.length; i++) {
     // console.log(33);
     const op = OrderProds[i];
@@ -158,11 +156,8 @@ export const calCartPrice = (OrderProds) => {
         // console.log("osku", oSku);
         const totSkuPrice = oSku.price * oSku.quantity;
         oSku.price_tot = totSkuPrice;
-        totPrice += totSkuPrice;
-        totProd += oSku.quantity;
       }
   }
-  return { totPrice, totProd };
 };
 
 // const unshiftCart = (carts, curCart) => {
@@ -372,12 +367,13 @@ export const cartSlice = createSlice({
             const oSku = oProd.OrderSkus[j];
             if ((oSku.Sku = oSkuId)) {
               delSkuIndex = j;
+              curCartTemp.totItem -= 1;
+              curCartTemp.totPrice -= oSku.price;
               break;
             }
           }
           if (delSkuIndex !== -1) {
             oProd.OrderSkus.splice(delSkuIndex, 1);
-            curCartTemp.totItem -= 1;
             if (oProd.OrderSkus.length <= 0) {
               delProdIndex = i;
             }
@@ -414,6 +410,21 @@ export const cartSlice = createSlice({
           state.carts.push(curCartTemp);
         }
         state.curCart = curCartTemp;
+      }
+    },
+    cartDelete: (state, action) => {
+      const shopId = action.payload;
+      let i = 0;
+
+      for (; i < state.carts.length; i++) {
+        if (state.carts[i].Shop === shopId) {
+          break;
+        }
+      }
+      console.log(shopId);
+      console.log(i);
+      if (i < state.carts.length) {
+        state.carts.splice(i, 1);
       }
     },
   },
@@ -453,6 +464,7 @@ export const {
   cartSkuPost,
   cartSkuPut,
   cartSkuDelete,
+  cartDelete,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

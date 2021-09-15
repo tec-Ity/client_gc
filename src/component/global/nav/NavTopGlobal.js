@@ -73,6 +73,7 @@ const useStyle = makeStyles({
     "&:hover": {
       background: "transparent",
     },
+
   },
   btnsIcon: {
     width: "30px",
@@ -113,7 +114,7 @@ export default function NavTopGlobal() {
         </div>
         {isLogin ? (
           <div style={{ marginRight: "5%" }}>
-            <Button
+            <Button disableRipple
               classes={{ root: classes.btnStyle }}
               onClick={() => dispatch(setShowCarts(true))}>
               {/* <Cart /> */}
@@ -129,14 +130,14 @@ export default function NavTopGlobal() {
                     )}
               </div>
             </Button>
-            <Button
+            <Button disableRipple
               classes={{ root: classes.btnStyle }}
               onClick={() => dispatch(setShowOrders(true))}>
               <div style={{ position: "relative" }}>
                 <Order className={classes.btnsIcon} />
               </div>
             </Button>
-            <Button
+            <Button disableRipple
               classes={{ root: classes.btnStyle }}
               onClick={() => dispatch(setShowSelfCenter(true))}>
               <div style={{ position: "relative" }}>
@@ -146,7 +147,7 @@ export default function NavTopGlobal() {
           </div>
         ) : (
           <div style={{ marginRight: "5%" }}>
-            <Button
+            <Button disableRipple
               classes={{ root: classes.btnStyle }}
               onClick={() => {
                 dispatch(setShowLogin(true));

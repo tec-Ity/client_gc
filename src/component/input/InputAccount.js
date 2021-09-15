@@ -69,7 +69,7 @@ export default function InputAccount(props) {
   useEffect(() => {
     async function getNation() {
       const result = await fetch_Prom("/Nations");
-      const nations = result.data.objects;
+      const nations = result?.data.objects;
       setNations(nations);
     }
 

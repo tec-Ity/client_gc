@@ -9,15 +9,17 @@ import TotPriceDetail from "./TotPriceDetail";
 import DeliveryDetail from "./DeliveryDetail";
 import InfoDetail from "./InfoDetail";
 import PaymentSelBtn from "./PaymentSelBtn";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CustomButton from "../../../component/global/modal/component/CustomButton";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCurShopInfo } from "../../../redux/shop/shopSlice";
 import { ReactComponent as LeftArrow } from "../../../component/icon/chevron-left.svg";
+import BackLink from "../../../component/global/link/BackLink";
 
 const useStyle = makeStyles((theme) => ({
   root: {
+    // border:'1px solid',
+    marginTop: "10px",
     fontFamily: "Montserrat",
     color: "#1d1d38",
   },
@@ -28,10 +30,6 @@ const useStyle = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    "& :nth-child(1)": {
-      display: "flex",
-      justifyContent: "center",
-    },
   },
   backLink: {
     paddingTop: "1.5px",
@@ -187,6 +185,9 @@ const useStyle = makeStyles((theme) => ({
       transform: "rotate(45deg )",
     },
   },
+  backLinkStyle: {
+    justifyContent: "flex-start",
+  },
 }));
 
 export default function DetailCard(props) {
@@ -231,10 +232,11 @@ export default function DetailCard(props) {
     order && (
       <Container className={classes.root}>
         <Container disableGutters className={classes.headerStyle}>
-          <Link to={"/shop/" + order?.Shop} className={classes.backToShop}>
-            <ArrowBackIcon />
-            <span className={classes.backLink}>{header.backLink}</span>
-          </Link>
+          <BackLink
+            link={isCart ? "/shop/" + order?.Shop : "/shop/" + order?.Shop._id}
+            label={header.backLink}
+            style={classes.backLinkStyle}
+          />
           <CustomButton
             label={header.nextLink}
             handleFunc={handleFunc}
@@ -291,7 +293,7 @@ export default function DetailCard(props) {
 
             {/* delivery detail */}
             <Grid item xs={12} className={classes.gridItemStyle}>
-              <DeliveryDetail />
+              <DeliveryDetail isCart={isCart} />
             </Grid>
             {/* prods detail */}
             <Grid item xs={12} className={classes.gridItemStyle}>
@@ -316,7 +318,7 @@ export default function DetailCard(props) {
               <TotPriceDetail
                 paymentMethod={paymentMethod}
                 priceShip={curShopInfo?.price_ship}
-                priceTotal={order?.totPrice}
+                priceTotal={isCart ? order?.totPrice : order?.total_sale}
               />
             </Grid>
             {/* confirm button and back to shop Link */}

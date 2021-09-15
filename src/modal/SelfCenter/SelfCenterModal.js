@@ -34,6 +34,7 @@ export default function SelfCenterModal() {
   const [showMainModal, setShowMainModal] = useState(true);
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
   const curClientInfo = useSelector((state) => state.curClient.curClientInfo);
+  console.log(curClientInfo);
   const curClientInfoStatus = useSelector(
     (state) => state.curClient.curClientInfoStatus
   );
@@ -80,7 +81,62 @@ export default function SelfCenterModal() {
 
   const handleSubmit = (section) => () => {
     setJustOpened(section);
-    dispatch(fetchPutCurClient({ type: section, value: tempInfo[section] }));
+    let value;
+    switch (section) {
+      case "password":
+        value = {
+          pwd: tempInfo.pwd,
+          pwdOrg: tempInfo.pwdOrg,
+        };
+        break;
+      case "general":
+        value = {
+          nome: tempInfo.nome,
+        };
+        break;
+      case "addr_post":
+        value = {
+          Cita: tempInfo.Cita,
+          firstname: tempInfo.firstname,
+          lastname: tempInfo.lastname,
+          company: tempInfo.company,
+          address: tempInfo.address,
+          city: tempInfo.city,
+          state: tempInfo.state,
+          postcode: tempInfo.postcode,
+          country: tempInfo.country,
+          email: tempInfo.email,
+          phone: tempInfo.phone,
+        };
+        break;
+      case "addr_put":
+        value = {
+          Cita: tempInfo.Cita,
+          firstname: tempInfo.firstname,
+          lastname: tempInfo.lastname,
+          company: tempInfo.company,
+          address: tempInfo.address,
+          city: tempInfo.city,
+          state: tempInfo.state,
+          postcode: tempInfo.postcode,
+          country: tempInfo.country,
+          email: tempInfo.email,
+          phone: tempInfo.phone,
+        };
+        break;
+      case "addr_sort":
+        value = {};
+        break;
+      case "addr_del":
+        value = {};
+        break;
+
+      default:
+        value = tempInfo[section];
+        break;
+    }
+
+    dispatch(fetchPutCurClient({ type: section, value }));
   };
 
   //fetch cur Client info
@@ -228,7 +284,7 @@ export default function SelfCenterModal() {
 }
 
 const RowModal = (props) => {
-  const { show, handleClose, label, children } = props;
+  const { show, handleClose, label, extraIcon, children } = props;
   const classes = useStyle();
   return (
     <CustomModal timeout={0} show={show} handleClose={handleClose} small>
@@ -239,10 +295,11 @@ const RowModal = (props) => {
           xs={12}
           alignItems='center'
           className={classes.subHeader}>
-          <Link to='#'>
-            <ArrowBackIosIcon onClick={handleClose} />
-          </Link>
-          <div>{label}</div>
+          <div className={classes.subBackBtn} onClick={handleClose}>
+            <ArrowBackIosIcon />
+            <div>{label}</div>
+          </div>
+          <div>{extraIcon}</div>
         </Grid>
 
         <Grid container item xs={12}>
@@ -480,8 +537,14 @@ const useStyle = makeStyles({
     color: "#1d1d38",
     fontSize: "15px",
     marginTop: "20px",
-    "& :visited": {
-      color: "#1d1d38",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  subBackBtn: {
+    display: "flex",
+    alignItems: "center",
+    "&:hover": {
+      cursor: "pointer",
     },
   },
   subHrStyle: {

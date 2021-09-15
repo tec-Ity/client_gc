@@ -36,23 +36,17 @@ export const fetchCurClientInfo = createAsyncThunk(
 export const fetchPutCurClient = createAsyncThunk(
   "curClient/fetchPutCurClient",
   async ({ type, value }, { rejectWithValue }) => {
-    const obj = {};
     // console.log("type", typeof type);
     // console.log("value", value);
-    switch (type) {
-      case "nome":
-        obj.nome = value;
-        // console.log("obj", obj);
-        const nameRes = await fetch_Prom("/ClientPut", "PUT", { obj });
-        console.log(nameRes);
-        if (nameRes.status === 200) {
-          return nameRes.data.object;
-        } else {
-          return rejectWithValue(nameRes.message);
-        }
+    const formData = {};
+    formData[type] = value;
 
-      default:
-        break;
+    const res = await fetch_Prom("/ClientPut", "PUT", formData);
+    console.log(res);
+    if (res.status === 200) {
+      return res.data.object;
+    } else {
+      return rejectWithValue(res.message);
     }
   }
 );

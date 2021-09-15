@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Paper, Grid } from "@material-ui/core";
 import moment from "moment";
 import CustomHr from "../../../component/global/modal/component/CustomHr";
+import CartTable from "../../../modal/cart/CartTable";
 const useStyle = makeStyles({
   root: {
     width: "100%",
@@ -20,10 +21,8 @@ const useStyle = makeStyles({
   mainGrid: {
     width: "100%",
     height: "100%",
-    border: "1px solid",
     padding: "20px",
     "& > div": {
-      border: "1px solid",
       padding: "10px",
     },
   },
@@ -44,6 +43,30 @@ const useStyle = makeStyles({
     marginTop: "10px",
     marginLeft: "0",
     marginRight: "0",
+  },
+  tableStyle: {
+    width: "100%",
+    minHeight: "100px",
+    "& > div": {
+      // border: "1px solid",
+      margin: "0",
+      "& >:nth-child(2)": {
+        fontWeight: "700",
+        "& >:nth-child(1)": {
+          textAlign: "right",
+        },
+      },
+      "& >:nth-child(3)": {
+        "& >:nth-child(1)": {
+          textAlign: "right",
+        },
+      },
+      "& >:nth-child(4)": {
+        "& >:nth-child(1)": {
+          textAlign: "right",
+        },
+      },
+    },
   },
 });
 export default function OrderCard(props) {
@@ -89,10 +112,10 @@ export default function OrderCard(props) {
                 item
                 xs={12}
                 sm={5}
-                justifyContent='flex-end'
+                justifyContent='space-between'
                 className={classes.infoForm}>
-                <div>DATA</div>
-                <div>{moment(order.at_upd).format("DD/MM/YYYY HH:mm")}</div>
+                <div>GREENCITY</div>
+                <div>773830484</div>
               </Grid>
             </Grid>
             {/* hr */}
@@ -102,10 +125,10 @@ export default function OrderCard(props) {
             {/* table */}
             <Grid container item xs={12}>
               {/* table rows */}
-              {order.OrderProds?.map((op) => {
+              {/* {order.OrderProds?.map((op) => {
                 return op.OrderSkus?.map((os) => {
                   return (
-                    <Grid container item xs={12}>
+                    <Grid container item xs={12} key={os.Sku}>
                       <Grid container item xs={6}>
                         <div>{op.nome}</div>
                         <div>{op.desp}</div>
@@ -122,7 +145,14 @@ export default function OrderCard(props) {
                     </Grid>
                   );
                 });
-              })}
+              })} */}
+              {
+                <CartTable
+                  showHeader={false}
+                  OrderProds={order.OrderProds}
+                  customTableStyle={classes.tableStyle}
+                />
+              }
             </Grid>
             {/* hr */}
             <Grid container item xs={12}>
@@ -136,7 +166,7 @@ export default function OrderCard(props) {
               justifyContent='space-between'
               style={{ fontWeight: "700" }}>
               <div>TOTALE</div>
-              <div>€{order.totPrice?.toFixed(2)}</div>
+              <div>€{order.total_sale?.toFixed(2)}</div>
             </Grid>
           </Grid>
           {/* right col */}

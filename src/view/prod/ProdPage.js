@@ -445,7 +445,7 @@ export default function ProdPage() {
                   </Grid>
                   {/* ---------------control------------ */}
                   <Grid container item xs={12} className={classes.btnStyle}>
-                    <ProdListItemControl prod={curProd} />
+                    <ProdListItemControl prod={curProd} large />
                   </Grid>
                 </Grid>
               </Grid>

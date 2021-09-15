@@ -15,23 +15,32 @@ export default function OrderModal() {
   const ordersStatus = useSelector((state) => state.order.ordersStatus);
   const orders = useSelector((state) => state.order.orders);
   const [orderList, setOrderList] = useState();
+  const [newFetch, setNewFetch] = React.useState(false);
 
   const handleClose = React.useCallback(() => {
     dispatch(setShowOrders(false));
   }, [dispatch]);
 
+  //begining fetch
   useEffect(() => {
-    console.log("fetchOrder");
-    console.log(ordersStatus);
-    const getOrders = () => {
-      if (ordersStatus === "idle") {
+    dispatch(fetchOrders("&status=[100,200,400,700]"));
+    setNewFetch(true);
+  }, [dispatch]);
+
+  //error fetch
+  useEffect(() => {
+    if (ordersStatus === "error")
+      setTimeout(() => {
         dispatch(fetchOrders("&status=[100,200,400,700]"));
-      } else if (ordersStatus === "error") {
-        setTimeout(() => {
-          dispatch(fetchOrders("&status=[100,200,400,700]"));
-        }, 2000);
-      } else if (ordersStatus === "succeed") {
-        const orderCardTemp = orders.map((od) => {
+        setNewFetch(true);
+      }, 2000);
+  }, [dispatch, ordersStatus]);
+
+  useEffect(() => {
+    const getOrders = () => {
+      let orderCardTemp;
+      if (ordersStatus === "succeed" && newFetch === true) {
+        orderCardTemp = orders.map((od) => {
           return (
             <CartCard
               key={od._id}
@@ -61,10 +70,12 @@ export default function OrderModal() {
           );
         });
         setOrderList(orderCardTemp);
+      } else {
+        orderCardTemp = <div>订单加载中</div>;
       }
     };
     getOrders();
-  }, [dispatch, handleClose, hist, orders, ordersStatus]);
+  }, [dispatch, handleClose, hist, newFetch, orders, ordersStatus]);
 
   const handleCollapse = () => {
     dispatch(setIsExpand(true));

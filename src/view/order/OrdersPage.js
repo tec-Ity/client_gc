@@ -3,21 +3,23 @@ import { fetchOrders, setOrderBtnSwitch } from "../../redux/order/orderSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { Link } from "react-router-dom";
 import clsx from "clsx";
 import OrderCard from "./component/OrderCard";
+import BackLink from "../../component/global/link/BackLink";
 
 const useStyle = makeStyles({
   root: { border: "1px solid", color: "#1d1d38" },
   headerStyle: {
     height: "73px",
+    // border: "1px solid",
     marginBottom: "20px",
     display: "flex",
     alignItems: "center",
+    maxWidth: "900px",
+    margin: "auto",
     "& :nth-child(1)": {
-      display: "flex",
-      justifyContent: "center",
+      // display: "flex",
+      justifyContent: "flex-start",
     },
   },
   backLink: {
@@ -43,6 +45,7 @@ const useStyle = makeStyles({
     border: "2px solid",
     width: "150px",
     // maxWidth: "150px",
+    fontFamily: "Montserrat",
     height: "37px",
     borderColor: "#1d1d38",
   },
@@ -50,7 +53,8 @@ const useStyle = makeStyles({
     backgroundColor: "#1d1d38",
     color: "#fff",
     "&:hover": {
-      color: "#1d1d38",
+      backgroundColor: "#1d1d38cc",
+      border: "#1d1d38cc",
     },
   },
 
@@ -110,13 +114,7 @@ export default function OrdersPage() {
   return (
     <Container className={classes.root}>
       <div className={classes.headerStyle}>
-        {console.log(orders)}
-        <Link
-          to={"/city/60c4adb974daf75532866e6d"}
-          className={classes.backToShop}>
-          <ArrowBackIcon />
-          <span className={classes.backLink}>CONTINUA LO SHOPPING</span>
-        </Link>
+        <BackLink label='CONTINUA LO SHOPPING' link='/home' />
       </div>
       <Container>
         <Grid container justifyContent='space-evenly'>
@@ -176,7 +174,12 @@ export default function OrdersPage() {
         {orders &&
           orders.map((order) => {
             return (
-              <Grid container item xs={12} justifyContent='center'>
+              <Grid
+                container
+                item
+                xs={12}
+                justifyContent='center'
+                key={order._id}>
                 <OrderCard order={order} />
               </Grid>
             );

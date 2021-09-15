@@ -6,21 +6,24 @@ const useStyle = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
+    fontFamily: "Montserrat",
   },
   msg: {
     fontSize: "12px",
     fontWeight: "700",
     marginBottom: "10px",
   },
-  btnBox:{
-    display:'flex',
-    justifyContent:'space-between'
+  btnBox: {
+    display: "flex",
+    justifyContent: "space-between",
   },
   btn: {
     width: "45%",
     height: "43px",
     background: "#e47f10",
     color: "#fff",
+    fontFamily: "Montserrat",
+    fontWeight: "700",
     borderRadius: "21.45px 21.45px 21.45px 0",
     opacity: "0.8",
     "&:hover": {

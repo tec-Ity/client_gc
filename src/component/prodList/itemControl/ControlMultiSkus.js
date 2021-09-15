@@ -6,7 +6,6 @@ import CustomButton from "../../global/modal/component/CustomButton";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import CartSkuCtrl from "../../../modal/cart/CartSkuCtrl";
 import ControlSimple from "./ControlSimple";
 export default function ControlMultiSkus(props) {
   const { skus, curProdInCart, show, handleClose, onSkuChange } = props;

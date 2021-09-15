@@ -13,8 +13,10 @@ import {
 const useStyle = makeStyles((theme) => ({
   tableStyle: {
     width: "400px",
+    // minHeight:'135px',
     borderCollapse: "collapse",
     color: "#1d1d38",
+    // alignContent:'flex-start'
   },
   tableHeadRow: {
     fontSize: "10px",
@@ -55,6 +57,19 @@ const useStyle = makeStyles((theme) => ({
   },
   orderRow: {
     fontWeight: "400",
+    "& >:nth-child(1)": {
+      "& >:nth-child(1)": {
+        fontWeight: "700",
+      },
+    },
+    "& >:nth-child(2)": {
+      display: "flex",
+      justifyContent: "center",
+    },
+    "& >:nth-child(3)": {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
   },
 }));
 
@@ -92,7 +107,10 @@ const TableRow = (props) => {
             <div>{oSku.attrs}&nbsp;</div>
           </Grid>
           <Grid item xs={4}>
-            <div>x &nbsp; {oSku.quantity}</div>
+            <div>
+              x &nbsp;
+              {oSku.quantity < 10 ? "0" + oSku.quantity : oSku.quantity}
+            </div>
             <div>&nbsp;</div>
           </Grid>
           <Grid item xs={4}>
@@ -158,7 +176,7 @@ export default function CartTable(props) {
     showCtrl = false,
     isExpand = null,
     isCart,
-    // showHeader = true,
+    showHeader = true,
     orderCard = false,
     showCusHeader = false,
     customTableStyle = null,
@@ -198,7 +216,16 @@ export default function CartTable(props) {
       }
     }
     return rows;
-  }, [OrderProds, isCart, count, orderCard, isExpand, showImg, showCtrl, customTableRowStyle]);
+  }, [
+    OrderProds,
+    isCart,
+    count,
+    orderCard,
+    isExpand,
+    showImg,
+    showCtrl,
+    customTableRowStyle,
+  ]);
 
   React.useEffect(() => {
     if (OrderProds) {
@@ -214,6 +241,7 @@ export default function CartTable(props) {
           container
           className={customTableStyle ? customTableStyle : classes.tableStyle}>
           {orderCard === false &&
+            showHeader === true &&
             (showCusHeader === true ? (
               //order page with img
               <Grid container item xs={12} className={customTableHeaderStyle}>
