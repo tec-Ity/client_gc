@@ -1,22 +1,30 @@
 import React, { useState } from "react";
 import CustomModal from "../../component/global/modal/CustomModal";
-import { useDispatch } from "react-redux";
-import { setShowAddrSel } from "../../redux/curClient/curClientSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setShowAddrSel,
+  setUserCurLocation,
+} from "../../redux/curClient/curClientSlice";
 import {
   Grid,
   OutlinedInput,
   InputAdornment,
   Container,
-  Autocomplete,
 } from "@material-ui/core";
-import { ReactComponent as Pin } from "../../component/icon/pin.svg";
+import { ReactComponent as Pin } from "../../component/icon/mapInsertLocation.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import { ReactComponent as BackArrow } from "../../component/icon/chevron-left.svg";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import CustomButton from "../../component/global/modal/component/CustomButton";
-// import MapContainer from "./MapContainer";
+import MapContainer from "./MapContainer";
+import { getGeocode, getLatLng } from "use-places-autocomplete";
+import { ReactComponent as CurLocationIcon } from "../../component/icon/currentLocation.svg";
+import { ReactComponent as LocateIcon } from "../../component/icon/locate.svg";
+import { ReactComponent as UserIcon } from "../../component/icon/user.svg";
+import { ReactComponent as CheckCircleIcon } from "../../component/icon/check-circle.svg";
+
 const useStyle = makeStyles({
-  root: {},
+  root: { fontFamily: "Montserrat" },
   titleStyle: {
     // border: "1px solid",
     position: "relative",
@@ -31,11 +39,12 @@ const useStyle = makeStyles({
     top: "45px",
   },
   inputRowStyle: {
-    marginBottom: "30px",
+    // marginBottom: "30px",
   },
   inputStyle: {
     height: "40px",
     fontFamily: "Montserrat",
+    // '&::placeholder':{fontFamily: 'Montserrat'},
     fontSize: "16px",
     width: "100%",
     "&::after": { borderRadius: "100px 100px 100px 0" },
@@ -47,7 +56,9 @@ const useStyle = makeStyles({
       //     "linear-gradient(90deg, rgba(192,229,123,1) 0%, rgba(145,232,179,1) 100%) 1",
       borderRadius: "100px 100px 100px 0",
     },
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    // "& .MuiFormLabel": { color: "red" },
+    // "& .Mui-focused .MuiFormLabel-root": { color: "#c0e57b" },
+    "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "#c0e57b",
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
@@ -58,19 +69,58 @@ const useStyle = makeStyles({
   pinStyle: {
     height: "20px",
     width: "20px",
-    "& path": { stroke: "#c0e57b" },
-    "& circle": { stroke: "#c0e57b" },
+    "& path": { stroke: "#c0e57b", fill: "#c0e57b" },
+    "& circle": { stroke: "#c0e57b", fill: "#c0e57b" },
   },
   locationBox: {
+    marginTop: "22px",
     minHeight: "325px",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
       display: "none",
     },
   },
-
+  locationBoxTitle: {
+    fontWeight: "700",
+    color: "#c0e57b",
+    paddingLeft: "5px",
+  },
+  iconStyle: {
+    "& path": { stroke: "#c0e57b", fill: "#c0e57b" },
+    marginLeft: "13px",
+    height: "20px",
+    width: "20px",
+  },
+  locateButton: {
+    color: "#91e8b3",
+    fontWeight: "700",
+    "&:hover": { cursor: "pointer" },
+  },
+  locateButtonIconStyle: {
+    "& path": { stroke: "#91e8b3", fill: "#91e8b3" },
+    position: "relative",
+    top: "2px",
+    right: "5px",
+  },
+  savedLocation: {
+    "&:hover": {
+      //   backgroundColor: "#c0e57b",
+      background:
+        "linear-gradient(270deg, rgba(145, 232, 179, 0.3) 0%, rgba(192, 229, 123, 0.3) 100%, rgba(192, 229, 123, 0.3) 100%)",
+      borderRadius: "100px 100px 100px 0",
+    },
+  },
+  //bold on selection icon
+  boldOnSelection: {
+    fontWeight: "700",
+  },
+  //custom compo
   customHr: { width: "100%" },
-  customHrSm: { width: "100%", marginLeft: 0 },
+  customHrSm: { color: "#1d1d38", opacity: "0.5" },
+  customBtnStyle: {
+    fontSize: "14px",
+    height: "30px",
+  },
 });
 
 export default function AddrModal() {
@@ -78,6 +128,27 @@ export default function AddrModal() {
   const [showNewAddr, setShowNewAddr] = useState(false);
   //   const showAddrSel = useSelector((state) => state.curClient.showAddrSel);
   const dispatch = useDispatch();
+  const userCurLocation = useSelector(
+    (state) => state.curClient.userCurLocation
+  );
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const getCurrentPosition = React.useCallback(() => {
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      console.log(pos);
+      const result = await getGeocode({
+        location: {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        },
+      });
+      console.log("geo", result);
+      dispatch(setUserCurLocation(result[0]?.formatted_address));
+      const shortName = result[0].address_components.find((address) =>
+        address.types.find((type) => type === "administrative_area_level_2")
+      ).short_name;
+      console.log(shortName);
+    });
+  }, [dispatch]);
   return (
     <>
       {/* selection modal */}
@@ -100,22 +171,34 @@ export default function AddrModal() {
               {/* current location */}
               <Grid item container xs={12} spacing={3}>
                 {/* head */}
-                <Grid item container xs={12}>
-                  <Grid item container justifyContent='center' xs={2}>
-                    icon
+                <Grid item container xs={12} style={{ paddingRight: 0 }}>
+                  <Grid item container justifyContent='flex-start' xs={1}>
+                    <CurLocationIcon className={classes.iconStyle} />
                   </Grid>
-                  <Grid item container xs={6}>
+                  <Grid
+                    item
+                    container
+                    xs={7}
+                    className={classes.locationBoxTitle}>
                     La tua posizione attuale
                   </Grid>
-                  <Grid item container justifyContent='center' xs={4}>
-                    Rilocalizzare
+                  <Grid item container justifyContent='flex-end' xs={4}>
+                    <div
+                      onClick={getCurrentPosition}
+                      className={classes.locateButton}>
+                      <LocateIcon className={classes.locateButtonIconStyle} />
+                      Rilocalizzare
+                    </div>
                   </Grid>
                 </Grid>
                 {/* location body */}
                 <Grid item container xs={12}>
-                  <Grid item container xs={2} />
-                  <Grid item container xs={10}>
-                    xxxxx
+                  {/* offset  */}
+                  <Grid item container xs={1} />
+                  <Grid item container xs={11}>
+                    {userCurLocation
+                      ? userCurLocation
+                      : "Please get current location"}
                   </Grid>
                 </Grid>
               </Grid>
@@ -123,37 +206,70 @@ export default function AddrModal() {
               <Grid item container xs={12}>
                 <CustomHr position={classes.customHr} />
               </Grid>
-              {/* saved locations */}
+              {/* -------------------------saved locations ------------------------- */}
               <Grid item container xs={12} spacing={3}>
                 {/* head */}
                 <Grid item container xs={12}>
-                  <Grid item container justifyContent='center' xs={2}>
-                    icon
+                  {/* icon */}
+                  <Grid item container justifyContent='flex-start' xs={1}>
+                    <UserIcon className={classes.iconStyle} />
                   </Grid>
-                  <Grid item container xs={6}>
+                  {/* title */}
+                  <Grid
+                    item
+                    container
+                    xs={7}
+                    className={classes.locationBoxTitle}>
                     I miei indirizzi salvati:
                   </Grid>
                   <Grid item container justifyContent='center' xs={4} />
                 </Grid>
                 {/* location body */}
                 <Grid item container xs={12}>
-                  <Grid item container xs={2} />
-                  <Grid item container justifyContent='center' xs={10}>
-                    <Grid item xs={12}>
-                      Via Num, CAP, CITTA’
+                  {/* info */}
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    className={classes.savedLocation}>
+                    {/* offset */}
+                    <Grid item container xs={1}></Grid>
+                    {/* info */}
+                    <Grid
+                      item
+                      container
+                      justifyContent='center'
+                      xs={11}
+                      className={selectedLocation && classes.boldOnSelection}>
+                      <Grid item container xs={10}>
+                        <Grid item xs={12}>
+                          Via Num, CAP, CITTA’
+                        </Grid>
+                        <Grid item xs={12} style={{ opacity: "0.5" }}>
+                          Username-Tel.
+                        </Grid>
+                      </Grid>
+                      {/* check icon */}
+                      <Grid item container xs={2}>
+                        <CheckCircleIcon />
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                      Username-Tel.
-                    </Grid>
-                    <Grid item xs={12}>
-                      <CustomHr position={classes.customHrSm} />
+                  </Grid>
+                  {/* hr */}
+                  <Grid item container xs={12}>
+                    <Grid item container xs={1}></Grid>
+                    <Grid item xs={11}>
+                      <hr className={classes.customHrSm} />
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container item xs={12}>
-              <CustomButton label="CONFERMA L'INDIRIZZO" />
+            <Grid container item xs={12} style={{ paddingTop: "25px" }}>
+              <CustomButton
+                label="CONFERMA L'INDIRIZZO"
+                alterStyle={classes.customBtnStyle}
+              />
             </Grid>
           </Grid>
         </Container>
@@ -163,17 +279,34 @@ export default function AddrModal() {
         show={showNewAddr === true}
         handleClose={() => setShowNewAddr(false)}>
         <Container>
-          <AddrSelHeader
-            title='Inserisci il tuo indirizzo'
-            goBack={() => setShowNewAddr(false)}
-          />
+          <Grid container item xs={12}>
+            <AddrSelHeader
+              title='Inserisci il tuo indirizzo'
+              goBack={() => setShowNewAddr(false)}
+              showInput={false}
+            />
+            <Grid item xs={12}>
+              <MapContainer
+                inputStyle={{
+                  inputStyle: classes.inputStyle,
+                  pinStyle: classes.pinStyle,
+                }}
+              />
+            </Grid>
+            <Grid container item xs={12} style={{ paddingTop: "30px" }}>
+              <CustomButton
+                label="CONFERMA L'INDIRIZZO"
+                alterStyle={classes.customBtnStyle}
+              />
+            </Grid>
+          </Grid>
         </Container>
       </CustomModal>
     </>
   );
 }
 
-function AddrSelHeader({ title, goBack = null, handleAdd, children = null }) {
+function AddrSelHeader({ title, goBack = null, handleAdd, showInput = true }) {
   const classes = useStyle();
   return (
     <>
@@ -190,7 +323,7 @@ function AddrSelHeader({ title, goBack = null, handleAdd, children = null }) {
         )}
         <div>{title}</div>
       </Grid>
-      {!children ? (
+      {showInput && (
         <Grid
           item
           container
@@ -208,8 +341,6 @@ function AddrSelHeader({ title, goBack = null, handleAdd, children = null }) {
             }
           />
         </Grid>
-      ) : (
-        children
       )}
     </>
   );

@@ -10,6 +10,7 @@ const initialState = {
   accessToken: null,
   curClientInfo: {},
   curClientInfoStatus: "idle",
+  userCurLocation: null,
 };
 
 export const fetchAccessToken = createAsyncThunk(
@@ -77,6 +78,9 @@ export const curClientSlice = createSlice({
     setCurClientInfo: (state, action) => {
       state.curClientInfo = action.payload;
     },
+    setUserCurLocation: (state, action) => {
+      state.userCurLocation = action.payload;
+    },
   },
   extraReducers: {
     [fetchCurClientInfo.pending]: (state) => {
@@ -110,6 +114,7 @@ export const {
   setAccessToken,
   setCurClientInfo,
   setShowAddrSel,
+  setUserCurLocation,
 } = curClientSlice.actions;
 
 export default curClientSlice.reducer;

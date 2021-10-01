@@ -6,7 +6,7 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
-import mapIcon from "../../component/icon/pin.svg";
+// import mapIcon from "../../component/icon/pin.svg";
 //place
 import usePlacesAutocomplete, {
   getGeocode,
@@ -14,11 +14,17 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 import mapStyle from "../../mapStyle";
 import moment from "moment";
-import { TextField, Autocomplete } from "@material-ui/core";
-
+import { InputAdornment, TextField } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
+import { ReactComponent as Pin } from "../../component/icon/pin.svg";
+import userPin from "../../component/icon/map_user.svg";
 //parameters avoid re-render for <GoogleMap>
 const libraries = ["places"];
-const mapContainerStyle = { width: "100vw", height: "90vh" };
+const mapContainerStyle = {
+  width: "460px",
+  height: "320px",
+  marginTop: "22px",
+};
 const center = {
   lat: 45.483602659991114,
   lng: 9.189416277420541,
@@ -28,28 +34,29 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-export default function MapContainer() {
+export default function MapContainer(props) {
+  const { inputStyle } = props;
   const [selected, setSelected] = React.useState(null);
   const [markers, setMarkers] = React.useState([]);
-
+  const [userLocation, setUserLocation] = React.useState(null);
   //func in r-g-m
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyBGjEZfiy-qg-pIE4g_uFHxMGEkALwDc5c",
     libraries, //put library outside compmponent to avoid unnacessary rerenders
   });
   //set pin marker
-  const onMapClick = React.useCallback(
-    (event) =>
-      setMarkers((prev) => [
-        ...prev,
-        {
-          lat: event.latLng.lat(),
-          lng: event.latLng.lng(),
-          time: new Date(),
-        },
-      ]),
-    []
-  );
+  //   const onMapClick = React.useCallback(
+  //     (event) =>
+  //       setMarkers((prev) => [
+  //         ...prev,
+  //         {
+  //           lat: event.latLng.lat(),
+  //           lng: event.latLng.lng(),
+  //           time: new Date(),
+  //         },
+  //       ]),
+  //     []
+  //   );
 
   //assign ref on mapload only onece prevent re-rendering
   const mapRef = React.useRef(null);
@@ -61,6 +68,7 @@ export default function MapContainer() {
   const panTo = React.useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
     mapRef.current.setZoom(14);
+    setUserLocation({ lat, lng, time: new Date(), type: "user" });
   }, []);
 
   if (loadError) return "Error loading maps";
@@ -68,15 +76,11 @@ export default function MapContainer() {
 
   return (
     <>
-      <h1 style={{ position: "absolute", top: "100px", left: 0, zIndex: 10 }}>
-        Union City
-        <span role='img' aria-label='emoji'></span>
-      </h1>
       {/* search box */}
-      <Search panTo={panTo} />
+      <Search panTo={panTo} style={inputStyle} />
 
       {/* locate user location */}
-      <Locate panTo={panTo} />
+      {/* <Locate panTo={panTo} /> */}
 
       {/* map entity */}
       <GoogleMap
@@ -84,7 +88,7 @@ export default function MapContainer() {
         zoom={13}
         center={center}
         options={options}
-        onClick={onMapClick}
+        // onClick={onMapClick}
         onLoad={onMapLoad}>
         {/* markers */}
         {markers.map((marker) => (
@@ -93,23 +97,39 @@ export default function MapContainer() {
             position={{ lat: marker.lat, lng: marker.lng }}
             onClick={() => setSelected(marker)}
             icon={{
-              url: mapIcon,
+              url: Pin,
               origin: new window.google.maps.Point(0, 0),
               anchor: new window.google.maps.Point(20, 20),
               scaledSize: new window.google.maps.Size(40, 40),
             }}
           />
         ))}
-
+        {userLocation && (
+          <Marker
+            key={userLocation.time.toISOString()}
+            position={{ lat: userLocation.lat, lng: userLocation.lng }}
+            onClick={() => setSelected(userLocation)}
+            icon={{
+              url: userPin,
+              origin: new window.google.maps.Point(0, 0),
+              anchor: new window.google.maps.Point(20, 20),
+              scaledSize: new window.google.maps.Size(40, 40),
+            }}
+          />
+        )}
         {/* pop window when click marker */}
         {selected && (
           <InfoWindow
             position={{ lat: selected.lat, lng: selected.lng }}
             onCloseClick={() => setSelected(null)}>
-            <div>
-              <h2>Shop Is Here</h2>
-              <p>{moment(selected.time).format("MM/DD/YYYY")}</p>
-            </div>
+            {selected.type === "user" ? (
+              <div>You are here</div>
+            ) : (
+              <div>
+                <h2>Shop Is Here</h2>
+                <p>{moment(selected.time).format("MM/DD/YYYY")}</p>
+              </div>
+            )}
           </InfoWindow>
         )}
       </GoogleMap>
@@ -120,7 +140,7 @@ export default function MapContainer() {
 function Locate({ panTo }) {
   return (
     <button
-      style={{ position: "absolute", top: "100px", left: "60%", zIndex: 10 }}
+      style={{ zIndex: 10 }}
       onClick={() =>
         navigator.geolocation.getCurrentPosition(async (pos) => {
           // console.log(pos);
@@ -141,7 +161,7 @@ function Locate({ panTo }) {
 }
 
 // {/* search box input */}
-function Search({ panTo }) {
+function Search({ panTo, style }) {
   const {
     ready,
     value,
@@ -155,50 +175,51 @@ function Search({ panTo }) {
     },
   });
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "100px",
-        left: "30%",
-        transform: "translationX(-50%)",
-        width: "100%",
-        maxwidth: "400px",
-        zIndex: 10,
-      }}>
-      <Autocomplete
-        disablePortal
-        // autoComplete
-        autoHighlight
-        id='places-autocomplete'
-        onChange={async (e, value) => {
-          try {
-            if (status === "OK") {
-              console.log(value);
-              setValue(value, false); //set the user selection without calling API
-              const result = await getGeocode({ address: value });
-              console.log(result);
-              const { lat, lng } = await getLatLng(result[0]);
-              panTo({ lat, lng });
-              clearSuggestions();
-            }
-          } catch (error) {
-            console.log(error);
+    <Autocomplete
+      disablePortal
+      ListboxProps={{ style: { fontFamily: "Montserrat" } }}
+      style={{ fontFamily: "Montserrat" }}
+      autoHighlight
+      id='places-autocomplete'
+      onChange={async (e, value) => {
+        try {
+          if (status === "OK") {
+            console.log(value);
+            setValue(value, false); //set the user selection without calling API
+            const result = await getGeocode({ address: value });
+            console.log(result);
+            const { lat, lng } = await getLatLng(result[0]);
+            panTo({ lat, lng });
+            clearSuggestions();
           }
-        }}
-        options={status === "OK" ? data.map((d) => d.description) : []}
-        sx={{ width: 300 }}
-        inputValue={value || ""}
-        onInputChange={(e, value) => setValue(value)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant='outlined'
-            label='Enter your address'
-            disabled={!ready}
-          />
-        )}
-      />
-      {console.log()}
-    </div>
+        } catch (error) {
+          console.log(error);
+        }
+      }}
+      options={status === "OK" ? data.map((d) => d.description) : []}
+      sx={{ width: 300 }}
+      inputValue={value || ""}
+      onInputChange={(e, value) => setValue(value)}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          size='small'
+          classes={{ root: style.inputStyle }}
+          variant='outlined'
+          placeholder='Qual è il tuo indirizzo?'
+          disabled={!ready}
+          InputProps={{
+            ...params.InputProps,
+            startAdornment: (
+              <InputAdornment position='end'>
+                <Pin className={style.pinStyle} />
+              </InputAdornment>
+            ),
+            style: { fontFamily: "Montserrat" },
+          }}>
+          {console.log(params)}
+        </TextField>
+      )}
+    />
   );
 }

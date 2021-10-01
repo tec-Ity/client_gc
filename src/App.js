@@ -4,6 +4,9 @@ import Router from "./router/Router";
 import { BrowserRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AddrModal from "./modal/address/AddrModal";
+import { useLoadScript } from "@react-google-maps/api";
+
+const libraries = ["places"];
 
 export default function App() {
   //lazy imports
@@ -28,7 +31,10 @@ export default function App() {
   //   };
   //   window.addEventListener("onbeforeunload", setLocal());
   // }, []);
-
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: "AIzaSyBGjEZfiy-qg-pIE4g_uFHxMGEkALwDc5c",
+    libraries, //put library outside compmponent to avoid unnacessary rerenders
+  });
   return (
     <BrowserRouter>
       <NavTopGlobal />
