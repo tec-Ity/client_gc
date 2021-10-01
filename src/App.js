@@ -3,6 +3,7 @@ import NavTopGlobal from "./component/global/nav/NavTopGlobal";
 import Router from "./router/Router";
 import { BrowserRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
+import AddrModal from "./modal/address/AddrModal";
 
 export default function App() {
   //lazy imports
@@ -19,7 +20,7 @@ export default function App() {
   const showCarts = useSelector((state) => state.cart.showCarts);
   const showOrders = useSelector((state) => state.order.showOrders);
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
-
+  const showAddrSel = useSelector((state) => state.curClient.showAddrSel);
   // React.useEffect(() => {
   //   const setLocal = () => {
   //     alert(1)
@@ -42,6 +43,8 @@ export default function App() {
         {showCarts === true && <CartModal />}
         {/* order */}
         {showOrders === true && <OrderModal />}
+        {/* address selection & new address modal */}
+        {showAddrSel === true && <AddrModal />}
       </Suspense>
       <Router />
     </BrowserRouter>

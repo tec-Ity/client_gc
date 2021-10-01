@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { fetch_Prom } from "../../api";
 import { useSelector, useDispatch } from "react-redux";
-import { setShowLogin } from "../../redux/curClient/curClientSlice";
+import {
+  setShowAddrSel,
+  setShowLogin,
+} from "../../redux/curClient/curClientSlice";
 import { Container } from "@material-ui/core";
 import HomeList from "./HomeList";
 import HomeBanner from "./HomeBanner";
@@ -28,15 +31,18 @@ export default function HomePage() {
     }
     getCitys();
   }, []);
+
+  const handleFunc = () => {
+    if (!isLogin) {
+      dispatch(setShowLogin(true));
+    } else {
+      dispatch(setShowAddrSel(true));
+    }
+  };
+
   return (
     <Container disableGutters maxWidth={false}>
-      <HomeBanner
-        handleFunc={() => {
-          if (!isLogin) {
-            dispatch(setShowLogin(true));
-          }
-        }}
-      />
+      <HomeBanner handleFunc={handleFunc} />
       <HomeList
         label='I nostri locali'
         list={citys}

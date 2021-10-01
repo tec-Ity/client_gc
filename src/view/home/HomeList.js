@@ -12,7 +12,7 @@ import CustomBgText from "../../component/global/background/CustomBgText";
 const useStyle = makeStyles({
   root: {
     height: "330px",
-    marginTop:'50px'
+    marginTop: "50px",
     // marginLeft: "20px",
     // marginRight: "20px",
   },
@@ -68,7 +68,7 @@ const useStyle = makeStyles({
   },
   txt: {
     fontSize: "30px",
-    paddingBottom:'6px'
+    paddingBottom: "6px",
   },
 });
 
@@ -82,6 +82,9 @@ export default function HomeList(props) {
       ref.current.style.height =
         document.getElementById(containerId)?.clientWidth + "px";
     };
+    //init width
+    setStyle();
+    //init event listenr
     window.addEventListener("resize", setStyle);
     return () => {
       window.removeEventListener("resize", setStyle);

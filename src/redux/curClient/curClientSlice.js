@@ -4,6 +4,7 @@ import { fetch_Prom, refreshToken_Prom } from "../../api";
 const initialState = {
   isLogin: Boolean(localStorage.getItem("refreshToken")?.length > 0),
   showLogin: false,
+  showAddrSel: false,
   showRegister: false,
   showSelfCenter: false,
   accessToken: null,
@@ -40,7 +41,7 @@ export const fetchPutCurClient = createAsyncThunk(
     // console.log("value", value);
     const formData = {};
     formData[type] = value;
-
+    console.log(type);
     const res = await fetch_Prom("/ClientPut", "PUT", formData);
     console.log(res);
     if (res.status === 200) {
@@ -60,6 +61,9 @@ export const curClientSlice = createSlice({
     },
     setShowLogin: (state, action) => {
       state.showLogin = action.payload;
+    },
+    setShowAddrSel: (state, action) => {
+      state.showAddrSel = action.payload;
     },
     setShowRegister: (state, action) => {
       state.showRegister = action.payload;
@@ -105,6 +109,7 @@ export const {
   setShowSelfCenter,
   setAccessToken,
   setCurClientInfo,
+  setShowAddrSel,
 } = curClientSlice.actions;
 
 export default curClientSlice.reducer;
