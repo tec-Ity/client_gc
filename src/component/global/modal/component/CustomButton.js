@@ -5,10 +5,10 @@ import React from "react";
 const useStyle = makeStyles((theme) => ({
   root: {
     width: "100%",
-    height: "40px",
+    height: "34px",
     borderRadius: "100px 100px 100px 0",
     background: "#1d1d38",
-    fontSize: "20px",
+    fontSize: "14px",
     fontFamily: "Montserrat",
     fontWeight: "700",
     color: "#fff",

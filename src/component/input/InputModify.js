@@ -13,13 +13,13 @@ const useStyle = makeStyles({
   root: {
     width: "100%",
     // maxWidth: "413px",
-    height: "30px",
+    height: "40px",
     fontFamily: "Montserrat",
-    borderRadius: "15.625px 15.625px 15.625px 0px",
-    fontWeight: "700",
+    borderRadius: "100px 100px 100px 0px",
+    // fontWeight: "700",
 
     "& .MuiOutlinedInput-notchedOutline": {
-      //   border: "1px solid",
+        border: "1.5px solid",
       borderColor: "#c0e57b",
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {

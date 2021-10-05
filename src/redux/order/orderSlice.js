@@ -120,7 +120,7 @@ export const fetchOrderPost = createAsyncThunk(
       // obj.OrderProds = curCart.Shop;
       // delete obj._id;
       // console.log(obj);
-      const orderPostRes = await fetch_Prom("/OrderPost", "POST", {
+      const orderPostRes = await fetch_Prom("/Order", "POST", {
         obj,
       });
       console.log("orderPostRes", orderPostRes);

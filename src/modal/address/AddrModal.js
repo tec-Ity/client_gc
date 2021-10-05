@@ -17,7 +17,7 @@ import { ReactComponent as BackArrow } from "../../component/icon/chevron-left.s
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import CustomButton from "../../component/global/modal/component/CustomButton";
 import MapContainer from "./MapContainer";
-import { getGeocode, getLatLng } from "use-places-autocomplete";
+import { getGeocode } from "use-places-autocomplete";
 import { ReactComponent as CurLocationIcon } from "../../component/icon/currentLocation.svg";
 import { ReactComponent as LocateIcon } from "../../component/icon/locate.svg";
 import { ReactComponent as UserIcon } from "../../component/icon/user.svg";
@@ -69,8 +69,8 @@ const useStyle = makeStyles({
   pinStyle: {
     height: "20px",
     width: "20px",
-    "& path": { stroke: "#c0e57b", fill: "#c0e57b" },
-    "& circle": { stroke: "#c0e57b", fill: "#c0e57b" },
+    "& path": { fill: "#c0e57b" },
+    "& circle": { fill: "#c0e57b" },
   },
   locationBox: {
     marginTop: "22px",
@@ -81,23 +81,24 @@ const useStyle = makeStyles({
     },
   },
   locationBoxTitle: {
-    fontWeight: "700",
+    fontWeight: "600",
     color: "#c0e57b",
     paddingLeft: "5px",
   },
   iconStyle: {
-    "& path": { stroke: "#c0e57b", fill: "#c0e57b" },
+    "& path": { fill: "#c0e57b" },
     marginLeft: "13px",
     height: "20px",
     width: "20px",
   },
   locateButton: {
     color: "#91e8b3",
-    fontWeight: "700",
+    fontWeight: "600",
+    fontSize: "0.75em",
     "&:hover": { cursor: "pointer" },
   },
   locateButtonIconStyle: {
-    "& path": { stroke: "#91e8b3", fill: "#91e8b3" },
+    "& path": { fill: "#91e8b3" },
     position: "relative",
     top: "2px",
     right: "5px",
@@ -286,19 +287,14 @@ export default function AddrModal() {
               showInput={false}
             />
             <Grid item xs={12}>
-              <MapContainer
-                inputStyle={{
-                  inputStyle: classes.inputStyle,
-                  pinStyle: classes.pinStyle,
-                }}
-              />
+              <MapContainer btnLabel="CONFERMA L'INDIRIZZO" />
             </Grid>
-            <Grid container item xs={12} style={{ paddingTop: "30px" }}>
+            {/* <Grid container item xs={12} style={{ paddingTop: "30px" }}>
               <CustomButton
                 label="CONFERMA L'INDIRIZZO"
                 alterStyle={classes.customBtnStyle}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Container>
       </CustomModal>
