@@ -86,7 +86,7 @@ export default function OrderModal() {
       <CardWraper
         isExpand={isExpand}
         handleCollapse={handleCollapse}
-        title={"Order"}
+        type="order"
         handleFunc={handleClose}>
         {orderList}
       </CardWraper>

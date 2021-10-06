@@ -245,6 +245,7 @@ export default function DetailCard(props) {
         </Container>
         {/* body */}
         <Container className={classes.detailCardStyle}>
+          {/* float tag */}
           <div className={classes.shopTag}>
             <div>
               <div>{curShopInfo.nome}</div>

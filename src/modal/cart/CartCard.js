@@ -43,7 +43,7 @@ const useStyle = makeStyles((props) => ({
     // border:'1px solid',
     width: "400px",
     margin: "auto",
-    marginTop:'5px',
+    marginTop: "5px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -51,9 +51,8 @@ const useStyle = makeStyles((props) => ({
   },
   shopTitle: {
     fontFamily: "Montserrat",
-    fontStyle: "normal",
-    fontWeight: "normal",
-    fontSize: "12.5p",
+    fontWeight: "400",
+    fontSize: "1em",
     lineHeight: "15px",
     color: "#C0E57B",
   },
@@ -108,11 +107,27 @@ const useStyle = makeStyles((props) => ({
       fontSize: "11px",
     },
     "& >:nth-child(2)": {
-      fontSize: "20px",
+      fontSize: "1em",
     },
   },
   customHr: {
     margin: "3px 0 0 0",
+  },
+  expandMoreStyle: {
+    color: "#1d1d38",
+    width: "100%",
+    // border: "1px solid",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    "& div": { width: "fit-content" },
+    "& >:nth-child(1)": {
+      fontSize: "10px",
+      fontWeight: "normal",
+    },
+    "& >:nth-child(2)": {
+      lineHeight: "5px",
+    },
   },
 }));
 
@@ -209,7 +224,10 @@ export default function CartCard(props) {
         </>
       ) : (
         <Grid item className={classes.gridItem}>
-          <button onClick={expandMore}>more</button>
+          <div onClick={expandMore} className={classes.expandMoreStyle}>
+            <div>Vedere l'ordine</div>
+            <div>.&nbsp;.&nbsp;.</div>
+          </div>
         </Grid>
       )}
     </Grid>

@@ -1,8 +1,11 @@
 import React from "react";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Container } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { Link } from "react-router-dom";
-const useStyle = makeStyles((theme) => ({
+import { ReactComponent as UserIcon } from "../../../icon/userCenterIcon.svg";
+import { ReactComponent as CartIcon } from "../../../icon/cardIconCarrello.svg";
+import { ReactComponent as OrderIcon } from "../../../icon/cardIconOrdini.svg";
+const useStyle = makeStyles({
   root: {
     height: "600px",
     color: "#1d1d38",
@@ -17,6 +20,7 @@ const useStyle = makeStyles((theme) => ({
   },
   allOrders: {
     display: "flex",
+    fontWeight: "400",
     justifyContent: "center",
     alignItems: "center",
     fontSize: "12.5px",
@@ -30,17 +34,16 @@ const useStyle = makeStyles((theme) => ({
     width: "100%",
     maxHeight: "485px",
     minHeight: "300px",
-
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
       display: "none",
     },
   },
-}));
+});
 
 export default function CardWraper(props) {
   const classes = useStyle();
-  const { children, isExpand, handleCollapse, title, handleFunc } = props;
+  const { children, isExpand, handleCollapse, title, handleFunc, type } = props;
   return (
     <div className={classes.root}>
       <Grid container className={classes.topIconBar}>
@@ -51,11 +54,27 @@ export default function CardWraper(props) {
             <div></div>
           )}
         </Grid>
-        <Grid container item xs={4} justifyContent='center'>
-          <div>{title}</div>
+        <Grid
+          container
+          item
+          xs={4}
+          justifyContent='center'
+          style={{ position: "relative" }}>
+          <div style={{ position: "absolute", bottom: 0 }}>{title}</div>
+          <div>
+            {type === "user" ? (
+              <UserIcon />
+            ) : type === "cart" ? (
+              <CartIcon />
+            ) : type === "order" ? (
+              <OrderIcon />
+            ) : (
+              ""
+            )}
+          </div>
         </Grid>
-        <Grid item xs={4}>
-          {title === "Order" ? (
+        <Grid container item xs={4}>
+          {type === "order" ? (
             <Link
               to='/orders'
               className={classes.allOrders}

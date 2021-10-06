@@ -67,12 +67,19 @@ const useStyle = makeStyles({
   },
 });
 export default function MapContainer(props) {
-  const { inputStyle, getSelectedLocation, btnLabel, mapSize = null } = props;
+  const {
+    inputStyle,
+    getSelectedLocation,
+    btnLabel,
+    mapSize = null,
+    isUpdate,
+    updateAddr,
+  } = props;
   const [selected, setSelected] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [addrDetailToPass, setAddrDetailToPass] = useState({
-    note: "",
+    note: isUpdate && updateAddr.note ? updateAddr.note : "",
   });
 
   const mapContainerStyle = {
@@ -128,7 +135,7 @@ export default function MapContainer(props) {
   return (
     <>
       {/* search box */}
-      <Search panTo={panTo} style={inputStyle} />
+      <Search panTo={panTo} style={inputStyle} updateAddr={updateAddr} />
 
       {/* locate user location */}
       {/* <Locate panTo={panTo} /> */}
@@ -231,7 +238,7 @@ function Locate({ panTo }) {
 }
 
 // {/* search box input */}
-function Search({ panTo, style }) {
+function Search({ panTo, style, updateAddr }) {
   const {
     ready,
     value,
@@ -252,6 +259,20 @@ function Search({ panTo, style }) {
     // console.log(d);
     return d.description;
   });
+
+  React.useEffect(() => {
+    async function preSetUpdateAddress() {
+      if (updateAddr) {
+        setValue(updateAddr.address);
+        const result = await getGeocode({ address: updateAddr.address });
+        // console.log(result);
+        const { lat, lng } = await getLatLng(result[0]);
+        panTo({ lat, lng });
+      }
+    }
+    preSetUpdateAddress();
+  }, [panTo, setValue, updateAddr, value]);
+
   //   console.log(options);
   return (
     <Autocomplete

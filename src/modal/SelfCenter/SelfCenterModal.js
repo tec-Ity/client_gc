@@ -7,19 +7,15 @@ import {
   setShowSelfCenter,
 } from "../../redux/curClient/curClientSlice";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button, Container } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import CustomButton from "../../component/global/modal/component/CustomButton";
-import { Link } from "react-router-dom";
 import clsx from "clsx";
 import china from "../../component/icon/china.svg";
 import italy from "../../component/icon/italy.svg";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import InputModify from "../../component/input/InputModify";
 import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
-import { logout_Prom } from "../../api";
-import AddButton from "../Component/AddButton";
-import AddrForm from "./SubAddrModal";
+import LogOutComp from "./LogOutComp";
+import SubSelfModals from "./SubSelfModals";
 
 export default function SelfCenterModal() {
   const dispatch = useDispatch();
@@ -42,22 +38,7 @@ export default function SelfCenterModal() {
     (state) => state.curClient.curClientInfoStatus
   );
   const [tempInfo, setTempInfo] = useState(curClientInfo);
-  const [justOpened, setJustOpened] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState(null);
-
-  useEffect(() => {
-    if (localStorage.getItem("thirdPartyLogin")) {
-      (function (d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "./thirdPartyLogin.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "ThirdPartyLogin");
-    }
-  }, []);
+  const [justSubmitted, setJustSubmitted] = useState(null);
 
   const handleCloseSub = React.useCallback(() => {
     setShowMainModal(true);
@@ -65,29 +46,31 @@ export default function SelfCenterModal() {
   }, [initialShowSubModal]);
 
   useEffect(() => {
-    if (curClientInfoStatus === "succeed" && justOpened) {
+    if (curClientInfoStatus === "succeed" && justSubmitted) {
       handleCloseSub();
-      setJustOpened((prev) => null);
+      setJustSubmitted((prev) => null);
     }
-  }, [curClientInfoStatus, handleCloseSub, justOpened]);
+  }, [curClientInfoStatus, handleCloseSub, justSubmitted]);
 
   const handleCloseAll = () => {
     dispatch(setShowSelfCenter(false));
   };
-  const handleShowSub =
+  const handleShowSub = React.useCallback(
     (section, show = true) =>
-    () => {
-      setTempInfo(curClientInfo);
-      setShowSubModal((prev) => ({ ...prev, [section]: show }));
-      setShowMainModal(false);
-    };
+      () => {
+        setTempInfo(curClientInfo);
+        setShowSubModal((prev) => ({ ...prev, [section]: show }));
+        setShowMainModal(false);
+      },
+    [curClientInfo]
+  );
 
   const handleChange = (section, value) => {
     setTempInfo((prev) => ({ ...prev, [section]: value }));
   };
 
   const handleSubmit = (section) => () => {
-    setJustOpened(section);
+    setJustSubmitted(section);
     let value;
     switch (section) {
       case "password":
@@ -101,42 +84,6 @@ export default function SelfCenterModal() {
           nome: tempInfo.nome,
         };
         break;
-      // case "addr_post":
-      //   value = {
-      //     Cita: tempInfo.Cita,
-      //     firstname: tempInfo.firstname,
-      //     lastname: tempInfo.lastname,
-      //     company: tempInfo.company,
-      //     address: tempInfo.address,
-      //     city: tempInfo.city,
-      //     state: tempInfo.state,
-      //     postcode: tempInfo.postcode,
-      //     country: tempInfo.country,
-      //     email: tempInfo.email,
-      //     phone: tempInfo.phone,
-      //   };
-      //   break;
-      // case "addr_put":
-      //   value = {
-      //     Cita: tempInfo.Cita,
-      //     firstname: tempInfo.firstname,
-      //     lastname: tempInfo.lastname,
-      //     company: tempInfo.company,
-      //     address: tempInfo.address,
-      //     city: tempInfo.city,
-      //     state: tempInfo.state,
-      //     postcode: tempInfo.postcode,
-      //     country: tempInfo.country,
-      //     email: tempInfo.email,
-      //     phone: tempInfo.phone,
-      //   };
-      //   break;
-      // case "addr_sort":
-      //   value = {};
-      //   break;
-      // case "addr_del":
-      //   value = {};
-      //   break;
 
       default:
         value = tempInfo[section];
@@ -167,12 +114,15 @@ export default function SelfCenterModal() {
         show={showSelfCenter && showMainModal}
         handleClose={handleCloseAll}>
         {curClientInfoStatus === "succeed" && curClientInfo && (
+          // header
           <CardWraper
+            type='user'
             title={
               curClientInfo.nome
                 ? "CIAO! " + curClientInfo.nome
                 : "CIAO! " + curClientInfo.code
             }>
+            {/* hr */}
             <Grid container item xs={12} className={classes.gridItemStyle}>
               <CustomHr position={classes.hrStyle} />
             </Grid>
@@ -241,118 +191,22 @@ export default function SelfCenterModal() {
               xs={12}
               className={clsx(classes.gridItemStyle, classes.logoutRow)}>
               <div>User Center</div>
-              <Link to='#' onClick={handleLogout}>
-                LOG OUT
-              </Link>
+              <LogOutComp />
             </Grid>
           </CardWraper>
         )}
       </CustomModal>
-      {showSubModal.name === true && (
-        <RowModal
-          show={showSubModal.name}
-          handleClose={handleCloseSub}
-          label='Modifica il tuo nome:'>
-          <InputModify
-            value={tempInfo.nome || ""}
-            iconType='done'
-            placeholder={tempInfo.nome ? null : "Add your name"}
-            handleChange={(value) => handleChange("nome", value)}
-            handleFunc={handleSubmit("general")}
-          />
-        </RowModal>
-      )}
-      {showSubModal.account === true && (
-        <RowModal
-          show={showSubModal.account}
-          handleClose={handleCloseSub}
-          label='Modifica il tuo account:'></RowModal>
-      )}
-      {showSubModal.social === true && (
-        <RowModal
-          show={showSubModal.social}
-          handleClose={handleCloseSub}
-          label='Modifica il tuo social:'></RowModal>
-      )}
-      {showSubModal.method === true && (
-        <RowModal
-          show={showSubModal.method}
-          handleClose={handleCloseSub}
-          label='Modifica i metodi di pagamento:'></RowModal>
-      )}
-      {/* address modal */}
-      {showSubModal.addr === true && (
-        <RowModal
-          show={showSubModal.addr}
-          handleClose={
-            showSubModal.addrAdd === true
-              ? handleShowSub("addrAdd", false)
-              : handleCloseSub
-          }
-          label='Modifica i tuoi indirizzi:'
-          large={true}
-          extraIcon={
-            showSubModal.addrAdd === false && (
-              <AddButton handleFunc={handleShowSub("addrAdd")} />
-            )
-          }>
-          <AddrForm showAddrAdd={showSubModal.addrAdd} />
-        </RowModal>
-      )}
-      {/*       {showSubModal.addrAdd === true && (
-        <RowModal
-          show={showSubModal.addr}
-          handleClose={handleShowSub("addrAdd", false)}
-          label='Modifica i tuoi indirizzi:'
-          large={true}></RowModal>
-      )} */}
-      {showSubModal.pwd === true}
+      <SubSelfModals
+        showSubModal={showSubModal}
+        handleCloseSub={handleCloseSub}
+        tempInfo={tempInfo}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleShowSub={handleShowSub}
+      />
     </>
   );
 }
-
-const RowModal = (props) => {
-  const {
-    show,
-    handleClose,
-    label,
-    extraIcon,
-    children,
-    large = false,
-  } = props;
-  const classes = useStyle();
-  return (
-    <CustomModal
-      timeout={0}
-      show={show}
-      handleClose={handleClose}
-      small={large === false}>
-      <Container>
-        <Grid container justifyContent='center' className={classes.subModal}>
-          <Grid
-            container
-            item
-            xs={12}
-            alignItems='center'
-            className={classes.subHeader}>
-            <div className={classes.subBackBtn} onClick={handleClose}>
-              <ArrowBackIosIcon />
-              <div>{label}</div>
-            </div>
-            <div>{extraIcon}</div>
-          </Grid>
-
-          <Grid container item xs={12}>
-            <CustomHr position={classes.subHrStyle} />
-          </Grid>
-          <Grid container item xs={12} justifyContent='center'>
-            {children}
-          </Grid>
-        </Grid>
-      </Container>
-    </CustomModal>
-  );
-};
 
 const SelfCenterRow = (props) => {
   const { label, value, handleFunc } = props;
@@ -505,87 +359,4 @@ const useStyle = makeStyles({
       },
     },
   },
-  ///sub modal style
-  subModal: {
-    width: "100%",
-  },
-  subHeader: {
-    color: "#1d1d38",
-    fontSize: "15px",
-    marginTop: "20px",
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  subBackBtn: {
-    display: "flex",
-    alignItems: "center",
-    "&:hover": {
-      cursor: "pointer",
-    },
-  },
-  subHrStyle: {
-    width: "100%",
-    marginLeft: "0",
-    marginRight: "0",
-    marginbottom: "0",
-  },
 });
-
-const handleLogout = async () => {
-  const tpl = localStorage.getItem("thirdPartyLogin");
-  switch (tpl) {
-    case "facebook":
-      window.FB.getLoginStatus(async function (response) {
-        console.log(response);
-        window.FB.logout(function (response) {
-          console.log(response);
-          async function func() {
-            const result = await logout_Prom();
-            if (result.status !== 200) {
-              alert(result.message);
-            }
-            // setRefresh(r=>r+1)
-          }
-          func();
-        });
-      });
-      return;
-    case "google":
-      var auth2;
-      window.gapi.load("auth2", function () {
-        /**
-         * Retrieve the singleton for the GoogleAuth library and set up the
-         * client.
-         */
-        async function authInit() {
-          auth2 = await window.gapi.auth2.init({
-            client_id: localStorage.getItem("google"),
-          });
-
-          console.log(auth2);
-          auth2 = window.gapi.auth2.getAuthInstance();
-          console.log(auth2);
-          auth2.signOut().then(function () {
-            console.log("用户注销成功");
-            async function func() {
-              const result = await logout_Prom();
-              if (result.status !== 200) {
-                alert(result.message);
-              }
-            }
-            func();
-          });
-        }
-        authInit();
-      });
-
-      return;
-
-    default:
-      const result = await logout_Prom();
-      if (result.status !== 200) {
-        alert(result.message);
-      }
-      return;
-  }
-};

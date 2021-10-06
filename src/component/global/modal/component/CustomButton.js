@@ -1,7 +1,7 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, CircularProgress, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import React from "react";
-
+import { grey } from "@material-ui/core/colors";
 const useStyle = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -18,20 +18,28 @@ const useStyle = makeStyles((theme) => ({
       background: "#1d1d38",
     },
     "&:focus": {
-      background: "#e47f10",
+      // background: "#e47f10",
     },
   },
 }));
 
 export default function CustomButton(props) {
   const classes = useStyle();
+  const [loading, setLoading] = React.useState(false);
   const { label, handleFunc, alterStyle = null, disableBtn } = props;
   return (
     <Button
-      onClick={handleFunc}
+      onClick={() => {
+        setLoading(true);
+        loading === false && handleFunc();
+      }}
       disabled={disableBtn}
       className={clsx(classes.root, alterStyle)}>
-      {label}
+      {loading === false ? (
+        label
+      ) : (
+        <CircularProgress size={20} style={{color:'#fff'}}/>
+      )}
     </Button>
   );
 }

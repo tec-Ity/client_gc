@@ -72,7 +72,7 @@ export default function CartModal() {
       <CardWraper
         isExpand={isExpand}
         handleCollapse={handleCollapse}
-        title={"Cart"}>
+        type='cart'>
         {displayCarts()}
       </CardWraper>
     </CustomModal>

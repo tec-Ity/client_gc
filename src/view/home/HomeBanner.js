@@ -81,6 +81,7 @@ export default function HomeBanner(props) {
       </Grid>
       <Grid container item xs={12} justifyContent='center'>
         <OutlinedInput
+          disabled
           className={classes.addrInput}
           placeholder='Qual è il tuo indirizzo?'
           onClick={handleFunc}
