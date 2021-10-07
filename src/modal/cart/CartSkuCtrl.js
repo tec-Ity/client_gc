@@ -48,7 +48,7 @@ const useStyle = makeStyles({
 });
 
 export default function CartSkuCtrl(props) {
-  const { oSku, handleFunc, large = null } = props;
+  const { oSku, handleFunc, large = false } = props;
   const classes = useStyle(large);
   const [qtyTemp, setQtyTemp] = React.useState(oSku?.quantity);
 

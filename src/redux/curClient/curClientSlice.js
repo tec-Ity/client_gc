@@ -11,7 +11,10 @@ const initialState = {
   curClientInfo: {},
   curClientInfoStatus: "idle",
   userCurLocation: null,
+  userSelectedLocation: JSON.parse(localStorage.getItem("userSelAddr")),
 };
+
+const clientPopObj = [{ path: "addrs.Cita", select: "code nome" }];
 
 export const fetchAccessToken = createAsyncThunk(
   "curClient/fetchAccessToken",
@@ -27,7 +30,9 @@ export const fetchAccessToken = createAsyncThunk(
 export const fetchCurClientInfo = createAsyncThunk(
   "curClient/fetchCurClientInfo",
   async (foo, { rejectWithValue }) => {
-    const curClientRes = await fetch_Prom("/Client");
+    const curClientRes = await fetch_Prom(
+      "/Client?populateObjs=" + JSON.stringify(clientPopObj)
+    );
     console.log(curClientRes);
     if (curClientRes.status === 200) {
       return curClientRes.data.object;
@@ -82,6 +87,12 @@ export const curClientSlice = createSlice({
     setUserCurLocation: (state, action) => {
       state.userCurLocation = action.payload;
     },
+    setUserCurCity: (state, action) => {
+      state.userCurCity = action.payload;
+    },
+    setUserSelectedLocation: (state, action) => {
+      state.userSelectedLocation = action.payload;
+    },
   },
   extraReducers: {
     [fetchCurClientInfo.pending]: (state) => {
@@ -116,6 +127,8 @@ export const {
   setCurClientInfo,
   setShowAddrSel,
   setUserCurLocation,
+  setUserSelectedLocation,
+  setUserCurCity,
 } = curClientSlice.actions;
 
 export default curClientSlice.reducer;

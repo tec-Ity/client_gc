@@ -1,37 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "@material-ui/core";
-import { useParams, useHistory } from "react-router";
-import { fetch_Prom } from "../../api";
+import { useHistory } from "react-router";
 import HomeBanner from "../home/HomeBanner";
 import HomeList from "../home/HomeList";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchShops } from "../../redux/shop/shopSlice";
 
 export default function City() {
-  const { _id } = useParams();
+  const dispatch = useDispatch();
   const hist = useHistory();
-  const [shops, setShops] = useState();
-
+  // user current city code (MI)
+  const userSelectedLocation = useSelector(
+    (state) => state.curClient.userSelectedLocation
+  );
+  const shops = useSelector((state) => state.shop.shops);
+  const shopsStatus = useSelector((state) => state.shop.shopsStatus);
+  const [sortedShopList, setSortedShopList] = useState([]);
+  const [disableIndex, setDisableIndex] = useState();
   useEffect(() => {
-    async function getShops() {
-      try {
-        const resultShops = await fetch_Prom("/Shops?serve_Citas=" + [_id]);
-        if (resultShops.status === 200) {
-          // console.log(resultShops.data.objects);
-          setShops(resultShops.data.objects);
-        } else {
-          console.log(resultShops.message);
-        }
-      } catch (e) {
-        console.log(e);
+    function getShops() {
+      shopsStatus === "idle" && dispatch(fetchShops());
+      if (shopsStatus === "succeed") {
+        console.log(shops);
+        console.log(userSelectedLocation);
+        const shopWithCity = [];
+        const shopWithServe = [];
+        const shopNonValid = [];
+
+        shops &&
+          shops.length > 0 &&
+          userSelectedLocation?.city &&
+          shops.forEach((shop) => {
+            if (shop.Cita.code === userSelectedLocation.city)
+              shopWithCity.push(shop);
+            else if (
+              shop.serve_Citas.find(
+                (sc) => sc.Cita.code === userSelectedLocation.city
+              )
+            ) {
+              shopWithServe.push(shop);
+            } else shopNonValid.push(shop);
+          });
+        setSortedShopList([...shopWithCity, ...shopWithServe, ...shopNonValid]);
+        setDisableIndex(shopWithCity.length + shopWithServe.length);
       }
     }
     getShops();
-  }, [_id]);
+  }, [dispatch, shops, shopsStatus, userSelectedLocation]);
 
   return (
     <Container maxWidth={false} disableGutters>
       <HomeBanner />
       <HomeList
-        list={shops}
+        list={sortedShopList}
+        disableIndex={disableIndex}
         containerId='shopContainer'
         handleFunc={(id) => () => {
           hist.push("/shop/" + id);

@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchAccessToken,
+  setShowAddrSel,
   setShowLogin,
   setShowSelfCenter,
 } from "../../../redux/curClient/curClientSlice";
@@ -16,7 +17,7 @@ import { Button } from "@material-ui/core";
 import { ReactComponent as Cart } from "../../icon/cart.svg";
 import { ReactComponent as Order } from "../../icon/order.svg";
 import { ReactComponent as User } from "../../icon/user.svg";
-
+import { ReactComponent as ArrowDown } from "../../icon/chevron-down.svg";
 const useStyle = makeStyles({
   root: {
     zIndex: "1",
@@ -73,11 +74,32 @@ const useStyle = makeStyles({
     "&:hover": {
       background: "transparent",
     },
-
   },
   btnsIcon: {
     width: "30px",
     height: "30px",
+  },
+  //addr sectionHeader
+  addrBox: {
+    // consegna a
+    "& > :nth-child(1)": {
+      fontWeight: "600",
+      fontSize: "12px",
+    },
+    // addr + icon
+    "& > :nth-child(2)": {
+      display: "flex",
+      // addr
+      "& > :nth-child(1)": { fontSize: "15px" },
+      //icon box
+      "& > :nth-child(2)": {
+        // icon
+        display: "flex",
+        alignItems: "center",
+        "&:hover": { cursor: "pointer" },
+        "& > :nth-child(1)": { height: "18px", width: "18px" },
+      },
+    },
   },
 });
 
@@ -88,7 +110,9 @@ export default function NavTopGlobal() {
   const carts = useSelector((state) => state.cart.carts);
   const curCartTotItem = useSelector((state) => state.cart.curCart.totItem);
   const inShop = useSelector((state) => state.cart.inShop);
-
+  const userSelectedLocation = useSelector(
+    (state) => state.curClient.userSelectedLocation
+  );
   useEffect(() => {
     function auth() {
       if (!isLogin) {
@@ -112,9 +136,21 @@ export default function NavTopGlobal() {
             />
           </Link>
         </div>
+        {isLogin && userSelectedLocation && (
+          <div className={classes.addrBox}>
+            <div>Consegna a:</div>
+            <div>
+              <div>{userSelectedLocation.addr?.slice(0, 10) + "..."}</div>
+              <div onClick={() => dispatch(setShowAddrSel(true))}>
+                <ArrowDown />
+              </div>
+            </div>
+          </div>
+        )}
         {isLogin ? (
           <div style={{ marginRight: "5%" }}>
-            <Button disableRipple
+            <Button
+              disableRipple
               classes={{ root: classes.btnStyle }}
               onClick={() => dispatch(setShowCarts(true))}>
               {/* <Cart /> */}
@@ -130,14 +166,16 @@ export default function NavTopGlobal() {
                     )}
               </div>
             </Button>
-            <Button disableRipple
+            <Button
+              disableRipple
               classes={{ root: classes.btnStyle }}
               onClick={() => dispatch(setShowOrders(true))}>
               <div style={{ position: "relative" }}>
                 <Order className={classes.btnsIcon} />
               </div>
             </Button>
-            <Button disableRipple
+            <Button
+              disableRipple
               classes={{ root: classes.btnStyle }}
               onClick={() => dispatch(setShowSelfCenter(true))}>
               <div style={{ position: "relative" }}>
@@ -147,7 +185,8 @@ export default function NavTopGlobal() {
           </div>
         ) : (
           <div style={{ marginRight: "5%" }}>
-            <Button disableRipple
+            <Button
+              disableRipple
               classes={{ root: classes.btnStyle }}
               onClick={() => {
                 dispatch(setShowLogin(true));

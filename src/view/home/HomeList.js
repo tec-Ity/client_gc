@@ -61,7 +61,16 @@ const useStyle = makeStyles({
     justifyContent: "center",
     fontSize: "20px",
   },
-
+  cardContentDisabled: {
+    padding: "0px",
+    height: "40px",
+    background: "#1d1d384d",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "20px",
+    color: "#1d1d38",
+  },
   bg: {
     width: "200px",
     height: "24px",
@@ -73,7 +82,7 @@ const useStyle = makeStyles({
 });
 
 export default function HomeList(props) {
-  const { containerId, label, list, handleFunc } = props;
+  const { containerId, label, list, handleFunc, disableIndex } = props;
   const classes = useStyle();
   const ref = useRef(null);
 
@@ -107,20 +116,26 @@ export default function HomeList(props) {
       )}
       <Grid ref={ref} container className={classes.itemGrid} spacing={10}>
         {list &&
-          list.map((item) => {
+          list.map((item, index) => {
+            const disabled = Boolean(index >= disableIndex);
             return (
               <Grid item key={item._id}>
                 <Card className={classes.itemCard} id={item._id}>
                   <CardActionArea
                     className={classes.cardActionArea}
-                    onClick={handleFunc(item._id)}>
+                    onClick={!disabled ? handleFunc(item._id) : () => {}}>
                     <CardMedia
                       component='img'
                       alt={item.nome}
                       title={item.nome}
                       className={classes.cardMedia}
                     />
-                    <CardContent className={classes.cardContent}>
+                    <CardContent
+                      className={
+                        disabled
+                          ? classes.cardContentDisabled
+                          : classes.cardContent
+                      }>
                       <span>{item.nome}</span>
                     </CardContent>
                   </CardActionArea>

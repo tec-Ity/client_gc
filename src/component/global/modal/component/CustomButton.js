@@ -1,7 +1,6 @@
 import { Button, CircularProgress, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import React from "react";
-import { grey } from "@material-ui/core/colors";
 const useStyle = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -20,6 +19,11 @@ const useStyle = makeStyles((theme) => ({
     "&:focus": {
       // background: "#e47f10",
     },
+    '&.Mui-disabled':{
+      color:'#fff',
+      background: "#1d1d38",
+      opacity: "0.3"
+    }
   },
 }));
 

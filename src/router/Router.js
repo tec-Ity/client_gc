@@ -22,7 +22,7 @@ export default function Router() {
           <HomePage />
         </Route>
         {/* introduction without loging in */}
-        <Route exact path='/city/:_id'>
+        <Route exact path='/city'>
           <CityPage />
         </Route>
         <Route exact path='/shop/:_id'>

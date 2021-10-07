@@ -8,12 +8,15 @@ import {
 } from "../../redux/cart/cartSlice";
 import CartCard from "./CartCard";
 import CardWraper from "../../component/global/modal/component/CardWraper";
+import EmptyLogo from "../Component/EmptyLogo";
 
 export default function CartModal() {
   const showCarts = useSelector((state) => state.cart.showCarts);
   const carts = useSelector((state) => state.cart.carts);
   const curCart = useSelector((state) => state.cart.curCart);
   const isExpand = useSelector((state) => state.cart.isExpand);
+  const [isEmptyCart, setIsEmptyCart] = React.useState(false);
+  const [cartList, setCartList] = React.useState();
   // const curShop = useSelector((state) => state.shop.curShop);
   const dispatch = useDispatch();
   const cartsSkuCount = 3;
@@ -30,20 +33,30 @@ export default function CartModal() {
   React.useEffect(() => {
     dispatch(setCurCartByShop(isExpand));
   }, [dispatch, isExpand]);
+
   console.log(isExpand);
-  const displayCarts = () => {
+
+  React.useEffect(() => {
     let cartsTemp;
     if (isExpand) {
-      cartsTemp =
-        curCart && curCart.OrderProds?.length > 0 ? (
+      if (curCart && curCart.OrderProds?.length > 0) {
+        cartsTemp = (
           <CartCard
             cart={curCart}
             count={CartSkuCountShop}
             isExpand={isExpand}
           />
-        ) : (
-          <div>此门店暂无购物车</div>
         );
+      } else {
+        cartsTemp = (
+          <EmptyLogo
+            type='cart'
+            label='CARRELLO VUOTO'
+            text='Vai nei negozi a riempire i tuoi carrelli ora!'
+          />
+        );
+        setIsEmptyCart(true);
+      }
     } else {
       //show carts
       if (carts?.length > 0) {
@@ -61,19 +74,26 @@ export default function CartModal() {
           );
         });
       } else {
-        cartsTemp = <div>暂无购物车</div>;
+        setIsEmptyCart(true);
+        cartsTemp = (
+          <EmptyLogo
+            type='cart'
+            label='CARRELLO VUOTO'
+            text='Vai nei negozi a riempire i tuoi carrelli ora!'
+          />
+        );
       }
     }
-    return cartsTemp;
-  };
+    setCartList(cartsTemp);
+  }, [carts, curCart, isExpand]);
 
   return (
     <CustomModal show={showCarts} handleClose={handleClose}>
       <CardWraper
         isExpand={isExpand}
         handleCollapse={handleCollapse}
-        type='cart'>
-        {displayCarts()}
+        type={isEmptyCart === false && "cart"}>
+        {cartList}
       </CardWraper>
     </CustomModal>
   );

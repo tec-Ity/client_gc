@@ -1,6 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ReactComponent as EmptyUser } from "../../component/icon/emptyUser.svg";
+import { ReactComponent as EmptyOrder } from "../../component/icon/emptyOrder.svg";
+import { ReactComponent as EmptyCart } from "../../component/icon/emptyCarrello.svg";
 const useStyles = makeStyles({
   emptyBox: {
     // border: "1px solid",
@@ -20,6 +22,7 @@ const useStyles = makeStyles({
   emptyText: {
     width: "100%",
     textAlign: "center",
+    fontWeight: "400",
   },
 });
 export default function EmptyLogo(props) {
@@ -31,9 +34,9 @@ export default function EmptyLogo(props) {
         {type === "user" ? (
           <EmptyUser />
         ) : type === "cart" ? (
-          "cart"
+          <EmptyCart />
         ) : type === "order" ? (
-          "order"
+          <EmptyOrder />
         ) : (
           ""
         )}

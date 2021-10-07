@@ -3,7 +3,7 @@ import NavTopGlobal from "./component/global/nav/NavTopGlobal";
 import Router from "./router/Router";
 import { BrowserRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
-import AddrModal from "./modal/address/AddrModal";
+import AddrSelModal from "./modal/address/AddrSelModal";
 import { useLoadScript } from "@react-google-maps/api";
 
 const libraries = ["places"];
@@ -50,7 +50,7 @@ export default function App() {
         {/* order */}
         {showOrders === true && <OrderModal />}
         {/* address selection & new address modal */}
-        {showAddrSel === true && <AddrModal />}
+        {showAddrSel === true && <AddrSelModal />}
       </Suspense>
       <Router />
     </BrowserRouter>

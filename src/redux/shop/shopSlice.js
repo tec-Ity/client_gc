@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetch_Prom } from "../../api";
 
 const initialState = {
+  shops: [],
+  shopsStatus: "idle",
   curShop: "",
   curShopInfo: {},
   curShopInfoStatus: "idle",
@@ -43,6 +45,20 @@ const prodPopObj = [
   },
   { path: "Shop", select: "nome addr" },
 ];
+
+const shopsPopObj = [
+  { path: "Cita", select: "code nome" },
+  { path: "serve_Citas.Cita", select: "code nome" },
+];
+
+export const fetchShops = createAsyncThunk("shop/fetchShops", async () => {
+  const shopsRes = await fetch_Prom(
+    "/Shops?populateObjs=" + JSON.stringify(shopsPopObj)
+  );
+  if (shopsRes.status === 200) {
+    return shopsRes.data.objects;
+  }
+});
 
 export const fetchCurShopInfo = createAsyncThunk(
   "shop/fetchCurShopInfo",
@@ -254,6 +270,13 @@ export const shopSlice = createSlice({
       state.curProdStatus = "error";
       state.curProd = {};
       // state.prodErrorQuery = action.error.message;
+    },
+    [fetchShops.pending]: (state) => {
+      state.shopsStatus = "loading";
+    },
+    [fetchShops.fulfilled]: (state, action) => {
+      state.shops = action.payload;
+      state.shopsStatus = "succeed";
     },
   },
 });

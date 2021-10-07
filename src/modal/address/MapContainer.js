@@ -214,28 +214,28 @@ export default function MapContainer(props) {
   );
 }
 // {/* locate user location */}
-function Locate({ panTo }) {
-  return (
-    <button
-      style={{ zIndex: 10 }}
-      onClick={() =>
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-          // console.log(pos);
-          panTo({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-          const result = await getGeocode({
-            location: { lat: pos.coords.latitude, lng: pos.coords.longitude },
-          });
-          // console.log("geo", result);
-          const shortName = result[0].address_components.find((address) =>
-            address.types.find((type) => type === "administrative_area_level_2")
-          ).short_name;
-          console.log(shortName);
-        })
-      }>
-      <img src='../component/icon/user.svg' alt='User' />
-    </button>
-  );
-}
+// function Locate({ panTo }) {
+//   return (
+//     <button
+//       style={{ zIndex: 10 }}
+//       onClick={() =>
+//         navigator.geolocation.getCurrentPosition(async (pos) => {
+//           // console.log(pos);
+//           panTo({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+//           const result = await getGeocode({
+//             location: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+//           });
+//           // console.log("geo", result);
+//           const shortName = result[0].address_components.find((address) =>
+//             address.types.find((type) => type === "administrative_area_level_2")
+//           ).short_name;
+//           console.log(shortName);
+//         })
+//       }>
+//       <img src='../component/icon/user.svg' alt='User' />
+//     </button>
+//   );
+// }
 
 // {/* search box input */}
 function Search({ panTo, style, updateAddr }) {

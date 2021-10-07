@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import CustomModal from "../../component/global/modal/CustomModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  fetchCurClientInfo,
   setShowAddrSel,
+  setUserCurCity,
   setUserCurLocation,
+  setUserSelectedLocation,
 } from "../../redux/curClient/curClientSlice";
 import {
   Grid,
@@ -22,9 +25,10 @@ import { ReactComponent as CurLocationIcon } from "../../component/icon/currentL
 import { ReactComponent as LocateIcon } from "../../component/icon/locate.svg";
 import { ReactComponent as UserIcon } from "../../component/icon/user.svg";
 import { ReactComponent as CheckCircleIcon } from "../../component/icon/check-circle.svg";
+import { useHistory } from "react-router";
 
 const useStyle = makeStyles({
-  root: { fontFamily: "Montserrat" },
+  root: { fontFamily: "Montserrat", color: "#1d1d38" },
   titleStyle: {
     // border: "1px solid",
     position: "relative",
@@ -73,6 +77,7 @@ const useStyle = makeStyles({
     "& circle": { fill: "#c0e57b" },
   },
   locationBox: {
+    // border: "1px solid",
     marginTop: "22px",
     minHeight: "325px",
     overflowY: "scroll",
@@ -103,20 +108,39 @@ const useStyle = makeStyles({
     top: "2px",
     right: "5px",
   },
+  //addr list item style
   savedLocation: {
+    padding: "5px 0",
+    "& div": { fontSize: "15px" },
     "&:hover": {
-      //   backgroundColor: "#c0e57b",
+      cursor: "pointer",
       background:
         "linear-gradient(270deg, rgba(145, 232, 179, 0.3) 0%, rgba(192, 229, 123, 0.3) 100%, rgba(192, 229, 123, 0.3) 100%)",
       borderRadius: "100px 100px 100px 0",
     },
   },
+  selSavedLocation: {
+    fontWeight: "600",
+    padding: "5px 0",
+    "& div": { fontSize: "15px" },
+    "&:hover": {
+      cursor: "pointer",
+    },
+    background:
+      " linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
+    borderRadius: "100px 100px 100px 0",
+  },
+  selectedIcon: {
+    height: "21px",
+    width: "21px",
+    "& path": { fill: "#1d1d38" },
+  },
   //bold on selection icon
   boldOnSelection: {
-    fontWeight: "700",
+    fontWeight: "600",
   },
   //custom compo
-  customHr: { width: "100%" },
+  customHr: { width: "100%", marginRight: "0", marginLeft: "0" },
   customHrSm: { color: "#1d1d38", opacity: "0.5" },
   customBtnStyle: {
     fontSize: "14px",
@@ -124,15 +148,30 @@ const useStyle = makeStyles({
   },
 });
 
-export default function AddrModal() {
+export default function AddrSelModal() {
   const classes = useStyle();
-  const [showNewAddr, setShowNewAddr] = useState(false);
-  //   const showAddrSel = useSelector((state) => state.curClient.showAddrSel);
   const dispatch = useDispatch();
+  const hist = useHistory();
+  // show addr new modal
+  const [showNewAddr, setShowNewAddr] = useState(false);
+  //store addr._id or 'current' to apply onSelect style
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  // used for store in the localStorage and display on the nav bar
+  const [selectedAddr, setSelectedAddr] = useState(null);
+  // city code passed to redux used to sort shops and control disable confirm button
+  const [curCity, setCurCity] = useState(null);
+  //global var to open this modal
+  const showAddrSel = useSelector((state) => state.curClient.showAddrSel);
+  const curClientAddrs = useSelector(
+    (state) => state.curClient.curClientInfo?.addrs
+  );
+  const curClientInfoStatus = useSelector(
+    (state) => state.curClient.curClientInfoStatus
+  );
+  // user GPS
   const userCurLocation = useSelector(
     (state) => state.curClient.userCurLocation
   );
-  const [selectedLocation, setSelectedLocation] = useState(null);
   const getCurrentPosition = React.useCallback(() => {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       console.log(pos);
@@ -143,18 +182,48 @@ export default function AddrModal() {
         },
       });
       console.log("geo", result);
-      dispatch(setUserCurLocation(result[0]?.formatted_address));
       const shortName = result[0].address_components.find((address) =>
         address.types.find((type) => type === "administrative_area_level_2")
       ).short_name;
       console.log(shortName);
+      dispatch(
+        setUserCurLocation({
+          addr: result[0]?.formatted_address,
+          city: shortName,
+        })
+      );
+      // dispatch(setUserCurCity(shortName));
     });
   }, [dispatch]);
+
+  React.useEffect(() => {
+    curClientInfoStatus === "idle" && dispatch(fetchCurClientInfo());
+  }, [curClientInfoStatus, dispatch]);
+
+  const handleSubmitSelAddr = React.useCallback(() => {
+    dispatch(setShowAddrSel(false));
+    dispatch(setUserCurCity(curCity));
+    dispatch(
+      setUserSelectedLocation({
+        addr: selectedAddr,
+        city: curCity,
+      })
+    );
+    localStorage.setItem(
+      "userSelAddr",
+      JSON.stringify({
+        addr: selectedAddr,
+        city: curCity,
+      })
+    );
+    hist.push("/city");
+  }, [curCity, dispatch, hist, selectedAddr]);
+
   return (
     <>
       {/* selection modal */}
       <CustomModal
-        show={showNewAddr === false}
+        show={showNewAddr === false && showAddrSel === true}
         handleClose={() => dispatch(setShowAddrSel(false))}>
         <Container>
           <Grid container className={classes.root}>
@@ -168,11 +237,12 @@ export default function AddrModal() {
               item
               alignItems='flex-start'
               alignContent='flex-start'
+              justifyContent='center'
               className={classes.locationBox}>
               {/* current location */}
-              <Grid item container xs={12} spacing={3}>
+              <Grid item container xs={12}>
                 {/* head */}
-                <Grid item container xs={12} style={{ paddingRight: 0 }}>
+                <Grid item container xs={12} style={{ marginBottom: "15px" }}>
                   <Grid item container justifyContent='flex-start' xs={1}>
                     <CurLocationIcon className={classes.iconStyle} />
                   </Grid>
@@ -193,12 +263,27 @@ export default function AddrModal() {
                   </Grid>
                 </Grid>
                 {/* location body */}
-                <Grid item container xs={12}>
+                <Grid
+                  item
+                  container
+                  xs={12}
+                  className={
+                    userCurLocation &&
+                    (selectedLocation === "current"
+                      ? classes.selSavedLocation
+                      : classes.savedLocation)
+                  }
+                  onClick={() => {
+                    userCurLocation && setSelectedLocation("current");
+                    setCurCity(userCurLocation?.city);
+                    setSelectedAddr(userCurLocation?.addr);
+                  }}>
                   {/* offset  */}
                   <Grid item container xs={1} />
+                  {/* current location  */}
                   <Grid item container xs={11}>
                     {userCurLocation
-                      ? userCurLocation
+                      ? userCurLocation.addr
                       : "Please get current location"}
                   </Grid>
                 </Grid>
@@ -208,9 +293,9 @@ export default function AddrModal() {
                 <CustomHr position={classes.customHr} />
               </Grid>
               {/* -------------------------saved locations ------------------------- */}
-              <Grid item container xs={12} spacing={3}>
+              <Grid item container xs={12}>
                 {/* head */}
-                <Grid item container xs={12}>
+                <Grid item container xs={12} style={{ marginBottom: "15px" }}>
                   {/* icon */}
                   <Grid item container justifyContent='flex-start' xs={1}>
                     <UserIcon className={classes.iconStyle} />
@@ -227,55 +312,43 @@ export default function AddrModal() {
                 </Grid>
                 {/* location body */}
                 <Grid item container xs={12}>
-                  {/* info */}
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    className={classes.savedLocation}>
-                    {/* offset */}
-                    <Grid item container xs={1}></Grid>
-                    {/* info */}
-                    <Grid
-                      item
-                      container
-                      justifyContent='center'
-                      xs={11}
-                      className={selectedLocation && classes.boldOnSelection}>
-                      <Grid item container xs={10}>
-                        <Grid item xs={12}>
-                          Via Num, CAP, CITTA’
-                        </Grid>
-                        <Grid item xs={12} style={{ opacity: "0.5" }}>
-                          Username-Tel.
-                        </Grid>
-                      </Grid>
-                      {/* check icon */}
-                      <Grid item container xs={2}>
-                        <CheckCircleIcon />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  {/* hr */}
-                  <Grid item container xs={12}>
-                    <Grid item container xs={1}></Grid>
-                    <Grid item xs={11}>
-                      <hr className={classes.customHrSm} />
-                    </Grid>
-                  </Grid>
+                  {console.log(curClientAddrs)}
+                  {curClientAddrs
+                    ? curClientAddrs.map((addr) => (
+                        <AddrListItem
+                          key={addr._id}
+                          selectedLocation={selectedLocation}
+                          addr={addr}
+                          handleClick={(addrId, addrCita, addrAddress) => {
+                            if (addrId && addrCita && addrAddress) {
+                              setSelectedLocation(addrId);
+                              setCurCity(addrCita);
+                              setSelectedAddr(addrAddress);
+                            } else {
+                              setSelectedLocation(null);
+                              setCurCity(null);
+                              setSelectedAddr(null);
+                            }
+                          }}
+                        />
+                      ))
+                    : "Non ci sono indirizzi salvati."}
                 </Grid>
               </Grid>
             </Grid>
+            {/* confirm address btn */}
             <Grid container item xs={12} style={{ paddingTop: "25px" }}>
               <CustomButton
+                disableBtn={!curCity}
                 label="CONFERMA L'INDIRIZZO"
                 alterStyle={classes.customBtnStyle}
+                handleFunc={handleSubmitSelAddr}
               />
             </Grid>
           </Grid>
         </Container>
       </CustomModal>
-      {/* new location modal */}
+      {/*------------------------ new location modal ---------------------- */}
       <CustomModal
         show={showNewAddr === true}
         handleClose={() => setShowNewAddr(false)}>
@@ -338,6 +411,61 @@ function AddrSelHeader({ title, goBack = null, handleAdd, showInput = true }) {
           />
         </Grid>
       )}
+    </>
+  );
+}
+
+function AddrListItem({ selectedLocation, addr, handleClick }) {
+  const classes = useStyle();
+  return (
+    <>
+      {/* info */}
+      <Grid
+        item
+        container
+        xs={12}
+        className={
+          selectedLocation === addr._id
+            ? classes.selSavedLocation
+            : classes.savedLocation
+        }
+        onClick={() => {
+          selectedLocation === addr._id
+            ? handleClick()
+            : handleClick(addr._id, addr.Cita?.code, addr.address);
+        }}>
+        {/* offset */}
+        <Grid item container xs={1}></Grid>
+        {/* info */}
+        <Grid item container justifyContent='center' xs={11}>
+          <Grid item container xs={10}>
+            <Grid item xs={12}>
+              {addr.address}
+            </Grid>
+            <Grid item xs={12} style={{ opacity: "0.5" }}>
+              {addr.name} - {addr.phone}
+            </Grid>
+          </Grid>
+          {/* check icon */}
+          <Grid
+            item
+            container
+            xs={2}
+            justifyContent='center'
+            alignItems='center'>
+            {selectedLocation === addr._id && (
+              <CheckCircleIcon className={classes.selectedIcon} />
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+      {/* hr */}
+      <Grid item container xs={12}>
+        <Grid item container xs={1}></Grid>
+        <Grid item xs={11}>
+          <hr className={classes.customHrSm} />
+        </Grid>
+      </Grid>
     </>
   );
 }
