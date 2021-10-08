@@ -8,6 +8,7 @@ import {
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
 import DoneIcon from "@material-ui/icons/Done";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 const useStyle = makeStyles({
   root: {
@@ -19,7 +20,7 @@ const useStyle = makeStyles({
     // fontWeight: "700",
 
     "& .MuiOutlinedInput-notchedOutline": {
-        border: "1.5px solid",
+      border: "1.5px solid",
       borderColor: "#c0e57b",
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
@@ -32,10 +33,10 @@ const useStyle = makeStyles({
   },
   endAdornmentStyle: {
     color: "#c0e57b",
-    height:'30px',
-    '&:hover':{
-        background:'transparent'
-    }
+    height: "30px",
+    "&:hover": {
+      background: "transparent",
+    },
   },
 });
 
@@ -49,18 +50,31 @@ export default function InputModify(props) {
     placeholder = "",
   } = props;
 
+  const [showPwd, setShowPwd] = React.useState(iconType !== "pwd");
+  const toggleShowPwd = () => {
+    setShowPwd((prev) => !prev);
+  };
   return (
     <OutlinedInput
       classes={{ root: classes.root }}
       value={value}
       onChange={(e) => handleChange(e.target.value)}
       placeholder={placeholder}
-      endAdornment={<EndADM iconType={iconType} handleFunc={handleFunc} />}
+      type={showPwd === true ? "text" : "password"}
+      endAdornment={
+        iconType && (
+          <EndADM
+            iconType={iconType}
+            handleFunc={iconType === "pwd" ? toggleShowPwd : handleFunc}
+            showPwd={showPwd}
+          />
+        )
+      }
     />
   );
 }
 
-const EndADM = ({ iconType, handleFunc }) => {
+const EndADM = ({ iconType, handleFunc, showPwd }) => {
   const classes = useStyle();
   const getIcon = (type) => {
     switch (type) {
@@ -70,6 +84,8 @@ const EndADM = ({ iconType, handleFunc }) => {
         return <AddIcon />;
       case "done":
         return <DoneIcon />;
+      case "pwd":
+        return showPwd === true ? <Visibility /> : <VisibilityOff />;
       default:
         break;
     }

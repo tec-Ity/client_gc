@@ -84,7 +84,7 @@ export default function ShopBanner() {
 
   const curShopInfo = useSelector((state) => state.shop.curShopInfo);
   const classes = useStyle();
-  console.log(curShopInfo)
+  // console.log(curShopInfo)
   return (
     <Container maxWidth={false} className={classes.bannerStyle}>
       <div className={classes.backLink}>

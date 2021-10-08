@@ -8,6 +8,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
+import SubPwdModal from "./SubPwdModal";
 const useStyle = makeStyles({
   root: {},
   ///sub modal style
@@ -102,7 +103,15 @@ export default function SubSelfModals(props) {
           />
         </RowModal>
       )}
-      {showSubModal.pwd === true}
+      {showSubModal.pwd === true && (
+        <RowModal
+          show={showSubModal.pwd}
+          handleClose={handleCloseSub}
+          large
+          label='REIMPOSTARE PASSWORD'>
+          <SubPwdModal handleClose={handleCloseSub} />
+        </RowModal>
+      )}
     </>
   );
 }

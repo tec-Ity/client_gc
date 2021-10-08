@@ -10,30 +10,36 @@ export default function ProdExpand(props) {
   const dispatch = useDispatch();
   const title = useSelector((state) => state.filter.title);
   const query = useSelector((state) => state.filter.query);
+  const nationIds = useSelector((state) => state.filter.nationIds);
   const [queryURL, setQueryURL] = useState(null);
   useEffect(() => {
     // console.log("query", query);
     let callQuery = false;
     try {
-      let queryUrl = "?";
+      let queryUrl = "";
       if (query.categs.length > 0) {
         queryUrl += "&Categs=" + query.categs;
         callQuery = true;
       }
       if (query.nations.length > 0) {
-        queryUrl += "&Nations=" + query.nations;
+        console.log('id',nationIds)
+        queryUrl +=
+          "&Nations=" +
+          query.nations.map(
+            (n) => nationIds?.find((idObj) => idObj.code === n)?.id
+          );
         callQuery = true;
       }
       if (query.isDiscount === true) {
         queryUrl += "&is_discount=true";
         callQuery = true;
       }
-      // console.log("query", queryUrl);
+      console.log("query", queryUrl);
       callQuery === true ? setQueryURL(queryUrl) : setQueryURL(null);
     } catch (e) {
       console.log(e);
     }
-  }, [dispatch, query]);
+  }, [dispatch, nationIds, query]);
 
   const Back = () => {
     dispatch(goBack());
@@ -50,7 +56,7 @@ export default function ProdExpand(props) {
         padding: 0,
         marginBottom: "30px",
         marginTop: "15px",
-        maxWidth:'781px'
+        maxWidth: "781px",
       }}>
       <div>
         {queryURL || props.prods ? (
@@ -75,7 +81,7 @@ export default function ProdExpand(props) {
           <CustomButton label='VEDI DI PIÙ' handleFunc={handleFunc} />
         )}
       </div>
-      
+
       {queryURL && <button onClick={Back}>back</button>}
     </Container>
   );

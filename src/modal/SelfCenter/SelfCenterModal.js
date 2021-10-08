@@ -16,6 +16,7 @@ import italy from "../../component/icon/italy.svg";
 import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
 import LogOutComp from "./LogOutComp";
 import SubSelfModals from "./SubSelfModals";
+import { slice } from "lodash";
 
 export default function SelfCenterModal() {
   const dispatch = useDispatch();
@@ -37,6 +38,9 @@ export default function SelfCenterModal() {
   const curClientInfoStatus = useSelector(
     (state) => state.curClient.curClientInfoStatus
   );
+  const curClientInfoUpdateStatus = useSelector(
+    (state) => state.curClient.curClientInfoUpdateStatus
+  );
   const [tempInfo, setTempInfo] = useState(curClientInfo);
   const [justSubmitted, setJustSubmitted] = useState(null);
 
@@ -46,11 +50,11 @@ export default function SelfCenterModal() {
   }, [initialShowSubModal]);
 
   useEffect(() => {
-    if (curClientInfoStatus === "succeed" && justSubmitted) {
+    if (curClientInfoUpdateStatus === "succeed" && justSubmitted) {
       handleCloseSub();
       setJustSubmitted((prev) => null);
     }
-  }, [curClientInfoStatus, handleCloseSub, justSubmitted]);
+  }, [curClientInfoUpdateStatus, handleCloseSub, justSubmitted]);
 
   const handleCloseAll = () => {
     dispatch(setShowSelfCenter(false));
@@ -166,7 +170,7 @@ export default function SelfCenterModal() {
                   label='Indirizzi:'
                   value={
                     curClientInfo?.addrs?.length > 0
-                      ? curClientInfo.addrs[0].address
+                      ? curClientInfo.addrs[0].address?.slice(0, 35) + "..."
                       : "暂无地址"
                   }
                 />

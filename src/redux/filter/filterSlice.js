@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fetch_Prom } from "../../api";
 
 const initialState = {
   title: {
@@ -21,7 +22,29 @@ const initialState = {
 
   clickCategFromRemote: null,
   // scrollNav: false,
+  nationIds: [],
+  nationIdsStatus: "idle",
 };
+
+export const fetchNationIds = createAsyncThunk(
+  "filter/fetchNationIds",
+  async (nationCode, { rejectWithValue }) => {
+    if (nationCode && Array.isArray(nationCode) && nationCode.length > 0) {
+      const nationId = [];
+      for (let i = 0; i < nationCode.length; i++) {
+        const nationRes = await fetch_Prom("/Nations?search=" + nationCode[i]);
+        console.log(nationRes);
+        if (nationRes?.status === 200)
+          nationId.push({
+            code: nationCode[i],
+            id: nationRes.data?.object?._id,
+          });
+      }
+
+      return nationId;
+    } else rejectWithValue("nation code data type not valid");
+  }
+);
 
 export const filterSilce = createSlice({
   name: "filter",
@@ -72,6 +95,18 @@ export const filterSilce = createSlice({
     // setScrollNav:(state, action)=>{
     //   state.scrollNav = action.payload;
     // }
+  },
+  extraReducers: {
+    [fetchNationIds.pendings]: (state) => {
+      state.nationIdsStatus = "loading";
+    },
+    [fetchNationIds.fulfilled]: (state, action) => {
+      state.nationIdsStatus = "succeed";
+      state.nationIds = action.payload;
+    },
+    [fetchNationIds.rejected]: (state) => {
+      state.nationIdsStatus = "error";
+    },
   },
 });
 

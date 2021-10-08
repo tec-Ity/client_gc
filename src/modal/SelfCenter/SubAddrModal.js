@@ -85,8 +85,8 @@ export default function SubAddrModal(props) {
   const { addrs, showAddrAdd, openUpdate, closeUpdate } = props;
   const classes = useStyle();
   const dispatch = useDispatch();
-  const curClientInfoStatus = useSelector(
-    (state) => state.curClient.curClientInfoStatus
+  const curClientInfoUpdateStatus = useSelector(
+    (state) => state.curClient.curClientInfoUpdateStatus
   );
   const [updateAddr, setUpdateAddr] = useState(null);
   const [justSubmitted, setJustSubmitted] = useState(false);
@@ -105,12 +105,12 @@ export default function SubAddrModal(props) {
 
   // used for closing addr detail modal after update 'success'
   React.useEffect(() => {
-    if (justSubmitted && curClientInfoStatus === "succeed") {
+    if (justSubmitted && curClientInfoUpdateStatus === "succeed") {
       closeUpdate();
       setUpdateAddr(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curClientInfoStatus, justSubmitted]);
+  }, [curClientInfoUpdateStatus, justSubmitted]);
 
   return showAddrAdd === true ? (
     updateAddr ? (

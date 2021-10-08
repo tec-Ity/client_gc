@@ -8,6 +8,7 @@ import {
   setTitle,
   setBackToFirst,
   goBack,
+  fetchNationIds,
 } from "../../../redux/filter/filterSlice";
 import ShopSideBarUI from "./ShopSideBarUI";
 
@@ -26,6 +27,13 @@ export default function ShopSideBar(props) {
   const backToFirst = useSelector((state) => state.filter.backToFirst);
   const isDiscount = useSelector((state) => state.filter.query.isDiscount);
   const nations = useSelector((state) => state.filter.query.nations);
+  //nation ids
+  // const nationIds = useSelector((state) => state.filter.nationIds);
+  const nationIdsStatus = useSelector((state) => state.filter.nationIdsStatus);
+  useEffect(() => {
+    nationIdsStatus === "idle" &&
+      dispatch(fetchNationIds(["CN", "IT", "JP", "KR"]));
+  }, [dispatch, nationIdsStatus]);
 
   const goBackFunc = useCallback(() => {
     dispatch(goBack());
@@ -39,6 +47,12 @@ export default function ShopSideBar(props) {
     },
     [categs]
   );
+
+  useEffect(() => {
+    return () => {
+      dispatch(setQuery());
+    };
+  }, [dispatch]);
 
   const sendFirstCategData = useCallback(
     (categId, categCode, img) => {
@@ -140,8 +154,8 @@ export default function ShopSideBar(props) {
       goBackFunc();
     }
     //re start
-    if (nations.length >= 3) {
-      console.log("back");
+    if (nations.length >= 3 && !nations.find((n) => n === nation)) {
+      // console.log("back");
       dispatch(setIsHome(true));
       dispatch(setQuery({ nations: [] }));
     } else {
@@ -149,11 +163,11 @@ export default function ShopSideBar(props) {
         const index = nations.indexOf(nation);
         //found duplicate nation
         if (index !== -1) {
-          console.log("nations", nations);
-          console.log("index", index);
+          // console.log("nations", nations);
+          // console.log("index", index);
           const newNations = [...nations];
           newNations.splice(index, 1);
-          console.log("new", newNations);
+          // console.log("new", newNations);
           dispatch(setQuery({ nations: newNations }));
           if (newNations.length === 0) {
             dispatch(setIsHome(true));

@@ -10,6 +10,7 @@ const initialState = {
   accessToken: null,
   curClientInfo: {},
   curClientInfoStatus: "idle",
+  curClientInfoUpdateStatus: "idle",
   userCurLocation: null,
   userSelectedLocation: JSON.parse(localStorage.getItem("userSelAddr")),
 };
@@ -21,7 +22,7 @@ export const fetchAccessToken = createAsyncThunk(
   async (refreshToken) => {
     if (refreshToken) {
       const loginRes = await refreshToken_Prom();
-      console.log(loginRes);
+      // console.log(loginRes);
       return loginRes;
     }
   }
@@ -33,7 +34,7 @@ export const fetchCurClientInfo = createAsyncThunk(
     const curClientRes = await fetch_Prom(
       "/Client?populateObjs=" + JSON.stringify(clientPopObj)
     );
-    console.log(curClientRes);
+    // console.log(curClientRes);
     if (curClientRes.status === 200) {
       return curClientRes.data.object;
     } else return rejectWithValue(curClientRes.message);
@@ -45,15 +46,16 @@ export const fetchPutCurClient = createAsyncThunk(
   async ({ type, value }, { rejectWithValue }) => {
     // console.log("type", typeof type);
     console.log("value", value);
-    console.log(type);
+    console.log("type", type);
     const formData = {};
     formData[type] = value;
-    console.log(formData);
+    // console.log(formData);
     const res = await fetch_Prom("/Client", "PUT", formData);
-    console.log(res);
+    // console.log(res);
     if (res.status === 200) {
       return res.data.object;
     } else {
+      // console.log(res.message)
       return rejectWithValue(res.message);
     }
   }
@@ -106,14 +108,14 @@ export const curClientSlice = createSlice({
       state.curClientInfoStatus = "error";
     },
     [fetchPutCurClient.pending]: (state) => {
-      state.curClientInfoStatus = "loading";
+      state.curClientInfoUpdateStatus = "loading";
     },
     [fetchPutCurClient.fulfilled]: (state, action) => {
-      state.curClientInfoStatus = "succeed";
+      state.curClientInfoUpdateStatus = "succeed";
       state.curClientInfo = action.payload;
     },
     [fetchPutCurClient.rejected]: (state, action) => {
-      state.curClientInfoStatus = "error";
+      state.curClientInfoUpdateStatus = "error";
     },
   },
 });

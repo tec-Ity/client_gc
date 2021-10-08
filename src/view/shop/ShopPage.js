@@ -54,28 +54,24 @@ export default function ShopPage() {
 
     if (prevShopId !== _id) {
       //shopInfo
-      (curShopInfoStatus === "idle" || curShopInfoStatus === "error") &&
-        dispatch(fetchCurShopInfo(_id));
+      dispatch(fetchCurShopInfo(_id));
       //cart
-      // (curCartStatus === "idle" || curCartStatus === "error") &&
-      //   dispatch(fetchCartByShop(_id));
-
       dispatch(setCurCartByShop(_id));
 
-      //call categ
+      //call categ only once for every shops
       (categStatus === "idle" || categStatus === "error") &&
         dispatch(fetchCategList());
       // console.log("status", categStatus);
-      if (categStatus === "succeed" && curShopInfoStatus === "succeed") {
-        dispatch(fetchProdList(categs));
+      if (categStatus === "succeed") {
         dispatch(setCurShop(_id));
+        dispatch(fetchProdList(categs));
         dispatch(setIsExpand(_id));
       }
     }
     return () => {
       dispatch(setInShop(false));
     };
-  }, [_id, categStatus, categs, dispatch, prevShopId, curShopInfoStatus]);
+  }, [_id, categStatus, categs, dispatch, prevShopId]);
 
   const goBack = () => {
     hist.goBack();
@@ -91,7 +87,7 @@ export default function ShopPage() {
         {/* <DemoSideBar /> */}
         {categs?.length > 0 && (
           <Grid container className={classes.mainSecStyle} spacing={3}>
-            <Grid item sm={4} md={3} className={classes.gridItemStyle} >
+            <Grid item sm={4} md={3} className={classes.gridItemStyle}>
               <ShopSideBar categs={categs} />
             </Grid>
             <Grid item xs={12} sm={8} md={9} className={classes.gridItemStyle}>

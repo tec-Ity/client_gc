@@ -89,17 +89,19 @@ export const fetchCategList = createAsyncThunk(
 
 export const fetchProdList = createAsyncThunk(
   "shop/fetchProdList",
-  async (categs, { rejectWithValue }) => {
+  async (categs, { getState, rejectWithValue }) => {
     const prodsArr = [];
     // console.log("categs", categs);
     for (let i = 0; i < categs?.length; i++) {
       // console.log("index", i);
       // console.log(categs[i].Categ_sons[0]._id);
-
+      console.log(getState().shop.curShop);
       if (categs[i].Categ_sons.length > 0) {
         const prodListResult = await fetch_Prom(
           "/Prods?pagesize=6&Categs=" +
             categs[i].Categ_sons[0]._id +
+            "&Shops=" +
+            [getState().shop.curShop] +
             "&populateObjs=" +
             JSON.stringify(prodPopObj)
         );
@@ -127,12 +129,17 @@ export const fetchProdList = createAsyncThunk(
 
 export const fetchProdListQuery = createAsyncThunk(
   "shop/fetchProdListQuery",
-  async (query) => {
+  async (query, { getState, rejectWithValue }) => {
     // console.log(ProdPop);
     if (query) {
       // console.log("query", query);
       const prodsRes = await fetch_Prom(
-        "/Prods?" + query + "&populateObjs=" + JSON.stringify(prodPopObj)
+        "/Prods?" +
+          query +
+          "&Shops=" +
+          [getState().shop.curShop] +
+          "&populateObjs=" +
+          JSON.stringify(prodPopObj)
       );
       // console.log(prodsRes.data.objects);
       console.log("prodsRes", prodsRes);
