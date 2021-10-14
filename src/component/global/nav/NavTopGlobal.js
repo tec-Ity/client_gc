@@ -128,7 +128,7 @@ export default function NavTopGlobal() {
     <>
       <div className={classes.root}>
         <div style={{ marginLeft: "80px" }}>
-          <Link to='/home'>
+          <Link to={isLogin && userSelectedLocation ? "/city" : "/home"}>
             <img
               className={classes.navIcon}
               src={process.env.PUBLIC_URL + "/icon/logo.png"}
@@ -140,7 +140,7 @@ export default function NavTopGlobal() {
           <div className={classes.addrBox}>
             <div>Consegna a:</div>
             <div>
-              <div>{userSelectedLocation.addr?.slice(0, 10) + "..."}</div>
+              <div>{userSelectedLocation.addr?.slice(0, 35) + "..."}</div>
               <div onClick={() => dispatch(setShowAddrSel(true))}>
                 <ArrowDown />
               </div>

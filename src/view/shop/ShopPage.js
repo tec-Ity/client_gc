@@ -79,7 +79,7 @@ export default function ShopPage() {
 
   return (
     <Container disableGutters maxWidth={false} className={classes.root}>
-      <ShopBanner goBack={goBack} />
+      <ShopBanner />
       {/* extract shop info from ShopBanner to new compo in the future */}
       <Container disableGutters>
         {/* <ShopSelection /> */}

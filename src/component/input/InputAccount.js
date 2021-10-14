@@ -69,7 +69,7 @@ export default function InputAccount(props) {
   useEffect(() => {
     async function getNation() {
       const result = await fetch_Prom("/Nations");
-      const nations = result?.data.objects;
+      const nations = result?.data?.objects;
       setNations(nations);
     }
 
@@ -104,7 +104,7 @@ export default function InputAccount(props) {
                   onChange={handleChange("phonePre")}
                   label='Age'>
                   <MenuItem value=''>--请选择区号--</MenuItem>
-                  {nations.map((nation) => {
+                  {nations?.map((nation) => {
                     return (
                       <MenuItem value={nation.tel} key={nation._id}>
                         {"+" + nation.tel.substring(2)}

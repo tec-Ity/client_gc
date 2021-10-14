@@ -3,6 +3,6 @@
 const api_DNS = "https://192.168.43.20:9000"; //ge
 // const api_DNS = "https://192.168.43.187:9000"; //hy8
 // const api_DNS = "https://192.168.1.55:9000";//FOM
-// const api_DNS = "https://207.154.213.244:9000"; //server
+// const api_DNS = "https://server.unioncityitaly.com"; //server
 
 export default api_DNS;

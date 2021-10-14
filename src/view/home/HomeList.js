@@ -7,6 +7,7 @@ import {
   CardActionArea,
   CardContent,
 } from "@material-ui/core";
+import { get_DNS } from "../../api";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomBgText from "../../component/global/background/CustomBgText";
 const useStyle = makeStyles({
@@ -49,7 +50,7 @@ const useStyle = makeStyles({
     fontFamily: "Montserrat",
   },
   cardMedia: {
-    width: "99%",
+    width: "100%",
     height: "200px",
   },
   cardContent: {
@@ -117,6 +118,7 @@ export default function HomeList(props) {
       <Grid ref={ref} container className={classes.itemGrid} spacing={10}>
         {list &&
           list.map((item, index) => {
+            console.log(item);
             const disabled = Boolean(index >= disableIndex);
             return (
               <Grid item key={item._id}>
@@ -126,6 +128,7 @@ export default function HomeList(props) {
                     onClick={!disabled ? handleFunc(item._id) : () => {}}>
                     <CardMedia
                       component='img'
+                      image={get_DNS() + item.img_url}
                       alt={item.nome}
                       title={item.nome}
                       className={classes.cardMedia}

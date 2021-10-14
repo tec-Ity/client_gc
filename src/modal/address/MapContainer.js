@@ -206,7 +206,7 @@ export default function MapContainer(props) {
           label={btnLabel}
           handleFunc={() => {
             // hook function from parent component to retreve address data
-            getSelectedLocation(addrDetailToPass);
+            getSelectedLocation && getSelectedLocation(addrDetailToPass);
           }}
         />
       </div>

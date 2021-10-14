@@ -5,7 +5,7 @@ import HomeBanner from "../home/HomeBanner";
 import HomeList from "../home/HomeList";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchShops } from "../../redux/shop/shopSlice";
-
+import { default as BgTop } from "../../component/icon/homePageBgTop.svg";
 export default function City() {
   const dispatch = useDispatch();
   const hist = useHistory();
@@ -49,16 +49,29 @@ export default function City() {
   }, [dispatch, shops, shopsStatus, userSelectedLocation]);
 
   return (
-    <Container maxWidth={false} disableGutters>
-      <HomeBanner />
-      <HomeList
-        list={sortedShopList}
-        disableIndex={disableIndex}
-        containerId='shopContainer'
-        handleFunc={(id) => () => {
-          hist.push("/shop/" + id);
+    <>
+      <img
+        src={BgTop}
+        alt='bg'
+        style={{
+          position: "absolute",
+          top: "-150px",
+          width: "100%",
+          //   left: "-50%",
         }}
       />
-    </Container>
+      <Container maxWidth={false} disableGutters>
+        {/* <HomeBanner /> */}
+        <div style={{ height: "100px" }}></div>
+        <HomeList
+          list={sortedShopList}
+          disableIndex={disableIndex}
+          containerId='shopContainer'
+          handleFunc={(id) => () => {
+            hist.push("/shop/" + id);
+          }}
+        />
+      </Container>
+    </>
   );
 }

@@ -200,24 +200,33 @@ export default function AddrSelModal() {
     curClientInfoStatus === "idle" && dispatch(fetchCurClientInfo());
   }, [curClientInfoStatus, dispatch]);
 
-  const handleSubmitSelAddr = React.useCallback(() => {
-    dispatch(setShowAddrSel(false));
-    dispatch(setUserCurCity(curCity));
-    dispatch(
-      setUserSelectedLocation({
-        addr: selectedAddr,
-        city: curCity,
-      })
-    );
-    localStorage.setItem(
-      "userSelAddr",
-      JSON.stringify({
-        addr: selectedAddr,
-        city: curCity,
-      })
-    );
-    hist.push("/city");
-  }, [curCity, dispatch, hist, selectedAddr]);
+  const handleSubmitSelAddr = React.useCallback(
+    (address) => {
+      dispatch(setShowAddrSel(false));
+      console.log(selectedAddr);
+      const cityShortName = address?.location?.address_components?.find(
+        (addr) =>
+          addr.types?.find((type) => type === "administrative_area_level_2")
+      ).short_name;
+      const formattedAddress = address?.location?.formatted_address;
+      dispatch(setUserCurCity(curCity || cityShortName));
+      dispatch(
+        setUserSelectedLocation({
+          addr: formattedAddress || selectedAddr,
+          city: curCity || cityShortName,
+        })
+      );
+      localStorage.setItem(
+        "userSelAddr",
+        JSON.stringify({
+          addr: selectedAddr || formattedAddress,
+          city: curCity || cityShortName,
+        })
+      );
+      hist.push("/city");
+    },
+    [curCity, dispatch, hist, selectedAddr]
+  );
 
   return (
     <>
@@ -360,7 +369,10 @@ export default function AddrSelModal() {
               showInput={false}
             />
             <Grid item xs={12}>
-              <MapContainer btnLabel="CONFERMA L'INDIRIZZO" />
+              <MapContainer
+                btnLabel="CONFERMA L'INDIRIZZO"
+                getSelectedLocation={handleSubmitSelAddr}
+              />
             </Grid>
             {/* <Grid container item xs={12} style={{ paddingTop: "30px" }}>
               <CustomButton
