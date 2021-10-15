@@ -4,10 +4,10 @@ import React from "react";
 const useStyle = makeStyles((theme) => ({
   root: {
     width: "100%",
-    height: "34px",
+    height: "40px",
     borderRadius: "100px 100px 100px 0",
     background: "#1d1d38",
-    fontSize: "14px",
+    fontSize: "16px",
     fontFamily: "Montserrat",
     fontWeight: "700",
     color: "#fff",

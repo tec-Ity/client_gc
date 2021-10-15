@@ -14,30 +14,27 @@ const useStyle = makeStyles((theme) => ({
     // width:'100%',
     // margin: "14px 0",
     color: "#1d1d38",
+    // border:'1px solid',
+    // justifyContent:'center',
+    maxWidth: "240px",
   },
   innerBoxBg: {
-    // border: "1px solid",
-    maxWidth: "241px",
-    maxHeight: "318px",
-    // padding:'1px',
-    padding: "1px 0.5px",
-    // width: "100%",
-    // height: "100%",
+    padding: "10px 0",
+    // border:'1px solid',
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    background:
-      "linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
-    boxShadow: "0px 0px 20.6152px rgba(0, 0, 0, 0.1)",
   },
   innerBox: {
     // margin: "1px 1px 1px 1px",
+    border: "1.5px solid",
+    borderImage: "linear-gradient(270deg,#91e883, #c0e57b) 1",
     maxWidth: "240px",
     width: "100%",
     // margin: "1px",
     height: "317px",
     background: "#fff",
     position: "relative",
+    boxShadow: "0px 0px 20.6152px rgba(0, 0, 0, 0.1)",
   },
   imgBox: {
     // maxWidth: "137.43px",
@@ -72,20 +69,21 @@ const useStyle = makeStyles((theme) => ({
     top: "233.6px",
     left: "17.18px",
     fontFamily: "Montserrat",
-    "& :nth-child(1)": {
-      fontSize: "13.74px",
-      fontWeight: "700",
+    "& >:nth-child(1)": {
+      fontSize: "14px",
+      fontWeight: "400",
     },
-    "& :nth-child(2)": {
-      fontSize: "10.31px",
+    "& >:nth-child(2)": {
+      fontSize: "10px",
     },
   },
   priceStyle: {
-    fontFamily: "Monserrat",
-    fontWeight: "700",
+    fontFamily: "Montserrat",
+    fontWeight: "600",
     position: "absolute",
     bottom: "16px",
     left: "17px",
+    fontSize: "20px",
   },
   ctrlStyle: {
     position: "absolute",
@@ -111,7 +109,7 @@ export default function ProdListItem(props) {
 
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>
-      <Paper className={classes.innerBoxBg} square>
+      <div className={classes.innerBoxBg}>
         <Paper className={classes.innerBox} square elevation={0}>
           {/* click area div */}
           <Link to={"/prod/" + prod._id} className={classes.LinkStyle}>
@@ -145,7 +143,7 @@ export default function ProdListItem(props) {
             </div>
           </div>
         </Paper>
-      </Paper>
+      </div>
     </Grid>
   );
 }
