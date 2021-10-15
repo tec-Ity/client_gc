@@ -31,6 +31,7 @@ const useStyle = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    fontFamily: "Montserrat",
   },
   navIcon: {
     width: "200px",
@@ -81,6 +82,7 @@ const useStyle = makeStyles({
   },
   //addr sectionHeader
   addrBox: {
+    marginLeft: "60px",
     // consegna a
     "& > :nth-child(1)": {
       fontWeight: "600",
@@ -88,6 +90,7 @@ const useStyle = makeStyles({
     },
     // addr + icon
     "& > :nth-child(2)": {
+      cursor: "pointer",
       display: "flex",
       // addr
       "& > :nth-child(1)": { fontSize: "15px" },
@@ -96,7 +99,6 @@ const useStyle = makeStyles({
         // icon
         display: "flex",
         alignItems: "center",
-        "&:hover": { cursor: "pointer" },
         "& > :nth-child(1)": { height: "18px", width: "18px" },
       },
     },
@@ -127,26 +129,30 @@ export default function NavTopGlobal() {
   return (
     <>
       <div className={classes.root}>
-        <div style={{ marginLeft: "80px" }}>
-          <Link to={isLogin && userSelectedLocation ? "/city" : "/home"}>
-            <img
-              className={classes.navIcon}
-              src={process.env.PUBLIC_URL + "/icon/logo.png"}
-              alt='logo'
-            />
-          </Link>
-        </div>
-        {isLogin && userSelectedLocation && (
-          <div className={classes.addrBox}>
-            <div>Consegna a:</div>
-            <div>
-              <div>{userSelectedLocation.addr?.slice(0, 35) + "..."}</div>
+        <div
+          style={{ marginLeft: "80px", display: "flex", alignItems: "center" }}>
+          <div>
+            <Link to={isLogin && userSelectedLocation ? "/city" : "/home"}>
+              <img
+                className={classes.navIcon}
+                src={process.env.PUBLIC_URL + "/icon/logo.png"}
+                alt='logo'
+              />
+            </Link>
+          </div>
+
+          {isLogin && userSelectedLocation && (
+            <div className={classes.addrBox}>
+              <div>Consegna a:</div>
               <div onClick={() => dispatch(setShowAddrSel(true))}>
-                <ArrowDown />
+                <div>{userSelectedLocation.addr?.slice(0, 30) + "..."}</div>
+                <div>
+                  <ArrowDown />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
         {isLogin ? (
           <div style={{ marginRight: "5%" }}>
             <Button

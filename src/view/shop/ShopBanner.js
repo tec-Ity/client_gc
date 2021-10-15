@@ -26,7 +26,7 @@ const useStyle = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "250px",
+    width: "fit-content",
     height: "15px",
     textDecoration: "none",
     left: "45px",

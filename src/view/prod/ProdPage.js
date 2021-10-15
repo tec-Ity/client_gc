@@ -14,15 +14,22 @@ import ProdList from "../../component/prodList/ProdList";
 import clsx from "clsx";
 import moment from "moment";
 import { ReactComponent as ArrowLeft } from "../../component/icon/chevron-left.svg";
-
+import bgBottom from "../../component/icon/bgBottom.png";
 const useStyle = makeStyles((theme) => ({
   root: {
     fontFamily: "Montserrat",
     fontSize: "15px",
     color: "#1d1d38",
-    position: "relative",
+    position: "static",
     // border:'1px solid',
     overflow: "hidden",
+  },
+  bgBottom: {
+    position: "absolute",
+    width: "100%",
+    // height: "50%",
+    bottom: 0,
+    zIndex: "-1",
   },
   headerStyle: {
     backgroundColor: "transparent",
@@ -77,16 +84,19 @@ const useStyle = makeStyles((theme) => ({
   },
   prodInfoContainer: {
     minHeight: "500px",
+    paddingLeft: "40px",
   },
-  imgContainer: {
+  imgsContainer: {
     display: "flex",
     // justifyContent: "center",
-    paddingLeft: "8%",
+    // paddingLeft: "10px",
     // paddingTop:"7px",
+    margin: "0 20px",
+    minWidth: "105px",
     maxHeight: "425px",
     marginTop: "2px",
     overflowY: "scroll",
-    width: "600px",
+    // width: "600px",
     alignContent: "flex-start",
     "&::-webkit-scrollbar": {
       display: "none",
@@ -124,6 +134,7 @@ const useStyle = makeStyles((theme) => ({
     objectFit: "scale-down",
   },
   prodDetailBox: {
+    paddingLeft: "50px",
     maxWidth: "500px",
     maxHeight: "100%",
   },
@@ -133,6 +144,9 @@ const useStyle = makeStyles((theme) => ({
       fontSize: "30px",
       fontWeight: "700",
     },
+  },
+  hrStyle: {
+    width: "100%",
   },
   attrRow: {
     fontSize: "15px",
@@ -192,6 +206,7 @@ const useStyle = makeStyles((theme) => ({
   //prod decription + recommand
   moreInfoContainer: {
     height: "900px",
+    paddingLeft: "66px",
   },
 
   gridItem: {},
@@ -215,9 +230,12 @@ const useStyle = makeStyles((theme) => ({
   desp: {
     maxWidth: "750px",
     width: "100%",
-    margin: "auto",
+    // margin: "auto",
     marginTop: "50px",
     marginBottom: "50px",
+    // wordBreak: "break-word",
+    // border: "1px solid",
+    textAlign: "justify",
   },
 
   //recommend
@@ -292,6 +310,8 @@ export default function ProdPage() {
   }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
   return (
     <>
+      <img alt='bg' src={bgBottom} className={classes.bgBottom} />
+
       {/* header */}
       <Container maxWidth={false} style={{ background: "transparent" }}>
         <div className={classes.headerStyle}>
@@ -335,21 +355,32 @@ export default function ProdPage() {
         </div>
       </Container>
 
-      <Container className={classes.root} disableGutters>
+      <Container maxWidth={false} className={classes.root} disableGutters>
         {/* backgrounds */}
-        <div className={classes.bgMain}></div>
         <div className={classes.bgTest}></div>
 
         {curProdStatus === "succeed" && (
-          <>
+          <Container
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              //   border:"1px solid"
+            }}>
             {/* prod img & attr */}
             <Container className={classes.prodInfoContainer} disableGutters>
               <Grid
                 container
-                justifyContent='space-evenly'
+                // justifyContent='center'
                 style={{ paddingTop: "20px" }}>
                 {/* ------------side imgs ------------*/}
-                <Grid container item className={classes.imgContainer} xs={2}>
+                <Grid
+                  container
+                  item
+                  justifyContent='center'
+                  className={classes.imgsContainer}
+                  xs={1}>
                   {curProd.img_urls?.map((img) => {
                     return (
                       <Grid item xs={12} key={img} className={classes.imgBox}>
@@ -364,7 +395,13 @@ export default function ProdPage() {
                 </Grid>
 
                 {/* ------------main imgs------------ */}
-                <Grid item xs={5} className={classes.mainImgBox}>
+                <Grid
+                  item
+                  container
+                  xs={5}
+                  //   md={5}
+                  justifyContent='center'
+                  className={classes.mainImgBox}>
                   <img
                     className={classes.mainImg}
                     src={get_DNS() + curProd.img_urls[0]}
@@ -375,14 +412,14 @@ export default function ProdPage() {
                 <Grid
                   container
                   item
-                  xs={5}
+                  xs={4}
                   alignContent='space-between'
                   className={classes.prodDetailBox}>
                   <Grid container item xs={12}>
                     {/* +++ name and hr+++ */}
                     <Grid item xs={12} className={classes.prodDetailNameBox}>
                       <div>{curProd.nome}</div>
-                      <CustomHr />
+                      <CustomHr position={classes.hrStyle} />
                     </Grid>
                     {/* +++attr and price section+++ */}
                     <Grid container item xs={12} spacing={1}>
@@ -421,14 +458,12 @@ export default function ProdPage() {
                       )}
                       {/* +++ price +++ */}
                       <Grid container item xs={12} className={classes.attrRow}>
-                        <Grid container item xs={4}>
-                          <div className={classes.priceStyle}>PREZZO</div>
-                        </Grid>
-                        <Grid
-                          container
-                          item
-                          xs={8}
-                          className={classes.attrList}>
+                        <div
+                          className={classes.priceStyle}
+                          style={{ marginRight: "20px" }}>
+                          PREZZO
+                        </div>
+                        <div style={{ fontWeight: "700" }}>
                           {curProd.price_max === curProd.price_min ? (
                             <div className={classes.priceStyle}>
                               €{curProd.price.toFixed(2)}
@@ -440,7 +475,7 @@ export default function ProdPage() {
                               <span>€{curProd.price_max.toFixed(2)}</span>
                             </div>
                           )}
-                        </Grid>
+                        </div>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -453,7 +488,7 @@ export default function ProdPage() {
             </Container>
 
             {/*prod desp & recommendation & background  */}
-            <Container className={classes.moreInfoContainer}>
+            <Container className={classes.moreInfoContainer} disableGutters>
               <Grid container style={{ marginTop: "60px" }}>
                 <Grid container item xs={12} className={classes.gridItem}>
                   <div style={{ position: "relative" }}>
@@ -467,7 +502,12 @@ export default function ProdPage() {
                     />
                   </div>
                 </Grid>
-                <Grid container item xs={12} className={classes.gridItem}>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  className={classes.gridItem}
+                  justifyContent='center'>
                   <div className={classes.desp}>
                     Di origine ancora piuttosto incerta (sembra provenire dalla
                     Siberia), il gruppo delle insalate era già conosciuto e
@@ -520,7 +560,7 @@ export default function ProdPage() {
                 </Grid>
               </Grid>
             </Container>
-          </>
+          </Container>
         )}
       </Container>
     </>

@@ -238,7 +238,7 @@ export default function MapContainer(props) {
 // }
 
 // {/* search box input */}
-function Search({ panTo, style, updateAddr }) {
+export function Search({ panTo, style, updateAddr, disabled = false }) {
   const {
     ready,
     value,
@@ -276,9 +276,10 @@ function Search({ panTo, style, updateAddr }) {
   //   console.log(options);
   return (
     <Autocomplete
+      disabled={disabled}
       disablePortal
       ListboxProps={{ style: { fontFamily: "Montserrat" } }}
-      style={{ fontFamily: "Montserrat" }}
+      style={{ fontFamily: "Montserrat", width: "100%" }}
       autoHighlight
       id='places-autocomplete'
       onChange={async (e, value) => {
@@ -317,9 +318,8 @@ function Search({ panTo, style, updateAddr }) {
               </InputAdornment>
             ),
             style: { fontFamily: "Montserrat" },
-          }}>
-          {/* {console.log(params)} */}
-        </TextField>
+          }}
+        />
       )}
     />
   );

@@ -186,7 +186,21 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   backLinkStyle: {
-    justifyContent: "flex-start",
+    position: "absolute",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "fit-content",
+    height: "15px",
+    textDecoration: "none",
+    left: "75px",
+    top: "122px",
+    fontSize: "12px",
+    // lineHeight: "15px",
+    color: "#1d1d38",
+    "&:visited": {
+      color: "#1d1d38",
+    },
   },
 }));
 
@@ -237,6 +251,7 @@ export default function DetailCard(props) {
             label={header.backLink}
             style={classes.backLinkStyle}
           />
+          <div></div>
           <CustomButton
             label={header.nextLink}
             handleFunc={handleFunc}

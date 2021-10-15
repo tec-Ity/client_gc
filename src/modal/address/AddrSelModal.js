@@ -13,13 +13,14 @@ import {
   OutlinedInput,
   InputAdornment,
   Container,
+  TextField,
 } from "@material-ui/core";
 import { ReactComponent as Pin } from "../../component/icon/mapInsertLocation.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import { ReactComponent as BackArrow } from "../../component/icon/chevron-left.svg";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import CustomButton from "../../component/global/modal/component/CustomButton";
-import MapContainer from "./MapContainer";
+import MapContainer, { Search } from "./MapContainer";
 import { getGeocode } from "use-places-autocomplete";
 import { ReactComponent as CurLocationIcon } from "../../component/icon/currentLocation.svg";
 import { ReactComponent as LocateIcon } from "../../component/icon/locate.svg";
@@ -232,6 +233,7 @@ export default function AddrSelModal() {
     <>
       {/* selection modal */}
       <CustomModal
+        timeout={0}
         show={showNewAddr === false && showAddrSel === true}
         handleClose={() => dispatch(setShowAddrSel(false))}>
         <Container>
@@ -267,7 +269,7 @@ export default function AddrSelModal() {
                       onClick={getCurrentPosition}
                       className={classes.locateButton}>
                       <LocateIcon className={classes.locateButtonIconStyle} />
-                      Rilocalizzare
+                      Localizzare
                     </div>
                   </Grid>
                 </Grid>
@@ -360,6 +362,7 @@ export default function AddrSelModal() {
       {/*------------------------ new location modal ---------------------- */}
       <CustomModal
         show={showNewAddr === true}
+        timeout={0}
         handleClose={() => setShowNewAddr(false)}>
         <Container>
           <Grid container item xs={12}>
@@ -410,17 +413,9 @@ function AddrSelHeader({ title, goBack = null, handleAdd, showInput = true }) {
           container
           xs={12}
           justifyContent='center'
+          onClick={handleAdd}
           className={classes.inputRowStyle}>
-          <OutlinedInput
-            classes={{ root: classes.inputStyle }}
-            placeholder='Qual è il tuo indirizzo?'
-            onClick={handleAdd}
-            startAdornment={
-              <InputAdornment position='start'>
-                <Pin className={classes.pinStyle} />
-              </InputAdornment>
-            }
-          />
+          <Search disabled />
         </Grid>
       )}
     </>
