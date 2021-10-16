@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   root: {
     background:
       "linear-gradient(290.29deg, #91E8B3 -12.39%, #C0E57B 21.51%, #D6E57B 110.42%, #C0E57B 110.42%)",
-    height: "409px",
+    height: "300px",
     left: "0px",
     right: "0px",
     borderRadius: "0px 0px 80px 0px",

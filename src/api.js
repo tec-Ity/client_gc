@@ -1,10 +1,10 @@
 import axios from "axios";
-import api_DNS from './conf/dns'
+import api_DNS from "./conf/dns";
 const api_version = "/api/v1";
 
-export const get_DNS = () =>  api_DNS;
+export const get_DNS = () => api_DNS;
 
-const fetchProm = ( api, method, bodyObj) => {
+const fetchProm = (api, method, bodyObj) => {
   return new Promise(async (resolve) => {
     try {
       const api_server = api_DNS + api_version + api;
@@ -33,19 +33,19 @@ const fetchProm = ( api, method, bodyObj) => {
     }
   });
 };
-export const fetch_Prom = ( api, method="GET", bodyObj) => {
+export const fetch_Prom = (api, method = "GET", bodyObj) => {
   // console.log(api);
   // console.log(method);
   return new Promise(async (resolve) => {
     try {
       method = method.toUpperCase();
-      
-      let result = await fetchProm( api, method, bodyObj);
+
+      let result = await fetchProm(api, method, bodyObj);
       //unauthorized user
       if (result.status === 401) {
         const auth_res = await refreshToken_Prom();
         if (auth_res.status === 200) {
-          result = await fetchProm( api, method, bodyObj);
+          result = await fetchProm(api, method, bodyObj);
         } else {
           result.status = auth_res.status;
           result.message = auth_res.message;
@@ -74,13 +74,15 @@ export const logout_Prom = () => {
         method: "DELETE",
       });
       const result = await resPromise.json();
-      if(result.status === 200) {
+      if (result.status === 200) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("crClient");
         localStorage.removeItem("google");
         localStorage.removeItem("thirdPartyLogin");
-        window.location.replace('/home');
+        localStorage.removeItem("carts");
+        localStorage.removeItem("userSelAddr");
+        window.location.replace("/home");
         // window.location.reload();
       }
       resolve(result);
