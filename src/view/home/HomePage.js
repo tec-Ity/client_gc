@@ -12,7 +12,7 @@ import HomeList from "./HomeList";
 import HomeBanner from "./HomeBanner";
 import { default as BgTop } from "../../component/icon/homePageBgTop.svg";
 import { default as ActivityTitle } from "../../component/icon/activityTitle.svg";
-import { default as Activity } from "../../component/icon/activity.svg";
+import { default as Activity } from "../../component/icon/activity.png";
 
 const useStyle = makeStyles({
   root: { fontFamily: "Montserrat" },
@@ -40,8 +40,9 @@ const useStyle = makeStyles({
     width: "100%",
     height: "100%",
     right: "0",
-    top: "730px",
+    top: "500px",
     background: "transparent",
+    objectFit:'scale-down'
   },
   activityText: {
     position: "absolute",

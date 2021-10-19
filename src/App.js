@@ -24,17 +24,12 @@ export default function App() {
   const showOrders = useSelector((state) => state.order.showOrders);
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
   const showAddrSel = useSelector((state) => state.curClient.showAddrSel);
-  // React.useEffect(() => {
-  //   const setLocal = () => {
-  //     alert(1)
-  //     localStorage.setItem("test", parseInt(localStorage.getItem("test")) + 1 || 0);
-  //   };
-  //   window.addEventListener("onbeforeunload", setLocal());
-  // }, []);
-  const { isLoaded, loadError } = useLoadScript({
+
+  useLoadScript({
     googleMapsApiKey: "AIzaSyBGjEZfiy-qg-pIE4g_uFHxMGEkALwDc5c",
     libraries, //put library outside compmponent to avoid unnacessary rerenders
   });
+  
   return (
     <BrowserRouter>
       <NavTopGlobal />

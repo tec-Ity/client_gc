@@ -118,7 +118,6 @@ export default function HomeList(props) {
       <Grid ref={ref} container className={classes.itemGrid} spacing={10}>
         {list &&
           list.map((item, index) => {
-            console.log(item);
             const disabled = Boolean(index >= disableIndex);
             return (
               <Grid item key={item._id}>
