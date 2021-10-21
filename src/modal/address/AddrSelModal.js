@@ -80,7 +80,7 @@ const useStyle = makeStyles({
   locationBox: {
     // border: "1px solid",
     marginTop: "22px",
-    minHeight: "325px",
+    height: "325px",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
       display: "none",

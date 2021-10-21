@@ -37,6 +37,7 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
   addrInput: {
+    cursor: "pointer",
     width: " 450px",
     height: " 53px",
     border: "none",
@@ -79,10 +80,15 @@ export default function HomeBanner(props) {
       <Grid container item className={classes.ben} xs={12}>
         <div>Benvenuti!</div>
       </Grid>
-      <Grid container item xs={12} justifyContent='center'>
+      <Grid
+        container
+        item
+        xs={12}
+        justifyContent='center'
+        style={{ cursor: "pointer" }}>
         <OutlinedInput
           disabled
-          className={classes.addrInput}
+          classes={{ root: classes.addrInput }}
           placeholder='Qual è il tuo indirizzo?'
           onClick={handleFunc}
           endAdornment={

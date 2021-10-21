@@ -99,7 +99,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function ProdListItem(props) {
-  const { prod, rule } = props;
+  const { prod, rule, empty = false } = props;
   const classes = useStyle();
   // const hist = useHistory();
 
@@ -109,41 +109,43 @@ export default function ProdListItem(props) {
 
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>
-      <div className={classes.innerBoxBg}>
-        <Paper className={classes.innerBox} square elevation={0}>
-          {/* click area div */}
-          <Link to={"/prod/" + prod._id} className={classes.LinkStyle}>
-            <div className={classes.imgBox}>
-              <div className={classes.imgBoxInner}>
-                {prod.img_urls && (
-                  <img
-                    className={classes.img}
-                    src={api_DNS + prod.img_urls[0]}
-                    alt={prod.nome}
-                  />
-                )}
+      {empty === false && (
+        <div className={classes.innerBoxBg}>
+          <Paper className={classes.innerBox} square elevation={0}>
+            {/* click area div */}
+            <Link to={"/prod/" + prod._id} className={classes.LinkStyle}>
+              <div className={classes.imgBox}>
+                <div className={classes.imgBoxInner}>
+                  {prod.img_urls && (
+                    <img
+                      className={classes.img}
+                      src={api_DNS + prod.img_urls[0]}
+                      alt={prod.nome}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <CustomHr position={classes.smallHr} />
+
+              <div className={classes.infoBox}>
+                <div>{prod.nome}</div>
+                <div>{prod.desp}</div>
+              </div>
+            </Link>
+            <div>
+              <div className={classes.priceStyle}>
+                {prod.price_max === prod.price_min
+                  ? `€${prod.price}`
+                  : `€${prod.price_min} - ${prod.price_max}`}
+              </div>
+              <div className={classes.ctrlStyle}>
+                <ProdListItemControl prod={prod} />
               </div>
             </div>
-
-            <CustomHr position={classes.smallHr} />
-
-            <div className={classes.infoBox}>
-              <div>{prod.nome}</div>
-              <div>{prod.desp}</div>
-            </div>
-          </Link>
-          <div>
-            <div className={classes.priceStyle}>
-              {prod.price_max === prod.price_min
-                ? `€${prod.price}`
-                : `€${prod.price_min} - ${prod.price_max}`}
-            </div>
-            <div className={classes.ctrlStyle}>
-              <ProdListItemControl prod={prod} />
-            </div>
-          </div>
-        </Paper>
-      </div>
+          </Paper>
+        </div>
+      )}
     </Grid>
   );
 }

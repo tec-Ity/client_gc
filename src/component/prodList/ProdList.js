@@ -1,6 +1,6 @@
-import { Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Grid } from "@material-ui/core";
 import { fetchProdListQuery } from "../../redux/shop/shopSlice";
 import ProdListItem from "./ProdListItem";
 
@@ -35,7 +35,7 @@ export default function ProdList(props) {
 
   const getProdList = (prodListQuery) => {
     if (style === "card") {
-      return prodListQuery?.map((prod) => {
+      const prodListTemp = prodListQuery?.map((prod) => {
         return (
           <ProdListItem
             prod={prod}
@@ -44,6 +44,19 @@ export default function ProdList(props) {
           />
         );
       });
+
+      if (type === "expand") {
+        console.log();
+        if (prodListTemp.length % 3 > 1) {
+          prodListTemp.push(
+            <ProdListItem
+              empty={true}
+              rule={type === "expand" ? expandRule : notExpRule}
+            />
+          );
+        }
+      }
+      return prodListTemp;
     }
   };
 
