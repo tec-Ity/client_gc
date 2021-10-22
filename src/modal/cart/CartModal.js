@@ -39,6 +39,7 @@ export default function CartModal() {
   React.useEffect(() => {
     let cartsTemp;
     if (isExpand) {
+        // show expand cart
       if (curCart && curCart.OrderProds?.length > 0) {
         cartsTemp = (
           <CartCard
@@ -47,6 +48,7 @@ export default function CartModal() {
             isExpand={isExpand}
           />
         );
+        setIsEmptyCart(false);
       } else {
         cartsTemp = (
           <EmptyLogo
@@ -73,6 +75,7 @@ export default function CartModal() {
             />
           );
         });
+        setIsEmptyCart(false);
       } else {
         setIsEmptyCart(true);
         cartsTemp = (
@@ -86,7 +89,7 @@ export default function CartModal() {
     }
     setCartList(cartsTemp);
   }, [carts, curCart, isExpand]);
-
+//   console.log(isEmptyCart);
   return (
     <CustomModal show={showCarts} handleClose={handleClose}>
       <CardWraper

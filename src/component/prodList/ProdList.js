@@ -50,6 +50,7 @@ export default function ProdList(props) {
         if (prodListTemp.length % 3 > 1) {
           prodListTemp.push(
             <ProdListItem
+              key='empty'
               empty={true}
               rule={type === "expand" ? expandRule : notExpRule}
             />

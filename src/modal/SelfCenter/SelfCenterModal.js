@@ -16,7 +16,7 @@ import italy from "../../component/icon/italy.svg";
 import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
 import LogOutComp from "./LogOutComp";
 import SubSelfModals from "./SubSelfModals";
-import { slice } from "lodash";
+// import { slice } from "lodash";
 
 export default function SelfCenterModal() {
   const dispatch = useDispatch();
@@ -93,7 +93,7 @@ export default function SelfCenterModal() {
         value = tempInfo[section];
         break;
     }
-    console.log({ type: section, value });
+    // console.log({ type: section, value });
     dispatch(fetchPutCurClient({ type: section, value }));
   };
 

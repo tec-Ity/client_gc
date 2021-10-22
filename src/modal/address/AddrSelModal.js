@@ -8,14 +8,8 @@ import {
   setUserCurLocation,
   setUserSelectedLocation,
 } from "../../redux/curClient/curClientSlice";
-import {
-  Grid,
-  OutlinedInput,
-  InputAdornment,
-  Container,
-  TextField,
-} from "@material-ui/core";
-import { ReactComponent as Pin } from "../../component/icon/mapInsertLocation.svg";
+import { Grid, Container } from "@material-ui/core";
+// import { ReactComponent as Pin } from "../../component/icon/mapInsertLocation.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import { ReactComponent as BackArrow } from "../../component/icon/chevron-left.svg";
 import CustomHr from "../../component/global/modal/component/CustomHr";
@@ -175,18 +169,18 @@ export default function AddrSelModal() {
   );
   const getCurrentPosition = React.useCallback(() => {
     navigator.geolocation.getCurrentPosition(async (pos) => {
-      console.log(pos);
+      //   console.log(pos);
       const result = await getGeocode({
         location: {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
         },
       });
-      console.log("geo", result);
+      //   console.log("geo", result);
       const shortName = result[0].address_components.find((address) =>
         address.types.find((type) => type === "administrative_area_level_2")
       ).short_name;
-      console.log(shortName);
+      //   console.log(shortName);
       dispatch(
         setUserCurLocation({
           addr: result[0]?.formatted_address,
@@ -204,7 +198,7 @@ export default function AddrSelModal() {
   const handleSubmitSelAddr = React.useCallback(
     (address) => {
       dispatch(setShowAddrSel(false));
-      console.log(selectedAddr);
+      //   console.log(selectedAddr);
       const cityShortName = address?.location?.address_components?.find(
         (addr) =>
           addr.types?.find((type) => type === "administrative_area_level_2")
@@ -323,7 +317,7 @@ export default function AddrSelModal() {
                 </Grid>
                 {/* location body */}
                 <Grid item container xs={12}>
-                  {console.log(curClientAddrs)}
+                  {/* {console.log(curClientAddrs)} */}
                   {curClientAddrs
                     ? curClientAddrs.map((addr) => (
                         <AddrListItem

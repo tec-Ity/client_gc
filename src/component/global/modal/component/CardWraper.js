@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ReactComponent as UserIcon } from "../../../icon/userCenterIcon.svg";
 import { ReactComponent as CartIcon } from "../../../icon/cardIconCarrello.svg";
 import { ReactComponent as OrderIcon } from "../../../icon/cardIconOrdini.svg";
+import { ReactComponent as BackIcon } from "../../../icon/chevron-left.svg";
 const useStyle = makeStyles({
   root: {
     height: "600px",
@@ -47,9 +48,12 @@ export default function CardWraper(props) {
   return (
     <div className={classes.root}>
       <Grid container className={classes.topIconBar}>
-        <Grid container item xs={4} justifyContent='center'>
+        <Grid container item xs={4}>
           {isExpand ? (
-            <button onClick={handleCollapse}>back</button>
+            <BackIcon
+              onClick={handleCollapse}
+              style={{ cursor: "pointer", width: "30px", paddingLeft: "20px" }}
+            />
           ) : (
             <div></div>
           )}

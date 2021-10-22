@@ -38,7 +38,7 @@ export default function OrderDetailPage() {
         <DetailCard
           isOrder
           order={curOrder}
-          orderLogo={curOrder.status === 100 ? "pay" : "paid"}
+          orderLogo={curOrder.status === 200 && "paid"}
           fetchStatus={curOrderStatus}
           // handleConfirmOrder={handleConfirmOrder}
           // // _id={_id}

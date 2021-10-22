@@ -4,11 +4,7 @@ import { useDispatch } from "react-redux";
 import CartSkuCtrl from "./CartSkuCtrl";
 import { get_DNS } from "../../api";
 import { Grid } from "@material-ui/core";
-import {
-  cartSkuPost,
-  cartSkuPut,
-  cartSkuDelete,
-} from "../../redux/cart/cartSlice";
+import { cartSkuPut, cartSkuDelete } from "../../redux/cart/cartSlice";
 
 const useStyle = makeStyles((theme) => ({
   tableStyle: {

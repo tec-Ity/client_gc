@@ -114,6 +114,7 @@ const useStyle = makeStyles((props) => ({
     margin: "3px 0 0 0",
   },
   expandMoreStyle: {
+    cursor: "pointer",
     color: "#1d1d38",
     width: "100%",
     // border: "1px solid",
@@ -138,6 +139,7 @@ export default function CartCard(props) {
     isExpand = null,
     handleBtn = null,
     orderCard,
+    orderExpandMore,
   } = props;
   const { Shop, OrderProds } = cart;
   const dispatch = useDispatch();
@@ -224,7 +226,9 @@ export default function CartCard(props) {
         </>
       ) : (
         <Grid item className={classes.gridItem}>
-          <div onClick={expandMore} className={classes.expandMoreStyle}>
+          <div
+            onClick={orderCard ? orderExpandMore : expandMore}
+            className={classes.expandMoreStyle}>
             <div>Vedere l'ordine</div>
             <div>.&nbsp;.&nbsp;.</div>
           </div>

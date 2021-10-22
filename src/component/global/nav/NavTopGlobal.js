@@ -163,6 +163,7 @@ export default function NavTopGlobal() {
               <div style={{ position: "relative" }}>
                 <Cart className={classes.btnsIcon} />
                 {/* cart alert */}
+                {/* {console.log(carts)} */}
                 {inShop === true
                   ? curCartTotItem && (
                       <div className={classes.alertNum}>{curCartTotItem}</div>

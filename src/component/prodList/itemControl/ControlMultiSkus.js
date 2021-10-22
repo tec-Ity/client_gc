@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CustomModal from "../../global/modal/CustomModal";
 // import ControlMultiSkusUI from "./ControlMultiSkusUI";
 import CustomHr from "../../global/modal/component/CustomHr";

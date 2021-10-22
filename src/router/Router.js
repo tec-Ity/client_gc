@@ -27,6 +27,9 @@ export default function Router() {
           </Route>
         )}
         {/* introduction without loging in */}
+        <Route exact path='/city/:cityCode'>
+          <CityPage />
+        </Route>
         <Route exact path='/city'>
           <CityPage />
         </Route>

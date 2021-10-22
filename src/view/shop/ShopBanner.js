@@ -2,9 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import { Container } from "@material-ui/core";
-import { Link } from "react-router-dom";
 // import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { ReactComponent as ArrowLeft } from "../../component/icon/chevron-left.svg";
+// import { ReactComponent as ArrowLeft } from "../../component/icon/chevron-left.svg";
 
 import { useSelector } from "react-redux";
 import BackLink from "../../component/global/link/BackLink";

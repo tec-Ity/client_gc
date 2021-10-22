@@ -124,7 +124,7 @@ export default function HomeList(props) {
                 <Card className={classes.itemCard} id={item._id}>
                   <CardActionArea
                     className={classes.cardActionArea}
-                    onClick={!disabled ? handleFunc(item._id) : () => {}}>
+                    onClick={!disabled ? handleFunc(item) : () => {}}>
                     <CardMedia
                       component='img'
                       image={get_DNS() + item.img_url}

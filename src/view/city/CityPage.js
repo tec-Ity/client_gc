@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "@material-ui/core";
-import { useHistory } from "react-router";
-import HomeBanner from "../home/HomeBanner";
+import { useHistory, useParams } from "react-router";
 import HomeList from "../home/HomeList";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchShops } from "../../redux/shop/shopSlice";
-import { default as BgTop } from "../../component/icon/homePageBgTop.svg";
+import HomeActivity from "../home/HomeActivity";
 export default function City() {
+  const { cityCode } = useParams();
   const dispatch = useDispatch();
   const hist = useHistory();
   // user current city code (MI)
@@ -17,27 +17,23 @@ export default function City() {
   const shopsStatus = useSelector((state) => state.shop.shopsStatus);
   const [sortedShopList, setSortedShopList] = useState([]);
   const [disableIndex, setDisableIndex] = useState();
+  console.log(cityCode);
   useEffect(() => {
     function getShops() {
       shopsStatus === "idle" && dispatch(fetchShops());
       if (shopsStatus === "succeed") {
-        console.log(shops);
-        console.log(userSelectedLocation);
+        // console.log(shops);
+        // console.log(userSelectedLocation);
         const shopWithCity = [];
         const shopWithServe = [];
         const shopNonValid = [];
-
+        const city = cityCode ? cityCode : userSelectedLocation.city;
         shops &&
           shops.length > 0 &&
-          userSelectedLocation?.city &&
+          city &&
           shops.forEach((shop) => {
-            if (shop.Cita.code === userSelectedLocation.city)
-              shopWithCity.push(shop);
-            else if (
-              shop.serve_Citas.find(
-                (sc) => sc.Cita.code === userSelectedLocation.city
-              )
-            ) {
+            if (shop.Cita.code === city) shopWithCity.push(shop);
+            else if (shop.serve_Citas.find((sc) => sc.Cita.code === city)) {
               shopWithServe.push(shop);
             } else shopNonValid.push(shop);
           });
@@ -46,20 +42,11 @@ export default function City() {
       }
     }
     getShops();
-  }, [dispatch, shops, shopsStatus, userSelectedLocation]);
+  }, [cityCode, dispatch, shops, shopsStatus, userSelectedLocation?.city]);
 
   return (
     <>
-      <img
-        src={BgTop}
-        alt='bg'
-        style={{
-          position: "absolute",
-          top: "-150px",
-          width: "100%",
-          //   left: "-50%",
-        }}
-      />
+      <HomeActivity />
       <Container maxWidth={false} disableGutters>
         {/* <HomeBanner /> */}
         <div style={{ height: "100px" }}></div>
@@ -67,8 +54,8 @@ export default function City() {
           list={sortedShopList}
           disableIndex={disableIndex}
           containerId='shopContainer'
-          handleFunc={(id) => () => {
-            hist.push("/shop/" + id);
+          handleFunc={(item) => () => {
+            hist.push("/shop/" + item._id);
           }}
         />
       </Container>

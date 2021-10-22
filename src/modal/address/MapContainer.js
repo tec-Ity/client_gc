@@ -76,7 +76,7 @@ export default function MapContainer(props) {
     updateAddr,
   } = props;
   const [selected, setSelected] = useState(null);
-  const [markers, setMarkers] = useState([]);
+  const [markers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [addrDetailToPass, setAddrDetailToPass] = useState({
     note: isUpdate && updateAddr.note ? updateAddr.note : "",

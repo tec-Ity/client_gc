@@ -37,7 +37,7 @@ export default function LogOutComp() {
         return;
       case "google":
         var auth2;
-        window.gapi.load("auth2", function () {
+        window.gapi?.load("auth2", function () {
           /**
            * Retrieve the singleton for the GoogleAuth library and set up the
            * client.

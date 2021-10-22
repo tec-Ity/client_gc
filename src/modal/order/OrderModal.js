@@ -40,13 +40,19 @@ export default function OrderModal() {
     const getOrders = () => {
       let orderCardTemp;
       if (ordersStatus === "succeed" && newFetch === true) {
-        orderCardTemp = orders.map((od) => {
+        orderCardTemp = orders.map((od, index) => {
           return (
             <CartCard
-              key={od._id}
+              key={od._id + index}
               cart={od}
               orderLogo='test'
               orderCard={true}
+              orderExpandMore={() => {
+                if (od.status === 100) {
+                  hist.push("/order/" + od._id);
+                  handleClose();
+                }
+              }}
               handleBtn={
                 od.status === 100
                   ? {
@@ -86,7 +92,7 @@ export default function OrderModal() {
       <CardWraper
         isExpand={isExpand}
         handleCollapse={handleCollapse}
-        type="order"
+        type='order'
         handleFunc={handleClose}>
         {orderList}
       </CardWraper>
