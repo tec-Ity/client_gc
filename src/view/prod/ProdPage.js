@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory, useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { get_DNS } from "../../api";
@@ -272,8 +272,15 @@ export default function ProdPage() {
   const curProdStatus = useSelector((state) => state.shop.curProdStatus);
   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   const classes = useStyle();
-
-  React.useEffect(() => {
+  useEffect(() => {
+    window.document.getElementsByTagName("html")[0].style.scrollBehavior =
+      "smooth";
+    window.scrollTo(0, 0);
+    setTimeout(function () {
+      window.scrollTo(0, 0);
+    }, 500);
+  }, []);
+  useEffect(() => {
     dispatch(setInShop(true));
     const fetchProd = () => {
       if (
@@ -297,7 +304,7 @@ export default function ProdPage() {
     };
   }, [_id, curProd, curProdStatus, dispatch]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // if (curProdStatus === "succeed" && curProd.Shop) {
     //   if (curCartStatus === "idle") {
     //     dispatch(fetchCartByShop(curProd.Shop));

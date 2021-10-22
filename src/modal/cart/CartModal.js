@@ -18,6 +18,7 @@ export default function CartModal() {
   const [isEmptyCart, setIsEmptyCart] = React.useState(false);
   const [cartList, setCartList] = React.useState();
   // const curShop = useSelector((state) => state.shop.curShop);
+  const inShop = useSelector((state) => state.cart.inShop);
   const dispatch = useDispatch();
   const cartsSkuCount = 3;
   const CartSkuCountShop = 100;
@@ -39,7 +40,7 @@ export default function CartModal() {
   React.useEffect(() => {
     let cartsTemp;
     if (isExpand) {
-        // show expand cart
+      // show expand cart
       if (curCart && curCart.OrderProds?.length > 0) {
         cartsTemp = (
           <CartCard
@@ -89,12 +90,12 @@ export default function CartModal() {
     }
     setCartList(cartsTemp);
   }, [carts, curCart, isExpand]);
-//   console.log(isEmptyCart);
+  //   console.log(isEmptyCart);
   return (
     <CustomModal show={showCarts} handleClose={handleClose}>
       <CardWraper
         isExpand={isExpand}
-        handleCollapse={handleCollapse}
+        handleCollapse={!inShop && handleCollapse}
         type={isEmptyCart === false && "cart"}>
         {cartList}
       </CardWraper>

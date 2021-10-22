@@ -29,7 +29,13 @@ export default function App() {
     googleMapsApiKey: "AIzaSyBGjEZfiy-qg-pIE4g_uFHxMGEkALwDc5c",
     libraries, //put library outside compmponent to avoid unnacessary rerenders
   });
-  
+  React.useEffect(() => {
+    window.document.getElementsByTagName("html")[0].style.scrollBehavior =
+      "smooth";
+    setTimeout(function () {
+      window.scrollTo(0, 0);
+    }, 2000);
+  }, []);
   return (
     <BrowserRouter>
       <NavTopGlobal />

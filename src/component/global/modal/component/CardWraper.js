@@ -49,7 +49,7 @@ export default function CardWraper(props) {
     <div className={classes.root}>
       <Grid container className={classes.topIconBar}>
         <Grid container item xs={4}>
-          {isExpand ? (
+          {isExpand && handleCollapse ? (
             <BackIcon
               onClick={handleCollapse}
               style={{ cursor: "pointer", width: "30px", paddingLeft: "20px" }}

@@ -95,7 +95,7 @@ export const fetchProdList = createAsyncThunk(
     for (let i = 0; i < categs?.length; i++) {
       // console.log("index", i);
       // console.log(categs[i].Categ_sons[0]._id);
-    //   console.log(getState().shop.curShop);
+      //   console.log(getState().shop.curShop);
       if (categs[i].Categ_sons.length > 0) {
         const prodListResult = await fetch_Prom(
           "/Prods?pagesize=6&Categs=" +
@@ -142,7 +142,7 @@ export const fetchProdListQuery = createAsyncThunk(
           JSON.stringify(prodPopObj)
       );
       // console.log(prodsRes.data.objects);
-      console.log("prodsRes", prodsRes);
+      //   console.log("prodsRes", prodsRes);
       if (prodsRes.status === 200) {
         return prodsRes.data.objects;
       } else {

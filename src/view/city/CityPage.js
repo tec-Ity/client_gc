@@ -5,6 +5,7 @@ import HomeList from "../home/HomeList";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchShops } from "../../redux/shop/shopSlice";
 import HomeActivity from "../home/HomeActivity";
+import HomeBanner from "../home/HomeBanner";
 export default function City() {
   const { cityCode } = useParams();
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ export default function City() {
   const shopsStatus = useSelector((state) => state.shop.shopsStatus);
   const [sortedShopList, setSortedShopList] = useState([]);
   const [disableIndex, setDisableIndex] = useState();
-  console.log(cityCode);
+  //   console.log(cityCode);
   useEffect(() => {
     function getShops() {
       shopsStatus === "idle" && dispatch(fetchShops());
@@ -27,7 +28,11 @@ export default function City() {
         const shopWithCity = [];
         const shopWithServe = [];
         const shopNonValid = [];
-        const city = cityCode ? cityCode : userSelectedLocation.city;
+        const city = cityCode
+          ? cityCode
+          : userSelectedLocation
+          ? userSelectedLocation.city
+          : " ";
         shops &&
           shops.length > 0 &&
           city &&
@@ -42,13 +47,13 @@ export default function City() {
       }
     }
     getShops();
-  }, [cityCode, dispatch, shops, shopsStatus, userSelectedLocation?.city]);
+  }, [cityCode, dispatch, shops, shopsStatus, userSelectedLocation]);
 
   return (
     <>
       <HomeActivity />
       <Container maxWidth={false} disableGutters>
-        {/* <HomeBanner /> */}
+        {sortedShopList.length === 0 && <HomeBanner />}
         <div style={{ height: "100px" }}></div>
         <HomeList
           list={sortedShopList}

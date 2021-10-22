@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {  useParams } from "react-router";
+import { useParams } from "react-router";
 import ShopSideBar from "./ShopSideBar/ShopSideBar";
 import ShopBanner from "./ShopBanner";
 import ShopProdSection from "./shopProdSection/ShopProdSection";
@@ -38,16 +38,24 @@ const useStyle = makeStyles((theme) => ({
 export default function ShopPage() {
   const classes = useStyle();
   const { _id } = useParams();
-//   const hist = useHistory();
+  //   const hist = useHistory();
   const dispatch = useDispatch();
   const categs = useSelector((state) => state.shop.categList);
   const prevShopId = useSelector((state) => state.shop.curShop);
   const categStatus = useSelector((state) => state.shop.categStatus);
   // const categError = useSelector((state) => state.shop.categError);
-//   const curShopInfoStatus = useSelector(
-//     (state) => state.shop.curShopInfoStatus
-//   );
+  //   const curShopInfoStatus = useSelector(
+  //     (state) => state.shop.curShopInfoStatus
+  //   );
+  useEffect(() => {
+    window.document.getElementsByTagName("html")[0].style.scrollBehavior =
+      "smooth";
+    window.scrollTo(0, 0);
 
+    setTimeout(function () {
+      window.scrollTo(0, 0);
+    }, 500);
+  }, []);
   useEffect(() => {
     // 会渲染好几次sideBar并console好几次
     dispatch(setInShop(true));
@@ -73,9 +81,9 @@ export default function ShopPage() {
     };
   }, [_id, categStatus, categs, dispatch, prevShopId]);
 
-//   const goBack = () => {
-//     hist.goBack();
-//   };
+  //   const goBack = () => {
+  //     hist.goBack();
+  //   };
 
   return (
     <Container disableGutters maxWidth={false} className={classes.root}>

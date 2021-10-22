@@ -152,9 +152,9 @@ export default function ProdListItem(props) {
                   : `€${prod.price_min} - ${prod.price_max}`}
               </div>
               <div className={classes.ctrlStyle} onClick={handleClick}>
-                <ClickMuncher>
+                <>
                   <ProdListItemControl prod={prod} />
-                </ClickMuncher>
+                </>
               </div>
             </div>
           </Paper>

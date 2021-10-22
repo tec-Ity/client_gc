@@ -51,7 +51,7 @@ const useStyle = makeStyles((props) => ({
   },
   shopTitle: {
     fontFamily: "Montserrat",
-    fontWeight: "400",
+    fontWeight: "700",
     fontSize: "1em",
     lineHeight: "15px",
     color: "#C0E57B",
@@ -170,7 +170,11 @@ export default function CartCard(props) {
 
   return (
     <Grid container item xs={11} className={classes.root}>
-      <Grid item container className={classes.gridItem}>
+      <Grid
+        item
+        container
+        className={classes.gridItem}
+        style={{ paddingBottom: "10px" }}>
         <div className={clsx(classes.shopTitle, classes.marginHead)}>
           SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
         </div>
@@ -210,7 +214,7 @@ export default function CartCard(props) {
       {isExpand ? (
         <>
           <Grid item className={classes.gridItem}>
-            <div className={clsx(classes.moreInfo, classes.margin)}>^</div>
+            {/* <div className={clsx(classes.moreInfo, classes.margin)}>^</div> */}
             <div className={clsx(classes.totalAmount, classes.marginFoot)}>
               <div>TOTALE</div>
               <div>€{curCart.totPrice?.toFixed(2)}</div>
@@ -220,7 +224,7 @@ export default function CartCard(props) {
             <CustomButton
               label='ORDINARE'
               handleFunc={handleOrderFunc}
-              alterStyle={classes.orderBtnXL}
+            //   alterStyle={classes.orderBtnXL}
             />
           </Grid>
         </>
@@ -229,7 +233,9 @@ export default function CartCard(props) {
           <div
             onClick={orderCard ? orderExpandMore : expandMore}
             className={classes.expandMoreStyle}>
-            <div>Vedere l'ordine</div>
+            <div>
+              {orderCard ? "Vedere l'ordine" : "Vedere la lista completa"}
+            </div>
             <div>.&nbsp;.&nbsp;.</div>
           </div>
         </Grid>

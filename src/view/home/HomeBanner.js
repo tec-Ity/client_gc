@@ -7,6 +7,12 @@ import {
   InputAdornment,
   IconButton,
 } from "@material-ui/core";
+import {
+  setShowAddrSel,
+  setShowLogin,
+} from "../../redux/curClient/curClientSlice";
+import { useSelector, useDispatch } from "react-redux";
+
 const useStyles = makeStyles({
   root: {
     background:
@@ -72,9 +78,17 @@ const useStyles = makeStyles({
   },
 });
 export default function HomeBanner(props) {
-  const { handleFunc } = props;
+  //   const { handleFunc } = props;
   const classes = useStyles();
-
+  const dispatch = useDispatch();
+  const isLogin = useSelector((state) => state.curClient.isLogin);
+  const handleFunc = () => {
+    if (!isLogin) {
+      dispatch(setShowLogin(true));
+    } else {
+      dispatch(setShowAddrSel(true));
+    }
+  };
   return (
     <Grid container className={classes.root}>
       <Grid container item className={classes.ben} xs={12}>

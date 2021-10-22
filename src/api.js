@@ -99,7 +99,7 @@ export const refreshToken_Prom = () => {
       const resPromise = await fetch(api, {
         headers: {
           "content-type": "application/json",
-          authorization: "accessToken " + token,
+          authorization: "kj " + token + " re",
         },
         method: "GET",
       });

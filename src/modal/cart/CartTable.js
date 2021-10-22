@@ -20,6 +20,8 @@ const useStyle = makeStyles((theme) => ({
     color: "#C0E57B",
     borderTop: "1px solid #c0e57b",
     borderBottom: "1px solid #c0e57b",
+    lineHeight: "2em",
+    marginBottom: "10px",
   },
   tableRow: {
     fontSize: "15px",
