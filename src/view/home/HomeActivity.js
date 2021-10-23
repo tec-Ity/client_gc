@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { default as BgTop } from "../../component/icon/homePageBgTop.svg";
 import { default as ActivityTitle } from "../../component/icon/activityTitle.svg";
 import { default as Activity } from "../../component/icon/activity.png";
 
@@ -10,13 +9,9 @@ const useStyle = makeStyles({
     width: "100%",
     height: "100%",
     position: "absolute",
+    top:0
   },
-  bgTop: {
-    position: "absolute",
-    top: "0",
-    width: "100%",
-    zIndex: "-1",
-  },
+
   activityTitle: {
     position: "absolute",
     top: "500px",
@@ -55,7 +50,6 @@ export default function HomeActivity() {
   const classes = useStyle();
   return (
     <div className={classes.root}>
-      <img src={BgTop} className={classes.bgTop} alt='' />
       <div className={classes.activityTitle}>
         <img src={ActivityTitle} alt='' />
         <div>Click qui a vedere tutti i prodotti della festa</div>

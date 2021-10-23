@@ -25,7 +25,7 @@ const useStyle = makeStyles({
   ///cities container
   itemGrid: {
     margin: "0",
-    marginTop: "330px",
+    marginTop: "300px",
     // marginLeft: "10px",
     display: "flex",
     overflowY: "scroll",
@@ -136,7 +136,7 @@ export default function HomeList(props) {
   const { containerId, label, list, handleFunc, disableIndex } = props;
   const classes = useStyle();
   const ref = useRef(null);
-  console.log(list);
+//   console.log(list);
   useEffect(() => {
     const setStyle = () => {
       ref.current.style.height =
@@ -165,7 +165,7 @@ export default function HomeList(props) {
           />
         </div>
       )}
-      <Grid ref={ref} container className={classes.itemGrid} spacing={10}>
+      <Grid ref={ref} container className={classes.itemGrid} spacing={5}>
         {/* <div style={{width:'30px'}}>&nbsp;&nbsp;</div> */}
         {list &&
           list.map((item, index) => {

@@ -48,6 +48,8 @@ const useStyle = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     fontSize: "10px",
+    fontFamily: "Montserrat",
+    fontWeight: "bold"
   },
   alertNum: {
     position: "absolute",
@@ -141,14 +143,20 @@ export default function NavTopGlobal() {
             </Link>
           </div>
 
-          {isLogin && userSelectedLocation && (
+          {isLogin && (
             <div className={classes.addrBox}>
               <div>Consegna a:</div>
               <div onClick={() => dispatch(setShowAddrSel(true))}>
-                <div>{userSelectedLocation.addr?.slice(0, 30) + "..."}</div>
-                <div>
-                  <ArrowDown />
-                </div>
+                {userSelectedLocation ? (
+                  <>
+                    <div>{userSelectedLocation.addr?.slice(0, 30) + "..."}</div>
+                    <div>
+                      <ArrowDown />
+                    </div>
+                  </>
+                ) : (
+                  <div>Scegli il tuo indirizzo</div>
+                )}
               </div>
             </div>
           )}
@@ -201,7 +209,7 @@ export default function NavTopGlobal() {
               }}>
               <div className={classes.loginButton}>
                 <User />
-                <div>login</div>
+                <div>LOG IN</div>
               </div>
             </Button>
           </div>

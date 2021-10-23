@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchShops } from "../../redux/shop/shopSlice";
 import HomeActivity from "../home/HomeActivity";
 import HomeBanner from "../home/HomeBanner";
+import HomeBg from "../home/HomeBg";
 export default function City() {
   const { cityCode } = useParams();
   const dispatch = useDispatch();
@@ -51,7 +52,10 @@ export default function City() {
 
   return (
     <>
-      <HomeActivity />
+      <HomeBg style={{ top: "-200px" }} />
+      <div style={{ position: "relative", top: "-130px" }}>
+        <HomeActivity />
+      </div>
       <Container maxWidth={false} disableGutters>
         {sortedShopList.length === 0 && <HomeBanner />}
         <div style={{ height: "100px" }}></div>
