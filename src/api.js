@@ -69,7 +69,7 @@ export const logout_Prom = () => {
       const resPromise = await fetch(api, {
         headers: {
           "content-type": "application/json",
-          authorization: "accessToken " + token,
+          authorization: "accessToken " + token + " re",
         },
         method: "DELETE",
       });
@@ -106,6 +106,8 @@ export const refreshToken_Prom = () => {
       const result = await resPromise.json();
       if (result.status === 200) {
         localStorage.setItem("accessToken", result.data?.accessToken);
+        result.data?.refreshToken &&
+          localStorage.setItem("refreshToken", result.data?.refreshToken);
       } else {
         localStorage.removeItem("refreshToken");
         window.location.reload();

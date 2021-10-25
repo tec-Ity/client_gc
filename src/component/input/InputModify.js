@@ -40,15 +40,15 @@ const useStyle = makeStyles({
   },
 });
 
-export default function InputModify(props) {
+export default function InputModify({
+  value = "",
+  handleChange,
+  handleFunc,
+  iconType = null, //edit|add|done|pwd
+  placeholder = "",
+  disabled = false,
+}) {
   const classes = useStyle();
-  const {
-    value = "",
-    handleChange,
-    handleFunc,
-    iconType = null,
-    placeholder = "",
-  } = props;
 
   const [showPwd, setShowPwd] = React.useState(iconType !== "pwd");
   const toggleShowPwd = () => {
@@ -58,6 +58,7 @@ export default function InputModify(props) {
     <OutlinedInput
       classes={{ root: classes.root }}
       value={value}
+      disabled={disabled}
       onChange={(e) => handleChange(e.target.value)}
       placeholder={placeholder}
       type={showPwd === true ? "text" : "password"}

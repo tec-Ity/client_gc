@@ -19,18 +19,23 @@ const useStyle = makeStyles((theme) => ({
     "&:focus": {
       // background: "#e47f10",
     },
-    '&.Mui-disabled':{
-      color:'#fff',
+    "&.Mui-disabled": {
+      color: "#fff",
       background: "#1d1d38",
-      opacity: "0.3"
-    }
+      opacity: "0.3",
+    },
   },
 }));
 
-export default function CustomButton(props) {
+export default function CustomButton({
+  label,
+  handleFunc,
+  alterStyle = null,
+  disableBtn,
+}) {
   const classes = useStyle();
   const [loading, setLoading] = React.useState(false);
-  const { label, handleFunc, alterStyle = null, disableBtn } = props;
+
   return (
     <Button
       onClick={() => {
@@ -42,7 +47,7 @@ export default function CustomButton(props) {
       {loading === false ? (
         label
       ) : (
-        <CircularProgress size={20} style={{color:'#fff'}}/>
+        <CircularProgress size={20} style={{ color: "#fff" }} />
       )}
     </Button>
   );

@@ -9,6 +9,7 @@ import CustomHr from "../../component/global/modal/component/CustomHr";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import SubPwdModal from "./SubPwdModal";
+import SubAccountModal from "./SubAccountModal";
 const useStyle = makeStyles({
   root: {},
   ///sub modal style
@@ -45,6 +46,7 @@ export default function SubSelfModals(props) {
     handleSubmit,
     handleShowSub,
   } = props;
+  console.log(tempInfo);
   return (
     <>
       {showSubModal.name === true && (
@@ -61,11 +63,21 @@ export default function SubSelfModals(props) {
           />
         </RowModal>
       )}
+      {/* --------account--------------- */}
       {showSubModal.account === true && (
         <RowModal
           show={showSubModal.account}
           handleClose={handleCloseSub}
-          label='Modifica il tuo account:'></RowModal>
+          label='Modifica il tuo account:'>
+          <SubAccountModal
+            handleClose={handleCloseSub}
+            accountInfo={{
+              code: tempInfo.code,
+              phone: tempInfo.phone,
+              email: tempInfo.email,
+            }}
+          />
+        </RowModal>
       )}
       {showSubModal.social === true && (
         <RowModal
