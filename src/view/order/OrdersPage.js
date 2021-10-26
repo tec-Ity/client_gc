@@ -8,7 +8,7 @@ import OrderCard from "./component/OrderCard";
 import BackLink from "../../component/global/link/BackLink";
 
 const useStyle = makeStyles({
-  root: { border: "1px solid", color: "#1d1d38" },
+  root: { color: "#1d1d38" },
   headerStyle: {
     height: "73px",
     // border: "1px solid",
@@ -60,7 +60,7 @@ const useStyle = makeStyles({
 
   //card wrapper
   wrapper: {
-    border: "1px solid",
+    // border: "1px solid",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
       display: "none",
@@ -116,6 +116,7 @@ export default function OrdersPage() {
       <div className={classes.headerStyle}>
         <BackLink label='CONTINUA LO SHOPPING' link='/home' />
       </div>
+      {/* buttons */}
       <Container>
         <Grid container justifyContent='space-evenly'>
           <Grid item>

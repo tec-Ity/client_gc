@@ -373,7 +373,7 @@ export default function DetailCard(props) {
             {/* select payment type button group */}
             {isOrder && (
               <Grid container item xs={12} className={classes.gridItemStyle}>
-                <PaymentSelBtn />
+                <PaymentSelBtn orderId={order._id} />
               </Grid>
             )}
           </Grid>

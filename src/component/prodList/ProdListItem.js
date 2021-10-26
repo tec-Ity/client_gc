@@ -10,7 +10,6 @@ import {
   setShowAddrSel,
   setShowLogin,
 } from "../../redux/curClient/curClientSlice";
-import ClickMuncher from "../global/functional/ClickMuncher";
 
 const useStyle = makeStyles((theme) => ({
   root: {

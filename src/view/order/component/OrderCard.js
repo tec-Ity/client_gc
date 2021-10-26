@@ -68,6 +68,11 @@ const useStyle = makeStyles({
       },
     },
   },
+  prodTableStyle:{
+    //   border: "1px solid",
+      height: "150px",
+      overflowY:'hidden'
+  }
 });
 export default function OrderCard(props) {
   const { order } = props;
@@ -123,36 +128,14 @@ export default function OrderCard(props) {
               <CustomHr position={classes.hrStyle} />
             </Grid>
             {/* table */}
-            <Grid container item xs={12}>
+            <Grid container item xs={12} className={classes.prodTableStyle}>
               {/* table rows */}
-              {/* {order.OrderProds?.map((op) => {
-                return op.OrderSkus?.map((os) => {
-                  return (
-                    <Grid container item xs={12} key={os.Sku}>
-                      <Grid container item xs={6}>
-                        <div>{op.nome}</div>
-                        <div>{op.desp}</div>
-                      </Grid>
-                      <Grid container item xs={2}>
-                        {os.quantity}
-                      </Grid>
-                      <Grid container item xs={2}>
-                        {os.price_regular}
-                      </Grid>
-                      <Grid container item xs={2}>
-                        {os.price_tot}
-                      </Grid>
-                    </Grid>
-                  );
-                });
-              })} */}
-              {
-                <CartTable
-                  showHeader={false}
-                  OrderProds={order.OrderProds}
-                  customTableStyle={classes.tableStyle}
-                />
-              }
+
+              <CartTable
+                showHeader={false}
+                OrderProds={order.OrderProds}
+                customTableStyle={classes.tableStyle}
+              />
             </Grid>
             {/* hr */}
             <Grid container item xs={12}>

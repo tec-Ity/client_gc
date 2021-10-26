@@ -1,6 +1,7 @@
 import { Button, Grid } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { fetch_Prom } from "../../../api";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -36,8 +37,12 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function PaymentSelBtn() {
+export default function PaymentSelBtn({ orderId }) {
   const classes = useStyle();
+
+  const handlePayment = async () => {
+    const paymentLink = await fetch_Prom();
+  };
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
@@ -45,7 +50,9 @@ export default function PaymentSelBtn() {
       </Grid>
 
       <Grid item xs={12} className={classes.btnBox}>
-        <Button className={classes.btn}>PAGA ONLINE</Button>
+        <Button className={classes.btn} onClick={handlePayment}>
+          PAGA ONLINE
+        </Button>
         <Button className={classes.btn}>PAGA ALLA CONSEGNA</Button>
       </Grid>
     </Grid>

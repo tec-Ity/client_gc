@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ReactComponent as Pin } from "../../component/icon/pin.svg";
+import { useTranslation } from "react-i18next";
 import {
   Grid,
   OutlinedInput,
@@ -43,10 +44,10 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
   addrInput: {
-    cursor: "pointer",
+    //   border:'1px solid',
     width: " 450px",
     height: " 53px",
-    border: "none",
+    // border: "none",
     background: " #FFFFFF",
     boxShadow: " 0px 0px 30px rgba(0, 0, 0, 0.1)",
     borderRadius: " 26.5px 26.5px 26.5px 0px",
@@ -62,6 +63,8 @@ const useStyles = makeStyles({
     "& .MuiOutlinedInput-notchedOutline": {
       border: "none",
     },
+    "& .MuiOutlinedInput-input": { cursor: "pointer" },
+    // "& 	.MuiOutlinedInput-root": { cursor: "pointer" },
   },
   pinStyle: {
     "&:hover": {
@@ -79,6 +82,7 @@ const useStyles = makeStyles({
 });
 export default function HomeBanner(props) {
   //   const { handleFunc } = props;
+  const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.curClient.isLogin);
@@ -92,16 +96,12 @@ export default function HomeBanner(props) {
   return (
     <Grid container className={classes.root}>
       <Grid container item className={classes.ben} xs={12}>
-        <div>Benvenuti!</div>
+        <div>{t("welcomeMsg")}</div>
       </Grid>
-      <Grid
-        container
-        item
-        xs={12}
-        justifyContent='center'
-        style={{ cursor: "pointer" }}>
+      <Grid container item xs={12} justifyContent='center'>
         <OutlinedInput
           disabled
+          style={{cursor: "pointer"}}
           classes={{ root: classes.addrInput }}
           placeholder='Qual è il tuo indirizzo?'
           onClick={handleFunc}

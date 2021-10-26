@@ -7,15 +7,14 @@ import {
   setShowSelfCenter,
 } from "../../redux/curClient/curClientSlice";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import CustomButton from "../../component/global/modal/component/CustomButton";
 import clsx from "clsx";
-import china from "../../component/icon/china.svg";
-import italy from "../../component/icon/italy.svg";
 import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
 import LogOutComp from "./LogOutComp";
 import SubSelfModals from "./SubSelfModals";
+import LanguageComp from "./LanguageComp";
 // import { slice } from "lodash";
 
 export default function SelfCenterModal() {
@@ -176,7 +175,7 @@ export default function SelfCenterModal() {
                 />
               </Grid>
               <Grid container item xs={12} className={classes.infoRowStyle}>
-                <LanguageRow />
+                <LanguageComp/>
               </Grid>
               <Grid container item xs={12} className={classes.infoRowStyle}>
                 <SelfCenterRow
@@ -235,28 +234,6 @@ const SelfCenterRow = (props) => {
   );
 };
 
-const LanguageRow = () => {
-  const classes = useStyle();
-  return (
-    <Grid
-      container
-      item
-      xs={12}
-      justifyContent='space-between'
-      alignItems='center'
-      className={classes.LanguageRowStyle}>
-      <div>Lingue:</div>
-      <div className={classes.nationBox}>
-        <Button className={classes.nationBtn}>
-          <img src={china} alt='中文' />
-        </Button>
-        <Button className={classes.nationBtn}>
-          <img src={italy} alt='italiano' />
-        </Button>
-      </div>
-    </Grid>
-  );
-};
 
 const useStyle = makeStyles({
   root: {},
@@ -308,59 +285,5 @@ const useStyle = makeStyles({
         color: "#1d1d38",
       },
     },
-  },
-  LanguageRowStyle: {
-    fontWeight: "400",
-  },
-  nationBox: {
-    display: "flex",
-    width: "100px",
-  },
-  nationBtn: {
-    // border: "1px solid",
-    padding: "0",
-    borderRadius: "100%",
-    // maxWidth: "48px",
-    width: "64px",
-    height: "64px",
-    "&:hover": {
-      // '& :nth-child(1)':{
-      //   opacity:'0.8'
-      // },
-      background: "transparent",
-    },
-    // background: "green",
-
-    "& .MuiButton-label": {
-      borderRadius: "100%",
-
-      width: "48px",
-      height: "48px",
-      "&:hover": {
-        backgroundImage:
-          "linear-gradient(270deg, rgba(145, 232, 179, 0.3) 0%, rgba(192, 229, 123, 0.3) 100%, rgba(192, 229, 123, 0.3) 100%)",
-        "& svg": {
-          borderRadius: "100%",
-        },
-      },
-    },
-  },
-  nationBtnSelected: {
-    padding: "0",
-    borderRadius: "100%",
-    width: "64px",
-    height: "64px",
-    "&:hover": {
-      background: "transparent",
-    },
-    "& .MuiButton-label": {
-      borderRadius: "100%",
-      width: "48px",
-      height: "48px",
-      background: "#c0e57b",
-      "& svg": {
-        borderRadius: "100%",
-      },
-    },
-  },
+  }
 });

@@ -86,7 +86,7 @@ export default function OrderModal() {
   const handleCollapse = () => {
     dispatch(setIsExpand(true));
   };
-  console.log("order");
+//   console.log("order");
   return (
     <CustomModal show={showOrders} handleClose={handleClose}>
       <CardWraper

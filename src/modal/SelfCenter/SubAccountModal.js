@@ -5,8 +5,8 @@ import InputModifyPhonePre from "../../component/input/InputModifyPhonePre";
 import { fetch_Prom } from "../../api";
 import { makeStyles } from "@material-ui/core";
 import CustomButton from "../../component/global/modal/component/CustomButton";
-import { useDispatch } from "react-redux";
-import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
+// import { useDispatch } from "react-redux";
+// import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
 const useStyle = makeStyles({
   otpBtn: {
     color: "#fff",
@@ -70,7 +70,7 @@ export default function SubAccountModal({ accountInfo, handleClose }) {
 
 function EditSectionModal({ editInfo, handleClose, editSection }) {
   const classes = useStyle();
-  const dispatch = useDispatch();
+//   const dispatch = useDispatch();
   const [infoUpdate, setInfoUpdate] = useState({ phonePre: "0039" });
   const handleSendCode = async () => {
     if (infoUpdate.account && infoUpdate.pwd ) {

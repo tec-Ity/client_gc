@@ -5,7 +5,6 @@ import {
   Card,
   CardMedia,
   CardActionArea,
-  CardContent,
 } from "@material-ui/core";
 import { get_DNS } from "../../api";
 import { makeStyles } from "@material-ui/core/styles";
@@ -136,7 +135,7 @@ export default function HomeList(props) {
   const { containerId, label, list, handleFunc, disableIndex } = props;
   const classes = useStyle();
   const ref = useRef(null);
-//   console.log(list);
+  //   console.log(list);
   useEffect(() => {
     const setStyle = () => {
       ref.current.style.height =
