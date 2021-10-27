@@ -247,7 +247,7 @@ export default function DetailCard(props) {
       <Container className={classes.root}>
         <Container disableGutters className={classes.headerStyle}>
           <BackLink
-            link={isCart ? "/shop/" + order?.Shop : "/shop/" + order?.Shop._id}
+            link={isCart ? "/shop/" + order?.Shop : "/shop/" + order?.Shop?._id}
             label={header.backLink}
             style={classes.backLinkStyle}
           />
@@ -371,7 +371,7 @@ export default function DetailCard(props) {
               </>
             )}
             {/* select payment type button group */}
-            {isOrder && (
+            {isOrder && order?.status === 100 && (
               <Grid container item xs={12} className={classes.gridItemStyle}>
                 <PaymentSelBtn orderId={order._id} />
               </Grid>

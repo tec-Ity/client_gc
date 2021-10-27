@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
   registerLink: {
     color: "#1d1d38",
-    textDecoration:'underline',
+    cursor: "pointer",
+    textDecoration: "underline",
     "&:hover": { color: "#C0E57B", fontWeight: "700" },
   },
 }));
@@ -46,11 +47,11 @@ export default function LoginModalUI(props) {
         <Grid item style={{ margin: "13px" }}>
           <span>o accedi con</span>
         </Grid>
-        <Grid item>
+        <Grid item style={{ height: "100px" }}>
           <ThirdParty />
         </Grid>
         <Grid item xs={10}>
-          <CustomHr/>
+          <CustomHr />
         </Grid>
 
         <Grid item container className={classes.registerStyle}>
@@ -59,8 +60,9 @@ export default function LoginModalUI(props) {
             <span
               className={classes.registerLink}
               onClick={() => {
-                console.log(111)
-                dispatch(setShowRegister(true))}}>
+                console.log(111);
+                dispatch(setShowRegister(true));
+              }}>
               REGISTRATI
             </span>
           </div>

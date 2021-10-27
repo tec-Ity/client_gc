@@ -13,6 +13,7 @@ const useStyle = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     color: "#1d1d38",
+    border: "1px solid #c0e57b",
   },
   titleStyle: {
     width: "100%",

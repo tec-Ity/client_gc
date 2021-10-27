@@ -6,6 +6,7 @@ export const get_DNS = () => api_DNS;
 
 const fetchProm = (api, method, bodyObj) => {
   return new Promise(async (resolve) => {
+    // console.log(api, method, bodyObj);
     try {
       const api_server = api_DNS + api_version + api;
       const token = localStorage.getItem("accessToken");
@@ -24,6 +25,7 @@ const fetchProm = (api, method, bodyObj) => {
       }
       // console.log(api_server)
       // console.log(method)
+    //   console.log(api_server, fetchObj);
       const resPromise = await fetch(api_server, fetchObj);
       // console.log("resPromise: ", resPromise)
       const result = await resPromise.json();

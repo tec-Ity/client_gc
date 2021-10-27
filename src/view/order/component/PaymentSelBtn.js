@@ -2,6 +2,7 @@ import { Button, Grid } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { fetch_Prom } from "../../../api";
+import { useHistory } from "react-router";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -39,9 +40,17 @@ const useStyle = makeStyles((theme) => ({
 
 export default function PaymentSelBtn({ orderId }) {
   const classes = useStyle();
-
+  const hist = useHistory();
   const handlePayment = async () => {
-    const paymentLink = await fetch_Prom();
+    const paymentLinkRes = await fetch_Prom(
+      "/create-checkout-session",
+      "POST",
+      {
+        OrderId: orderId,
+      }
+    );
+    console.log(paymentLinkRes);
+    if (paymentLinkRes.status === 200) window.location.replace(paymentLinkRes?.data?.url);
   };
   return (
     <Grid container className={classes.root}>

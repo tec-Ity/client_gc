@@ -40,10 +40,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   loginButton: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(3),
     marginBottom: theme.spacing(1),
     width: "98%",
-    height: "35.63%",
+    // height: "30%",
     border: "2px solid",
     borderRadius: "26.5px 26.5px 26.5px 0",
     borderColor: "#1d1d38",
