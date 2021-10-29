@@ -1,6 +1,6 @@
 import axios from "axios";
 import api_DNS from "./conf/dns";
-const api_version = "/api/v1";
+export const api_version = "/api/v1";
 
 export const get_DNS = () => api_DNS;
 

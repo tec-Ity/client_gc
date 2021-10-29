@@ -1,8 +1,9 @@
+import React, { useEffect, useState } from "react";
 import { Button, Grid } from "@material-ui/core";
-import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { fetch_Prom } from "../../../api";
+import { fetch_Prom, get_DNS } from "../../../api";
 import { useHistory } from "react-router";
+import ReactDOM from "react-dom";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -41,16 +42,33 @@ const useStyle = makeStyles((theme) => ({
 export default function PaymentSelBtn({ orderId }) {
   const classes = useStyle();
   const hist = useHistory();
+  const [showPaypal, setShowPaypal] = useState(false);
+  useEffect(() => {
+    (async function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      const result = await fetch_Prom("/get_payment_clientId");
+      js = d.createElement(s);
+      js.id = id;
+      js.src = `https://www.paypal.com/sdk/js?client-id=${result?.data?.paypal_client_id}&currency=EUR`;
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "paypal-jssdk");
+    console.log(window.paypal);
+    // console.log(window.paypal_sdk);
+  }, []);
   const handlePayment = async () => {
-    const paymentLinkRes = await fetch_Prom(
-      "/create-checkout-session",
-      "POST",
-      {
-        OrderId: orderId,
-      }
-    );
-    console.log(paymentLinkRes);
-    if (paymentLinkRes.status === 200) window.location.replace(paymentLinkRes?.data?.url);
+    // const paymentLinkRes = await fetch_Prom(
+    //   "/create-checkout-session",
+    //   "POST",
+    //   {
+    //     OrderId: orderId,
+    //   }
+    // );
+    // console.log(paymentLinkRes);
+    // if (paymentLinkRes.status === 200)
+    //   window.location.replace(paymentLinkRes?.data?.url);
+    setShowPaypal(true);
   };
   return (
     <Grid container className={classes.root}>
@@ -64,6 +82,38 @@ export default function PaymentSelBtn({ orderId }) {
         </Button>
         <Button className={classes.btn}>PAGA ALLA CONSEGNA</Button>
       </Grid>
+      <Grid>{showPaypal === true && <PayPalBtn orderId={orderId} />}</Grid>
     </Grid>
   );
 }
+
+const PayPalBtn = ({ orderId }) => {
+  useEffect(() => {
+    console.log(window.paypal);
+    window.paypal &&
+      window.paypal
+        .Buttons({
+          createOrder: async function () {
+            const res = await fetch_Prom("/create-order", "POST", {
+              OrderId: orderId,
+            });
+            console.log(res);
+            if (res.status === 200) return res.data.id;
+          },
+          onApprove: async function (data, actions) {
+            console.log(data);
+            const res = await fetch_Prom("/check-order", "POST", {
+              paypalOrderId: data.orderId,
+            });
+
+            console.log(res);
+            if (res.status === 200) {
+              return actions.order.capture();
+            }
+          },
+        })
+        .render("#paypal-button");
+  }, [orderId]);
+
+  return <div id='paypal-button'></div>;
+};

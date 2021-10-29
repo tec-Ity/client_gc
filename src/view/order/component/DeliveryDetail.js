@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import SectionHeader from "./SectionHeader";
 import { Container } from "@material-ui/core";
+import AddrModifyModal from "../address/AddrModifyModal";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -41,6 +42,7 @@ const useStyle = makeStyles((theme) => ({
 
 export default function DeliveryDetail({ isCart }) {
   const classes = useStyle();
+  const [showAddrModal, setShowAddrModal] = React.useState(false);
   return (
     <>
       <SectionHeader title='DETTAGLIO CONSEGNA' />
@@ -56,11 +58,19 @@ export default function DeliveryDetail({ isCart }) {
           </Grid>
           {isCart && (
             <Grid container item xs={3}>
-              <Button className={classes.btnStyle}>MODIFICA</Button>
+              <Button
+                className={classes.btnStyle}
+                onClick={() => setShowAddrModal(true)}>
+                MODIFICA
+              </Button>
             </Grid>
           )}
         </Grid>
       </Container>
+      <AddrModifyModal
+        show={showAddrModal}
+        handleClose={() => setShowAddrModal(false)}
+      />
     </>
   );
 }

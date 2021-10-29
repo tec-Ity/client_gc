@@ -47,8 +47,13 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomModal(props) {
-  const { children, show, handleClose, small = false, timeout = 500 } = props;
+export default function CustomModal({
+  children,
+  show,
+  handleClose,
+  small = false,
+  timeout = 500,
+}) {
   const classes = useStyle();
   return (
     <Modal

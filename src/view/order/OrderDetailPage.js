@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { fetchOrderById } from "../../redux/order/orderSlice";
 import DetailCard from "./component/DetailCard";
+import { fetch_Prom } from "../../api";
 
 export default function OrderDetailPage() {
   const { _id } = useParams();
@@ -11,11 +12,11 @@ export default function OrderDetailPage() {
   const curOrderStatus = useSelector((state) => state.order.curOrderStatus);
 
   //initial fetch
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchOrderById(_id));
   }, [_id, dispatch]);
   //error fetch
-  React.useEffect(() => {
+  useEffect(() => {
     if (curOrderStatus === "error") {
       setTimeout(() => {
         dispatch(fetchOrderById(_id));
@@ -29,7 +30,6 @@ export default function OrderDetailPage() {
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight);
     }, 100);
-    // window.document.html.style.scrollBehavior='smooth';
   };
 
   return (

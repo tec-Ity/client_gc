@@ -1,67 +1,4 @@
-// const api_DNS = "https://172.20.10.3:9000";//green
-// const api_DNS = "https://172.20.10.3:9000";//feng
-const api_DNS = "https://192.168.43.20:9000"; //ge
-// const api_DNS = "https://192.168.43.187:9000"; //hy8
-// const api_DNS = "https://192.168.1.55:9000";//FOM
-// const api_DNS = "https://server.unioncityitaly.com"; //server
-
-const api_version = "/api/v1";
-
-/* ===================================== backend api ===================================== */
-const fetchPost_Prom = (api_router, bodyObj) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      const api = api_DNS + api_version + api_router;
-
-      const resPromise = await fetch(api, {
-        body: JSON.stringify(bodyObj),
-        headers: {
-          "content-type": "application/json",
-          authorization: "accessToken " + accessToken,
-        },
-        method: "POST",
-        cache: "no-cache",
-        credentials: "same-origin",
-        mode: "cors",
-        redirect: "follow",
-        referrer: "no-referrer",
-      });
-
-      const result = await resPromise.json();
-
-      resolve(result);
-    } catch (error) {
-      console.log(error);
-      reject({ message: "fetchPost_Prom error", error });
-    }
-  });
-};
-
-const fetchGet_Prom = (api_router) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      const api = api_DNS + api_version + api_router;
-      const resPromise = await fetch(api, {
-        headers: {
-          "content-type": "application/json",
-          authorization: "accessToken " + token,
-        },
-        method: "GET",
-        cache: "no-cache",
-        credentials: "same-origin",
-        mode: "cors",
-        redirect: "follow",
-        referrer: "no-referrer",
-      });
-      const result = await resPromise.json();
-      resolve(result);
-    } catch (error) {
-      reject({ message: "fetchGet_Prom error", error });
-    }
-  });
-};
+import { fetch_Prom } from "../src/api";
 
 /* ===================================== facebook ===================================== */
 const responseFacebook = async (response, accessToken) => {
@@ -69,7 +6,7 @@ const responseFacebook = async (response, accessToken) => {
   const social = {};
   social.login_type = "facebook";
   social.Client_accessToken = accessToken;
-  const result = await fetchPost_Prom("/login", {
+  const result = await fetch_Prom("/login", "POST", {
     social,
   });
 
@@ -109,7 +46,7 @@ async function statusChangeCallback(response) {
   var js,
     fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
-  const result = await fetchGet_Prom("/get_social_AppId");
+  const result = await fetch_Prom("/get_social_AppId");
   js = d.createElement(s);
   js.id = id;
   js.src = `//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0&appId=${result?.data?.facebook}`;
@@ -145,7 +82,7 @@ function checkLoginState() {
     fmt = d.getElementsByTagName("link")[0];
   if (d.getElementById(id)) return;
 
-  const result = await fetchGet_Prom("/get_social_AppId");
+  const result = await fetch_Prom("/get_social_AppId");
   mt = d.createElement(s);
   mt.id = id;
   mt.name = "google-signin-client_id";
@@ -182,7 +119,7 @@ function onSignIn(googleUser) {
     const social = {};
     social.login_type = "google";
     social.Client_accessToken = token;
-    const result = await fetchPost_Prom("/login", {
+    const result = await fetch_Prom("/login", "POST", {
       social,
     });
     console.log(1);
@@ -192,7 +129,7 @@ function onSignIn(googleUser) {
       localStorage.setItem("curClient", result.data?.curClient);
       localStorage.setItem("refreshToken", result.data?.refreshToken);
       localStorage.setItem("thirdPartyLogin", "google");
-      const result2 = await fetchGet_Prom("/get_social_AppId");
+      const result2 = await fetch_Prom("/get_social_AppId");
       localStorage.setItem("google", result2.data.google);
 
       window.location.reload();
