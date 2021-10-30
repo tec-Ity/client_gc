@@ -57,7 +57,7 @@ const orderObj = [
 // export const fetchOrderPay = createAsyncThunk(
 //   "order/fetchOrderPay",
 //   async ({ paymentType = "Stripe" }, {rejectWithValue}) => {
-      
+
 //   }
 // );
 
@@ -116,14 +116,13 @@ export const fetchChangeStatus = createAsyncThunk(
 );
 export const fetchOrderPost = createAsyncThunk(
   "order/fetchOrderPost",
-  async (obj, { rejectWithValue }) => {
-    // const obj = {};
-    if (obj) {
-      // obj.Shop = curCart.Shop;
-      // const opTemp
-      // obj.OrderProds = curCart.Shop;
-      // delete obj._id;
-      // console.log(obj);
+  async (cartObj, { rejectWithValue }) => {
+    const obj = {};
+    if (cartObj) {
+      obj.Shop = cartObj.Shop;
+      obj.OrderProds = cartObj.OrderProds;
+      obj.type_ship = 0;
+      console.log(obj);
       const orderPostRes = await fetch_Prom("/Order", "POST", {
         obj,
       });

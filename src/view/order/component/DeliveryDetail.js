@@ -4,7 +4,8 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import SectionHeader from "./SectionHeader";
 import { Container } from "@material-ui/core";
-import AddrModifyModal from "../address/AddrModifyModal";
+import { useSelector, useDispatch } from "react-redux";
+import { setShowAddrSel } from "../../../redux/curClient/curClientSlice";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -42,35 +43,39 @@ const useStyle = makeStyles((theme) => ({
 
 export default function DeliveryDetail({ isCart }) {
   const classes = useStyle();
-  const [showAddrModal, setShowAddrModal] = React.useState(false);
+  const dispatch = useDispatch();
+  const userSelectedLocation = useSelector(
+    (state) => state.curClient.userSelectedLocation
+  );
+  const [deliverAddr, setDeliverAddr] = React.useState(userSelectedLocation);
+
+  React.useEffect(() => {
+    setDeliverAddr(userSelectedLocation);
+  }, [userSelectedLocation]);
   return (
     <>
       <SectionHeader title='DETTAGLIO CONSEGNA' />
       <Container>
         <Grid container className={classes.root}>
           <Grid item xs={6} className={classes.addrBox}>
-            <div>Via Gaetano di Castilia 10, MI</div>
-            <div>20124</div>
+            <div>{deliverAddr?.addr}</div>
+            <div>{deliverAddr.curZip}</div>
           </Grid>
           <Grid item xs={3} className={classes.recipient}>
-            <div>GREENCITY</div>
-            <div>+39 057422219</div>
+            <div>{deliverAddr?.personalInfo?.name || "请选择收货人姓名"}</div>
+            <div>{deliverAddr?.personalInfo?.phone || "请选择收货人电话"}</div>
           </Grid>
           {isCart && (
             <Grid container item xs={3}>
               <Button
                 className={classes.btnStyle}
-                onClick={() => setShowAddrModal(true)}>
+                onClick={() => dispatch(setShowAddrSel(true))}>
                 MODIFICA
               </Button>
             </Grid>
           )}
         </Grid>
       </Container>
-      <AddrModifyModal
-        show={showAddrModal}
-        handleClose={() => setShowAddrModal(false)}
-      />
     </>
   );
 }

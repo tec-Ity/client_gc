@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { fetch_Prom, get_DNS } from "../../../api";
 import { useHistory } from "react-router";
-import ReactDOM from "react-dom";
+import stripeIcon from "../../../component/icon/Stripe.svg";
+import CustomModal from "../../../component/global/modal/CustomModal";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -37,12 +38,39 @@ const useStyle = makeStyles((theme) => ({
       background: "#1d1d38",
     },
   },
+  modalContainer: {
+    // border: "1px solid",
+    height: "100%",
+  },
+  modalGrid: {
+    height: "100%",
+    "& > div": {
+      padding: "15px 0",
+    },
+  },
+  stripeBtn: {
+    height: "40px",
+    width: "100%",
+    backgroundColor: "#6461FC",
+    // color: "#fff",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: 700,
+    borderRadius: "4px",
+    cursor: "pointer",
+    "&:hover": {},
+  },
+  stripeIcon: {
+    height: "25px",
+    width: "80px",
+  },
 }));
 
 export default function PaymentSelBtn({ orderId }) {
   const classes = useStyle();
   const hist = useHistory();
-  const [showPaypal, setShowPaypal] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
   useEffect(() => {
     (async function (d, s, id) {
       var js,
@@ -51,41 +79,69 @@ export default function PaymentSelBtn({ orderId }) {
       const result = await fetch_Prom("/get_payment_clientId");
       js = d.createElement(s);
       js.id = id;
-      js.src = `https://www.paypal.com/sdk/js?client-id=${result?.data?.paypal_client_id}&currency=EUR`;
+      js.src = `https://www.paypal.com/sdk/js?client-id=${result?.data?.paypal_client_id}&currency=EUR&components=buttons,funding-eligibility`;
       fjs.parentNode.insertBefore(js, fjs);
     })(document, "script", "paypal-jssdk");
     console.log(window.paypal);
     // console.log(window.paypal_sdk);
   }, []);
   const handlePayment = async () => {
-    // const paymentLinkRes = await fetch_Prom(
-    //   "/create-checkout-session",
-    //   "POST",
-    //   {
-    //     OrderId: orderId,
-    //   }
-    // );
-    // console.log(paymentLinkRes);
-    // if (paymentLinkRes.status === 200)
-    //   window.location.replace(paymentLinkRes?.data?.url);
-    setShowPaypal(true);
+    setShowPayment(true);
   };
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={12}>
-        <div className={classes.msg}>SCEGLI IL METODO DI PAGAMENTO*</div>
+    <>
+      <Grid container className={classes.root}>
+        <Grid item xs={12}>
+          <div className={classes.msg}>SCEGLI IL METODO DI PAGAMENTO*</div>
+        </Grid>
+        <Grid item xs={12} className={classes.btnBox}>
+          <Button className={classes.btn} onClick={handlePayment}>
+            PAGA ONLINE
+          </Button>
+          <Button className={classes.btn}>PAGA ALLA CONSEGNA</Button>
+        </Grid>
       </Grid>
-
-      <Grid item xs={12} className={classes.btnBox}>
-        <Button className={classes.btn} onClick={handlePayment}>
-          PAGA ONLINE
-        </Button>
-        <Button className={classes.btn}>PAGA ALLA CONSEGNA</Button>
-      </Grid>
-      <Grid>{showPaypal === true && <PayPalBtn orderId={orderId} />}</Grid>
-    </Grid>
+      <PaymentSelModal
+        show={showPayment}
+        handleClose={() => setShowPayment(false)}
+        orderId={orderId}
+      />
+    </>
   );
 }
+
+const PaymentSelModal = ({ show, handleClose, orderId }) => {
+  const classes = useStyle();
+  const handleStripe = async () => {
+    const paymentLinkRes = await fetch_Prom(
+      "/create-checkout-session",
+      "POST",
+      {
+        OrderId: orderId,
+      }
+    );
+    console.log(paymentLinkRes);
+    if (paymentLinkRes.status === 200)
+      window.location.replace(paymentLinkRes?.data?.url);
+  };
+
+  return (
+    <CustomModal show={show} handleClose={handleClose} small>
+      <Container className={classes.modalContainer}>
+        <Grid container alignContent='center' className={classes.modalGrid}>
+          <Grid item xs={12}>
+            <div className={classes.stripeBtn} onClick={handleStripe}>
+              <img src={stripeIcon} className={classes.stripeIcon} alt='' />
+            </div>
+          </Grid>
+          <Grid item xs={12}>
+            <PayPalBtn orderId={orderId} />
+          </Grid>
+        </Grid>
+      </Container>
+    </CustomModal>
+  );
+};
 
 const PayPalBtn = ({ orderId }) => {
   useEffect(() => {
@@ -93,22 +149,26 @@ const PayPalBtn = ({ orderId }) => {
     window.paypal &&
       window.paypal
         .Buttons({
+          style: { height: 40 },
+          fundingSource: window.paypal.FUNDING.PAYPAL,
           createOrder: async function () {
             const res = await fetch_Prom("/create-order", "POST", {
               OrderId: orderId,
             });
             console.log(res);
             if (res.status === 200) return res.data.id;
+            else alert(res.message);
           },
           onApprove: async function (data, actions) {
             console.log(data);
             const res = await fetch_Prom("/check-order", "POST", {
-              paypalOrderId: data.orderId,
+              paypal_orderId: data.orderID,
+              OrderId: orderId,
             });
 
             console.log(res);
             if (res.status === 200) {
-              return actions.order.capture();
+              //
             }
           },
         })

@@ -155,6 +155,9 @@ export default function AddrSelModal() {
   const [selectedAddr, setSelectedAddr] = useState(null);
   // city code passed to redux used to sort shops and control disable confirm button
   const [curCity, setCurCity] = useState(null);
+  //   name and phone for the selected existing address
+  const [curZip, setCurZip] = useState(null);
+  const [personalInfo, setPersonalInfo] = useState();
   //global var to open this modal
   const showAddrSel = useSelector((state) => state.curClient.showAddrSel);
   const curClientAddrs = useSelector(
@@ -195,32 +198,48 @@ export default function AddrSelModal() {
     curClientInfoStatus === "idle" && dispatch(fetchCurClientInfo());
   }, [curClientInfoStatus, dispatch]);
 
+  //called when address selected from current location, saved location, and searched location
   const handleSubmitSelAddr = React.useCallback(
+    //address is either formated address or google api address
     (address) => {
       dispatch(setShowAddrSel(false));
+      console.log(address);
       //   console.log(selectedAddr);
+
+      //if address has location key,
+      //extract city, address, and zip from google api
       const cityShortName = address?.location?.address_components?.find(
         (addr) =>
           addr.types?.find((type) => type === "administrative_area_level_2")
       ).short_name;
+      const zipFromGoogle = address?.location?.address_components?.find(
+        (addr) => addr.types?.find((type) => type === "postal_code")
+      ).short_name;
+
       const formattedAddress = address?.location?.formatted_address;
+
+      //use either data from api or selected addresses
       dispatch(setUserCurCity(curCity || cityShortName));
       dispatch(
         setUserSelectedLocation({
           addr: formattedAddress || selectedAddr,
           city: curCity || cityShortName,
+          zip: curZip || zipFromGoogle,
+          personalInfo,
         })
       );
+      
       localStorage.setItem(
         "userSelAddr",
         JSON.stringify({
           addr: selectedAddr || formattedAddress,
           city: curCity || cityShortName,
+          personalInfo,
         })
       );
       hist.push("/city");
     },
-    [curCity, dispatch, hist, selectedAddr]
+    [curCity, curZip, dispatch, hist, personalInfo, selectedAddr]
   );
 
   return (
@@ -281,6 +300,7 @@ export default function AddrSelModal() {
                   onClick={() => {
                     userCurLocation && setSelectedLocation("current");
                     setCurCity(userCurLocation?.city);
+                    setCurZip(userCurLocation?.zip);
                     setSelectedAddr(userCurLocation?.addr);
                   }}>
                   {/* offset  */}
@@ -324,15 +344,23 @@ export default function AddrSelModal() {
                           key={addr._id}
                           selectedLocation={selectedLocation}
                           addr={addr}
-                          handleClick={(addrId, addrCita, addrAddress) => {
-                            if (addrId && addrCita && addrAddress) {
-                              setSelectedLocation(addrId);
-                              setCurCity(addrCita);
-                              setSelectedAddr(addrAddress);
+                          handleClick={(setNew) => {
+                            console.log(addr);
+                            if (setNew) {
+                              setSelectedLocation(addr._id);
+                              setCurCity(addr.Cita?.code);
+                              setSelectedAddr(addr.address);
+                              setCurZip(addr.postcode);
+                              setPersonalInfo({
+                                name: addr.name,
+                                phone: addr.phone,
+                              });
                             } else {
                               setSelectedLocation(null);
                               setCurCity(null);
                               setSelectedAddr(null);
+                              setPersonalInfo(null);
+                              setCurZip(null);
                             }
                           }}
                         />
@@ -431,9 +459,7 @@ function AddrListItem({ selectedLocation, addr, handleClick }) {
             : classes.savedLocation
         }
         onClick={() => {
-          selectedLocation === addr._id
-            ? handleClick()
-            : handleClick(addr._id, addr.Cita?.code, addr.address);
+          selectedLocation === addr._id ? handleClick() : handleClick(true); //setNew === ture
         }}>
         {/* offset */}
         <Grid item container xs={1}></Grid>
