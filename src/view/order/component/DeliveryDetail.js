@@ -54,22 +54,29 @@ export default function DeliveryDetail({ isCart }) {
   }, [userSelectedLocation]);
   return (
     <>
-      <SectionHeader title='DETTAGLIO CONSEGNA' />
+      <SectionHeader title="DETTAGLIO CONSEGNA" />
       <Container>
         <Grid container className={classes.root}>
           <Grid item xs={6} className={classes.addrBox}>
-            <div>{deliverAddr?.addr}</div>
-            <div>{deliverAddr.curZip}</div>
+            <div>{userSelectedLocation?.addr}</div>
+            <div>{userSelectedLocation?.zip}</div>
           </Grid>
           <Grid item xs={3} className={classes.recipient}>
-            <div>{deliverAddr?.personalInfo?.name || "请选择收货人姓名"}</div>
-            <div>{deliverAddr?.personalInfo?.phone || "请选择收货人电话"}</div>
+            <div>
+              {userSelectedLocation?.personalInfo?.name ||
+                (isCart && "请选择收货人姓名")}
+            </div>
+            <div>
+              {userSelectedLocation?.personalInfo?.phone ||
+                (isCart && "请选择收货人电话")}
+            </div>
           </Grid>
           {isCart && (
             <Grid container item xs={3}>
               <Button
                 className={classes.btnStyle}
-                onClick={() => dispatch(setShowAddrSel(true))}>
+                onClick={() => dispatch(setShowAddrSel(true))}
+              >
                 MODIFICA
               </Button>
             </Grid>

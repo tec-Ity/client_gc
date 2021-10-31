@@ -45,10 +45,10 @@ export default function CartDetailPage() {
     } else if (orderPostStatus === "succeed" && disableBtn === true) {
       dispatch(cartDelete(_id));
       console.log(_id);
-      hist.push("/order/" + curOrder._id);
+      hist.push("/order/" + curOrder?._id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curOrder._id, hist, orderPostStatus, _id, dispatch]);
+  }, [curOrder?._id, hist, orderPostStatus, _id, dispatch]);
 
   const handleClose = () => {
     setShowProof(false);
@@ -56,7 +56,7 @@ export default function CartDetailPage() {
   const handleConfirmOrder = () => {
     // console.log("confirm!!");
     // window.scrollTo(0,document.body.scrollHeight);
-    dispatch(fetchOrderPost(curCart));
+    dispatch(fetchOrderPost({ cartObj: curCart, typeShip: 0 }));
   };
 
   return (

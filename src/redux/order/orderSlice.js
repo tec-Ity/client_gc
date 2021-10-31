@@ -116,12 +116,26 @@ export const fetchChangeStatus = createAsyncThunk(
 );
 export const fetchOrderPost = createAsyncThunk(
   "order/fetchOrderPost",
-  async (cartObj, { rejectWithValue }) => {
+  async ({ cartObj, typeShip = 1 }, { getState, rejectWithValue }) => {
+    console.log(1111111);
     const obj = {};
     if (cartObj) {
+      //get user selected location from curclient slice as the ship info to pass
+      const userAddr = getState().curClient.userSelectedLocation;
+      console.log(22222);
       obj.Shop = cartObj.Shop;
       obj.OrderProds = cartObj.OrderProds;
-      obj.type_ship = 0;
+      obj.type_ship = typeShip;
+      if (typeShip === 1) {
+        obj.ship_info = {
+          Cita: userAddr?.city,
+          city: userAddr?.city,
+          firstName: userAddr?.personalInfo?.name,
+          address: userAddr?.addr,
+          postcode: userAddr?.zip,
+          phone: userAddr?.phone,
+        };
+      }
       console.log(obj);
       const orderPostRes = await fetch_Prom("/Order", "POST", {
         obj,
