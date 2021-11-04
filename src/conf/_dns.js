@@ -5,4 +5,9 @@ const api_DNS = "https://192.168.43.187:9000"; //hy8
 // const api_DNS = "https://192.168.1.55:9000";//FOM
 // const api_DNS = "https://server.unioncityitaly.com"; //server
 
+const port = "3001";
+export const my_Domain = `https://${window.location.hostname}${
+  port ? ":" + port : ""
+}`;
+
 export default api_DNS;

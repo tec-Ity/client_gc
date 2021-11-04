@@ -5,6 +5,7 @@ import { fetch_Prom, get_DNS } from "../../../api";
 import { useHistory } from "react-router";
 import stripeIcon from "../../../component/icon/Stripe.svg";
 import CustomModal from "../../../component/global/modal/CustomModal";
+import { my_Domain } from "../../../conf/_dns";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -71,6 +72,7 @@ export default function PaymentSelBtn({ orderId }) {
   const classes = useStyle();
   const hist = useHistory();
   const [showPayment, setShowPayment] = useState(false);
+  console.log(my_Domain);
   useEffect(() => {
     (async function (d, s, id) {
       var js,
@@ -118,8 +120,8 @@ const PaymentSelModal = ({ show, handleClose, orderId }) => {
       "POST",
       {
         OrderId: orderId,
-        success_url: `/${get_DNS()}/order/${orderId}`,
-        cancel_url: `/${get_DNS()}/order/${orderId}`,
+        success_url: `${my_Domain}/order/${orderId}`,
+        cancel_url: `${my_Domain}/order/${orderId}`,
       }
     );
     console.log(paymentLinkRes);
