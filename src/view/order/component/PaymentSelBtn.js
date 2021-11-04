@@ -168,7 +168,7 @@ const PayPalBtn = ({ orderId }) => {
 
             console.log(res);
             if (res.status === 200) {
-              //
+              window.location.reload();
             }
           },
         })
