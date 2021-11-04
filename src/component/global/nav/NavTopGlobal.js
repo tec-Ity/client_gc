@@ -26,7 +26,8 @@ const useStyle = makeStyles({
     left: "0px",
     right: "0px",
     top: "0px",
-    background: "#c0e57b",
+    background:
+      "linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
     boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
     display: "flex",
     alignItems: "center",
@@ -49,7 +50,7 @@ const useStyle = makeStyles({
     alignItems: "center",
     fontSize: "10px",
     fontFamily: "Montserrat",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   alertNum: {
     position: "absolute",
