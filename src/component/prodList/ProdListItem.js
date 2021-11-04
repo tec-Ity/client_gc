@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ProdListItemControl from "./itemControl/ProdListItemControl";
 import CustomHr from "../global/modal/component/CustomHr";
 import { Grid, Paper } from "@material-ui/core";
-import api_DNS from "../../conf/dns";
+import api_DNS from "../../conf/_dns";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -13,24 +13,15 @@ import {
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    // height: "319px",
-    // maxWidth: "248px",
-    // minWidth:'135px',
-    // width:'100%',
-    // margin: "14px 0",
     color: "#1d1d38",
-    // border:'1px solid',
-    // justifyContent:'center',
     maxWidth: "240px",
   },
   innerBoxBg: {
     padding: "10px 0",
-    // border:'1px solid',
     display: "flex",
     justifyContent: "center",
   },
   innerBox: {
-    // margin: "1px 1px 1px 1px",
     border: "1.5px solid",
     borderImage: "linear-gradient(270deg,#91e883, #c0e57b) 1",
     maxWidth: "240px",

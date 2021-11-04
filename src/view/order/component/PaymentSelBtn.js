@@ -118,6 +118,8 @@ const PaymentSelModal = ({ show, handleClose, orderId }) => {
       "POST",
       {
         OrderId: orderId,
+        success_url: `/${get_DNS()}/order/${orderId}`,
+        cancel_url: `/${get_DNS()}/order/${orderId}`,
       }
     );
     console.log(paymentLinkRes);
