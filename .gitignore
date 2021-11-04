@@ -6,7 +6,7 @@
 .pnp.js
 
 # dns
-dns.js
+_dns.js
 
 # testing
 /coverage
