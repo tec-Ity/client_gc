@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { fetch_Prom } from "../../api";
 
 const initialState = {
@@ -286,7 +286,6 @@ export const cartSlice = createSlice({
         } else {
           throw new Error("failed adding sku");
         }
-        console.log(curCartTemp);
         //modify carts
         let foundCart = false;
         for (let i = 0; i < state.carts.length; i++) {
@@ -357,7 +356,7 @@ export const cartSlice = createSlice({
     },
     cartSkuDelete: (state, action) => {
       const { oSkuId, prodId } = action.payload;
-      const curCartTemp = { ...state.curCart };
+      const curCartTemp = state.curCart;
       let delProdIndex = -1;
       for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
         const oProd = curCartTemp.OrderProds[i];
@@ -365,7 +364,7 @@ export const cartSlice = createSlice({
           let delSkuIndex = -1;
           for (let j = 0; j < oProd.OrderSkus.length; j++) {
             const oSku = oProd.OrderSkus[j];
-            if ((oSku.Sku = oSkuId)) {
+            if (oSku.Sku === oSkuId) {
               delSkuIndex = j;
               curCartTemp.totItem -= 1;
               curCartTemp.totPrice -= oSku.price;

@@ -51,7 +51,6 @@ export default function CartSkuCtrl(props) {
   const { oSku, handleFunc, large = false } = props;
   const classes = useStyle(large);
   const [qtyTemp, setQtyTemp] = React.useState(oSku?.quantity);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     e.target.children[0].blur();
@@ -66,8 +65,9 @@ export default function CartSkuCtrl(props) {
       <div
         className={classes.ctrlButton}
         onClick={() => {
+          console.log("sku:" + oSku.price, oSku.Sku, qtyTemp);
           handleFunc(oSku?.Sku, null, qtyTemp - 1);
-          setQtyTemp((prev) => prev + 1);
+          setQtyTemp((prev) => prev - 1);
         }}>
         {qtyTemp === 1 ? (
           <Delete className={classes.iconStyle} />
@@ -79,7 +79,7 @@ export default function CartSkuCtrl(props) {
         <input
           className={classes.ctrlInput}
           style={{ textAlign: "center" }}
-          value={qtyTemp || ""}
+          value={qtyTemp || "-"}
           onChange={(e) => {
             setQtyTemp(e.target.value);
           }}
