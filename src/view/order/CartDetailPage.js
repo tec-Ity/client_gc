@@ -56,7 +56,7 @@ export default function CartDetailPage() {
   const handleConfirmOrder = () => {
     // console.log("confirm!!");
     // window.scrollTo(0,document.body.scrollHeight);
-    dispatch(fetchOrderPost({ cartObj: curCart, typeShip: 0 }));
+    dispatch(fetchOrderPost({ cartObj: curCart, typeShip: 1 }));
   };
 
   return (

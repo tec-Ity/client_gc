@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { fetch_Prom, get_DNS } from "../../../api";
-import { useHistory } from "react-router";
+import { fetch_Prom } from "../../../api";
+// import { useHistory } from "react-router";
 import stripeIcon from "../../../component/icon/Stripe.svg";
 import CustomModal from "../../../component/global/modal/CustomModal";
 import { my_Domain } from "../../../conf/_dns";
@@ -70,9 +70,8 @@ const useStyle = makeStyles((theme) => ({
 
 export default function PaymentSelBtn({ orderId }) {
   const classes = useStyle();
-  const hist = useHistory();
   const [showPayment, setShowPayment] = useState(false);
-  console.log(my_Domain);
+//   console.log(my_Domain);
   useEffect(() => {
     (async function (d, s, id) {
       var js,
@@ -84,7 +83,7 @@ export default function PaymentSelBtn({ orderId }) {
       js.src = `https://www.paypal.com/sdk/js?client-id=${result?.data?.paypal_client_id}&currency=EUR&components=buttons,funding-eligibility`;
       fjs.parentNode.insertBefore(js, fjs);
     })(document, "script", "paypal-jssdk");
-    console.log(window.paypal);
+    // console.log(window.paypal);
     // console.log(window.paypal_sdk);
   }, []);
   const handlePayment = async () => {
@@ -124,7 +123,7 @@ const PaymentSelModal = ({ show, handleClose, orderId }) => {
         cancel_url: `${my_Domain}/order/${orderId}`,
       }
     );
-    console.log(paymentLinkRes);
+    // console.log(paymentLinkRes);
     if (paymentLinkRes.status === 200)
       window.location.replace(paymentLinkRes?.data?.url);
   };
@@ -149,7 +148,7 @@ const PaymentSelModal = ({ show, handleClose, orderId }) => {
 
 const PayPalBtn = ({ orderId }) => {
   useEffect(() => {
-    console.log(window.paypal);
+    // console.log(window.paypal);
     window.paypal &&
       window.paypal
         .Buttons({
@@ -159,7 +158,7 @@ const PayPalBtn = ({ orderId }) => {
             const res = await fetch_Prom("/create-order", "POST", {
               OrderId: orderId,
             });
-            console.log(res);
+            // console.log(res);
             if (res.status === 200) return res.data.id;
             else alert(res.message);
           },
@@ -170,7 +169,7 @@ const PayPalBtn = ({ orderId }) => {
               OrderId: orderId,
             });
 
-            console.log(res);
+            // console.log(res);
             if (res.status === 200) {
               window.location.reload();
             }

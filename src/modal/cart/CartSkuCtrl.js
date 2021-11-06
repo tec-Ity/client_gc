@@ -65,7 +65,6 @@ export default function CartSkuCtrl(props) {
       <div
         className={classes.ctrlButton}
         onClick={() => {
-          console.log("sku:" + oSku.price, oSku.Sku, qtyTemp);
           handleFunc(oSku?.Sku, null, qtyTemp - 1);
           setQtyTemp((prev) => prev - 1);
         }}>

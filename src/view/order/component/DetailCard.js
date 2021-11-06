@@ -207,14 +207,11 @@ const useStyle = makeStyles((theme) => ({
 export default function DetailCard(props) {
   const classes = useStyle();
   const {
-    // _id,
     orderLogo = null,
     order,
     isCart = false,
     header,
     isOrder = false,
-    // showOrderDetail,
-    // showDeliveryDetail,
     handleFunc,
     paymentMethod = null,
     disableBtn,
@@ -259,9 +256,24 @@ export default function DetailCard(props) {
           />
         </Container>
         {/* body */}
-        <Container className={classes.detailCardStyle}>
+        <Container
+          className={classes.detailCardStyle}
+          style={{ paddingTop: orderLogo && "40px" }}>
+          {orderLogo && (
+            <Grid
+              container
+              item
+              xs={12}
+              justifyContent='center'
+              alignItems='center'
+              style={{ marginBottom: "100px" }}>
+              <div>{orderLogo}</div>
+            </Grid>
+          )}
           {/* float tag */}
-          <div className={classes.shopTag}>
+          <div
+            className={classes.shopTag}
+            style={{ top: orderLogo && "160px" }}>
             <div>
               <div>{curShopInfo.nome}</div>
               <div>{curShopInfo.addr}</div>
@@ -269,24 +281,6 @@ export default function DetailCard(props) {
             <div></div>
           </div>
           <Grid container className={classes.gridStyle}>
-            {orderLogo && (
-              <Grid
-                container
-                item
-                xs={12}
-                justifyContent='center'
-                alignItems='center'
-                style={{ minHeight: "150px" }}>
-                <div
-                  style={{
-                    height: "80px",
-                    width: "80px",
-                    border: "1px solid",
-                  }}>
-                  {orderLogo}
-                </div>
-              </Grid>
-            )}
             {/* order detail */}
             {isOrder && (
               <Grid item xs={12} className={classes.gridItemStyle}>
