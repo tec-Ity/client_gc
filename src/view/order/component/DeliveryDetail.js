@@ -31,6 +31,7 @@ const useStyle = makeStyles((theme) => ({
     height: "27px",
     fontsize: "13px",
     background: "#c0e57b",
+    fontWeight:700,
     color: "#fff",
     borderRadius: "13.5px 13.5px 13.5px 0",
     fontFamily: "Montserrat",
@@ -44,38 +45,38 @@ const useStyle = makeStyles((theme) => ({
 export default function DeliveryDetail({ isCart }) {
   const classes = useStyle();
   const dispatch = useDispatch();
-  const userSelectedLocation = useSelector(
-    (state) => state.curClient.userSelectedLocation
-  );
-  const [deliverAddr, setDeliverAddr] = React.useState(userSelectedLocation);
+//   const userSelectedLocation = useSelector(
+//     (state) => state.curClient.userSelectedLocation
+//   );
+//   const [deliverAddr, setDeliverAddr] = React.useState(userSelectedLocation);
 
-  React.useEffect(() => {
-    setDeliverAddr(userSelectedLocation);
-  }, [userSelectedLocation]);
+//   React.useEffect(() => {
+//     setDeliverAddr(userSelectedLocation);
+//   }, [userSelectedLocation]);
   return (
     <>
       <SectionHeader title="DETTAGLIO CONSEGNA" />
       <Container>
         <Grid container className={classes.root}>
           <Grid item xs={6} className={classes.addrBox}>
-            <div>{userSelectedLocation?.addr}</div>
-            <div>{userSelectedLocation?.zip}</div>
+            {/* <div>{userSelectedLocation?.addr}</div> */}
+            {/* <div>{userSelectedLocation?.zip}</div> */}
           </Grid>
           <Grid item xs={3} className={classes.recipient}>
             <div>
-              {userSelectedLocation?.personalInfo?.name ||
-                (isCart && "请选择收货人姓名")}
+              {/* {userSelectedLocation?.personalInfo?.name || */}
+                {/* (isCart && "请选择收货人姓名")} */}
             </div>
             <div>
-              {userSelectedLocation?.personalInfo?.phone ||
-                (isCart && "请选择收货人电话")}
+              {/* {userSelectedLocation?.personalInfo?.phone ||
+                (isCart && "请选择收货人电话")} */}
             </div>
           </Grid>
           {isCart && (
             <Grid container item xs={3}>
               <Button
                 className={classes.btnStyle}
-                onClick={() => dispatch(setShowAddrSel(true))}
+                onClick={() => {}}
               >
                 MODIFICA
               </Button>

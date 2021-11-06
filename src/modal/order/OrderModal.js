@@ -68,7 +68,8 @@ export default function OrderModal() {
                       background: "#c0e57b",
                       handleFunc: () => {
                         handleClose();
-                        dispatch(setIsExpand(od._id));
+                        // dispatch(setIsExpand(od._id));
+                        hist.push("/order/" + od._id);
                       },
                     }
               }

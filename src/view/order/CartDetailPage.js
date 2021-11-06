@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchProofOrder } from "../../redux/cart/cartSlice";
@@ -6,6 +6,8 @@ import DetailCard from "./component/DetailCard";
 import ProofModal from "./component/ProofModal";
 import { fetchOrderPost } from "../../redux/order/orderSlice";
 import { cartDelete, setCurCartById } from "../../redux/cart/cartSlice";
+import CustomModal from "../../component/global/modal/CustomModal";
+import { makeStyles } from "@material-ui/core/styles";
 
 export default function CartDetailPage() {
   const { _id } = useParams();
@@ -17,7 +19,7 @@ export default function CartDetailPage() {
   const proofStatus = useSelector((state) => state.cart.proofStatus);
   const orderPostStatus = useSelector((state) => state.order.orderPostStatus);
   const curOrder = useSelector((state) => state.order.curOrder);
-
+  const [showAlert, setShowAlert] = useState(false);
   const hist = useHistory();
   // const curCartStatus = useSelector((state) => state.cart.curCartStatus);
 
@@ -53,11 +55,19 @@ export default function CartDetailPage() {
   const handleClose = () => {
     setShowProof(false);
   };
-  const handleConfirmOrder = () => {
+  const handleConfirmOrder = (setLoadingFunc) => {
     // console.log("confirm!!");
     // window.scrollTo(0,document.body.scrollHeight);
-    dispatch(fetchOrderPost({ cartObj: curCart, typeShip: 1 }));
+    // if(curCart.)
+    if (!curCart?.addrInfo) {
+      setLoadingFunc(false);
+      setShowAlert("请选择收货地址，收货人，联系电话");
+    } else {
+      dispatch(fetchOrderPost({ cartObj: curCart }));
+    }
   };
+
+  console.log(curCart);
 
   return (
     <>
@@ -79,6 +89,36 @@ export default function CartDetailPage() {
           proofObjs={proofObjs}
         />
       )}
+      <AlertModal show={showAlert} handleClose={() => setShowAlert(false)} />
     </>
   );
 }
+
+const useStyle = makeStyles({
+  alertStyle: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  alertLogo: {
+    width: "fit-content",
+  },
+  alertMessage: {
+    width: "fit-content",
+  },
+});
+
+const AlertModal = ({ show, handleClose }) => {
+  const classes = useStyle();
+  return (
+    <CustomModal small show={Boolean(show)} handleClose={handleClose}>
+      <div className={classes.alertStyle}>
+        <div className={classes.alertLogo}>!</div>
+        <div className={classes.alertMessage}>{show}</div>
+      </div>
+    </CustomModal>
+  );
+};

@@ -249,11 +249,13 @@ export default function DetailCard(props) {
             style={classes.backLinkStyle}
           />
           <div></div>
-          <CustomButton
-            label={header.nextLink}
-            handleFunc={handleFunc}
-            alterStyle={classes.confirmBtnSm}
-          />
+          {header?.nextLink && handleFunc && (
+            <CustomButton
+              label={header.nextLink}
+              handleFunc={handleFunc}
+              alterStyle={classes.confirmBtnSm}
+            />
+          )}
         </Container>
         {/* body */}
         <Container
@@ -267,7 +269,7 @@ export default function DetailCard(props) {
               justifyContent='center'
               alignItems='center'
               style={{ marginBottom: "100px" }}>
-              <div>{orderLogo}</div>
+              {orderLogo}
             </Grid>
           )}
           {/* float tag */}

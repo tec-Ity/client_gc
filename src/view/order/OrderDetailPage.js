@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { fetchOrderById } from "../../redux/order/orderSlice";
 import DetailCard from "./component/DetailCard";
 import { ReactComponent as ToPay } from "../../component/icon/orderStatueUnpaid.svg";
+import { ReactComponent as InProgress } from "../../component/icon/orderStatueInProcess.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 
@@ -33,7 +34,9 @@ export default function OrderDetailPage() {
       window.scrollTo(0, document.body.scrollHeight);
     }, 100);
   };
+
   console.log(curOrder);
+
   return (
     <>
       {curOrderStatus === "succeed" && curOrder && (
@@ -43,13 +46,18 @@ export default function OrderDetailPage() {
           orderLogo={
             curOrder.status === 100 ? (
               <ToPayLogo orderTime={curOrder.at_upd} />
+            ) : [200, 400, 700].includes(curOrder.status) ? (
+              <InProgressLogo orderStatus={curOrder.status} />
             ) : (
               ""
             )
           }
           fetchStatus={curOrderStatus}
-          handleFunc={handleFunc}
-          header={{ backLink: "DIETRO", nextLink: "CHECK OUT" }}
+          handleFunc={curOrder.status === 100 && handleFunc}
+          header={{
+            backLink: "DIETRO",
+            nextLink: curOrder.status === 100 && "CHECK OUT",
+          }}
         />
       )}
     </>
@@ -59,7 +67,7 @@ export default function OrderDetailPage() {
 const useStyle = makeStyles({
   logoBox: {
     // border: "1px solid",
-    height: "100px",
+    // height: "100px",
     width: "100px",
     display: "flex",
     flexDirection: "column",
@@ -69,14 +77,46 @@ const useStyle = makeStyles({
     fontWeight: 700,
     fontSize: "12px",
   },
+  inProgressStatus: {
+    // dispaly: "flex",
+    // border: "1px solid",
+    paddingTop: "5px",
+    width: "100%",
+    textAlign: "center",
+    fontSize: "12px",
+    fontWeight: 700,
+    color: "#0000004d",
+  },
 });
+
+const InProgressLogo = ({ orderStatus }) => {
+  const classes = useStyle();
+  return (
+    <div className={classes.logoBox} style={{ width: "100%" }}>
+      <div className={classes.logoBox}>
+        <InProgress />
+        <div className={classes.logoText}>IN PROCESSO</div>
+      </div>
+      <div className={classes.inProgressStatus}>
+        <span style={{ color: orderStatus === 200 && "#000" }}>
+          In Ricezione&nbsp;——&nbsp;
+        </span>
+        <span style={{ color: orderStatus === 400 && "#000" }}>
+          In Preparazione&nbsp;——&nbsp;
+        </span>
+        <span style={{ color: orderStatus === 700 && "#000" }}>
+          In Consegna
+        </span>
+      </div>
+    </div>
+  );
+};
 
 const interval = 1000;
 const validTime = 2 * 60 * 60 * 1000;
 const ToPayLogo = ({ orderTime }) => {
   const classes = useStyle();
   const myTimer = React.useRef(null);
-  //   const [timer, setTimer] = useState();
   const [duration, setDuration] = useState(null);
 
   //init timer by checking remaining time
