@@ -17,6 +17,7 @@ import {
   setIsExpand,
 } from "../../redux/cart/cartSlice";
 import { Container, Grid } from "@material-ui/core";
+import { goBack } from "../../redux/filter/filterSlice";
 const useStyle = makeStyles((theme) => ({
   root: {
     position: "absolute",
@@ -78,6 +79,7 @@ export default function ShopPage() {
     }
     return () => {
       dispatch(setInShop(false));
+      dispatch(goBack());
     };
   }, [_id, categStatus, categs, dispatch, prevShopId]);
 
