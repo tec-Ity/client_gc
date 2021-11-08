@@ -7,7 +7,7 @@ import { ReactComponent as ToPay } from "../../component/icon/orderStatueUnpaid.
 import { ReactComponent as InProgress } from "../../component/icon/orderStatueInProcess.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
-
+import CustomModal from "../../component/global/modal/CustomModal";
 export default function OrderDetailPage() {
   const { _id } = useParams();
   const dispatch = useDispatch();
@@ -118,6 +118,7 @@ const ToPayLogo = ({ orderTime }) => {
   const classes = useStyle();
   const myTimer = React.useRef(null);
   const [duration, setDuration] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
 
   //init timer by checking remaining time
   useEffect(() => {
@@ -136,6 +137,9 @@ const ToPayLogo = ({ orderTime }) => {
           } else {
             //update duration
             const newDuration = moment.duration(prev);
+            if (newDuration === 0) {
+              setShowAlert(true);
+            }
             return moment.duration(newDuration - interval);
           }
         });
@@ -147,20 +151,25 @@ const ToPayLogo = ({ orderTime }) => {
   }, [orderTime]);
 
   return (
-    <div className={classes.logoBox}>
-      <ToPay />
-      <div className={classes.logoText}>DA PAGARE</div>
-      <div style={{ color: "#e47f10", fontSize: "20px" }}>
-        {duration &&
-          duration?.hours() +
-            ":" +
-            duration?.minutes() +
-            ":" +
-            (duration?.seconds() < 10
-              ? "0" + duration?.seconds()
-              : duration?.seconds())}
-        {/* {duration?.format("HH:mm:ss") // not a function} */}
+    <>
+      <div className={classes.logoBox}>
+        <ToPay />
+        <div className={classes.logoText}>DA PAGARE</div>
+        <div style={{ color: "#e47f10", fontSize: "20px" }}>
+          {duration &&
+            duration?.hours() +
+              ":" +
+              duration?.minutes() +
+              ":" +
+              (duration?.seconds() < 10
+                ? "0" + duration?.seconds()
+                : duration?.seconds())}
+          {/* {duration?.format("HH:mm:ss") // not a function} */}
+        </div>
       </div>
-    </div>
+      <CustomModal show={showAlert}>
+        <div>订单已超时</div>
+      </CustomModal>
+    </>
   );
 };

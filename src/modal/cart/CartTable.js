@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
-import CartSkuCtrl from "./CartSkuCtrl";
+import CartSkuCtrl from "../../component/prodList/itemControl/CartSkuCtrl";
 import { get_DNS } from "../../api";
 import { Grid } from "@material-ui/core";
 import { cartSkuPut, cartSkuDelete } from "../../redux/cart/cartSlice";

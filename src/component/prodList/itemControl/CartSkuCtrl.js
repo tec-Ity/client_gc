@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 // import button from "@material-ui/core/Button";
-import { ReactComponent as Minus } from "../../component/icon/minus.svg";
-import { ReactComponent as Add } from "../../component/icon/add.svg";
-import { ReactComponent as Delete } from "../../component/icon/delete.svg";
+import { ReactComponent as Minus } from "../../icon/minus.svg";
+import { ReactComponent as Add } from "../../icon/add.svg";
+import { ReactComponent as Delete } from "../../icon/delete.svg";
 
 const useStyle = makeStyles({
   root: {

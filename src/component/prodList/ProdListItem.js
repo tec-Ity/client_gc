@@ -5,11 +5,6 @@ import CustomHr from "../global/modal/component/CustomHr";
 import { Grid, Paper } from "@material-ui/core";
 import api_DNS from "../../conf/_dns";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setShowAddrSel,
-  setShowLogin,
-} from "../../redux/curClient/curClientSlice";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -98,16 +93,7 @@ export default function ProdListItem(props) {
   const { prod, rule, empty = false } = props;
   const classes = useStyle();
 
-  const dispatch = useDispatch();
 
-  const isLogin = useSelector((state) => state.curClient.isLogin);
-  const userSelectedLocation = useSelector(
-    (state) => state.curClient.userSelectedLocation
-  );
-  const handleClick = () => {
-    if (!isLogin) dispatch(setShowLogin(true));
-    else if (!userSelectedLocation) dispatch(setShowAddrSel(true));
-  };
 
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>
@@ -141,7 +127,7 @@ export default function ProdListItem(props) {
                   ? `€${prod.price}`
                   : `€${prod.price_min} - ${prod.price_max}`}
               </div>
-              <div className={classes.ctrlStyle} onClick={handleClick}>
+              <div className={classes.ctrlStyle}>
                 <>
                   <ProdListItemControl prod={prod} />
                 </>
