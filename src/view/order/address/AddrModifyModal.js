@@ -5,6 +5,9 @@ import CustomHr from "../../../component/global/modal/component/CustomHr";
 import SubAddrModal from "../../../modal/SelfCenter/SubAddrModal";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCurClientInfo } from "../../../redux/curClient/curClientSlice";
+import AddButton from "../../../modal/Component/AddButton";
+import SubSelfModals from "../../../modal/SelfCenter/SubSelfModals";
+
 export default function AddrModifyModal({ show, handleClose }) {
   const dispatch = useDispatch();
   const [showAddNew, setShowAddNew] = React.useState(false);
@@ -25,23 +28,17 @@ export default function AddrModifyModal({ show, handleClose }) {
       }, 2000);
     }
   }, [curClientInfoStatus, dispatch]);
-
+  console.log(curClientInfo);
   return (
-    <CustomModal show={show} handleClose={handleClose}>
-      <Container>
-        <Grid container>
-          <Grid container item xs={12} justifyContent='space-between'>
-            <div>select new addr</div>
-            <div onClick={() => setShowAddNew(true)}>+</div>
-          </Grid>
-          <Grid item xs={12}>
-            <CustomHr />
-          </Grid>
-          <Grid container item xs={12} justifyContent='center'>
-                
-          </Grid>
-        </Grid>
-      </Container>
-    </CustomModal>
+    <SubSelfModals
+      tempInfo={{ addrs: curClientInfo.addrs }}
+      showSubModal={{ addr: show, addrAdd: showAddNew }}
+      handleShowSub={(section, show = true) =>
+        () => {
+          section === "addrAdd" && setShowAddNew(show);
+        }}
+      handleCloseSub={handleClose}
+      inCart
+    />
   );
 }

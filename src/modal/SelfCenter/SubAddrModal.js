@@ -29,6 +29,13 @@ const useStyle = makeStyles({
     boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
     borderRadius: "10px 10px 10px 0",
     // "& div": { border: "1px solid" },
+    background: "#fff",
+    transition: " all 4s linear",
+    "&:hover": {
+      cursor: "pointer",
+      background:
+        "linear-gradient(270deg, rgba(145, 232, 179, 0.3) 0%, rgba(192, 229, 123, 0.3) 100%, rgba(192, 229, 123, 0.3) 100%)",
+    },
   },
   nameRow: {
     "& > :nth-child(1)": {
@@ -76,13 +83,22 @@ const useStyle = makeStyles({
   },
   listItemAddrRow: {
     marginTop: "14px",
-    marginLeft: "20px",
-    marginRight: "11px",
+    paddingLeft: "20px",
+    paddingRight: "11px",
+    // border:'1px solid',
+    background: "#fff",
+    transition: " all 4s linear",
+    "&:hover": {
+      cursor: "pointer",
+      background:
+        "linear-gradient(270deg, rgba(145, 232, 179, 0.3) 0%, rgba(192, 229, 123, 0.3) 100%, rgba(192, 229, 123, 0.3) 100%)",
+      borderRadius: "30px 30px 30px 0",
+    },
   },
   customHr: { width: "100%", margin: "0", marginTop: "22.5px" },
 });
 export default function SubAddrModal(props) {
-  const { addrs, showAddrAdd, openUpdate, closeUpdate } = props;
+  const { addrs, showAddrAdd, openUpdate, closeUpdate, inCart=false } = props;
   const classes = useStyle();
   const dispatch = useDispatch();
   const curClientInfoUpdateStatus = useSelector(
@@ -99,7 +115,7 @@ export default function SubAddrModal(props) {
   };
 
   // delete address
-  const handleDeleteAddr = (addrId) =>()=> {
+  const handleDeleteAddr = (addrId) => () => {
     dispatch(fetchPutCurClient({ type: "addr_del", value: { addrId } }));
   };
 
@@ -144,7 +160,6 @@ export default function SubAddrModal(props) {
                 handleSortAddr={handleSortAddr}
                 handleOpenEditAddr={handleOpenEditAddr}
                 handleDeleteAddr={(id) => handleDeleteAddr(id)}
-
               />
             )
         )}

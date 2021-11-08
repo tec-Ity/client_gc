@@ -45,6 +45,7 @@ export default function SubSelfModals(props) {
     handleChange,
     handleSubmit,
     handleShowSub,
+    inCart = false,
   } = props;
   console.log(tempInfo);
   return (
@@ -91,7 +92,7 @@ export default function SubSelfModals(props) {
           handleClose={handleCloseSub}
           label='Modifica i metodi di pagamento:'></RowModal>
       )}
-      {/* address modal */}
+      {/* -------- address modal ------------*/}
       {showSubModal.addr === true && (
         <RowModal
           show={showSubModal.addr}
@@ -112,6 +113,7 @@ export default function SubSelfModals(props) {
             addrs={tempInfo.addrs}
             openUpdate={handleShowSub("addrAdd")}
             closeUpdate={handleShowSub("addrAdd", false)}
+            inCart={inCart}
           />
         </RowModal>
       )}
