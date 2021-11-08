@@ -35,7 +35,7 @@ export default function CartModal() {
     dispatch(setCurCartByShop(isExpand));
   }, [dispatch, isExpand]);
 
-  console.log(isExpand);
+  //   console.log(isExpand);
 
   React.useEffect(() => {
     let cartsTemp;

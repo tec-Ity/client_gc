@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { fetchOrderById } from "../../redux/order/orderSlice";
+import {
+  fetchChangeStatus,
+  fetchOrderById,
+} from "../../redux/order/orderSlice";
 import DetailCard from "./component/DetailCard";
 import { ReactComponent as ToPay } from "../../component/icon/orderStatueUnpaid.svg";
 import { ReactComponent as InProgress } from "../../component/icon/orderStatueInProcess.svg";
+import { ReactComponent as Canceled } from "../../component/icon/orderStatueCanceled.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import CustomModal from "../../component/global/modal/CustomModal";
+import CustomAlert from "../../component/global/modal/CustomAlert";
+
 export default function OrderDetailPage() {
   const { _id } = useParams();
   const dispatch = useDispatch();
@@ -45,9 +50,11 @@ export default function OrderDetailPage() {
           order={curOrder}
           orderLogo={
             curOrder.status === 100 ? (
-              <ToPayLogo orderTime={curOrder.at_upd} />
+              <ToPayLogo orderTime={curOrder.at_upd} _id={_id} />
             ) : [200, 400, 700].includes(curOrder.status) ? (
               <InProgressLogo orderStatus={curOrder.status} />
+            ) : curOrder.status === 10 ? (
+              <CancelLogo />
             ) : (
               ""
             )
@@ -89,6 +96,7 @@ const useStyle = makeStyles({
   },
 });
 
+////////////////////////// in progress
 const InProgressLogo = ({ orderStatus }) => {
   const classes = useStyle();
   return (
@@ -112,19 +120,24 @@ const InProgressLogo = ({ orderStatus }) => {
   );
 };
 
+//////////////////////////////// to pay
 const interval = 1000;
 const validTime = 2 * 60 * 60 * 1000;
-const ToPayLogo = ({ orderTime }) => {
+const ToPayLogo = ({ orderTime, _id }) => {
   const classes = useStyle();
   const myTimer = React.useRef(null);
   const [duration, setDuration] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-
+  const dispatch = useDispatch();
   //init timer by checking remaining time
   useEffect(() => {
     const endTime = moment(orderTime).add(validTime, "milliseconds");
     const diff = endTime.diff(moment());
     console.log(diff);
+    if (diff <= 0) {
+      dispatch(fetchChangeStatus({ _id, action: "CANCEL" }));
+      setShowAlert(true);
+    }
     if (orderTime && !myTimer.current && diff > 0) {
       //init timer
       myTimer.current = setInterval(() => {
@@ -137,7 +150,8 @@ const ToPayLogo = ({ orderTime }) => {
           } else {
             //update duration
             const newDuration = moment.duration(prev);
-            if (newDuration === 0) {
+            if (newDuration <= 0) {
+              dispatch(fetchChangeStatus({ _id, action: "CANCEL" }));
               setShowAlert(true);
             }
             return moment.duration(newDuration - interval);
@@ -167,9 +181,23 @@ const ToPayLogo = ({ orderTime }) => {
           {/* {duration?.format("HH:mm:ss") // not a function} */}
         </div>
       </div>
-      <CustomModal show={showAlert}>
-        <div>订单已超时</div>
-      </CustomModal>
+      <CustomAlert
+        show={showAlert}
+        alertTitle='订单已超时'
+        alertMessage='此订单已自动变为取消订单，请重新下单'
+        alertButton='OK'
+        handleFunc={() => window.location.reload()}
+      />
     </>
+  );
+};
+
+const CancelLogo = () => {
+  const classes = useStyle();
+  return (
+    <div className={classes.logoBox}>
+      <Canceled />
+      <div className={classes.logoText}>CANCELLATO</div>
+    </div>
   );
 };

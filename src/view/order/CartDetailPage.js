@@ -6,8 +6,7 @@ import DetailCard from "./component/DetailCard";
 import ProofModal from "./component/ProofModal";
 import { fetchOrderPost } from "../../redux/order/orderSlice";
 import { cartDelete, setCurCartById } from "../../redux/cart/cartSlice";
-import CustomModal from "../../component/global/modal/CustomModal";
-import { makeStyles } from "@material-ui/core/styles";
+import CustomAlert from "../../component/global/modal/CustomAlert";
 
 export default function CartDetailPage() {
   const { _id } = useParams();
@@ -67,8 +66,6 @@ export default function CartDetailPage() {
     }
   };
 
-  console.log(curCart);
-
   return (
     <>
       {/* {curCartStatus === "succeed" && ( */}
@@ -89,36 +86,13 @@ export default function CartDetailPage() {
           proofObjs={proofObjs}
         />
       )}
-      <AlertModal show={showAlert} handleClose={() => setShowAlert(false)} />
+      <CustomAlert
+        show={showAlert}
+        handleClose={() => setShowAlert(false)}
+        alertTitle='INFO INCOMPLETE'
+        alertMessage='Si prega di inserire le informazioni
+        di consegna complete!'
+      />
     </>
   );
 }
-
-const useStyle = makeStyles({
-  alertStyle: {
-    height: "100%",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  alertLogo: {
-    width: "fit-content",
-  },
-  alertMessage: {
-    width: "fit-content",
-  },
-});
-
-const AlertModal = ({ show, handleClose }) => {
-  const classes = useStyle();
-  return (
-    <CustomModal small show={Boolean(show)} handleClose={handleClose}>
-      <div className={classes.alertStyle}>
-        <div className={classes.alertLogo}>!</div>
-        <div className={classes.alertMessage}>{show}</div>
-      </div>
-    </CustomModal>
-  );
-};
