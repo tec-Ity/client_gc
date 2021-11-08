@@ -261,6 +261,10 @@ export const cartSlice = createSlice({
           curCartTemp.totPrice = sku.price_regular * qty;
           //totItem
           curCartTemp.totItem = qty;
+          //initial location
+          curCartTemp.clientInfo = JSON.parse(
+            localStorage.getItem("userSelAddr")
+          );
         } else if (curCart.OrderProds) {
           //modify orderProds
           curCartTemp = { ...curCart };

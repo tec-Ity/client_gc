@@ -13,7 +13,10 @@ const ControlSimple = lazy(() => import("./ControlSimple"));
 export default function ProdListItemControl(props) {
   const { prod, large = false } = props;
   const { Skus: skus, is_simple: isSimple, _id: prodId, Shop: shop } = prod;
-
+  //   const curCart = useSelector((state) => state.cart.curCart);
+  //   const userSelectedLocation = useSelector(
+  //     (state) => state.curClient.userSelectedLocation
+  //   );
   const dispatch = useDispatch();
 
   const onSkuChange = (oSkuId = null, sku, qty) => {
