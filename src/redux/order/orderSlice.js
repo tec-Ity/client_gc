@@ -67,8 +67,8 @@ export const fetchOrders = createAsyncThunk(
     const Orders_res = await fetch_Prom(
       "/Orders?populateObjs=" + JSON.stringify(orderObj) + queryURL
     );
-    // console.log("orderRes", queryURL);
-    // console.log("orderRes", Orders_res);
+    console.log("orderRes", queryURL);
+    console.log("orderRes", Orders_res);
     if (Orders_res.status === 200) {
       if (isReload) {
         return Orders_res.data.objects;

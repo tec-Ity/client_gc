@@ -8,7 +8,6 @@ import { fetchOrderPost } from "../../redux/order/orderSlice";
 import {
   cartDelete,
   selectCurCart,
-  setCurCartById,
 } from "../../redux/cart/cartSlice";
 import CustomAlert from "../../component/global/modal/CustomAlert";
 
@@ -17,7 +16,6 @@ export default function CartDetailPage() {
   const dispatch = useDispatch();
   const [showProof, setShowProof] = React.useState();
   const [disableBtn, setDisableBtn] = React.useState(false);
-  //   const curCart = useSelector((state) => state.cart.curCart);
   const curCart = useSelector(selectCurCart(_id));
   const proofObjs = useSelector((state) => state.cart.proofObjs);
   const proofStatus = useSelector((state) => state.cart.proofStatus);
@@ -25,25 +23,7 @@ export default function CartDetailPage() {
   const curOrder = useSelector((state) => state.order.curOrder);
   const [showAlert, setShowAlert] = useState(false);
   const hist = useHistory();
-  // const curCartStatus = useSelector((state) => state.cart.curCartStatus);
-console.log(curCart)
-  /**proof call twice----------- */
-  // React.useEffect(() => {
-  //   if (proofStatus === "idle") {
-  //     dispatch(fetchProofOrder(_id));
-  //   } else if (proofStatus === "succeed") {
-  //     if (proofObjs.length > 0) {
-  //       setShowProof(true);
-  //     }
-  //     // dispatch(fetchCartById(_id));
-  //   }
-  // }, [_id, dispatch, proofObjs.length, proofStatus]);
 
-  //   React.useEffect(() => {
-  //     if (!curCart.OrderProds) {
-  //       dispatch(setCurCartById(_id));
-  //     }
-  //   }, [_id, curCart.OrderProds, dispatch]);
 
   React.useEffect(() => {
     if (orderPostStatus === "loading" || orderPostStatus === "error") {

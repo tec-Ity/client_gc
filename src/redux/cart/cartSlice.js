@@ -475,13 +475,10 @@ export const cartSlice = createSlice({
 });
 
 export const selectCurProdInCart = (prodId, shop) => (state) => {
-  // console.log(state.cart.curCart);
-  // console.log("op", state.cart.curCart.OrderProds);
   if (state.cart.curCart.Shop === shop) {
     const foundOp = state.cart.curCart.OrderProds?.find((op) => {
       return op.Prod === prodId;
     });
-    // foundOp && console.log("op", foundOp);
     return foundOp;
   }
 };

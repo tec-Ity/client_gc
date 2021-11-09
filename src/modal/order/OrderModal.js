@@ -6,6 +6,8 @@ import { fetchOrders, setShowOrders } from "../../redux/order/orderSlice";
 import { setIsExpand } from "../../redux/cart/cartSlice";
 import CartCard from "../cart/CartCard";
 import { useHistory } from "react-router";
+import { ReactComponent as ToPay } from "../../component/icon/orderStatueUnpaid.svg";
+import { ReactComponent as InProgress } from "../../component/icon/orderStatueInProcess.svg";
 
 export default function OrderModal() {
   const dispatch = useDispatch();
@@ -23,7 +25,7 @@ export default function OrderModal() {
 
   //begining fetch
   useEffect(() => {
-    dispatch(fetchOrders("&status=[100,200,400,700]"));
+    dispatch(fetchOrders({ queryURL: "&status=[100,200,400,700]" }));
     setNewFetch(true);
   }, [dispatch]);
 
@@ -31,16 +33,17 @@ export default function OrderModal() {
   useEffect(() => {
     if (ordersStatus === "error")
       setTimeout(() => {
-        dispatch(fetchOrders("&status=[100,200,400,700]"));
+        dispatch(fetchOrders({ queryURL: "&status=[100,200,400,700]" }));
         setNewFetch(true);
       }, 2000);
   }, [dispatch, ordersStatus]);
 
   useEffect(() => {
     const getOrders = () => {
+      console.log(orders);
       let orderCardTemp;
       if (ordersStatus === "succeed" && newFetch === true) {
-        orderCardTemp = orders.map((od, index) => {
+        orderCardTemp = orders?.map((od, index) => {
           return (
             <CartCard
               key={od._id + index}
@@ -53,25 +56,20 @@ export default function OrderModal() {
                   handleClose();
                 }
               }}
-              handleBtn={
-                od.status === 100
-                  ? {
-                      label: "DA PAGARE",
-                      background: "#fdd444",
-                      handleFunc: () => {
-                        handleClose();
-                        hist.push("/order/" + od._id);
-                      },
-                    }
-                  : {
-                      label: "PAGATO",
-                      background: "#c0e57b",
-                      handleFunc: () => {
-                        handleClose();
-                        // dispatch(setIsExpand(od._id));
-                        hist.push("/order/" + od._id);
-                      },
-                    }
+              orderLabel={
+                od.status === 100 ? (
+                  <>
+                    <ToPay />
+                    <div>DA PAGARE</div>
+                  </>
+                ) : [200, 400, 700].includes(od.status) ? (
+                  <>
+                    <InProgress />
+                    <div>IN PROCESSO</div>
+                  </>
+                ) : (
+                  ""
+                )
               }
             />
           );
@@ -87,7 +85,7 @@ export default function OrderModal() {
   const handleCollapse = () => {
     dispatch(setIsExpand(true));
   };
-//   console.log("order");
+  //   console.log("order");
   return (
     <CustomModal show={showOrders} handleClose={handleClose}>
       <CardWraper

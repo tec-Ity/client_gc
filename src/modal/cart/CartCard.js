@@ -54,7 +54,6 @@ const useStyle = makeStyles((props) => ({
     fontWeight: "700",
     fontSize: "1em",
     lineHeight: "15px",
-    color: "#C0E57B",
   },
   orderBtn: {
     height: "21px",
@@ -108,6 +107,7 @@ const useStyle = makeStyles((props) => ({
     },
     "& >:nth-child(2)": {
       fontSize: "1em",
+      color: "#E47F10",
     },
   },
   customHr: {
@@ -130,6 +130,13 @@ const useStyle = makeStyles((props) => ({
       lineHeight: "5px",
     },
   },
+  orderLabelStyle: {
+    width: "90px",
+    "& > :nth-child(2)": {
+      fontSize: "0.5em", //min 12 px
+      width: "100%",
+    },
+  },
 }));
 
 export default function CartCard(props) {
@@ -137,7 +144,7 @@ export default function CartCard(props) {
     cart,
     count = 3,
     isExpand = null,
-    handleBtn = null,
+    orderLabel = null,
     orderCard,
     orderExpandMore,
   } = props;
@@ -146,7 +153,7 @@ export default function CartCard(props) {
   const hist = useHistory();
   const curCart = useSelector((state) => state.cart.curCart);
   const classes = useStyle(props);
-
+  console.log(orderLabel && orderCard);
   const expandMore = () => {
     if (curCart.Shop) {
       if (curCart.Shop !== Shop) {
@@ -175,16 +182,21 @@ export default function CartCard(props) {
         container
         className={classes.gridItem}
         style={{ paddingBottom: "10px" }}>
+        {orderCard && orderLabel && (
+          <div className={classes.orderLabelStyle}>{orderLabel}</div>
+        )}
         <div className={clsx(classes.shopTitle, classes.marginHead)}>
           SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
         </div>
-        <div className={classes.marginHead}>
-          <CustomButton
-            label={handleBtn ? handleBtn.label : "ORDINARE"}
-            handleFunc={handleBtn ? handleBtn.handleFunc : handleOrderFunc}
-            alterStyle={classes.orderBtn}
-          />
-        </div>
+        {!orderCard && (
+          <div className={classes.marginHead}>
+            <CustomButton
+              label='ORDINARE'
+              handleFunc={handleOrderFunc}
+              alterStyle={classes.orderBtn}
+            />
+          </div>
+        )}
       </Grid>
       {orderCard && (
         <Grid
@@ -224,7 +236,7 @@ export default function CartCard(props) {
             <CustomButton
               label='ORDINARE'
               handleFunc={handleOrderFunc}
-            //   alterStyle={classes.orderBtnXL}
+              //   alterStyle={classes.orderBtnXL}
             />
           </Grid>
         </>

@@ -40,7 +40,7 @@ export default function OrderDetailPage() {
     }, 100);
   };
 
-  console.log(curOrder);
+//   console.log(curOrder);
 
   return (
     <>
@@ -162,7 +162,7 @@ const ToPayLogo = ({ orderTime, _id }) => {
     return () => {
       clearInterval(myTimer.current);
     };
-  }, [orderTime]);
+  }, [_id, dispatch, orderTime]);
 
   return (
     <>
