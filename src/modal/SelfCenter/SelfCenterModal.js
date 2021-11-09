@@ -17,18 +17,17 @@ import SubSelfModals from "./SubSelfModals";
 import LanguageComp from "./LanguageComp";
 // import { slice } from "lodash";
 
+const initialShowSubModal = {
+  name: false,
+  account: false,
+  social: false,
+  method: false,
+  addr: false,
+  addrAdd: false,
+  pwd: false,
+};
 export default function SelfCenterModal() {
   const dispatch = useDispatch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialShowSubModal = {
-    name: false,
-    account: false,
-    social: false,
-    method: false,
-    addr: false,
-    addrAdd: false,
-    pwd: false,
-  };
   const [showSubModal, setShowSubModal] = useState(initialShowSubModal);
   const [showMainModal, setShowMainModal] = useState(true);
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
@@ -46,7 +45,7 @@ export default function SelfCenterModal() {
   const handleCloseSub = React.useCallback(() => {
     setShowMainModal(true);
     setShowSubModal(initialShowSubModal);
-  }, [initialShowSubModal]);
+  }, []);
 
   useEffect(() => {
     if (curClientInfoUpdateStatus === "succeed" && justSubmitted) {
@@ -175,7 +174,7 @@ export default function SelfCenterModal() {
                 />
               </Grid>
               <Grid container item xs={12} className={classes.infoRowStyle}>
-                <LanguageComp/>
+                <LanguageComp />
               </Grid>
               <Grid container item xs={12} className={classes.infoRowStyle}>
                 <SelfCenterRow
@@ -234,7 +233,6 @@ const SelfCenterRow = (props) => {
   );
 };
 
-
 const useStyle = makeStyles({
   root: {},
   gridItemStyle: {
@@ -285,5 +283,5 @@ const useStyle = makeStyles({
         color: "#1d1d38",
       },
     },
-  }
+  },
 });

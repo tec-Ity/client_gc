@@ -486,6 +486,11 @@ export const selectCurProdInCart = (prodId, shop) => (state) => {
   }
 };
 
+export const selectCurCart = (cartId) => (state) => {
+  const foundCart = state.cart.carts.find((cart) => cart._id === cartId);
+  return foundCart || {};
+};
+
 export const {
   setShowCarts,
   setIsExpand,

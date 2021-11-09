@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import DetailCard from "./component/DetailCard";
 import ProofModal from "./component/ProofModal";
 import { fetchOrderPost } from "../../redux/order/orderSlice";
-import { cartDelete, setCurCartById } from "../../redux/cart/cartSlice";
+import {
+  cartDelete,
+  selectCurCart,
+  setCurCartById,
+} from "../../redux/cart/cartSlice";
 import CustomAlert from "../../component/global/modal/CustomAlert";
 
 export default function CartDetailPage() {
@@ -13,7 +17,8 @@ export default function CartDetailPage() {
   const dispatch = useDispatch();
   const [showProof, setShowProof] = React.useState();
   const [disableBtn, setDisableBtn] = React.useState(false);
-  const curCart = useSelector((state) => state.cart.curCart);
+  //   const curCart = useSelector((state) => state.cart.curCart);
+  const curCart = useSelector(selectCurCart(_id));
   const proofObjs = useSelector((state) => state.cart.proofObjs);
   const proofStatus = useSelector((state) => state.cart.proofStatus);
   const orderPostStatus = useSelector((state) => state.order.orderPostStatus);
@@ -21,7 +26,7 @@ export default function CartDetailPage() {
   const [showAlert, setShowAlert] = useState(false);
   const hist = useHistory();
   // const curCartStatus = useSelector((state) => state.cart.curCartStatus);
-
+console.log(curCart)
   /**proof call twice----------- */
   // React.useEffect(() => {
   //   if (proofStatus === "idle") {
@@ -34,18 +39,18 @@ export default function CartDetailPage() {
   //   }
   // }, [_id, dispatch, proofObjs.length, proofStatus]);
 
-  React.useEffect(() => {
-    if (!curCart.OrderProds) {
-      dispatch(setCurCartById(_id));
-    }
-  }, [_id, curCart.OrderProds, dispatch]);
+  //   React.useEffect(() => {
+  //     if (!curCart.OrderProds) {
+  //       dispatch(setCurCartById(_id));
+  //     }
+  //   }, [_id, curCart.OrderProds, dispatch]);
 
   React.useEffect(() => {
     if (orderPostStatus === "loading" || orderPostStatus === "error") {
       setDisableBtn(true);
     } else if (orderPostStatus === "succeed" && disableBtn === true) {
       dispatch(cartDelete(_id));
-    //   console.log(_id);
+      //   console.log(_id);
       hist.push("/order/" + curOrder?._id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,6 +59,7 @@ export default function CartDetailPage() {
   const handleClose = () => {
     setShowProof(false);
   };
+
   const handleConfirmOrder = (setLoadingFunc) => {
     // console.log("confirm!!");
     // window.scrollTo(0,document.body.scrollHeight);
@@ -66,7 +72,7 @@ export default function CartDetailPage() {
     }
   };
 
-//   console.log(curCart)
+  //   console.log(curCart)
   return (
     <>
       {/* {curCartStatus === "succeed" && ( */}
