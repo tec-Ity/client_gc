@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import SubPwdModal from "./SubPwdModal";
 import SubAccountModal from "./SubAccountModal";
+import CustomButton from "../../component/global/modal/component/CustomButton";
 const useStyle = makeStyles({
   root: {},
   ///sub modal style
@@ -36,6 +37,11 @@ const useStyle = makeStyles({
     marginRight: "0",
     marginbottom: "0",
   },
+  confirmButton: {
+    position: "absolute",
+    bottom: "20px",
+    width: "90%",
+  },
 });
 export default function SubSelfModals(props) {
   const {
@@ -47,7 +53,7 @@ export default function SubSelfModals(props) {
     handleShowSub,
     inCart = false,
   } = props;
-  console.log(tempInfo);
+  const classes = useStyle();
   return (
     <>
       {showSubModal.name === true && (
@@ -115,6 +121,13 @@ export default function SubSelfModals(props) {
             closeUpdate={handleShowSub("addrAdd", false)}
             inCart={inCart}
           />
+          {inCart && (
+            <CustomButton
+              label='OK'
+              alterStyle={classes.confirmButton}
+              handleFunc={handleCloseSub}
+            />
+          )}
         </RowModal>
       )}
       {showSubModal.pwd === true && (
@@ -146,7 +159,7 @@ const RowModal = (props) => {
       show={show}
       handleClose={handleClose}
       small={large === false}>
-      <Container>
+      <Container style={{ height: "100%", position: "relative" }}>
         <Grid container justifyContent='center' className={classes.subModal}>
           <Grid
             container

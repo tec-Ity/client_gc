@@ -45,7 +45,7 @@ export default function CartDetailPage() {
       setDisableBtn(true);
     } else if (orderPostStatus === "succeed" && disableBtn === true) {
       dispatch(cartDelete(_id));
-      console.log(_id);
+    //   console.log(_id);
       hist.push("/order/" + curOrder?._id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +66,7 @@ export default function CartDetailPage() {
     }
   };
 
-  console.log(curCart)
+//   console.log(curCart)
   return (
     <>
       {/* {curCartStatus === "succeed" && ( */}

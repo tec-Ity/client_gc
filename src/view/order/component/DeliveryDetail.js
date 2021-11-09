@@ -43,10 +43,13 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function DeliveryDetail({ isCart, clientInfo }) {
+export default function DeliveryDetail({
+  isCart, //cart._id same as Shop._id
+  clientInfo,
+}) {
   const classes = useStyle();
   const [showAddrModal, setShowAddrModal] = useState(false);
-  console.log(clientInfo);
+//   console.log(clientInfo);
 
   return (
     <>
@@ -80,6 +83,7 @@ export default function DeliveryDetail({ isCart, clientInfo }) {
       <AddrModifyModal
         show={showAddrModal}
         handleClose={() => setShowAddrModal(false)}
+        inCart={isCart}
       />
     </>
   );

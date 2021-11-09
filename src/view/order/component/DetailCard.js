@@ -305,7 +305,10 @@ export default function DetailCard(props) {
 
             {/* delivery detail */}
             <Grid item xs={12} className={classes.gridItemStyle}>
-              <DeliveryDetail isCart={isCart} clientInfo={order.clientInfo} />
+              <DeliveryDetail
+                isCart={isCart && order._id}
+                clientInfo={order.clientInfo}
+              />
             </Grid>
             {/* prods detail */}
             <Grid item xs={12} className={classes.gridItemStyle}>

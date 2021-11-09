@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
-import CustomModal from "../../../component/global/modal/CustomModal";
-import { Grid, Container } from "@material-ui/core";
-import CustomHr from "../../../component/global/modal/component/CustomHr";
-import SubAddrModal from "../../../modal/SelfCenter/SubAddrModal";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCurClientInfo } from "../../../redux/curClient/curClientSlice";
-import AddButton from "../../../modal/Component/AddButton";
 import SubSelfModals from "../../../modal/SelfCenter/SubSelfModals";
 
-export default function AddrModifyModal({ show, handleClose }) {
+export default function AddrModifyModal({ show, handleClose, inCart }) {
   const dispatch = useDispatch();
   const [showAddNew, setShowAddNew] = React.useState(false);
   const curClientInfo = useSelector((state) => state.curClient.curClientInfo);
@@ -28,7 +23,6 @@ export default function AddrModifyModal({ show, handleClose }) {
       }, 2000);
     }
   }, [curClientInfoStatus, dispatch]);
-  console.log(curClientInfo);
   return (
     <SubSelfModals
       tempInfo={{ addrs: curClientInfo.addrs }}
@@ -38,7 +32,7 @@ export default function AddrModifyModal({ show, handleClose }) {
           section === "addrAdd" && setShowAddNew(show);
         }}
       handleCloseSub={handleClose}
-      inCart
+      inCart={inCart}
     />
   );
 }

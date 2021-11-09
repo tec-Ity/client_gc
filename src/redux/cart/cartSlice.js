@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  // current
+} from "@reduxjs/toolkit";
 import { fetch_Prom } from "../../api";
 
 const initialState = {
@@ -430,6 +434,31 @@ export const cartSlice = createSlice({
         state.carts.splice(i, 1);
       }
     },
+    cartAddrPut: (state, action) => {
+      const { addr, cartId } = action.payload;
+      let cartTemp;
+      if (state.curCart._id === cartId) cartTemp = { ...state.curCart };
+      else {
+        const foundCart = state.carts.find((c) => c._id === cartId);
+        if (foundCart) cartTemp = { ...foundCart };
+      }
+
+      //update client info to new selected addrs
+      if (cartTemp && addr) {
+        cartTemp.clientInfo.addr = addr.address;
+        cartTemp.clientInfo.city = addr.Cita?.code;
+        cartTemp.clientInfo.zip = addr.postcode;
+        cartTemp.clientInfo.personalInfo.name = addr.name;
+        cartTemp.clientInfo.personalInfo.phone = addr.phone;
+      }
+      //update curCart
+      state.curCart = cartTemp;
+      //update carts list
+      for (let i = 0; i < state.carts.length; i++) {
+        const cart = state.carts[i];
+        if (cart._id === cartId) state.carts[i] = cartTemp;
+      }
+    },
   },
   extraReducers: {
     [fetchProofOrder.pending]: (state) => {
@@ -468,6 +497,7 @@ export const {
   cartSkuPut,
   cartSkuDelete,
   cartDelete,
+  cartAddrPut,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -9,6 +9,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ReactComponent as Pen } from "../../component/icon/pen-edit.svg";
 import AddButton from "../Component/AddButton";
 import CustomHr from "../../component/global/modal/component/CustomHr";
+import { cartAddrPut } from "../../redux/cart/cartSlice";
+import clsx from "clsx";
 
 const useStyle = makeStyles({
   root: {},
@@ -28,14 +30,6 @@ const useStyle = makeStyles({
     paddingRight: "10px",
     boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)",
     borderRadius: "10px 10px 10px 0",
-    // "& div": { border: "1px solid" },
-    background: "#fff",
-    transition: " all 4s linear",
-    "&:hover": {
-      cursor: "pointer",
-      background:
-        "linear-gradient(270deg, rgba(145, 232, 179, 0.3) 0%, rgba(192, 229, 123, 0.3) 100%, rgba(192, 229, 123, 0.3) 100%)",
-    },
   },
   nameRow: {
     "& > :nth-child(1)": {
@@ -85,20 +79,26 @@ const useStyle = makeStyles({
     marginTop: "14px",
     paddingLeft: "20px",
     paddingRight: "11px",
-    // border:'1px solid',
+    borderRadius: "30px 30px 30px 0"
+  },
+  addrHover: {
     background: "#fff",
     transition: " all 4s linear",
+    cursor: "pointer",
     "&:hover": {
-      cursor: "pointer",
       background:
         "linear-gradient(270deg, rgba(145, 232, 179, 0.3) 0%, rgba(192, 229, 123, 0.3) 100%, rgba(192, 229, 123, 0.3) 100%)",
-      borderRadius: "30px 30px 30px 0",
+      //   borderRadius: "30px 30px 30px 0",
     },
+  },
+  addrSelected: {
+    background:
+      "linear-gradient(270deg, rgba(145, 232, 179,0.5) 0%, rgba(192, 229, 123,0.5) 100%, rgba(192, 229, 123,0.5) 100%)",
   },
   customHr: { width: "100%", margin: "0", marginTop: "22.5px" },
 });
 export default function SubAddrModal(props) {
-  const { addrs, showAddrAdd, openUpdate, closeUpdate, inCart=false } = props;
+  const { addrs, showAddrAdd, openUpdate, closeUpdate, inCart } = props;
   const classes = useStyle();
   const dispatch = useDispatch();
   const curClientInfoUpdateStatus = useSelector(
@@ -106,7 +106,12 @@ export default function SubAddrModal(props) {
   );
   const [updateAddr, setUpdateAddr] = useState(null);
   const [justSubmitted, setJustSubmitted] = useState(false);
+  const [selectedAddr, setSelectedAddr] = useState();
   const handleSortAddr = (addrId) => () => {};
+  const handleSelectAddr = (addr) => () => {
+    dispatch(cartAddrPut({ addr, cartId: inCart }));
+    setSelectedAddr(addr._id);
+  };
 
   // show edit addr modal (new addr modal with address)
   const handleOpenEditAddr = (addr) => () => {
@@ -148,7 +153,13 @@ export default function SubAddrModal(props) {
     // address list
     <>
       {addrs.length > 0 && (
-        <DefaultAddr addr={addrs[0]} handleOpenEditAddr={handleOpenEditAddr} />
+        <DefaultAddr
+          addr={addrs[0]}
+          handleOpenEditAddr={handleOpenEditAddr}
+          handleSelectAddr={handleSelectAddr}
+          inCart={inCart}
+          selected={Boolean(selectedAddr === addrs[0]._id)}
+        />
       )}
       <Grid container className={classes.scrollBox}>
         {addrs.map(
@@ -160,6 +171,9 @@ export default function SubAddrModal(props) {
                 handleSortAddr={handleSortAddr}
                 handleOpenEditAddr={handleOpenEditAddr}
                 handleDeleteAddr={(id) => handleDeleteAddr(id)}
+                handleSelectAddr={handleSelectAddr}
+                inCart={inCart}
+                selected={Boolean(selectedAddr === addr._id)}
               />
             )
         )}
@@ -177,10 +191,19 @@ export default function SubAddrModal(props) {
 
 //the top & defualt address
 function DefaultAddr(props) {
-  const { addr, handleOpenEditAddr } = props;
+  const { addr, handleOpenEditAddr, handleSelectAddr, inCart, selected } =
+    props;
   const classes = useStyle();
   return (
-    <Grid container item className={classes.defaultAddrRow}>
+    <Grid
+      container
+      item
+      className={clsx(
+        classes.defaultAddrRow,
+        inCart && !selected && classes.addrHover,
+        selected && classes.addrSelected
+      )}
+      onClick={inCart && handleSelectAddr(addr)}>
       <Grid container item xs={6} className={classes.nameRow}>
         <div>{addr.name?.toUpperCase()}</div>
         <div>{addr.phone}</div>
@@ -214,17 +237,31 @@ function DefaultAddr(props) {
 
 //address other than default
 function ListItemAddr(props) {
-  const { addr, handleOpenEditAddr, handleDeleteAddr } = props;
+  const {
+    addr,
+    handleOpenEditAddr,
+    handleDeleteAddr,
+    handleSelectAddr,
+    inCart,
+    selected,
+  } = props;
   const classes = useStyle();
-
   return (
     <>
       <Grid item xs={12}>
         <CustomHr position={classes.customHr} />
       </Grid>
-      <Grid container item className={classes.listItemAddrRow}>
+      <Grid
+        container
+        item
+        className={clsx(
+          classes.listItemAddrRow,
+          inCart && !selected && classes.addrHover,
+          selected && classes.addrSelected
+        )}
+        onClick={inCart && handleSelectAddr(addr)}>
         <Grid container item xs={6} className={classes.nameRow}>
-          <div>{addr.name?.toUpperCase()}</div>
+          <div>{addr.name?.toUpperCase()}11</div>
           <div>{addr.phone}</div>
         </Grid>
         <Grid container item xs={12} className={classes.addrRow}>
