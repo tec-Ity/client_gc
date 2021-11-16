@@ -74,7 +74,7 @@ export default function ControlMultiSkus(props) {
         <Grid item xs={12} className={classes.gridItem}>
           <CustomButton
             label='OK'
-            handleFun={handleClose}
+            handleFunc={handleClose}
             alterStyle={classes.btnStyle}
           />
         </Grid>

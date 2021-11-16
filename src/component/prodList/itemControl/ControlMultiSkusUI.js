@@ -47,6 +47,7 @@ const useStyle = makeStyles({
   },
 });
 
+//not in used
 export default function ControlMultiSkusUI(props) {
   const { skuList, buttonNew, handleClose, onSkuChange } =
     props;
@@ -107,7 +108,7 @@ export default function ControlMultiSkusUI(props) {
       <Grid item xs={12} className={classes.gridItem}>
         <CustomButton
           label='OK'
-          handleFun={handleClose}
+          handleFunc={handleClose}
           alterStyle={classes.btnStyle}
         />
       </Grid>

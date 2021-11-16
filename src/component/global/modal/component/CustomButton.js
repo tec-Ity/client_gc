@@ -40,7 +40,9 @@ export default function CustomButton({
     <Button
       onClick={() => {
         setLoading(true);
-        loading === false && handleFunc((newLoading) => setLoading(newLoading));
+        loading === false &&
+          handleFunc &&
+          handleFunc((newLoading) => setLoading(newLoading));
       }}
       disabled={disableBtn}
       className={clsx(classes.root, alterStyle)}>
