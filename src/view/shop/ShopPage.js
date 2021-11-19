@@ -57,6 +57,7 @@ export default function ShopPage() {
       window.scrollTo(0, 0);
     }, 500);
   }, []);
+  
   useEffect(() => {
     // 会渲染好几次sideBar并console好几次
     dispatch(setInShop(true));

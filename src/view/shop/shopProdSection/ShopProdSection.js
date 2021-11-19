@@ -1,5 +1,5 @@
 import React from "react";
-import ProdSectionHome from "./ShopProdSectionHome";
+import ShopProdSectionHome from "./ShopProdSectionHome";
 import ProdSectionExpand from "../../../component/prodExpand/ProdExpand";
 import { useSelector } from "react-redux";
 
@@ -8,7 +8,7 @@ export default function ShopProdSection(props) {
 
   return (
     <div>
-      {isHome === false ? <ProdSectionExpand /> : <ProdSectionHome />}
+      {isHome === false ? <ProdSectionExpand /> : <ShopProdSectionHome />}
     </div>
   );
 }
