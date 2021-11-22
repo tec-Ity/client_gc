@@ -1,6 +1,6 @@
 const api_version = "/api/v1";
 const api_DNS = "https://server.unioncityitaly.com"; //server
-console.log(11111111)
+
 const fetchProm = (api, method = "GET", bodyObj) => {
   return new Promise(async (resolve) => {
     // console.log(api, method, bodyObj);
