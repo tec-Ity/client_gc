@@ -1,4 +1,4 @@
-import { fetch_Prom } from "../src/api";
+import { fetch_Prom } from "../api";
 
 /* ===================================== facebook ===================================== */
 const responseFacebook = async (response, accessToken) => {

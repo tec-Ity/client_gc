@@ -93,8 +93,6 @@ export default function ProdListItem(props) {
   const { prod, rule, empty = false } = props;
   const classes = useStyle();
 
-
-
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>
       {empty === false && (
@@ -124,8 +122,14 @@ export default function ProdListItem(props) {
             <div>
               <div className={classes.priceStyle}>
                 {prod.price_max === prod.price_min
-                  ? `€${prod.price}`
-                  : `€${prod.price_min} - ${prod.price_max}`}
+                  ? `€${String(prod.price?.toFixed(2))?.replace(".", ",")}`
+                  : `€${String(prod.price_min?.toFixed(2))?.replace(
+                      ".",
+                      ","
+                    )} - ${String(prod.price_max?.toFixed(2))?.replace(
+                      ".",
+                      ","
+                    )}`}
               </div>
               <div className={classes.ctrlStyle}>
                 <>

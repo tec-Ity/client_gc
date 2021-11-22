@@ -51,7 +51,7 @@ export default function ControlMultiSkus(props) {
                   </Grid>
                   {/* price */}
                   <Grid item xs={3} className={classes.gridItem}>
-                    €{sku.price_regular?.toFixed(2)}
+                    €{String(sku.price_regular?.toFixed(2))?.replace(".", ",")}
                   </Grid>
                   {/* ctrl */}
                   <Grid item xs={3} className={classes.gridItem}>

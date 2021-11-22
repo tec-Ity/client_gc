@@ -449,9 +449,9 @@ export default function ProdPage() {
                               item
                               xs={8}
                               className={classes.attrList}>
-                              {attr?.options?.map((op,index) => {
+                              {attr?.options?.map((op, index) => {
                                 return (
-                                  <Grid item xs={3} key={op+index}>
+                                  <Grid item xs={3} key={op + index}>
                                     {op}
                                   </Grid>
                                 );
@@ -475,13 +475,29 @@ export default function ProdPage() {
                         <div style={{ fontWeight: "700" }}>
                           {curProd.price_max === curProd.price_min ? (
                             <div className={classes.priceStyle}>
-                              €{curProd.price.toFixed(2)}
+                              €
+                              {String(curProd.price.toFixed(2))?.replace(
+                                ".",
+                                ","
+                              )}
                             </div>
                           ) : (
                             <div className={classes.priceStyle}>
-                              <span>€{curProd.price_min.toFixed(2)}</span>
+                              <span>
+                                €
+                                {String(curProd.price_min.toFixed(2))?.replace(
+                                  ".",
+                                  ","
+                                )}
+                              </span>
                               <span>~</span>
-                              <span>€{curProd.price_max.toFixed(2)}</span>
+                              <span>
+                                €
+                                {String(curProd.price_max.toFixed(2))?.replace(
+                                  ".",
+                                  ","
+                                )}
+                              </span>
                             </div>
                           )}
                         </div>
@@ -517,9 +533,7 @@ export default function ProdPage() {
                   xs={12}
                   className={classes.gridItem}
                   justifyContent='center'>
-                  <div className={classes.desp}>
-                   {curProd?.desp}
-                  </div>
+                  <div className={classes.desp}>{curProd?.desp}</div>
                 </Grid>
                 <Grid container item xs={12} className={classes.gridItem}>
                   <div style={{ position: "relative" }}>
