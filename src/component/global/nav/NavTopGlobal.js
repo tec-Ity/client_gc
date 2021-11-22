@@ -206,7 +206,7 @@ export default function NavTopGlobal() {
               classes={{ root: classes.btnStyle }}
               onClick={() => {
                 dispatch(setShowLogin(true));
-                console.log("login open");
+                // console.log("login open");
               }}>
               <div className={classes.loginButton}>
                 <User />

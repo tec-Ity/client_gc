@@ -11,7 +11,7 @@ export default function LogOutComp() {
         if (d.getElementById(id)) return;
         js = d.createElement(s);
         js.id = id;
-        js.src = "./thirdPartyLogin.js";
+        js.src = "/thirdPartyLogin.js";
         fjs.parentNode.insertBefore(js, fjs);
       })(document, "script", "ThirdPartyLogin");
     }

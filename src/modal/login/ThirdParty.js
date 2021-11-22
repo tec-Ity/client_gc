@@ -1,6 +1,4 @@
 import React, {  } from "react";
-// import { Facebook } from "@material-ui/icons";
-// import Google from "@material-ui/icons/Google";
 import { Grid } from "@material-ui/core";
 
 function FacebookLogin() {

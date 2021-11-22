@@ -1,4 +1,37 @@
-import { fetch_Prom } from "../api";
+const api_version = "/api/v1";
+const api_DNS = "https://server.unioncityitaly.com"; //server
+console.log(11111111)
+const fetchProm = (api, method = "GET", bodyObj) => {
+  return new Promise(async (resolve) => {
+    // console.log(api, method, bodyObj);
+    try {
+      const api_server = api_DNS + api_version + api;
+      const token = localStorage.getItem("accessToken");
+      const fetchObj = {
+        method,
+        headers: {
+          "content-type": "application/json",
+          authorization: "Bear " + token,
+        },
+      };
+      if (method === "GET" || method === "DELETE") {
+      } else if (method === "POST" || method === "PUT") {
+        fetchObj.body = JSON.stringify(bodyObj);
+      } else {
+        resolve({ status: 400, message: `[front] method Error` });
+      }
+      // console.log(api_server)
+      // console.log(method)
+      //   console.log(api_server, fetchObj);
+      const resPromise = await fetch(api_server, fetchObj);
+      // console.log("resPromise: ", resPromise)
+      const result = await resPromise.json();
+      resolve(result);
+    } catch (error) {
+      resolve({ status: 500, message: `[front] fetchProm Error: ${error}` });
+    }
+  });
+};
 
 /* ===================================== facebook ===================================== */
 const responseFacebook = async (response, accessToken) => {
@@ -6,7 +39,7 @@ const responseFacebook = async (response, accessToken) => {
   const social = {};
   social.login_type = "facebook";
   social.Client_accessToken = accessToken;
-  const result = await fetch_Prom("/login", "POST", {
+  const result = await fetchProm("/login", "POST", {
     social,
   });
 
@@ -46,7 +79,7 @@ async function statusChangeCallback(response) {
   var js,
     fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
-  const result = await fetch_Prom("/get_social_AppId");
+  const result = await fetchProm("/get_social_AppId");
   js = d.createElement(s);
   js.id = id;
   js.src = `//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0&appId=${result?.data?.facebook}`;
@@ -82,7 +115,7 @@ function checkLoginState() {
     fmt = d.getElementsByTagName("link")[0];
   if (d.getElementById(id)) return;
 
-  const result = await fetch_Prom("/get_social_AppId");
+  const result = await fetchProm("/get_social_AppId");
   mt = d.createElement(s);
   mt.id = id;
   mt.name = "google-signin-client_id";
@@ -119,7 +152,7 @@ function onSignIn(googleUser) {
     const social = {};
     social.login_type = "google";
     social.Client_accessToken = token;
-    const result = await fetch_Prom("/login", "POST", {
+    const result = await fetchProm("/login", "POST", {
       social,
     });
     console.log(1);
@@ -129,7 +162,7 @@ function onSignIn(googleUser) {
       localStorage.setItem("curClient", result.data?.curClient);
       localStorage.setItem("refreshToken", result.data?.refreshToken);
       localStorage.setItem("thirdPartyLogin", "google");
-      const result2 = await fetch_Prom("/get_social_AppId");
+      const result2 = await fetchProm("/get_social_AppId");
       localStorage.setItem("google", result2.data.google);
 
       window.location.reload();

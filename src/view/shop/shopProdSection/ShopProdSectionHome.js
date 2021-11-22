@@ -9,7 +9,6 @@ export default function ShopProdSectionHome(props) {
   const prodListStatus = useSelector((state) => state.shop.prodStatus);
   const prodListerror = useSelector((state) => state.shop.prodError);
 
-  console.log(prodList);
   const expandList =
     prodList &&
     prodList.map((categ) => {

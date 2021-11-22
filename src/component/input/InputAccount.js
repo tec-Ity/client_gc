@@ -111,7 +111,6 @@ export default function InputAccount(props) {
                       </MenuItem>
                     );
                   })}
-                  <MenuItem value={10}>ten</MenuItem>
                 </Select>
               </FormControl>
             </InputAdornment>

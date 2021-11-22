@@ -60,7 +60,6 @@ export default function LoginModalUI(props) {
             <span
               className={classes.registerLink}
               onClick={() => {
-                console.log(111);
                 dispatch(setShowRegister(true));
               }}>
               REGISTRATI
