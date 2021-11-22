@@ -270,8 +270,9 @@ export default function ProdPage() {
   const dispatch = useDispatch();
   const curProd = useSelector((state) => state.shop.curProd);
   const curProdStatus = useSelector((state) => state.shop.curProdStatus);
-  const curCartStatus = useSelector((state) => state.cart.curCartStatus);
+  //   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   const classes = useStyle();
+
   useEffect(() => {
     window.document.getElementsByTagName("html")[0].style.scrollBehavior =
       "smooth";
@@ -280,6 +281,7 @@ export default function ProdPage() {
       window.scrollTo(0, 0);
     }, 500);
   }, []);
+
   useEffect(() => {
     dispatch(setInShop(true));
     const fetchProd = () => {
@@ -304,21 +306,21 @@ export default function ProdPage() {
     };
   }, [_id, curProd, curProdStatus, dispatch]);
 
-  useEffect(() => {
-    // if (curProdStatus === "succeed" && curProd.Shop) {
-    //   if (curCartStatus === "idle") {
-    //     dispatch(fetchCartByShop(curProd.Shop));
-    //   } else if (curCartStatus === "error") {
-    //     setTimeout(() => {
-    //       dispatch(fetchCartByShop(curProd.Shop));
-    //     }, 2000);
-    //   }
-    // }
-  }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
+  //   useEffect(() => {
+  //     // if (curProdStatus === "succeed" && curProd.Shop) {
+  //     //   if (curCartStatus === "idle") {
+  //     //     dispatch(fetchCartByShop(curProd.Shop));
+  //     //   } else if (curCartStatus === "error") {
+  //     //     setTimeout(() => {
+  //     //       dispatch(fetchCartByShop(curProd.Shop));
+  //     //     }, 2000);
+  //     //   }
+  //     // }
+  //   }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
+
   return (
     <>
       <img alt='bg' src={bgBottom} className={classes.bgBottom} />
-
       {/* header */}
       <Container maxWidth={false} style={{ background: "transparent" }}>
         <div className={classes.headerStyle}>
@@ -343,7 +345,7 @@ export default function ProdPage() {
                   // setClickCategFromRemote(curProd.Categs[0].Categ_far._id)
                   hist.goBack();
                 }}>
-                {curProd.Categ.Categ_far.code}
+                {curProd.Categ?.Categ_far?.code}
               </Link>
               <span> &gt; </span>
               <Link
@@ -353,10 +355,10 @@ export default function ProdPage() {
                   // dispatch(setClickCategFromRemote(curProd.Categs[0]._id));
                   hist.goBack();
                 }}>
-                {curProd.Categ.code}
+                {curProd?.Categ?.code}
               </Link>
               <span> &gt; </span>
-              <span>{curProd.nome}</span>
+              <span>{curProd?.nome}</span>
             </div>
           )}
         </div>
@@ -401,7 +403,7 @@ export default function ProdPage() {
                   })}
                 </Grid>
 
-                {/* ------------main imgs------------ */}
+                {/* ------------main img------------ */}
                 <Grid
                   item
                   container
@@ -430,14 +432,14 @@ export default function ProdPage() {
                     </Grid>
                     {/* +++attr and price section+++ */}
                     <Grid container item xs={12} spacing={1}>
-                      {curProd.Attrs.map((attr) => {
+                      {curProd?.Attrs?.map((attr, index) => {
                         // +++ attr row +++
                         return (
                           <Grid
                             container
                             item
                             xs={12}
-                            key={attr.nome}
+                            key={attr.nome + index}
                             className={classes.attrRow}>
                             <Grid container item xs={4}>
                               {attr.nome}
@@ -447,9 +449,9 @@ export default function ProdPage() {
                               item
                               xs={8}
                               className={classes.attrList}>
-                              {attr.options.map((op) => {
+                              {attr?.options?.map((op,index) => {
                                 return (
-                                  <Grid item xs={3}>
+                                  <Grid item xs={3} key={op+index}>
                                     {op}
                                   </Grid>
                                 );
@@ -458,7 +460,7 @@ export default function ProdPage() {
                           </Grid>
                         );
                       })}
-                      {curProd.Attrs.length > 0 && (
+                      {curProd?.Attrs?.length > 0 && (
                         <Grid item xs={12}>
                           <CustomHr />
                         </Grid>
@@ -516,19 +518,7 @@ export default function ProdPage() {
                   className={classes.gridItem}
                   justifyContent='center'>
                   <div className={classes.desp}>
-                    Di origine ancora piuttosto incerta (sembra provenire dalla
-                    Siberia), il gruppo delle insalate era già conosciuto e
-                    coltivato dai Romani, che, ritenendole piuttosto insipide,
-                    preferivano consumarle associandole a foglie aromatizzanti
-                    di rucola. Pianta a ciclo di coltivazione annuale,
-                    appartenente alla famiglia delle Composite, l'iceberg
-                    presenta un apparato radicale superficiale, con fusto breve
-                    e carnoso su cui si inseriscono le foglie. Per quanto
-                    riguarda il terreno, questa specie vegetale non ha esigenze
-                    particolari e si adatta bene sia ai terreni sabbiosi che a
-                    quelli argillosi. L'iceberg appartiene alla subspecie
-                    capitata, caratterizzata da grumoli rotondeggianti, più o
-                    meno compatti e foglie lisce.
+                   {curProd?.desp}
                   </div>
                 </Grid>
                 <Grid container item xs={12} className={classes.gridItem}>

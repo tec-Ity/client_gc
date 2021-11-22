@@ -191,7 +191,7 @@ export const fetchProdById = createAsyncThunk(
     const prodRes = await fetch_Prom(
       "/Prod/" + _id + "?populateObjs=" + JSON.stringify(prodPopObj)
     );
-    console.log("prodRes", prodRes);
+    // console.log("prodRes", prodRes);
     if (prodRes.status === 200) {
       return prodRes.data.object;
     } else return rejectWithValue(prodRes.message);

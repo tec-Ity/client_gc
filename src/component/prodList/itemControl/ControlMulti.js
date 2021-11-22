@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ControlMultiSkus from "./ControlMultiSkus";
 import CustomShoppingButton from "../../global/button/CustomShoppingButton";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setShowAddrSel,
+  setShowLogin,
+} from "../../../redux/curClient/curClientSlice";
 export default function ControlMulti(props) {
   const {
     skus, //shopslice prodlistQuery .prod .skus
@@ -9,9 +13,13 @@ export default function ControlMulti(props) {
     curProdInCart,
     large = false,
   } = props;
+  const dispatch = useDispatch();
   const [showSkusModal, setShowSkusModal] = useState(false);
   const [totCount, setTotCount] = useState();
-
+  const isLogin = useSelector((state) => state.curClient.isLogin);
+  const userSelectedLocation = useSelector(
+    (state) => state.curClient.userSelectedLocation
+  );
   useEffect(() => {
     const displayTotalCount = () => {
       if (curProdInCart) {
@@ -28,15 +36,19 @@ export default function ControlMulti(props) {
     displayTotalCount();
   }, [skus, curProdInCart]);
 
+  const handleShowSkuMulti = () => {
+    if (!isLogin) dispatch(setShowLogin(true));
+    else if (!userSelectedLocation) dispatch(setShowAddrSel(true));
+    else setShowSkusModal(true);
+  };
+
   return (
     <div>
       {showSkusModal === false && (
         <CustomShoppingButton
           large={large}
           multi
-          handleFunc={() => {
-            setShowSkusModal(true);
-          }}
+          handleFunc={handleShowSkuMulti}
           count={curProdInCart && totCount && totCount}
         />
       )}

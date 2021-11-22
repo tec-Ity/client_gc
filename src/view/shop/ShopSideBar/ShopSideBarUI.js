@@ -22,6 +22,8 @@ const useStyle = makeStyles((theme) => ({
     maxWidth: "200px",
     fontFamily: "Montserrat",
     color: "#1d1d38",
+    position: "sticky",
+    top: "100px",
   },
   customHr: {
     width: "90%",
@@ -146,7 +148,12 @@ export default function ShopSideBarUI(props) {
       //   "height",
       //   window.innerHeight - scrollList.current.getBoundingClientRect().top
       // );
+
+      //   console.log("inner", window.innerHeight);
+      //   console.log("top", scrollList.current.getBoundingClientRect().top);
+
       scrollList.current &&
+        scrollList.current.getBoundingClientRect().top > 0 &&
         (scrollList.current.style.height =
           window.innerHeight -
           scrollList.current.getBoundingClientRect().top +
@@ -158,16 +165,22 @@ export default function ShopSideBarUI(props) {
       //   "top",
       //   window.pageYOffset - sideBar.current.getBoundingClientRect().top
       // );
+      // console.log("offset", window.pageYOffset);
+      // console.log("top", sideBar.current?.getBoundingClientRect().top);
+      // console.log(
+      //   window.pageYOffset - sideBar.current?.getBoundingClientRect().top
+      // );
       if (
         window.pageYOffset - sideBar.current?.getBoundingClientRect().top >
         240
       ) {
-        sideBar.current.style.position = "sticky";
-        sideBar.current.style.top = "100px";
+        // sideBar.current.style.position = "sticky";
+        // sideBar.current.style.top = "100px";
         setScrollNav(true);
       } else {
         if (sideBar.current && sideBar.current.style.position === "fixed") {
-          sideBar.current.style.position = "static";
+          //   console.log("-----------------");
+          //   sideBar.current.style.position = "static";
           setScrollNav(false);
         }
       }

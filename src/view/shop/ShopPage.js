@@ -25,6 +25,7 @@ const useStyle = makeStyles((theme) => ({
     minWidth: "640px",
     left: "0",
     right: "0",
+    top: 0,
     // overflow: "hidden",
   },
   mainSecStyle: {
@@ -57,7 +58,7 @@ export default function ShopPage() {
       window.scrollTo(0, 0);
     }, 500);
   }, []);
-  
+
   useEffect(() => {
     // 会渲染好几次sideBar并console好几次
     dispatch(setInShop(true));
