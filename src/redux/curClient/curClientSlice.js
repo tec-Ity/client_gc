@@ -22,7 +22,7 @@ export const fetchAccessToken = createAsyncThunk(
   async (refreshToken) => {
     if (refreshToken) {
       const loginRes = await refreshToken_Prom();
-      // console.log(loginRes);
+      // //console.log(loginRes);
       return loginRes;
     }
   }
@@ -34,7 +34,7 @@ export const fetchCurClientInfo = createAsyncThunk(
     const curClientRes = await fetch_Prom(
       "/Client?populateObjs=" + JSON.stringify(clientPopObj)
     );
-    // console.log(curClientRes);
+    // //console.log(curClientRes);
     if (curClientRes.status === 200) {
       return curClientRes.data.object;
     } else return rejectWithValue(curClientRes.message);
@@ -44,18 +44,18 @@ export const fetchCurClientInfo = createAsyncThunk(
 export const fetchPutCurClient = createAsyncThunk(
   "curClient/fetchPutCurClient",
   async ({ type, value }, { rejectWithValue }) => {
-    // console.log("type", typeof type);
-    console.log("value", value);
-    console.log("type", type);
+    // //console.log("type", typeof type);
+    //console.log("value", value);
+    //console.log("type", type);
     const formData = {};
     formData[type] = value;
-    // console.log(formData);
+    // //console.log(formData);
     const res = await fetch_Prom("/Client", "PUT", formData);
-    // console.log(res);
+    // //console.log(res);
     if (res.status === 200) {
       return res.data.object;
     } else {
-      // console.log(res.message)
+      // //console.log(res.message)
       return rejectWithValue(res.message);
     }
   }

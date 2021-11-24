@@ -56,7 +56,7 @@ const useStyle = makeStyles((theme) => ({
 export default function ExpandTitle(props) {
   const { title } = props;
   const classes = useStyle();
-  // console.log("title", title);
+  // //console.log("title", title);
   return (
     <>
       {title.desp && (

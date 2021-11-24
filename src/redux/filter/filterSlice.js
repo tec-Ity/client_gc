@@ -33,7 +33,7 @@ export const fetchNationIds = createAsyncThunk(
       const nationId = [];
       for (let i = 0; i < nationCode.length; i++) {
         const nationRes = await fetch_Prom("/Nations?search=" + nationCode[i]);
-        // console.log(nationRes);
+        // //console.log(nationRes);
         if (nationRes?.status === 200)
           nationId.push({
             code: nationCode[i],

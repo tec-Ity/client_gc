@@ -32,7 +32,7 @@ export default function SelfCenterModal() {
   const [showMainModal, setShowMainModal] = useState(true);
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
   const curClientInfo = useSelector((state) => state.curClient.curClientInfo);
-  // console.log(curClientInfo);
+  // //console.log(curClientInfo);
   const curClientInfoStatus = useSelector(
     (state) => state.curClient.curClientInfoStatus
   );
@@ -91,13 +91,13 @@ export default function SelfCenterModal() {
         value = tempInfo[section];
         break;
     }
-    // console.log({ type: section, value });
+    // //console.log({ type: section, value });
     dispatch(fetchPutCurClient({ type: section, value }));
   };
 
   //fetch cur Client info
   useEffect(() => {
-    // console.log("e", curClientInfoStatus);
+    // //console.log("e", curClientInfoStatus);
     if (curClientInfoStatus === "idle") {
       dispatch(fetchCurClientInfo());
     } else if (curClientInfoStatus === "error") {
@@ -106,7 +106,7 @@ export default function SelfCenterModal() {
       }, 2000);
     }
   }, [curClientInfoStatus, dispatch]);
-  // console.log(selectedLocation);
+  // //console.log(selectedLocation);
   const classes = useStyle();
 
   return (

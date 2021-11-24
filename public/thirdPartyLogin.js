@@ -3,7 +3,7 @@ const api_DNS = "https://server.unioncityitaly.com"; //server
 
 const fetchProm = (api, method = "GET", bodyObj) => {
   return new Promise(async (resolve) => {
-    // console.log(api, method, bodyObj);
+    // //console.log(api, method, bodyObj);
     try {
       const api_server = api_DNS + api_version + api;
       const token = localStorage.getItem("accessToken");
@@ -20,11 +20,11 @@ const fetchProm = (api, method = "GET", bodyObj) => {
       } else {
         resolve({ status: 400, message: `[front] method Error` });
       }
-      // console.log(api_server)
-      // console.log(method)
-      //   console.log(api_server, fetchObj);
+      // //console.log(api_server)
+      // //console.log(method)
+      //   //console.log(api_server, fetchObj);
       const resPromise = await fetch(api_server, fetchObj);
-      // console.log("resPromise: ", resPromise)
+      // //console.log("resPromise: ", resPromise)
       const result = await resPromise.json();
       resolve(result);
     } catch (error) {
@@ -35,7 +35,7 @@ const fetchProm = (api, method = "GET", bodyObj) => {
 
 /* ===================================== facebook ===================================== */
 const responseFacebook = async (response, accessToken) => {
-  console.log(response);
+  //console.log(response);
   const social = {};
   social.login_type = "facebook";
   social.Client_accessToken = accessToken;
@@ -43,7 +43,7 @@ const responseFacebook = async (response, accessToken) => {
     social,
   });
 
-  console.log(result);
+  //console.log(result);
   if (result.status === 200) {
     localStorage.setItem("accessToken", result.data?.accessToken);
     localStorage.setItem("curClient", result.data?.curClient);
@@ -52,25 +52,25 @@ const responseFacebook = async (response, accessToken) => {
 
     window.location.reload();
   } else {
-    console.log(result.message);
+    //console.log(result.message);
   }
 };
 
 async function statusChangeCallback(response) {
   // Called with the results from FB.getLoginStatus().
-  console.log("statusChangeCallback");
-  console.log(response); // The current login status of the person.
+  //console.log("statusChangeCallback");
+  //console.log(response); // The current login status of the person.
   if (response.status === "connected") {
     // Logged into your webpage and Facebook.
     // const userFB = await window.facebookUserAwait();
     window.FB.api("/me", { fields: "name,email" }, function (response1) {
-      console.log(response1);
+      //console.log(response1);
       responseFacebook(response1, response.authResponse.accessToken);
 
-      console.log("Successful login for: " + response1.name);
+      //console.log("Successful login for: " + response1.name);
     });
   } else {
-    console.log(1111);
+    //console.log(1111);
     // Not logged into your webpage or we are unable to tell.
   }
 }
@@ -146,8 +146,8 @@ function onSignIn(googleUser) {
     const result = await fetchProm("/login", "POST", {
       social,
     });
-    console.log(1);
-    console.log(result);
+    //console.log(1);
+    //console.log(result);
     if (result.status === 200) {
       localStorage.setItem("accessToken", result.data?.accessToken);
       localStorage.setItem("curClient", result.data?.curClient);
@@ -158,7 +158,7 @@ function onSignIn(googleUser) {
 
       window.location.reload();
     } else {
-      console.log(result.message);
+      //console.log(result.message);
     }
   }
 

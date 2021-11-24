@@ -61,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "file-loader": "^6.2.0"
   }
 }

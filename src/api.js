@@ -6,7 +6,7 @@ export const get_DNS = () => api_DNS;
 
 const fetchProm = (api, method, bodyObj) => {
   return new Promise(async (resolve) => {
-    // console.log(api, method, bodyObj);
+    // //console.log(api, method, bodyObj);
     try {
       const api_server = api_DNS + api_version + api;
       const token = localStorage.getItem("accessToken");
@@ -23,11 +23,11 @@ const fetchProm = (api, method, bodyObj) => {
       } else {
         resolve({ status: 400, message: `[front] method Error` });
       }
-      // console.log(api_server)
-      // console.log(method)
-    //   console.log(api_server, fetchObj);
+      // //console.log(api_server)
+      // //console.log(method)
+    //   //console.log(api_server, fetchObj);
       const resPromise = await fetch(api_server, fetchObj);
-      // console.log("resPromise: ", resPromise)
+      // //console.log("resPromise: ", resPromise)
       const result = await resPromise.json();
       resolve(result);
     } catch (error) {
@@ -36,8 +36,8 @@ const fetchProm = (api, method, bodyObj) => {
   });
 };
 export const fetch_Prom = (api, method = "GET", bodyObj) => {
-//   console.log(api);
-//   console.log(method);
+//   //console.log(api);
+//   //console.log(method);
   return new Promise(async (resolve) => {
     try {
       method = method.toUpperCase();
@@ -142,12 +142,12 @@ export const axios_Prom = async (type, api_router, formData) => {
           },
         });
       }
-      console.log(result);
+      //console.log(result);
       if (!result.data.status) return reject(result.data);
 
       return resolve(result.data);
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       reject(e);
     }
   });

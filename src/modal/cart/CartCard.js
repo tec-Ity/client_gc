@@ -153,7 +153,7 @@ export default function CartCard(props) {
   const hist = useHistory();
   const curCart = useSelector((state) => state.cart.curCart);
   const classes = useStyle(props);
-  console.log(orderLabel && orderCard);
+  //console.log(orderLabel && orderCard);
   const expandMore = () => {
     if (curCart.Shop) {
       if (curCart.Shop !== Shop) {
@@ -173,7 +173,7 @@ export default function CartCard(props) {
     hist.push("/cart/" + cart._id);
   };
 
-  // console.log(handleBtn);
+  // //console.log(handleBtn);
 
   return (
     <Grid container item xs={11} className={classes.root}>

@@ -59,7 +59,7 @@ const initialState = {
 
 //     //------------add new cart if empty cart or existing cart is other shop's--------------
 //     if (!curCart.OrderProds || curCart.Shop !== sku.Shop) {
-//       console.log("new cart");
+//       //console.log("new cart");
 //       //Shop
 //       curCartTemp.Shop = sku.Shop;
 //       //Client
@@ -78,7 +78,7 @@ const initialState = {
 //         const oProd = curCartTemp.OrderProds[i];
 //         if (oProd.Prod === prod._id) {
 //           //--------- add new sku -----------
-//           console.log("new sku");
+//           //console.log("new sku");
 //           oProd.OrderSkus.push(oSkuTemp);
 //           foundProd = true;
 //           break;
@@ -86,7 +86,7 @@ const initialState = {
 //       }
 //       //--------- add new prod -----------
 //       if (!foundProd) {
-//         console.log("new prod");
+//         //console.log("new prod");
 //         curCartTemp.OrderProds.push(opTemp);
 //       }
 //       //--------------modify cart properties --------------
@@ -95,15 +95,15 @@ const initialState = {
 //     } else {
 //       throw new Error("failed adding sku");
 //     }
-//     console.log(curCartTemp);
+//     //console.log(curCartTemp);
 //     dispatch(updateCurCart(curCartTemp));
 //   } catch (e) {
-//     console.log(e);
+//     //console.log(e);
 //   }
 // };
 
 // export const cartSkuPut = (oSkuId, qty, prodId) => (dispatch, getState) => {
-//   console.log(qty);
+//   //console.log(qty);
 //   try {
 //     if (getState().cart.curCart.OrderProds) {
 //       const curCartTemp = { ...getState().cart.curCart };
@@ -115,7 +115,7 @@ const initialState = {
 //             const oSku = oProd.OrderSkus[j];
 //             //find existing sku
 //             if (oSku.Sku === oSkuId) {
-//               console.log(111);
+//               //console.log(111);
 //               //modify quantity
 //               oSku.quantity = qty;
 //               //temporaryly remove this sku's tot price
@@ -132,7 +132,7 @@ const initialState = {
 //       dispatch(updateCurCart(curCartTemp));
 //     }
 //   } catch (e) {
-//     console.log(e);
+//     //console.log(e);
 //   }
 // };
 
@@ -140,7 +140,7 @@ export const fetchProofOrder = createAsyncThunk(
   "cart/fetchProofOrder",
   async (_id, { rejectWithValue }) => {
     const proofRes = await fetch_Prom("/Order_proof/" + _id, "PUT");
-    // console.log("proofRes", proofRes);
+    // //console.log("proofRes", proofRes);
     if (proofRes.status === 200) {
       return proofRes.data.changeObjs;
     } else return rejectWithValue(proofRes.message);
@@ -149,7 +149,7 @@ export const fetchProofOrder = createAsyncThunk(
 
 export const calCartPrice = (OrderProds) => {
   for (let i = 0; i < OrderProds.length; i++) {
-    // console.log(33);
+    // //console.log(33);
     const op = OrderProds[i];
     if (op.OrderSkus?.length > 0)
       for (let j = 0; j < op.OrderSkus.length; j++) {
@@ -157,7 +157,7 @@ export const calCartPrice = (OrderProds) => {
         if (oSku.price_tot) {
           return -1;
         }
-        // console.log("osku", oSku);
+        // //console.log("osku", oSku);
         const totSkuPrice = oSku.price * oSku.quantity;
         oSku.price_tot = totSkuPrice;
       }
@@ -220,7 +220,7 @@ export const cartSlice = createSlice({
       state.curCart = cart || {};
     },
     cartSkuPost: (state, action) => {
-      // console.log(action.payload);
+      // //console.log(action.payload);
       const { sku, qty, prod } = action.payload;
       try {
         //create new sku template
@@ -255,7 +255,7 @@ export const cartSlice = createSlice({
 
         //------------add new cart if empty cart or existing cart is other shop's--------------
         if (!curCart.OrderProds || curCart.Shop !== sku.Shop) {
-          // console.log("new cart");
+          // //console.log("new cart");
           curCartTemp._id = sku.Shop;
           //Shop
           curCartTemp.Shop = sku.Shop;
@@ -277,7 +277,7 @@ export const cartSlice = createSlice({
             const oProd = curCartTemp.OrderProds[i];
             if (oProd.Prod === prod._id) {
               //--------- add new sku in exist prod-----------
-              // console.log("new sku");
+              // //console.log("new sku");
               oProd.OrderSkus.push(oSkuTemp);
               foundProd = true;
               break;
@@ -285,7 +285,7 @@ export const cartSlice = createSlice({
           }
           //--------- add new prod -----------
           if (!foundProd) {
-            // console.log("new prod");
+            // //console.log("new prod");
             curCartTemp.OrderProds.push(opTemp);
           }
           //--------------modify cart properties --------------
@@ -311,7 +311,7 @@ export const cartSlice = createSlice({
         }
         state.curCart = curCartTemp;
       } catch (e) {
-        console.log(e);
+        //console.log(e);
       }
     },
     cartSkuPut: (state, action) => {
@@ -359,7 +359,7 @@ export const cartSlice = createSlice({
           state.curCart = curCartTemp;
         }
       } catch (e) {
-        console.log(e);
+        //console.log(e);
       }
     },
     cartSkuDelete: (state, action) => {
@@ -428,8 +428,8 @@ export const cartSlice = createSlice({
           break;
         }
       }
-      console.log(shopId);
-      console.log(i);
+      //console.log(shopId);
+      //console.log(i);
       if (i < state.carts.length) {
         state.carts.splice(i, 1);
       }
@@ -442,7 +442,7 @@ export const cartSlice = createSlice({
         const foundCart = state.carts.find((c) => c._id === cartId);
         if (foundCart) cartTemp = { ...foundCart };
       }
-    //   console.log(addr);
+    //   //console.log(addr);
       //update client info to new selected addrs
       if (cartTemp && addr) {
         cartTemp.clientInfo.addr = addr.address;

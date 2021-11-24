@@ -10,7 +10,7 @@ import {
 } from "./localStorage";
 import throttle from "lodash/throttle";
 // const preloadedState = loadState();
-// console.log(preloadedState);
+// //console.log(preloadedState);
 export const store = configureStore({
   reducer: {
     curClient: curClientReducer,
@@ -24,7 +24,7 @@ export const store = configureStore({
 store.subscribe(
   throttle(() => {
     const { carts } = store.getState().cart;
-    // console.log("store", carts);
+    // //console.log("store", carts);
     saveState(carts);
   }, 1000)
 );

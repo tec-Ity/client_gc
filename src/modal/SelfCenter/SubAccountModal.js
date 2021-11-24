@@ -21,7 +21,7 @@ const useStyle = makeStyles({
 });
 export default function SubAccountModal({ accountInfo, handleClose }) {
   const [editSection, setEditSection] = useState(null);
-  console.log(editSection);
+  //console.log(editSection);
 
   if (editSection)
     return (
@@ -50,7 +50,7 @@ export default function SubAccountModal({ accountInfo, handleClose }) {
             placeholder='Add a phone number'
             iconType='edit'
             handleFunc={() => {
-              console.log(11);
+              //console.log(11);
               setEditSection("phone");
             }}
           />
@@ -83,7 +83,7 @@ function EditSectionModal({ editInfo, handleClose, editSection }) {
           : await fetch_Prom("/obtain_otp", "POST", {
               email: infoUpdate.account,
             });
-      console.log(result);
+      //console.log(result);
     } else alert("请先输入账号和密码");
   };
   const handleSubmit = async () => {
@@ -97,18 +97,18 @@ function EditSectionModal({ editInfo, handleClose, editSection }) {
       }
       obj.pwd = infoUpdate.pwd;
       obj.otp = infoUpdate.otp;
-      console.log(obj);
+      //console.log(obj);
       const result = await fetch_Prom("/reActive", "PUT", obj);
-      console.log(result);
+      //console.log(result);
       if (result.status === 200) {
-        console.log("success");
+        //console.log("success");
         handleClose();
       }
     } else {
       alert("请输入完整信息");
     }
   };
-  console.log(editSection);
+  //console.log(editSection);
   return (
     <Grid container>
       <Grid item xs={12} style={{ paddingBottom: "5px" }}>

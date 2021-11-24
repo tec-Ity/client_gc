@@ -19,13 +19,13 @@ export default function City() {
   const shopsStatus = useSelector((state) => state.shop.shopsStatus);
   const [sortedShopList, setSortedShopList] = useState([]);
   const [disableIndex, setDisableIndex] = useState();
-  //   console.log(cityCode);
+  //   //console.log(cityCode);
   useEffect(() => {
     function getShops() {
       shopsStatus === "idle" && dispatch(fetchShops());
       if (shopsStatus === "succeed") {
-        // console.log(shops);
-        // console.log(userSelectedLocation);
+        // //console.log(shops);
+        // //console.log(userSelectedLocation);
         const shopWithCity = [];
         const shopWithServe = [];
         const shopNonValid = [];

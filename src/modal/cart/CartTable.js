@@ -92,7 +92,7 @@ const TableRow = (props) => {
       else dispatch(cartSkuDelete({ oSkuId, prodId: prod.Prod }));
     }
   };
-  // console.log(get_DNS() + img);
+  // //console.log(get_DNS() + img);
   const classes = useStyle();
   return (
     <>
@@ -188,10 +188,10 @@ export default function CartTable(props) {
     const rows = [];
     for (let i = 0; i < OrderProds.length; i++) {
       const op = OrderProds[i];
-      // console.log('op',op)
+      // //console.log('op',op)
       const img = isCart ? op.img_url : op.Prod?.img_urls[0];
-      // console.log(op);
-      // console.log("img", img);
+      // //console.log(op);
+      // //console.log("img", img);
       for (let j = 0; j < op.OrderSkus?.length; j++) {
         const oSku = op.OrderSkus[j];
 

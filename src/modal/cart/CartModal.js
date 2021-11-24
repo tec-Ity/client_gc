@@ -22,7 +22,7 @@ export default function CartModal() {
   const dispatch = useDispatch();
   const cartsSkuCount = 3;
   const CartSkuCountShop = 100;
-  // console.log("carts", carts);
+  // //console.log("carts", carts);
   const handleClose = () => {
     dispatch(setShowCarts(false));
   };
@@ -35,7 +35,7 @@ export default function CartModal() {
     dispatch(setCurCartByShop(isExpand));
   }, [dispatch, isExpand]);
 
-  //   console.log(isExpand);
+  //   //console.log(isExpand);
 
   React.useEffect(() => {
     let cartsTemp;
@@ -90,7 +90,7 @@ export default function CartModal() {
     }
     setCartList(cartsTemp);
   }, [carts, curCart, isExpand]);
-  //   console.log(isEmptyCart);
+  //   //console.log(isEmptyCart);
   return (
     <CustomModal show={showCarts} handleClose={handleClose}>
       <CardWraper

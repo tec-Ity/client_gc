@@ -143,14 +143,14 @@ export default function ShopSideBarUI(props) {
   const sideBar = React.useRef(null);
   React.useEffect(() => {
     const handleScroll = () => {
-      // console.log("top", scrollList.current.getBoundingClientRect().top);
-      // console.log(
+      // //console.log("top", scrollList.current.getBoundingClientRect().top);
+      // //console.log(
       //   "height",
       //   window.innerHeight - scrollList.current.getBoundingClientRect().top
       // );
 
-      //   console.log("inner", window.innerHeight);
-      //   console.log("top", scrollList.current.getBoundingClientRect().top);
+      //   //console.log("inner", window.innerHeight);
+      //   //console.log("top", scrollList.current.getBoundingClientRect().top);
 
       scrollList.current &&
         scrollList.current.getBoundingClientRect().top > 0 &&
@@ -159,15 +159,15 @@ export default function ShopSideBarUI(props) {
           scrollList.current.getBoundingClientRect().top +
           "px");
 
-      // console.log(window.pageYOffset);
-      // console.log(sideBar.current.getBoundingClientRect().top);
-      // console.log(
+      // //console.log(window.pageYOffset);
+      // //console.log(sideBar.current.getBoundingClientRect().top);
+      // //console.log(
       //   "top",
       //   window.pageYOffset - sideBar.current.getBoundingClientRect().top
       // );
-      // console.log("offset", window.pageYOffset);
-      // console.log("top", sideBar.current?.getBoundingClientRect().top);
-      // console.log(
+      // //console.log("offset", window.pageYOffset);
+      // //console.log("top", sideBar.current?.getBoundingClientRect().top);
+      // //console.log(
       //   window.pageYOffset - sideBar.current?.getBoundingClientRect().top
       // );
       if (
@@ -179,7 +179,7 @@ export default function ShopSideBarUI(props) {
         setScrollNav(true);
       } else {
         if (sideBar.current && sideBar.current.style.position === "fixed") {
-          //   console.log("-----------------");
+          //   //console.log("-----------------");
           //   sideBar.current.style.position = "static";
           setScrollNav(false);
         }

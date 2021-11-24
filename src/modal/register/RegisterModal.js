@@ -63,7 +63,7 @@ export default function RegisterModal(props) {
         : await fetch_Prom("/obtain_otp", "POST", {
             email: registerData.account,
           });
-    console.log(result);
+    //console.log(result);
   };
 
   const handleSubmit = async (e) => {
@@ -77,11 +77,11 @@ export default function RegisterModal(props) {
       obj.email = registerData.account;
     }
     obj.otp = registerData.otp;
-    console.log(obj);
+    //console.log(obj);
     const result = await fetch_Prom("/register", "POST", obj);
-    console.log(result);
+    //console.log(result);
     if (result.status === 200) {
-      console.log("success");
+      //console.log("success");
       window.location.replace("/login");
     }
   };

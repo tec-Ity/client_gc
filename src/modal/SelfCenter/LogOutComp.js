@@ -21,9 +21,9 @@ export default function LogOutComp() {
     switch (tpl) {
       case "facebook":
         window.FB.getLoginStatus(async function (response) {
-          console.log(response);
+          //console.log(response);
           window.FB.logout(function (response) {
-            console.log(response);
+            //console.log(response);
             async function func() {
               const result = await logout_Prom();
               if (result.status !== 200) {
@@ -47,11 +47,11 @@ export default function LogOutComp() {
               client_id: localStorage.getItem("google"),
             });
 
-            console.log(auth2);
+            //console.log(auth2);
             auth2 = window.gapi.auth2.getAuthInstance();
-            console.log(auth2);
+            //console.log(auth2);
             auth2.signOut().then(function () {
-              console.log("用户注销成功");
+              //console.log("用户注销成功");
               async function func() {
                 const result = await logout_Prom();
                 if (result.status !== 200) {

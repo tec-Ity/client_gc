@@ -40,7 +40,7 @@ export default function OrderDetailPage() {
     }, 100);
   };
 
-//   console.log(curOrder);
+//   //console.log(curOrder);
 
   return (
     <>
@@ -133,7 +133,7 @@ const ToPayLogo = ({ orderTime, _id }) => {
   useEffect(() => {
     const endTime = moment(orderTime).add(validTime, "milliseconds");
     const diff = endTime.diff(moment());
-    console.log(diff);
+    //console.log(diff);
     if (diff <= 0) {
       dispatch(fetchChangeStatus({ _id, action: "CANCEL" }));
       setShowAlert(true);

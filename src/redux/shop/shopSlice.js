@@ -64,7 +64,7 @@ export const fetchCurShopInfo = createAsyncThunk(
   "shop/fetchCurShopInfo",
   async (_id, { rejectWithValue }) => {
     const shopInfoRes = await fetch_Prom("/Shop/" + _id);
-    // console.log("shopInfoRes", shopInfoRes);
+    // //console.log("shopInfoRes", shopInfoRes);
     if (shopInfoRes.status === 200) {
       return shopInfoRes.data.object;
     } else return rejectWithValue(shopInfoRes.message);
@@ -77,11 +77,11 @@ export const fetchCategList = createAsyncThunk(
     const categListResult = await fetch_Prom(
       '/Categs?populateObjs=[{"path":"Categ_sons", "select":"code"}]'
     );
-    // console.log(categListResult);
+    // //console.log(categListResult);
     if (categListResult.status === 200) {
       return categListResult.data.objects;
     } else {
-      console.log(categListResult.message);
+      //console.log(categListResult.message);
       // return categListResult.message;
     }
   }
@@ -91,11 +91,11 @@ export const fetchProdList = createAsyncThunk(
   "shop/fetchProdList",
   async (categs, { getState, rejectWithValue }) => {
     const prodsArr = [];
-    // console.log("categs", categs);
+    // //console.log("categs", categs);
     for (let i = 0; i < categs?.length; i++) {
-      //   console.log("index", i);
-      //   console.log(categs[i].Categ_sons[0]._id);
-      //   console.log(getState().shop.curShop);
+      //   //console.log("index", i);
+      //   //console.log(categs[i].Categ_sons[0]._id);
+      //   //console.log(getState().shop.curShop);
       if (categs[i].Categ_sons.length > 0) {
         const prodListResult = await fetch_Prom(
           "/Prods?pagesize=6&Categs=" +
@@ -105,24 +105,24 @@ export const fetchProdList = createAsyncThunk(
             "&populateObjs=" +
             JSON.stringify(prodPopObj)
         );
-        // console.log("prodListResult", prodListResult);
+        // //console.log("prodListResult", prodListResult);
 
         if (prodListResult.status === 200) {
-          // console.log(i);
+          // //console.log(i);
           prodsArr.push({
             id: categs[i].Categ_sons[0]._id,
             far: { id: categs[i]._id, code: categs[i].code },
             img: categs[i].img_url,
             list: prodListResult.data.objects,
           });
-          // console.log("g", prodsArr);
+          // //console.log("g", prodsArr);
         } else {
-          // console.log(prodListResult.message);
+          // //console.log(prodListResult.message);
           return rejectWithValue(prodListResult.message);
         }
       }
     }
-    // console.log("test", prodsArr);
+    // //console.log("test", prodsArr);
     return prodsArr;
   }
 );
@@ -130,9 +130,9 @@ export const fetchProdList = createAsyncThunk(
 export const fetchProdListQuery = createAsyncThunk(
   "shop/fetchProdListQuery",
   async (query, { getState, rejectWithValue }) => {
-    // console.log(ProdPop);
+    // //console.log(ProdPop);
     if (query) {
-      // console.log("query", query);
+      // //console.log("query", query);
       const prodsRes = await fetch_Prom(
         "/Prods?" +
           query +
@@ -141,13 +141,13 @@ export const fetchProdListQuery = createAsyncThunk(
           "&populateObjs=" +
           JSON.stringify(prodPopObj)
       );
-      // console.log(prodsRes.data.objects);
-      //   console.log("prodsRes", prodsRes);
+      // //console.log(prodsRes.data.objects);
+      //   //console.log("prodsRes", prodsRes);
       if (prodsRes.status === 200) {
         return prodsRes.data.objects;
       } else {
-        // console.log([]);
-        console.log(prodsRes.message);
+        // //console.log([]);
+        //console.log(prodsRes.message);
       }
     } else {
       return [];
@@ -160,7 +160,7 @@ export const fetchProdById = createAsyncThunk(
   async (_id, { getState, rejectWithValue }) => {
     //search prodListHome
     const prodList = getState().shop.prodList;
-    // console.log(prodList);
+    // //console.log(prodList);
     if (prodList.length > 0) {
       for (let i = 0; i < prodList.length; i++) {
         const foundProd = prodList[i].list.find((prod) => {
@@ -168,7 +168,7 @@ export const fetchProdById = createAsyncThunk(
         });
 
         if (foundProd) {
-          console.log("found in home");
+          //console.log("found in home");
           return foundProd;
         }
       }
@@ -182,7 +182,7 @@ export const fetchProdById = createAsyncThunk(
       });
 
       if (foundProd) {
-        console.log("found in query");
+        //console.log("found in query");
         return foundProd;
       }
     }
@@ -191,7 +191,7 @@ export const fetchProdById = createAsyncThunk(
     const prodRes = await fetch_Prom(
       "/Prod/" + _id + "?populateObjs=" + JSON.stringify(prodPopObj)
     );
-    // console.log("prodRes", prodRes);
+    // //console.log("prodRes", prodRes);
     if (prodRes.status === 200) {
       return prodRes.data.object;
     } else return rejectWithValue(prodRes.message);
@@ -239,11 +239,11 @@ export const shopSlice = createSlice({
     },
     [fetchProdList.fulfilled]: (state, action) => {
       state.prodStatus = "succeed";
-      // console.log("fulfilled", action.payload);
+      // //console.log("fulfilled", action.payload);
       state.prodList = action.payload;
     },
     [fetchProdList.rejected]: (state, action) => {
-      console.log("error");
+      //console.log("error");
       state.prodStatus = "error";
       state.prodList = [];
       state.prodError = action.payload;
@@ -254,11 +254,11 @@ export const shopSlice = createSlice({
     },
     [fetchProdListQuery.fulfilled]: (state, action) => {
       state.prodStatusQuery = "succeed";
-      // console.log("fulfilled", action.payload);
+      // //console.log("fulfilled", action.payload);
       state.prodListQuery = action.payload;
     },
     [fetchProdListQuery.rejected]: (state, action) => {
-      console.log("error");
+      //console.log("error");
       state.prodStatusQuery = "error";
       state.prodListQuery = [];
       state.prodErrorQuery = action.error.message;
@@ -269,11 +269,11 @@ export const shopSlice = createSlice({
     },
     [fetchProdById.fulfilled]: (state, action) => {
       state.curProdStatus = "succeed";
-      // console.log("fulfilled", action.payload);
+      // //console.log("fulfilled", action.payload);
       state.curProd = action.payload;
     },
     [fetchProdById.rejected]: (state, action) => {
-      console.log("error");
+      //console.log("error");
       state.curProdStatus = "error";
       state.curProd = {};
       // state.prodErrorQuery = action.error.message;

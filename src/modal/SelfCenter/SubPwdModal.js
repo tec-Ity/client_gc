@@ -42,7 +42,7 @@ export default function SubPwdModal(props) {
   );
 
   const handleSubmitPwdInfo = useCallback(() => {
-    // console.log(pwdInfo);
+    // //console.log(pwdInfo);
     if (
       pwdInfo.oldPwd.length > 0 &&
       pwdInfo.newPwd.length > 0 &&

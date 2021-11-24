@@ -220,16 +220,16 @@ export default function MapContainer(props) {
 //       style={{ zIndex: 10 }}
 //       onClick={() =>
 //         navigator.geolocation.getCurrentPosition(async (pos) => {
-//           // console.log(pos);
+//           // //console.log(pos);
 //           panTo({ lat: pos.coords.latitude, lng: pos.coords.longitude });
 //           const result = await getGeocode({
 //             location: { lat: pos.coords.latitude, lng: pos.coords.longitude },
 //           });
-//           // console.log("geo", result);
+//           // //console.log("geo", result);
 //           const shortName = result[0].address_components.find((address) =>
 //             address.types.find((type) => type === "administrative_area_level_2")
 //           ).short_name;
-//           console.log(shortName);
+//           //console.log(shortName);
 //         })
 //       }>
 //       <img src='../component/icon/user.svg' alt='User' />
@@ -252,11 +252,11 @@ export function Search({ panTo, style, updateAddr, disabled = false }) {
     },
   });
   const classes = useStyle();
-  //   console.log(status);
-  //   console.log(value);
-  //   console.log(data[0]);
+  //   //console.log(status);
+  //   //console.log(value);
+  //   //console.log(data[0]);
   const options = data.map((d) => {
-    // console.log(d);
+    // //console.log(d);
     return d.description;
   });
 
@@ -265,7 +265,7 @@ export function Search({ panTo, style, updateAddr, disabled = false }) {
       if (updateAddr) {
         setValue(updateAddr.address);
         const result = await getGeocode({ address: updateAddr.address });
-        // console.log(result);
+        // //console.log(result);
         const { lat, lng } = await getLatLng(result[0]);
         panTo({ lat, lng });
       }
@@ -273,7 +273,7 @@ export function Search({ panTo, style, updateAddr, disabled = false }) {
     preSetUpdateAddress();
   }, [panTo, setValue, updateAddr, value]);
 
-  //   console.log(options);
+  //   //console.log(options);
   return (
     <Autocomplete
       disabled={disabled}
@@ -285,16 +285,16 @@ export function Search({ panTo, style, updateAddr, disabled = false }) {
       onChange={async (e, value) => {
         try {
           if (status === "OK") {
-            // console.log(value);
+            // //console.log(value);
             setValue(value, false); //set the user selection without calling API
             const result = await getGeocode({ address: value });
-            // console.log(result);
+            // //console.log(result);
             const { lat, lng } = await getLatLng(result[0]);
             panTo({ lat, lng });
             clearSuggestions();
           }
         } catch (error) {
-          console.log(error);
+          //console.log(error);
         }
       }}
       filterOptions={(x) => x}

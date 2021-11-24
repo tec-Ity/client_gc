@@ -315,7 +315,7 @@ export function AddrAddModal(props) {
     setNewAddr((prev) => ({ ...prev, [section]: value }));
   };
   const handleSubmit = (address) => {
-    // console.log(address);
+    // //console.log(address);
     const cityShortName = address?.location?.address_components?.find((addr) =>
       addr.types?.find((type) => type === "administrative_area_level_2")
     ).short_name;
@@ -331,7 +331,7 @@ export function AddrAddModal(props) {
       postcode: postCode,
       note: address?.note,
     };
-    // console.log(value);
+    // //console.log(value);
     if (isUpdate) {
       value._id = isUpdate && addr._id && addr._id;
       dispatch(fetchPutCurClient({ type: "addr_put", value }));

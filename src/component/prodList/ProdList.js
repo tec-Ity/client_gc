@@ -19,7 +19,7 @@ export default function ProdList(props) {
   }, [queryURL, dispatch]);
 
   const displayResult = () => {
-    // console.log("status", prodStatusQuery);
+    // //console.log("status", prodStatusQuery);
     if (prodStatusQuery === "loading") {
       return <Grid item>Loading......</Grid>;
     } else if (prodStatusQuery === "succeed") {
@@ -46,7 +46,7 @@ export default function ProdList(props) {
       });
 
       if (type === "expand") {
-        console.log();
+        //console.log();
         if (prodListTemp.length % 3 > 1) {
           prodListTemp.push(
             <ProdListItem

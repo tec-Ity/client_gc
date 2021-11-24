@@ -67,8 +67,8 @@ export const fetchOrders = createAsyncThunk(
     const Orders_res = await fetch_Prom(
       "/Orders?populateObjs=" + JSON.stringify(orderObj) + queryURL
     );
-    // console.log("orderRes", queryURL);
-    // console.log("orderRes", Orders_res);
+    // //console.log("orderRes", queryURL);
+    // //console.log("orderRes", Orders_res);
     if (Orders_res.status === 200) {
       if (isReload) {
         return Orders_res.data.objects;
@@ -76,7 +76,7 @@ export const fetchOrders = createAsyncThunk(
         return [...getState().order.orders, ...Orders_res.data.objects];
       }
     } else {
-      console.log("Orders", Orders_res.message);
+      //console.log("Orders", Orders_res.message);
       rejectWithValue(Orders_res.message);
     }
   }
@@ -88,7 +88,7 @@ export const fetchOrderById = createAsyncThunk(
     const OrderRes = await fetch_Prom(
       "/Orders?includes=" + [_id] + "&populateObjs=" + JSON.stringify(orderObj)
     );
-    console.log(OrderRes);
+    //console.log(OrderRes);
     if (OrderRes.status === 200) {
       if (OrderRes.data.objects?.length > 0) {
         return OrderRes.data.objects[0];
@@ -107,7 +107,7 @@ export const fetchChangeStatus = createAsyncThunk(
     const statusRes = await fetch_Prom("/Order_change_status/" + _id, "PUT", {
       action,
     });
-    console.log("statusRes", statusRes);
+    //console.log("statusRes", statusRes);
 
     if (statusRes.status === 200) {
       return statusRes.data;
@@ -134,11 +134,11 @@ export const fetchOrderPost = createAsyncThunk(
           phone: cartObj.clientInfo?.personalInfo?.phone,
         };
       }
-      console.log(obj);
+      //console.log(obj);
       const orderPostRes = await fetch_Prom("/Order", "POST", {
         obj,
       });
-      console.log("orderPostRes", orderPostRes);
+      //console.log("orderPostRes", orderPostRes);
 
       if (orderPostRes.status === 200) {
         return orderPostRes.data.object;
@@ -158,7 +158,7 @@ export const orderSlice = createSlice({
       state.isExpand = action.payload;
     },
     setOrderBtnSwitch: (state, action) => {
-      console.log("orderRes", action.payload);
+      //console.log("orderRes", action.payload);
       state.orderBtnSwitch[action.payload.type] = action.payload.value;
     },
   },

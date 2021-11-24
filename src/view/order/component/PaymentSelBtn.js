@@ -71,7 +71,7 @@ const useStyle = makeStyles((theme) => ({
 export default function PaymentSelBtn({ orderId }) {
   const classes = useStyle();
   const [showPayment, setShowPayment] = useState(false);
-//   console.log(my_Domain);
+//   //console.log(my_Domain);
   useEffect(() => {
     (async function (d, s, id) {
       var js,
@@ -83,8 +83,8 @@ export default function PaymentSelBtn({ orderId }) {
       js.src = `https://www.paypal.com/sdk/js?client-id=${result?.data?.paypal_client_id}&currency=EUR&components=buttons,funding-eligibility`;
       fjs.parentNode.insertBefore(js, fjs);
     })(document, "script", "paypal-jssdk");
-    // console.log(window.paypal);
-    // console.log(window.paypal_sdk);
+    // //console.log(window.paypal);
+    // //console.log(window.paypal_sdk);
   }, []);
   const handlePayment = async () => {
     setShowPayment(true);
@@ -123,7 +123,7 @@ const PaymentSelModal = ({ show, handleClose, orderId }) => {
         cancel_url: `${my_Domain}/order/${orderId}`,
       }
     );
-    // console.log(paymentLinkRes);
+    // //console.log(paymentLinkRes);
     if (paymentLinkRes.status === 200)
       window.location.replace(paymentLinkRes?.data?.url);
   };
@@ -148,7 +148,7 @@ const PaymentSelModal = ({ show, handleClose, orderId }) => {
 
 const PayPalBtn = ({ orderId }) => {
   useEffect(() => {
-    // console.log(window.paypal);
+    // //console.log(window.paypal);
     window.paypal &&
       window.paypal
         .Buttons({
@@ -158,18 +158,18 @@ const PayPalBtn = ({ orderId }) => {
             const res = await fetch_Prom("/create-order", "POST", {
               OrderId: orderId,
             });
-            // console.log(res);
+            // //console.log(res);
             if (res.status === 200) return res.data.id;
             else alert(res.message);
           },
           onApprove: async function (data, actions) {
-            console.log(data);
+            //console.log(data);
             const res = await fetch_Prom("/check-order", "POST", {
               paypal_orderId: data.orderID,
               OrderId: orderId,
             });
 
-            // console.log(res);
+            // //console.log(res);
             if (res.status === 200) {
               window.location.reload();
             }

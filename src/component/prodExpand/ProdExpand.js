@@ -13,7 +13,7 @@ export default function ProdExpand(props) {
   const nationIds = useSelector((state) => state.filter.nationIds);
   const [queryURL, setQueryURL] = useState(null);
   useEffect(() => {
-    // console.log("query", query);
+    // //console.log("query", query);
     let callQuery = false;
     try {
       let queryUrl = "";
@@ -22,7 +22,7 @@ export default function ProdExpand(props) {
         callQuery = true;
       }
       if (query.nations.length > 0) {
-        // console.log('id',nationIds)
+        // //console.log('id',nationIds)
         queryUrl +=
           "&Nations=" +
           query.nations.map(
@@ -34,10 +34,10 @@ export default function ProdExpand(props) {
         queryUrl += "&is_discount=true";
         callQuery = true;
       }
-      //   console.log("query", queryUrl);
+      //   //console.log("query", queryUrl);
       callQuery === true ? setQueryURL(queryUrl) : setQueryURL(null);
     } catch (e) {
-      //   console.log(e);
+      //   //console.log(e);
     }
   }, [dispatch, nationIds, query]);
 

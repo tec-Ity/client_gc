@@ -49,7 +49,7 @@ export default function DeliveryDetail({
 }) {
   const classes = useStyle();
   const [showAddrModal, setShowAddrModal] = useState(false);
-//   console.log(clientInfo);
+//   //console.log(clientInfo);
 
   return (
     <>

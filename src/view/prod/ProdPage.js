@@ -567,7 +567,7 @@ export default function ProdPage() {
                       "&sortKey=at_upd&sortVal=1"
                     }
                   />
-                  {/* {console.log(moment(curProd.at_crt).format("MM/DD/YYYY"))} */}
+                  {/* {//console.log(moment(curProd.at_crt).format("MM/DD/YYYY"))} */}
                 </Grid>
               </Grid>
             </Container>

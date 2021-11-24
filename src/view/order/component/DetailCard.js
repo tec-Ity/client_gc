@@ -221,7 +221,7 @@ export default function DetailCard(props) {
   const curShopInfoStatus = useSelector(
     (state) => state.shop.curShopInfoStatus
   );
-  // console.log(order)
+  // //console.log(order)
   React.useEffect(() => {
     const getShopInfo = () => {
       if (curShopInfoStatus === "idle") {

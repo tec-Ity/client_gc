@@ -72,7 +72,7 @@ export default function ShopPage() {
       //call categ only once for every shops
       (categStatus === "idle" || categStatus === "error") &&
         dispatch(fetchCategList());
-      // console.log("status", categStatus);
+      // //console.log("status", categStatus);
       if (categStatus === "succeed") {
         dispatch(setCurShop(_id));
         dispatch(fetchProdList(categs));

@@ -155,7 +155,7 @@ export default function ShopSideBar(props) {
     }
     //re start
     if (nations.length >= 3 && !nations.find((n) => n === nation)) {
-      // console.log("back");
+      // //console.log("back");
       dispatch(setIsHome(true));
       dispatch(setQuery({ nations: [] }));
     } else {
@@ -163,11 +163,11 @@ export default function ShopSideBar(props) {
         const index = nations.indexOf(nation);
         //found duplicate nation
         if (index !== -1) {
-          // console.log("nations", nations);
-          // console.log("index", index);
+          // //console.log("nations", nations);
+          // //console.log("index", index);
           const newNations = [...nations];
           newNations.splice(index, 1);
-          // console.log("new", newNations);
+          // //console.log("new", newNations);
           dispatch(setQuery({ nations: newNations }));
           if (newNations.length === 0) {
             dispatch(setIsHome(true));

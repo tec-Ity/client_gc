@@ -23,14 +23,14 @@ export default function HomePage() {
     async function getCitys() {
       try {
         const resultCitys = await fetch_Prom("/Citas");
-        // console.log("citas", resultCitys);
+        // //console.log("citas", resultCitys);
         if (resultCitys.status === 200) {
           setCitys(resultCitys.data.objects);
         } else {
-          console.log(resultCitys.message);
+          //console.log(resultCitys.message);
         }
       } catch (e) {
-        console.log(e);
+        //console.log(e);
       }
     }
     getCitys();

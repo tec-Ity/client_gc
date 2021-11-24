@@ -36,7 +36,7 @@ export default function LoginModal() {
   useEffect(() => {
     async function getNation() {
       const result = await fetch_Prom("/Nations");
-      //   console.log(result);
+      //   //console.log(result);
       const nations = result.data?.objects;
       setNations(nations);
     }
@@ -92,9 +92,9 @@ export default function LoginModal() {
     }
 
     system.pwd = loginData.password;
-    // console.log(system);
+    // //console.log(system);
     const result = await fetch_Prom("/login", "POST", { system });
-    // console.log(result);
+    // //console.log(result);
     if (result.status === 200) {
       dispatch(setCurClientInfo(result.data?.curClient));
       localStorage.setItem("accessToken", result.data?.accessToken);
