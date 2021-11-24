@@ -54,7 +54,6 @@ export default function RegisterModalUI(props) {
             <span
               className={classes.loginLink}
               onClick={() => {
-                console.log(111);
                 dispatch(setShowRegister(false));
                 dispatch(setShowLogin(true));
               }}>

@@ -83,7 +83,6 @@ export default function InputVerif(props) {
   const { handleSendCode, handleChange, verifCode } = props;
   const classes = useStyles();
   const [btnDisabled, setBtnDisabled] = useState(false);
-  console.log(classes.recieveButton);
   const EndADM = (
     <InputAdornment position='end'>
       <Button

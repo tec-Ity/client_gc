@@ -172,18 +172,15 @@ export default function AddrSelModal() {
   );
   const getCurrentPosition = React.useCallback(() => {
     navigator.geolocation.getCurrentPosition(async (pos) => {
-      //   console.log(pos);
       const result = await getGeocode({
         location: {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
         },
       });
-      //   console.log("geo", result);
       const shortName = result[0].address_components.find((address) =>
         address.types.find((type) => type === "administrative_area_level_2")
       ).short_name;
-      //   console.log(shortName);
       const zipCode = result[0].address_components?.find((addr) =>
         addr.types?.find((type) => type === "postal_code")
       ).short_name;
@@ -207,8 +204,6 @@ export default function AddrSelModal() {
     //address is either formated address or google api address
     (address) => {
       dispatch(setShowAddrSel(false));
-      console.log(address);
-      //   console.log(selectedAddr);
 
       //if address has location key,
       //extract city, address, and zip from google api
@@ -342,7 +337,6 @@ export default function AddrSelModal() {
                 </Grid>
                 {/* location body */}
                 <Grid item container xs={12}>
-                  {console.log(curClientAddrs)}
                   {curClientAddrs
                     ? curClientAddrs.map((addr) => (
                         <AddrListItem
@@ -350,7 +344,6 @@ export default function AddrSelModal() {
                           selectedLocation={selectedLocation}
                           addr={addr}
                           handleClick={(setNew) => {
-                            console.log(addr);
                             if (setNew) {
                               setSelectedLocation(addr._id);
                               setCurCity(addr.Cita?.code);

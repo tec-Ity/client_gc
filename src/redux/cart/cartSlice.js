@@ -442,14 +442,16 @@ export const cartSlice = createSlice({
         const foundCart = state.carts.find((c) => c._id === cartId);
         if (foundCart) cartTemp = { ...foundCart };
       }
-
+    //   console.log(addr);
       //update client info to new selected addrs
       if (cartTemp && addr) {
         cartTemp.clientInfo.addr = addr.address;
         cartTemp.clientInfo.city = addr.Cita?.code;
         cartTemp.clientInfo.zip = addr.postcode;
-        cartTemp.clientInfo.personalInfo.name = addr.name;
-        cartTemp.clientInfo.personalInfo.phone = addr.phone;
+        cartTemp.clientInfo.personalInfo = {
+          name: addr.name,
+          phone: addr.phone,
+        };
       }
       //update curCart
       state.curCart = cartTemp;

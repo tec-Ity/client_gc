@@ -23,6 +23,7 @@ export default function AddrModifyModal({ show, handleClose, inCart }) {
       }, 2000);
     }
   }, [curClientInfoStatus, dispatch]);
+  
   return (
     <SubSelfModals
       tempInfo={{ addrs: curClientInfo.addrs }}

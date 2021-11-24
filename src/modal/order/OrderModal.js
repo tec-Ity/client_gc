@@ -8,6 +8,7 @@ import CartCard from "../cart/CartCard";
 import { useHistory } from "react-router";
 import { ReactComponent as ToPay } from "../../component/icon/orderStatueUnpaid.svg";
 import { ReactComponent as InProgress } from "../../component/icon/orderStatueInProcess.svg";
+import EmptyLogo from "../Component/EmptyLogo";
 
 export default function OrderModal() {
   const dispatch = useDispatch();
@@ -40,9 +41,12 @@ export default function OrderModal() {
 
   useEffect(() => {
     const getOrders = () => {
-      console.log(orders);
       let orderCardTemp;
-      if (ordersStatus === "succeed" && newFetch === true) {
+      if (
+        ordersStatus === "succeed" &&
+        newFetch === true &&
+        orders.length > 0
+      ) {
         orderCardTemp = orders?.map((od, index) => {
           return (
             <CartCard
@@ -51,10 +55,8 @@ export default function OrderModal() {
               orderLogo='test'
               orderCard={true}
               orderExpandMore={() => {
-                if (od.status === 100) {
-                  hist.push("/order/" + od._id);
-                  handleClose();
-                }
+                hist.push("/order/" + od._id);
+                handleClose();
               }}
               orderLabel={
                 od.status === 100 ? (
@@ -74,10 +76,16 @@ export default function OrderModal() {
             />
           );
         });
-        setOrderList(orderCardTemp);
       } else {
-        orderCardTemp = <div>订单加载中</div>;
+        orderCardTemp = (
+          <EmptyLogo
+            type='order'
+            label='ORDINE VUOTO'
+            text='Vai nei negozi a completare un ordine ora!'
+          />
+        );
       }
+      setOrderList(orderCardTemp);
     };
     getOrders();
   }, [dispatch, handleClose, hist, newFetch, orders, ordersStatus]);
@@ -85,7 +93,7 @@ export default function OrderModal() {
   const handleCollapse = () => {
     dispatch(setIsExpand(true));
   };
-  //   console.log("order");
+
   return (
     <CustomModal show={showOrders} handleClose={handleClose}>
       <CardWraper

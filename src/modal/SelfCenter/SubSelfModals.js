@@ -11,6 +11,7 @@ import Container from "@material-ui/core/Container";
 import SubPwdModal from "./SubPwdModal";
 import SubAccountModal from "./SubAccountModal";
 import CustomButton from "../../component/global/modal/component/CustomButton";
+
 const useStyle = makeStyles({
   root: {},
   ///sub modal style
@@ -43,6 +44,7 @@ const useStyle = makeStyles({
     width: "90%",
   },
 });
+
 export default function SubSelfModals(props) {
   const {
     showSubModal,
@@ -86,18 +88,21 @@ export default function SubSelfModals(props) {
           />
         </RowModal>
       )}
+
       {showSubModal.social === true && (
         <RowModal
           show={showSubModal.social}
           handleClose={handleCloseSub}
           label='Modifica il tuo social:'></RowModal>
       )}
+
       {showSubModal.method === true && (
         <RowModal
           show={showSubModal.method}
           handleClose={handleCloseSub}
           label='Modifica i metodi di pagamento:'></RowModal>
       )}
+      
       {/* -------- address modal ------------*/}
       {showSubModal.addr === true && (
         <RowModal

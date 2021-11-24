@@ -5,10 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DetailCard from "./component/DetailCard";
 import ProofModal from "./component/ProofModal";
 import { fetchOrderPost } from "../../redux/order/orderSlice";
-import {
-  cartDelete,
-  selectCurCart,
-} from "../../redux/cart/cartSlice";
+import { cartDelete, selectCurCart } from "../../redux/cart/cartSlice";
 import CustomAlert from "../../component/global/modal/CustomAlert";
 
 export default function CartDetailPage() {
@@ -23,7 +20,6 @@ export default function CartDetailPage() {
   const curOrder = useSelector((state) => state.order.curOrder);
   const [showAlert, setShowAlert] = useState(false);
   const hist = useHistory();
-
 
   React.useEffect(() => {
     if (orderPostStatus === "loading" || orderPostStatus === "error") {
@@ -41,10 +37,10 @@ export default function CartDetailPage() {
   };
 
   const handleConfirmOrder = (setLoadingFunc) => {
-    // console.log("confirm!!");
+    console.log(curCart);
     // window.scrollTo(0,document.body.scrollHeight);
-    // if(curCart.)
-    if (!curCart?.addrInfo) {
+
+    if (!(curCart?.clientInfo && curCart.clientInfo.personalInfo)) {
       setLoadingFunc(false);
       setShowAlert("请选择收货地址，收货人，联系电话");
     } else {

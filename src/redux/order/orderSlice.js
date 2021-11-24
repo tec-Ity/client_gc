@@ -67,8 +67,8 @@ export const fetchOrders = createAsyncThunk(
     const Orders_res = await fetch_Prom(
       "/Orders?populateObjs=" + JSON.stringify(orderObj) + queryURL
     );
-    console.log("orderRes", queryURL);
-    console.log("orderRes", Orders_res);
+    // console.log("orderRes", queryURL);
+    // console.log("orderRes", Orders_res);
     if (Orders_res.status === 200) {
       if (isReload) {
         return Orders_res.data.objects;
@@ -110,27 +110,28 @@ export const fetchChangeStatus = createAsyncThunk(
     console.log("statusRes", statusRes);
 
     if (statusRes.status === 200) {
-      return statusRes.data; 
+      return statusRes.data;
     } else return rejectWithValue(statusRes.message);
   }
 );
 export const fetchOrderPost = createAsyncThunk(
   "order/fetchOrderPost",
+  //0 自取
+  //1 店铺配送
   async ({ cartObj, typeShip = 1 }, { getState, rejectWithValue }) => {
     const obj = {};
     if (cartObj) {
       //get user selected location from curclient slice as the ship info to pass
-      const userAddr = getState().curClient.userSelectedLocation;
       obj.Shop = cartObj.Shop;
       obj.OrderProds = cartObj.OrderProds;
       obj.type_ship = typeShip;
       if (typeShip === 1) {
         obj.ship_info = {
-          Cita_code: userAddr?.city,
-          Client_nome: userAddr?.personalInfo?.name,
-          address: userAddr?.addr,
-          postcode: userAddr?.zip,
-          phone: userAddr?.phone,
+          Cita_code: cartObj.clientInfo?.city,
+          Client_nome: cartObj.clientInfo?.personalInfo?.name,
+          address: cartObj.clientInfo?.addr,
+          postcode: cartObj.clientInfo?.zip,
+          phone: cartObj.clientInfo?.personalInfo?.phone,
         };
       }
       console.log(obj);
