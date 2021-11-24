@@ -70,19 +70,18 @@ export default function SubAccountModal({ accountInfo, handleClose }) {
 
 function EditSectionModal({ editInfo, handleClose, editSection }) {
   const classes = useStyle();
-//   const dispatch = useDispatch();
+  //   const dispatch = useDispatch();
   const [infoUpdate, setInfoUpdate] = useState({ phonePre: "0039" });
   const handleSendCode = async () => {
-    if (infoUpdate.account && infoUpdate.pwd ) {
-      const result =
-        editSection === "phone"
-          ? await fetch_Prom("/obtain_otp", "POST", {
-              phone: infoUpdate.account,
-              phonePre: infoUpdate.phonePre,
-            })
-          : await fetch_Prom("/obtain_otp", "POST", {
-              email: infoUpdate.account,
-            });
+    if (infoUpdate.account && infoUpdate.pwd) {
+      editSection === "phone"
+        ? await fetch_Prom("/obtain_otp", "POST", {
+            phone: infoUpdate.account,
+            phonePre: infoUpdate.phonePre,
+          })
+        : await fetch_Prom("/obtain_otp", "POST", {
+            email: infoUpdate.account,
+          });
       //console.log(result);
     } else alert("请先输入账号和密码");
   };

@@ -54,15 +54,14 @@ export default function RegisterModal(props) {
   };
 
   const handleSendCode = async () => {
-    const result =
-      showPhonePre === true
-        ? await fetch_Prom("/obtain_otp", "POST", {
-            phone: registerData.account,
-            phonePre: registerData.phonePre,
-          })
-        : await fetch_Prom("/obtain_otp", "POST", {
-            email: registerData.account,
-          });
+    showPhonePre === true
+      ? await fetch_Prom("/obtain_otp", "POST", {
+          phone: registerData.account,
+          phonePre: registerData.phonePre,
+        })
+      : await fetch_Prom("/obtain_otp", "POST", {
+          email: registerData.account,
+        });
     //console.log(result);
   };
 
