@@ -12,34 +12,55 @@ export default function ProdExpand(props) {
   const query = useSelector((state) => state.filter.query);
   const nationIds = useSelector((state) => state.filter.nationIds);
   const [queryURL, setQueryURL] = useState(null);
+  const [pageNum, setPageNum] = useState(1);
+  const [isReload, setIsReload] = useState(true);
+
   useEffect(() => {
     // //console.log("query", query);
-    let callQuery = false;
+    let validQuery = false;
     try {
       let queryUrl = "";
       if (query.categs.length > 0) {
         queryUrl += "&Categs=" + query.categs;
-        callQuery = true;
+        validQuery = true;
       }
       if (query.nations.length > 0) {
-        // //console.log('id',nationIds)
         queryUrl +=
           "&Nations=" +
           query.nations.map(
             (n) => nationIds?.find((idObj) => idObj.code === n)?.id
           );
-        callQuery = true;
+        validQuery = true;
       }
       if (query.isDiscount === true) {
         queryUrl += "&is_discount=true";
-        callQuery = true;
+        validQuery = true;
       }
-      //   //console.log("query", queryUrl);
-      callQuery === true ? setQueryURL(queryUrl) : setQueryURL(null);
-    } catch (e) {
-      //   //console.log(e);
-    }
-  }, [dispatch, nationIds, query]);
+      //test query field for changing page size
+      validQuery === true && (queryUrl += "&pagesize=6");
+
+      //valid query
+      if (validQuery === true) {
+        queryUrl += "&page=" + pageNum;
+        //initial
+        if (pageNum === 1) {
+          setQueryURL(queryUrl);
+        } else {
+          //repeted, no action
+          if (queryUrl === queryURL) {
+            console.log("repeted");
+          }
+          //change page
+          else {
+            setIsReload(false);
+            setQueryURL(queryUrl);
+          }
+        }
+      } else {
+        setQueryURL(null);
+      }
+    } catch (e) {}
+  }, [dispatch, nationIds, pageNum, query]);
 
   const Back = () => {
     dispatch(goBack());
@@ -63,7 +84,11 @@ export default function ProdExpand(props) {
           queryURL ? (
             <>
               <ExpandTitle title={title} />
-              <ProdList queryURL={queryURL} />
+              {/* add is reload */}
+              <ProdList queryURL={queryURL} isReload={isReload} />
+              <button onClick={() => setPageNum((prev) => prev + 1)}>
+                more
+              </button>
             </>
           ) : (
             <>
@@ -82,7 +107,7 @@ export default function ProdExpand(props) {
         )}
       </div>
 
-      {queryURL && <button onClick={Back}>back</button>}
+      {/* {queryURL && <button onClick={Back}>back</button>} */}
     </Container>
   );
 }

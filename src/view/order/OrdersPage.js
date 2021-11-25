@@ -6,6 +6,14 @@ import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import OrderCard from "./component/OrderCard";
 import BackLink from "../../component/global/link/BackLink";
+import { ReactComponent as ToPayIconGray } from "../../component/icon/orderStatueUnpaidGrey.svg";
+import { ReactComponent as InProgressIconGray } from "../../component/icon/orderStatueInProcessGrey.svg";
+import { ReactComponent as CanceledIconGray } from "../../component/icon/orderStatueCanceledGrey.svg";
+import { ReactComponent as CompletedIconGray } from "../../component/icon/orderStatueCompleteGrey.svg";
+import { ReactComponent as ToPayIcon } from "../../component/icon/orderStatueUnpaid.svg";
+import { ReactComponent as InProgressIcon } from "../../component/icon/orderStatueInProcess.svg";
+import { ReactComponent as CanceledIcon } from "../../component/icon/orderStatueCanceled.svg";
+import { ReactComponent as CompletedIcon } from "../../component/icon/orderStatueComplete.svg";
 
 const useStyle = makeStyles({
   root: { color: "#1d1d38" },
@@ -38,23 +46,31 @@ const useStyle = makeStyles({
 
   //button styles
   btnStyle: {
-    borderRadius: "100px 100px 100px 0",
-    backgroundColor: "#fff",
-    fontSize: "15px",
-    fontWeight: "700",
-    border: "2px solid",
-    width: "150px",
-    // maxWidth: "150px",
-    fontFamily: "Montserrat",
-    height: "37px",
-    borderColor: "#1d1d38",
-  },
-  btnSelected: {
-    backgroundColor: "#1d1d38",
-    color: "#fff",
-    "&:hover": {
-      backgroundColor: "#1d1d38cc",
-      border: "#1d1d38cc",
+    height: "80px",
+    width: "90px",
+    cursor: "pointer",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    "& > :first-child": {
+      "& > :first-child": {
+        width: "80px",
+        height: "54px",
+        transition: "all 0.2s",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        "&:hover": {
+          height: "70px",
+          width: "90px",
+        },
+      },
+    },
+    "& > :nth-child(2)": {
+      fontSize: "10px",
+      fontFamily: "Montserrat",
+      fontWeight: "700",
     },
   },
 
@@ -82,13 +98,11 @@ export default function OrdersPage() {
           "&status=" +
           [
             orderBtnSwitch.toPay ? 100 : "",
-            orderBtnSwitch.toPay ? 70 : "",
-            orderBtnSwitch.paid ? 200 : "",
+            orderBtnSwitch.inProgress ? 200 : "",
             orderBtnSwitch.inProgress ? 400 : "",
             orderBtnSwitch.inProgress ? 700 : "",
             orderBtnSwitch.completed ? 800 : "",
             orderBtnSwitch.canceled ? 10 : "",
-            orderBtnSwitch.canceled ? 60 : "",
           ],
         isReload: true,
       })
@@ -111,6 +125,33 @@ export default function OrdersPage() {
     );
   };
 
+  const statusSelBtnList = [
+    {
+      field: "toPay",
+      label: "DA PAGARE",
+      icon: <ToPayIconGray />,
+      iconSelect: <ToPayIcon />,
+    },
+    {
+      field: "inProgress",
+      label: "IN PROCESSO",
+      icon: <InProgressIconGray />,
+      iconSelect: <InProgressIcon />,
+    },
+    {
+      field: "canceled",
+      label: "CANCEL",
+      icon: <CanceledIconGray />,
+      iconSelect: <CanceledIcon />,
+    },
+    {
+      field: "completed",
+      label: "COMPLETO",
+      icon: <CompletedIconGray />,
+      iconSelect: <CompletedIcon />,
+    },
+  ];
+
   return (
     <Container className={classes.root}>
       <div className={classes.headerStyle}>
@@ -119,56 +160,18 @@ export default function OrdersPage() {
       {/* buttons */}
       <Container>
         <Grid container justifyContent='space-evenly'>
-          <Grid item>
-            <Button
-              className={clsx(
-                classes.btnStyle,
-                orderBtnSwitch.paid && classes.btnSelected
-              )}
-              onClick={handleOrderStateChange("paid")}>
-              PAGATO
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              className={clsx(
-                classes.btnStyle,
-                orderBtnSwitch.toPay && classes.btnSelected
-              )}
-              onClick={handleOrderStateChange("toPay")}>
-              DA PAGARE
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              className={clsx(
-                classes.btnStyle,
-                orderBtnSwitch.inProgress && classes.btnSelected
-              )}
-              onClick={handleOrderStateChange("inProgress")}>
-              IN PROCESSO
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              className={clsx(
-                classes.btnStyle,
-                orderBtnSwitch.completed && classes.btnSelected
-              )}
-              onClick={handleOrderStateChange("completed")}>
-              CONSEGNATO
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              className={clsx(
-                classes.btnStyle,
-                orderBtnSwitch.canceled && classes.btnSelected
-              )}
-              onClick={handleOrderStateChange("canceled")}>
-              CANCELLATO
-            </Button>
-          </Grid>
+          {statusSelBtnList.map((item) => (
+            <Grid item key={item.field}>
+              <div
+                className={classes.btnStyle}
+                onClick={handleOrderStateChange(item.field)}>
+                <div>
+                  {orderBtnSwitch[item.field] ? item.iconSelect : item.icon}
+                </div>
+                <div>{item.label}</div>
+              </div>
+            </Grid>
+          ))}
         </Grid>
       </Container>
       <Grid container className={classes.wrapper}>

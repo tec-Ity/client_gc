@@ -40,7 +40,7 @@ export default function OrderDetailPage() {
     }, 100);
   };
 
-//   //console.log(curOrder);
+  //   //console.log(curOrder);
 
   return (
     <>
@@ -121,9 +121,10 @@ const InProgressLogo = ({ orderStatus }) => {
 };
 
 //////////////////////////////// to pay
-const interval = 1000;
-const validTime = 2 * 60 * 60 * 1000;
+// const validTime = 2 * 60 * 1000;
 const ToPayLogo = ({ orderTime, _id }) => {
+  const interval = 1000;
+  const validTime = 2 * 60 * 60 * 1000;
   const classes = useStyle();
   const myTimer = React.useRef(null);
   const [duration, setDuration] = useState(null);
@@ -153,6 +154,8 @@ const ToPayLogo = ({ orderTime, _id }) => {
             if (newDuration <= 0) {
               dispatch(fetchChangeStatus({ _id, action: "CANCEL" }));
               setShowAlert(true);
+              clearInterval(myTimer.current);
+              return moment.duration(0);
             }
             return moment.duration(newDuration - interval);
           }
@@ -162,7 +165,7 @@ const ToPayLogo = ({ orderTime, _id }) => {
     return () => {
       clearInterval(myTimer.current);
     };
-  }, [_id, dispatch, orderTime]);
+  }, [_id, dispatch, orderTime, validTime]);
 
   return (
     <>
@@ -173,7 +176,9 @@ const ToPayLogo = ({ orderTime, _id }) => {
           {duration &&
             duration?.hours() +
               ":" +
-              duration?.minutes() +
+              (duration?.minutes() < 10
+                ? "0" + duration?.minutes()
+                : duration?.minutes()) +
               ":" +
               (duration?.seconds() < 10
                 ? "0" + duration?.seconds()

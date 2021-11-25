@@ -24,7 +24,6 @@ const initialState = {
 
   //order selection button status
   orderBtnSwitch: {
-    paid: true,
     toPay: true,
     inProgress: true,
     completed: false,

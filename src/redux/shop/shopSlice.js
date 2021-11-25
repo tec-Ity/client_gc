@@ -129,13 +129,14 @@ export const fetchProdList = createAsyncThunk(
 
 export const fetchProdListQuery = createAsyncThunk(
   "shop/fetchProdListQuery",
-  async (query, { getState, rejectWithValue }) => {
+  async ({ queryURL, isReload = true }, { getState, rejectWithValue }) => {
     // //console.log(ProdPop);
-    if (query) {
-      // //console.log("query", query);
+    if (queryURL) {
+      //   console.log("queryURL", queryURL);
+      //   console.log("reload", isReload);
       const prodsRes = await fetch_Prom(
         "/Prods?" +
-          query +
+          queryURL +
           "&Shops=" +
           [getState().shop.curShop] +
           "&populateObjs=" +
@@ -144,7 +145,7 @@ export const fetchProdListQuery = createAsyncThunk(
       // //console.log(prodsRes.data.objects);
       //   //console.log("prodsRes", prodsRes);
       if (prodsRes.status === 200) {
-        return prodsRes.data.objects;
+        return { objects: prodsRes.data.objects, isReload };
       } else {
         // //console.log([]);
         //console.log(prodsRes.message);
@@ -255,7 +256,12 @@ export const shopSlice = createSlice({
     [fetchProdListQuery.fulfilled]: (state, action) => {
       state.prodStatusQuery = "succeed";
       // //console.log("fulfilled", action.payload);
-      state.prodListQuery = action.payload;
+      const { objects, isReload } = action.payload;
+      if (isReload === true) {
+        state.prodListQuery = objects;
+      } else {
+        state.prodListQuery.push(...objects);
+      }
     },
     [fetchProdListQuery.rejected]: (state, action) => {
       //console.log("error");

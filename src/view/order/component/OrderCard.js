@@ -4,6 +4,11 @@ import { Paper, Grid } from "@material-ui/core";
 import moment from "moment";
 import CustomHr from "../../../component/global/modal/component/CustomHr";
 import CartTable from "../../../modal/cart/CartTable";
+import { ReactComponent as ToPayIcon } from "../../../component/icon/orderStatueUnpaid.svg";
+import { ReactComponent as InProgressIcon } from "../../../component/icon/orderStatueInProcess.svg";
+import { ReactComponent as CanceledIcon } from "../../../component/icon/orderStatueCanceled.svg";
+import { ReactComponent as CompletedIcon } from "../../../component/icon/orderStatueComplete.svg";
+
 const useStyle = makeStyles({
   root: {
     width: "100%",
@@ -26,7 +31,6 @@ const useStyle = makeStyles({
       padding: "10px",
     },
   },
-
   infoForm: {
     fontSize: "12px",
     display: "flex",
@@ -68,12 +72,114 @@ const useStyle = makeStyles({
       },
     },
   },
-  prodTableStyle:{
+  prodTableStyle: {
     //   border: "1px solid",
-      height: "150px",
-      overflowY:'hidden'
-  }
+    height: "145px",
+    overflowY: "hidden",
+  },
+  rightSection: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  shopTag: {
+    position: "absolute",
+    top: "20px",
+    right: "-30px",
+    width: "160px",
+    height: "50px",
+    "& > :nth-child(1)": {
+      height: "40px",
+      width: "160px",
+      fontSize: "14px",
+      color: "#fff",
+      fontWeight: 700,
+      backgroundColor: "#c0e57b",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    "& > :nth-child(2)": {
+      height: "0",
+      width: "0",
+      border: "7px solid transparent",
+      borderBottom: "7px solid #1d1d38",
+      position: "absolute",
+      right: "3px",
+      top: "33px",
+      transform: "rotate(-45deg)",
+    },
+  },
+
+  //logo styles
+  logoStyle: {
+    height: "80px",
+    width: "90px",
+    cursor: "pointer",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "Montserrat",
+    "& > :nth-child(2)": {
+      fontSize: "10px",
+      fontWeight: "700",
+    },
+    "& > :nth-child(3)": {
+      fontSize: "10px",
+    },
+  },
 });
+
+function OrderStatusLogo({ status }) {
+  const classes = useStyle();
+  const logoList = {
+    100: {
+      label: "DA PAGARE",
+      icon: <ToPayIcon />,
+    },
+    200: {
+      label: "IN PROCESSO",
+      icon: <InProgressIcon />,
+      msg: "In Ricezione",
+    },
+    400: {
+      label: "IN PROCESSO",
+      icon: <InProgressIcon />,
+      msg: "In Preparazione",
+    },
+    700: {
+      label: "IN PROCESSO",
+      icon: <InProgressIcon />,
+      msg: "In Consegna",
+    },
+    800: {
+      label: "COMPLETO",
+      icon: <CompletedIcon />,
+    },
+    10: {
+      label: "CANCEL",
+      icon: <CanceledIcon />,
+    },
+  };
+
+  const logo = logoList[status];
+
+  return (
+    <>
+      {logo && (
+        <div className={classes.logoStyle}>
+          <div>{logo.icon}</div>
+          <div>{logo.label}</div>
+          {logo.msg && <div>{logo.msg}</div>}
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function OrderCard(props) {
   const { order } = props;
   const classes = useStyle();
@@ -152,9 +258,19 @@ export default function OrderCard(props) {
               <div>€{order.total_sale?.toFixed(2)}</div>
             </Grid>
           </Grid>
+          <Grid item xs={1} />
           {/* right col */}
-          <Grid container item xs={3}>
-            b
+          <Grid item xs={2} className={classes.rightSection}>
+            <div className={classes.shopTag}>
+              <div>
+                <div>NEGOZIO</div>
+                <div>{order.Shop?.nome}</div>
+              </div>
+              <div></div>
+            </div>
+            <div>
+              <OrderStatusLogo status={order.status} />
+            </div>
           </Grid>
         </Grid>
       </Paper>

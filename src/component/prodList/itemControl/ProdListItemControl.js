@@ -28,7 +28,7 @@ export default function ProdListItemControl(props) {
     }
   };
 
-  const curProdInCart = useSelector(selectCurProdInCart(prodId, shop._id));
+  const curProdInCart = useSelector(selectCurProdInCart(prodId, shop?._id));
 
   return (
     <Suspense fallback={<div>Loading......</div>}>
