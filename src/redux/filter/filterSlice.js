@@ -10,6 +10,7 @@ const initialState = {
     categs: [],
     nations: [],
     isDiscount: null,
+    page: 1,
   },
   search: null,
   /*select categs*/
@@ -59,8 +60,12 @@ export const filterSilce = createSlice({
         : initialState.title;
     },
     setQuery: (state, action) => {
+      const { page } = action.payload;
+      console.log(page);
       state.query = action.payload
-        ? { ...initialState.query, ...action.payload }
+        ? page
+          ? { ...state.query, ...action.payload }
+          : { ...initialState.query, ...action.payload }
         : initialState.query;
     },
     setSearch: (state, action) => {

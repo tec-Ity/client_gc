@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { goBack } from "../../redux/filter/filterSlice";
+import { goBack, setQuery } from "../../redux/filter/filterSlice";
 import ProdList from "../prodList/ProdList";
 import ExpandTitle from "./ExpandTitle";
 import Container from "@material-ui/core/Container";
@@ -11,10 +11,15 @@ export default function ProdExpand(props) {
   const title = useSelector((state) => state.filter.title);
   const query = useSelector((state) => state.filter.query);
   const nationIds = useSelector((state) => state.filter.nationIds);
+  const prodListQueryStatus = useSelector(
+    (state) => state.shop.prodListQueryStatus
+  );
+  const prodListQueryTot = useSelector((state) => state.shop.prodListQueryTot);
   const [queryURL, setQueryURL] = useState(null);
-  const [pageNum, setPageNum] = useState(1);
+//   const [pageNum, setPageNum] = useState(1);
   const [isReload, setIsReload] = useState(true);
-
+//   const [atBottom, setAtBottom] = React.useState(false);
+  const pageSize = 30;
   useEffect(() => {
     // //console.log("query", query);
     let validQuery = false;
@@ -37,13 +42,16 @@ export default function ProdExpand(props) {
         validQuery = true;
       }
       //test query field for changing page size
-      validQuery === true && (queryUrl += "&pagesize=6");
+      validQuery === true && (queryUrl += "&pagesize=" + pageSize);
 
+      console.log(query);
       //valid query
       if (validQuery === true) {
-        queryUrl += "&page=" + pageNum;
+        queryUrl += "&page=" + query.page;
+        console.log(queryUrl);
         //initial
-        if (pageNum === 1) {
+        if (query.page === 1) {
+          setIsReload(true);
           setQueryURL(queryUrl);
         } else {
           //repeted, no action
@@ -60,11 +68,30 @@ export default function ProdExpand(props) {
         setQueryURL(null);
       }
     } catch (e) {}
-  }, [dispatch, nationIds, pageNum, query]);
+  }, [dispatch, nationIds, query]);
 
-  const Back = () => {
-    dispatch(goBack());
-  };
+  //   useEffect(() => {
+  //     const handleScroll = () => {
+  //       const element = document.getElementById("prod-container");
+  //       //if bottom?
+  //       if (element.getBoundingClientRect().bottom <= window.innerHeight) {
+  //         if (atBottom === false) {
+  //           setPageNum((prev) => prev + 1);
+  //           setAtBottom(true);
+  //         }
+  //       } else {
+  //         setAtBottom(false);
+  //       }
+  //     };
+  //     window.addEventListener("scroll", handleScroll);
+  //     return () => {
+  //       window.removeEventListener("scroll", handleScroll);
+  //     };
+  //   }, []);
+
+  //   useEffect(() => {
+  //     dispatch(setQuery({ page: pageNum }));
+  //   }, [dispatch, pageNum]);
 
   const handleFunc = () => {
     document.getElementById(props.far.id + "categBar").click();
@@ -79,16 +106,23 @@ export default function ProdExpand(props) {
         marginTop: "15px",
         maxWidth: "781px",
       }}>
-      <div>
+      <div id='prod-container'>
         {queryURL || props.prods ? (
           queryURL ? (
             <>
               <ExpandTitle title={title} />
               {/* add is reload */}
               <ProdList queryURL={queryURL} isReload={isReload} />
-              <button onClick={() => setPageNum((prev) => prev + 1)}>
-                more
-              </button>
+              {prodListQueryTot > 0 &&
+                query.page * pageSize < prodListQueryTot && (
+                  <CustomButton
+                    label='VEDI DI PIÙ'
+                    handleFunc={(setLoading) => {
+                      dispatch(setQuery({ page: query.page + 1 }));
+                      if (prodListQueryStatus === "succeed") setLoading(false);
+                    }}
+                  />
+                )}
             </>
           ) : (
             <>
@@ -106,8 +140,6 @@ export default function ProdExpand(props) {
           <CustomButton label='VEDI DI PIÙ' handleFunc={handleFunc} />
         )}
       </div>
-
-      {/* {queryURL && <button onClick={Back}>back</button>} */}
     </Container>
   );
 }

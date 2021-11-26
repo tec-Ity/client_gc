@@ -90,6 +90,9 @@ export default function OrdersPage() {
   const classes = useStyle();
   const orders = useSelector((state) => state.order.orders);
   const orderBtnSwitch = useSelector((state) => state.order.orderBtnSwitch);
+  const ref = React.useRef(null);
+  const [pageNum, setPageNum] = React.useState(1);
+  const [atBottom, setAtBottom] = React.useState(false);
 
   useEffect(() => {
     dispatch(
@@ -103,20 +106,16 @@ export default function OrdersPage() {
             orderBtnSwitch.inProgress ? 700 : "",
             orderBtnSwitch.completed ? 800 : "",
             orderBtnSwitch.canceled ? 10 : "",
-          ],
-        isReload: true,
+          ] +
+          "&pagesize=3&page=" +
+          pageNum,
+        isReload: Boolean(pageNum === 1),
       })
     );
-  }, [
-    dispatch,
-    orderBtnSwitch.canceled,
-    orderBtnSwitch.completed,
-    orderBtnSwitch.inProgress,
-    orderBtnSwitch.paid,
-    orderBtnSwitch.toPay,
-  ]);
+  }, [dispatch, orderBtnSwitch, pageNum]);
 
   const handleOrderStateChange = (type) => () => {
+    setPageNum(1);
     dispatch(
       setOrderBtnSwitch({
         type,
@@ -124,6 +123,27 @@ export default function OrdersPage() {
       })
     );
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const element = document.getElementById("order-container");
+    //   console.log(element.getBoundingClientRect().bottom);
+    //   console.log("----", window.innerHeight);
+      //if bottom?
+      if (element.getBoundingClientRect().bottom <= window.innerHeight) {
+        if (atBottom === false) {
+          setPageNum((prev) => prev + 1);
+          setAtBottom(true);
+        }
+      } else {
+        setAtBottom(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const statusSelBtnList = [
     {
@@ -174,7 +194,7 @@ export default function OrdersPage() {
           ))}
         </Grid>
       </Container>
-      <Grid container className={classes.wrapper}>
+      <Grid container className={classes.wrapper} id='order-container'>
         {orders &&
           orders.map((order) => {
             return (
@@ -188,6 +208,7 @@ export default function OrdersPage() {
               </Grid>
             );
           })}
+        <button onClick={() => setPageNum((prev) => prev + 1)}>more</button>
       </Grid>
     </Container>
   );

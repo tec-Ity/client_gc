@@ -116,8 +116,7 @@ const useStyle = makeStyles({
   //logo styles
   logoStyle: {
     height: "80px",
-    width: "90px",
-    cursor: "pointer",
+    width: "100px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

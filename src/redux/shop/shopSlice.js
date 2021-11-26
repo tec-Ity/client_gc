@@ -19,7 +19,8 @@ const initialState = {
 
   /*prodListQuery*/
   prodListQuery: [],
-  prodStatusQuery: "idle",
+  prodListQueryTot: 0,
+  prodListQueryStatus: "idle",
   prodErrorQuery: "",
 
   /*prodSelection */
@@ -143,9 +144,13 @@ export const fetchProdListQuery = createAsyncThunk(
           JSON.stringify(prodPopObj)
       );
       // //console.log(prodsRes.data.objects);
-      //   //console.log("prodsRes", prodsRes);
+      console.log("prodsRes", prodsRes);
       if (prodsRes.status === 200) {
-        return { objects: prodsRes.data.objects, isReload };
+        return {
+          objects: prodsRes.data.objects,
+          isReload,
+          tot: prodsRes.data.count,
+        };
       } else {
         // //console.log([]);
         //console.log(prodsRes.message);
@@ -251,21 +256,22 @@ export const shopSlice = createSlice({
     },
     /*prodListQuery */
     [fetchProdListQuery.pending]: (state) => {
-      state.prodStatusQuery = "loading";
+      state.prodListQueryStatus = "loading";
     },
     [fetchProdListQuery.fulfilled]: (state, action) => {
-      state.prodStatusQuery = "succeed";
+      state.prodListQueryStatus = "succeed";
       // //console.log("fulfilled", action.payload);
-      const { objects, isReload } = action.payload;
+      const { objects, isReload, tot } = action.payload;
       if (isReload === true) {
         state.prodListQuery = objects;
       } else {
         state.prodListQuery.push(...objects);
       }
+      state.prodListQueryTot = tot;
     },
     [fetchProdListQuery.rejected]: (state, action) => {
       //console.log("error");
-      state.prodStatusQuery = "error";
+      state.prodListQueryStatus = "error";
       state.prodListQuery = [];
       state.prodErrorQuery = action.error.message;
     },

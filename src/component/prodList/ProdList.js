@@ -14,7 +14,7 @@ export default function ProdList(props) {
   } = props;
   const dispatch = useDispatch();
   const prodListQuery = useSelector((state) => state.shop.prodListQuery);
-  const prodStatusQuery = useSelector((state) => state.shop.prodStatusQuery);
+  const prodListQueryStatus = useSelector((state) => state.shop.prodListQueryStatus);
   //   const prodErrorQuery = useSelector((state) => state.shop.prodErrorQuery);
 
   const [list, setList] = useState();
@@ -56,9 +56,9 @@ export default function ProdList(props) {
 
   useEffect(() => {
     const displayResult = () => {
-      if (prodStatusQuery === "loading") {
+      if (prodListQueryStatus === "loading") {
         isReload === true && setList(<Grid item>Loading......</Grid>);
-      } else if (prodStatusQuery === "succeed") {
+      } else if (prodListQueryStatus === "succeed") {
         prodListQuery?.length > 0 ? (
           setList(getProdList(prodListQuery))
         ) : (
@@ -67,7 +67,7 @@ export default function ProdList(props) {
       }
     };
     displayResult();
-  }, [getProdList, isReload, prodListQuery, prodStatusQuery]);
+  }, [getProdList, isReload, prodListQuery, prodListQueryStatus]);
 
   // const displayProdsFromParent = () => {};
 
