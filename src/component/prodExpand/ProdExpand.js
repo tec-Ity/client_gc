@@ -44,11 +44,11 @@ export default function ProdExpand(props) {
       //test query field for changing page size
       validQuery === true && (queryUrl += "&pagesize=" + pageSize);
 
-      console.log(query);
+    //   console.log(query);
       //valid query
       if (validQuery === true) {
         queryUrl += "&page=" + query.page;
-        console.log(queryUrl);
+        // console.log(queryUrl);
         //initial
         if (query.page === 1) {
           setIsReload(true);
@@ -56,7 +56,7 @@ export default function ProdExpand(props) {
         } else {
           //repeted, no action
           if (queryUrl === queryURL) {
-            console.log("repeted");
+            // console.log("repeted");
           }
           //change page
           else {

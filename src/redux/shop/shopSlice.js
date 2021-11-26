@@ -144,7 +144,7 @@ export const fetchProdListQuery = createAsyncThunk(
           JSON.stringify(prodPopObj)
       );
       // //console.log(prodsRes.data.objects);
-      console.log("prodsRes", prodsRes);
+    //   console.log("prodsRes", prodsRes);
       if (prodsRes.status === 200) {
         return {
           objects: prodsRes.data.objects,
