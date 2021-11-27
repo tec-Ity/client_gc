@@ -6,7 +6,7 @@
 .pnp.js
 
 # dns
-_dns.js
+/src/conf/_dns.js
 
 # testing
 /coverage
