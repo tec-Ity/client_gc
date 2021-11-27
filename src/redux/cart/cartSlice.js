@@ -31,8 +31,8 @@ const initialState = {
 //     const oSkuTemp = {
 //       //--Sku
 //       Sku: sku._id,
-//       //--price
-//       price: sku.price_regular,
+//       //--price_sale
+//       price_sale: sku.price_regular,
 //       //--attrs ---desp
 //       attrs: sku.attrs
 //         ? sku.attrs.map((attr) => attr.nome + ":" + attr.option + " ")
@@ -158,7 +158,7 @@ export const calCartPrice = (OrderProds) => {
           return -1;
         }
         // //console.log("osku", oSku);
-        const totSkuPrice = oSku.price * oSku.quantity;
+        const totSkuPrice = oSku.price_sale * oSku.quantity;
         oSku.price_tot = totSkuPrice;
       }
   }
@@ -227,8 +227,8 @@ export const cartSlice = createSlice({
         const oSkuTemp = {
           //--Sku
           Sku: sku._id,
-          //--price
-          price: sku.price_regular,
+          //--price_sale
+          price_sale: sku.price_sale,
           //--attrs ---desp
           attrs: sku.attrs
             ? sku.attrs.map((attr) => attr.nome + ":" + attr.option + " ")
@@ -236,7 +236,7 @@ export const cartSlice = createSlice({
           //--quantity
           quantity: qty,
           //--price_tot
-          price_tot: sku.price_regular * qty,
+          price_tot: sku.price_sale * qty,
         };
 
         //create new prod template
@@ -333,8 +333,8 @@ export const cartSlice = createSlice({
                   oSku.quantity = qty;
                   //modify price
                   curCartTemp.totPrice -= oSku.price_tot;
-                  curCartTemp.totPrice += oSku.price * qty;
-                  oSku.price_tot = oSku.price * qty;
+                  curCartTemp.totPrice += oSku.price_sale * qty;
+                  oSku.price_tot = oSku.price_sale * qty;
                   break;
                 }
               }
@@ -375,7 +375,7 @@ export const cartSlice = createSlice({
             if (oSku.Sku === oSkuId) {
               delSkuIndex = j;
               curCartTemp.totItem -= 1;
-              curCartTemp.totPrice -= oSku.price;
+              curCartTemp.totPrice -= oSku.price_sale;
               break;
             }
           }

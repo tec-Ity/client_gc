@@ -60,13 +60,15 @@ export const filterSilce = createSlice({
         : initialState.title;
     },
     setQuery: (state, action) => {
-      const { page } = action.payload;
-      console.log(page);
-      state.query = action.payload
-        ? page
-          ? { ...state.query, ...action.payload }
-          : { ...initialState.query, ...action.payload }
-        : initialState.query;
+      if (action.payload) {
+        const { page } = action.payload;
+        console.log(page);
+        state.query = action.payload
+          ? page
+            ? { ...state.query, ...action.payload }
+            : { ...initialState.query, ...action.payload }
+          : initialState.query;
+      }
     },
     setSearch: (state, action) => {
       state.search = action.payload

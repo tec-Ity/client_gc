@@ -33,7 +33,7 @@ const initialState = {
 
 const oSkuObj = {
   path: "OrderSkus",
-  select: "Sku price quantity price_regular attrs",
+  select: "Sku price quantity price_regular price_sale attrs",
 };
 const prodObj = {
   path: "Prod",

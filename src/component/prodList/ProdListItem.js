@@ -122,7 +122,7 @@ export default function ProdListItem(props) {
             <div>
               <div className={classes.priceStyle}>
                 {prod.price_max === prod.price_min
-                  ? `€${String(prod.price?.toFixed(2))?.replace(".", ",")}`
+                  ? `€${String(prod.price_unit?.toFixed(2))?.replace(".", ",")}`
                   : `€${String(prod.price_min?.toFixed(2))?.replace(
                       ".",
                       ","

@@ -151,9 +151,9 @@ const TableRow = (props) => {
             </div>
             <div>&nbsp;</div>
           </Grid>
-
+          
           <Grid item xs={showImg ? 2 : 3}>
-            <div>€{oSku.price?.toFixed(2)}</div>
+            <div>€{oSku.price_sale?.toFixed(2)}</div>
             <div>&nbsp;</div>
           </Grid>
           <Grid item xs={showImg ? 2 : 3}>
