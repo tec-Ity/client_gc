@@ -8,7 +8,7 @@ const api_DNS = "https://server.unioncityitaly.com"; //server
 // const api_DNS = "https://dev.unioncityitaly.com"; //server
 
 
-const port = "3001";
+const port = "";
 export const my_Domain = `https://${window.location.hostname}${
   port ? ":" + port : ""
 }`;
