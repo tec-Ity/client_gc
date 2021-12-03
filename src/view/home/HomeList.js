@@ -9,6 +9,8 @@ import {
 import { get_DNS } from "../../api";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomBgText from "../../component/global/background/CustomBgText";
+import CustomAlert from "../../component/global/modal/CustomAlert";
+
 const useStyle = makeStyles({
   root: {
     height: "150px",
@@ -135,6 +137,8 @@ export default function HomeList(props) {
   const { containerId, label, list, handleFunc, disableIndex } = props;
   const classes = useStyle();
   const ref = useRef(null);
+  const [showAlert, setShowAlert] = React.useState(false);
+
   //   //console.log(list);
   useEffect(() => {
     const setStyle = () => {
@@ -151,53 +155,63 @@ export default function HomeList(props) {
   });
 
   return (
-    <Container
-      disableGutters
-      maxWidth={false}
-      className={classes.root}
-      id={containerId}>
-      {label && (
-        <div className={classes.labelBoxStyle}>
-          <CustomBgText
-            label={label}
-            style={{ bg: classes.bg, txt: classes.txt }}
-          />
-        </div>
-      )}
-      <Grid ref={ref} container className={classes.itemGrid} spacing={5}>
-        {/* <div style={{width:'30px'}}>&nbsp;&nbsp;</div> */}
-        {list &&
-          list.map((item, index) => {
-            const disabled = Boolean(index >= disableIndex);
-            return (
-              <Grid
-                item
-                key={item._id}
-                style={{ paddingTop: index === 0 && "80px" }}>
-                <Card className={classes.itemCard} id={item._id} elevation={0}>
-                  <CardActionArea
-                    classes={{ root: classes.cardActionArea }}
-                    onClick={!disabled ? handleFunc(item) : () => {}}>
-                    {item.img_url && (
-                      <>
-                        <CardMedia
-                          component='img'
-                          image={get_DNS() + item.img_url}
-                          alt={item.nome}
-                          title={item.nome}
-                          className={classes.cardMedia}
-                        />
-                      </>
-                    )}
-                    <div
-                      className={
-                        item.img_url
-                          ? classes.cardBackground
-                          : classes.cardNoBackground
+    <>
+      <Container
+        disableGutters
+        maxWidth={false}
+        className={classes.root}
+        id={containerId}>
+        {label && (
+          <div className={classes.labelBoxStyle}>
+            <CustomBgText
+              label={label}
+              style={{ bg: classes.bg, txt: classes.txt }}
+            />
+          </div>
+        )}
+        <Grid ref={ref} container className={classes.itemGrid} spacing={5}>
+          {/* <div style={{width:'30px'}}>&nbsp;&nbsp;</div> */}
+          {list &&
+            list.map((item, index) => {
+              const disabled = Boolean(index >= disableIndex);
+              return (
+                <Grid
+                  item
+                  key={item._id}
+                  style={{ paddingTop: index === 0 && "80px" }}>
+                  <Card
+                    className={classes.itemCard}
+                    id={item._id}
+                    elevation={0}>
+                    <CardActionArea
+                      classes={{ root: classes.cardActionArea }}
+                      onClick={
+                        !disabled
+                          ? handleFunc(item)
+                          : () => {
+                              setShowAlert(true);
+                            }
                       }>
-                      {item.nome}
-                    </div>
-                    {/* <CardContent
+                      {item.img_url && (
+                        <>
+                          <CardMedia
+                            component='img'
+                            image={get_DNS() + item.img_url}
+                            alt={item.nome}
+                            title={item.nome}
+                            className={classes.cardMedia}
+                          />
+                        </>
+                      )}
+                      <div
+                        className={
+                          item.img_url
+                            ? classes.cardBackground
+                            : classes.cardNoBackground
+                        }>
+                        {item.nome}
+                      </div>
+                      {/* <CardContent
                       className={
                         disabled
                           ? classes.cardContentDisabled
@@ -205,12 +219,20 @@ export default function HomeList(props) {
                       }>
                       <span>{item.nome}</span>
                     </CardContent> */}
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            );
-          })}
-      </Grid>
-    </Container>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              );
+            })}
+        </Grid>
+      </Container>
+      <CustomAlert
+        show={showAlert}
+        handleClose={() => setShowAlert(false)}
+        alertTitle={"超出配送范围"}
+        alertButton={"OK"}
+        handleFunc={() => setShowAlert(false)}
+      />
+    </>
   );
 }

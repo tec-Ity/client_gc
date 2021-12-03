@@ -76,7 +76,7 @@ const useStyle = makeStyles((props) => ({
 
   totalAmount: {
     borderTop: "1px solid",
-    width: "170px",
+    width: "95%",
     height: "35 px",
     borderColor: "#C0E57B",
     display: "flex",
@@ -100,13 +100,20 @@ const useStyle = makeStyles((props) => ({
   },
   //order info header
   orderInfoHeader: {
-    height: "30px",
-    "& >:nth-child(1)": {
-      fontWeight: "400",
-      fontSize: "11px",
+      paddingBottom: "10px",
+    "& > :nth-child(3)": {
+      "& > :nth-child(1)": {
+        color: "#1d1d384d",
+        fontWeight:'400',
+        fontSize: "12px"
+      },
+      "& > :nth-child(2)": {},
     },
-    "& >:nth-child(2)": {
-      fontSize: "1em",
+    "& > :nth-child(4)": {
+      height: "100%",
+      paddingBottom: "10px",
+      fontWeight: "400",
+      fontSize: "20px",
       color: "#E47F10",
     },
   },
@@ -131,9 +138,12 @@ const useStyle = makeStyles((props) => ({
     },
   },
   orderLabelStyle: {
-    width: "90px",
+    width: "80px",
+    "& > :nth-child(1)": {
+      width: "75px",
+    },
     "& > :nth-child(2)": {
-      fontSize: "0.5em", //min 12 px
+      fontSize: "12px", //min 12 px
       width: "100%",
     },
   },
@@ -177,18 +187,15 @@ export default function CartCard(props) {
 
   return (
     <Grid container item xs={11} className={classes.root}>
-      <Grid
-        item
-        container
-        className={classes.gridItem}
-        style={{ paddingBottom: "10px" }}>
-        {orderCard && orderLabel && (
-          <div className={classes.orderLabelStyle}>{orderLabel}</div>
-        )}
-        <div className={clsx(classes.shopTitle, classes.marginHead)}>
-          SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
-        </div>
-        {!orderCard && (
+      {!orderCard && (
+        <Grid
+          item
+          container
+          className={classes.gridItem}
+          style={{ paddingBottom: "10px" }}>
+          <div className={clsx(classes.shopTitle, classes.marginHead)}>
+            SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
+          </div>
           <div className={classes.marginHead}>
             <CustomButton
               label='ORDINARE'
@@ -196,17 +203,29 @@ export default function CartCard(props) {
               alterStyle={classes.orderBtn}
             />
           </div>
-        )}
-      </Grid>
-      {orderCard && (
+        </Grid>
+      )}
+      {orderCard && orderLabel && (
         <Grid
           item
           container
           className={clsx(classes.gridItem, classes.orderInfoHeader)}>
-          <Grid item container xs={6}>
-            {moment(cart.at_upd).format("DD/MM/YYYY HH:mm")}
+          <Grid item xs={2}>
+            <div className={classes.orderLabelStyle}>{orderLabel}</div>
           </Grid>
-          <Grid item container xs={6} justifyContent='flex-end'>
+          <Grid item xs={1} />
+          <Grid item xs={5}>
+            <div>{moment(cart.at_upd).format("DD/MM/YYYY HH:mm")}</div>
+            <div>
+              SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
+            </div>
+          </Grid>
+          <Grid
+            item
+            container
+            xs={4}
+            justifyContent='flex-end'
+            alignItems='flex-end'>
             €{cart.total_sale?.toFixed(2)}
           </Grid>
           <Grid item container xs={12}>

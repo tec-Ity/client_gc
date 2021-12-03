@@ -76,7 +76,7 @@ function EditSectionModal({ editInfo, handleClose, editSection }) {
     if (infoUpdate.account && infoUpdate.pwd) {
       editSection === "phone"
         ? await fetch_Prom("/obtain_otp", "POST", {
-            phone: infoUpdate.account,
+            phoneNum: infoUpdate.account,
             phonePre: infoUpdate.phonePre,
           })
         : await fetch_Prom("/obtain_otp", "POST", {
@@ -90,7 +90,7 @@ function EditSectionModal({ editInfo, handleClose, editSection }) {
       const obj = {};
       if (infoUpdate.phonePre) {
         obj.phonePre = infoUpdate.phonePre;
-        obj.phone = infoUpdate.account;
+        obj.phoneNum = infoUpdate.account;
       } else {
         obj.email = infoUpdate.account;
       }

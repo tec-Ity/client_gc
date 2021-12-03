@@ -422,7 +422,7 @@ export const cartSlice = createSlice({
     cartDelete: (state, action) => {
       const shopId = action.payload;
       let i = 0;
-
+    //   console.log("DELETE", shopId);
       for (; i < state.carts.length; i++) {
         if (state.carts[i].Shop === shopId) {
           break;
@@ -430,6 +430,7 @@ export const cartSlice = createSlice({
       }
       //console.log(shopId);
       //console.log(i);
+      state.curCart={}
       if (i < state.carts.length) {
         state.carts.splice(i, 1);
       }
@@ -442,7 +443,7 @@ export const cartSlice = createSlice({
         const foundCart = state.carts.find((c) => c._id === cartId);
         if (foundCart) cartTemp = { ...foundCart };
       }
-    //   //console.log(addr);
+      //   //console.log(addr);
       //update client info to new selected addrs
       if (cartTemp && addr) {
         cartTemp.clientInfo.addr = addr.address;

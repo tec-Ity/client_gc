@@ -56,7 +56,7 @@ export default function RegisterModal(props) {
   const handleSendCode = async () => {
     showPhonePre === true
       ? await fetch_Prom("/obtain_otp", "POST", {
-          phone: registerData.account,
+          phoneNum: registerData.account,
           phonePre: registerData.phonePre,
         })
       : await fetch_Prom("/obtain_otp", "POST", {
@@ -71,7 +71,7 @@ export default function RegisterModal(props) {
     obj.pwd = registerData.password;
     if (showPhonePre === true) {
       obj.phonePre = registerData.phonePre;
-      obj.phone = registerData.account;
+      obj.phoneNum = registerData.account;
     } else {
       obj.email = registerData.account;
     }

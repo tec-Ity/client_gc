@@ -115,7 +115,10 @@ export default function ProdListItem(props) {
               <CustomHr position={classes.smallHr} />
 
               <div className={classes.infoBox}>
-                <div>{prod.nome}</div>
+                <div>
+                  {prod.nome?.slice(0, 35) +
+                    (prod.nome?.length > 35 ? "..." : "")}
+                </div>
                 <div>{prod.desp}</div>
               </div>
             </Link>

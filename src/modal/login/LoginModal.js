@@ -84,7 +84,7 @@ export default function LoginModal() {
         system.email = loginData.account;
         break;
       case "phone":
-        system.phone = loginData.account;
+        system.phoneNum = loginData.account;
         system.phonePre = loginData.phonePre;
         break;
       default:

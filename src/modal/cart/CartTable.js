@@ -32,7 +32,7 @@ const useStyle = makeStyles((theme) => ({
       "& >:nth-child(1)": {
         textAlign: "left",
         paddingRight: theme.spacing(1),
-        fontWeight: "700",
+        fontWeight: "600",
         wordWrap: "break-word",
       },
       "& >:nth-child(2)": {
@@ -40,8 +40,9 @@ const useStyle = makeStyles((theme) => ({
         fontSize: "12.5px",
       },
     },
-    "& >:nth-child(4)": {
-      fontWeight: "700",
+    "& >:nth-child(3)": {
+      fontWeight: "600",
+      fontSize: "18px",
     },
   },
   imgStyle: {
@@ -98,20 +99,20 @@ const TableRow = (props) => {
     <>
       {orderCard ? (
         <Grid container item xs={12} className={classes.orderRow}>
-          <Grid item xs={4}>
+          <Grid item xs={8}>
             <div title={prodName} style={{ overflow: "hidden" }}>
-              {prodName}
+              {prodName?.slice(0, 35) + (prodName?.length > 35 ? "..." : "")}
             </div>
             <div>{oSku.attrs}&nbsp;</div>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={2} style={{ paddingTop: "16px" }}>
             <div>
               x &nbsp;
               {oSku.quantity < 10 ? "0" + oSku.quantity : oSku.quantity}
             </div>
             <div>&nbsp;</div>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={2} style={{ paddingTop: "16px" }}>
             <div>€{oSku.price_tot?.toFixed(2)}</div>
             <div>&nbsp;</div>
           </Grid>
@@ -134,9 +135,10 @@ const TableRow = (props) => {
             </Grid>
           )}
 
-          <Grid item xs={4}>
+          <Grid item xs={7}>
+            {/* <Grid item xs={4}> */}
             <div title={prodName} style={{ overflow: "hidden" }}>
-              {prodName}
+              {prodName?.slice(0, 35) + (prodName?.length > 35 ? "..." : "")}
             </div>
             <div>{oSku.attrs}&nbsp;</div>
           </Grid>
@@ -151,11 +153,11 @@ const TableRow = (props) => {
             </div>
             <div>&nbsp;</div>
           </Grid>
-          
-          <Grid item xs={showImg ? 2 : 3}>
+
+          {/* <Grid item xs={showImg ? 2 : 3}>
             <div>€{oSku.price_sale?.toFixed(2)}</div>
             <div>&nbsp;</div>
-          </Grid>
+          </Grid> */}
           <Grid item xs={showImg ? 2 : 3}>
             <div>€{oSku.price_tot?.toFixed(2)}</div>
             <div>&nbsp;</div>
@@ -258,15 +260,16 @@ export default function CartTable(props) {
             ) : (
               //cart modal without img
               <Grid container item xs={12} className={classes.tableHeadRow}>
-                <Grid item xs={4}>
+                <Grid item xs={7}>
+                  {/* <Grid item xs={4}> */}
                   Prodotto
                 </Grid>
                 <Grid item xs={2}>
                   Quantità
                 </Grid>
-                <Grid item xs={3}>
+                {/* <Grid item xs={3}>
                   Prezzo Unità
-                </Grid>
+                </Grid> */}
                 <Grid item xs={3}>
                   Prezzo Totale
                 </Grid>
