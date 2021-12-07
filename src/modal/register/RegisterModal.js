@@ -84,7 +84,6 @@ export default function RegisterModal(props) {
       window.location.replace("/login");
     }
   };
-
   return (
     <RegisterModalUI
       registerData={registerData}

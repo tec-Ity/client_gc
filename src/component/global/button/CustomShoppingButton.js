@@ -66,36 +66,42 @@ const useStyle = makeStyles({
       fill: "white",
     },
   },
-  logoLarge:{
+  logoLarge: {
     paddingTop: "3px",
     width: "30px",
     height: "30px",
     "& path": {
       fill: "white",
     },
-  }
+  },
 });
 
 export default function CustomShoppingButton(props) {
   const {
     handleFunc,
-    disable = false,
+    disabled = false,
     alterStyle = null,
     multi = false,
     count = null,
     large = false,
   } = props;
   const classes = useStyle();
+  console.log(disabled)
   return (
     <div className={classes.root}>
       <Button
         onClick={handleFunc}
-        disabled={disable}
+        // disabled={disabled}
         className={clsx(
-          large===true ? classes.btnStyleLarge : classes.btnStyle,
+          large === true ? classes.btnStyleLarge : classes.btnStyle,
           alterStyle
-        )}>
-        {multi ? "scegli" : <Cart className={large===true?classes.logoLarge:classes.logo} />}
+        )}
+        style={{ background: disabled === true && "#0000004d" }}>
+        {multi ? (
+          "scegli"
+        ) : (
+          <Cart className={large === true ? classes.logoLarge : classes.logo} />
+        )}
       </Button>
       {count && (
         <div className={classes.footNote}>

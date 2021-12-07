@@ -59,7 +59,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LoginForm(props) {
-  const { handleLogin, handleChange, loginData, showPhonePre } = props;
+  const { handleLogin, handleChange, loginData, showPhonePre, showAlert } =
+    props;
   const classes = useStyles();
 
   return (
@@ -72,6 +73,19 @@ export default function LoginForm(props) {
         <Grid item xs={6}>
           <div className={classes.welcome}>CIAO!</div>
         </Grid>
+        {showAlert && (
+          <Grid item xs={10} container>
+            <div
+              style={{
+                color: "red",
+                fontSize: "12px",
+                paddingLeft: "10px",
+                paddingBottom: "5px",
+              }}>
+              Incorrect password or account
+            </div>
+          </Grid>
+        )}
         <Grid item xs={10} className={classes.gridItem}>
           <InputAccount
             showPhonePre={showPhonePre}

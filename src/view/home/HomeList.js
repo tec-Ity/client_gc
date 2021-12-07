@@ -9,7 +9,7 @@ import {
 import { get_DNS } from "../../api";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomBgText from "../../component/global/background/CustomBgText";
-import CustomAlert from "../../component/global/modal/CustomAlert";
+// import CustomAlert from "../../component/global/modal/CustomAlert";
 
 const useStyle = makeStyles({
   root: {
@@ -137,7 +137,7 @@ export default function HomeList(props) {
   const { containerId, label, list, handleFunc, disableIndex } = props;
   const classes = useStyle();
   const ref = useRef(null);
-  const [showAlert, setShowAlert] = React.useState(false);
+  //   const [showAlert, setShowAlert] = React.useState(false);
 
   //   //console.log(list);
   useEffect(() => {
@@ -185,13 +185,7 @@ export default function HomeList(props) {
                     elevation={0}>
                     <CardActionArea
                       classes={{ root: classes.cardActionArea }}
-                      onClick={
-                        !disabled
-                          ? handleFunc(item)
-                          : () => {
-                              setShowAlert(true);
-                            }
-                      }>
+                      onClick={handleFunc(item, disabled)}>
                       {item.img_url && (
                         <>
                           <CardMedia
@@ -226,13 +220,6 @@ export default function HomeList(props) {
             })}
         </Grid>
       </Container>
-      <CustomAlert
-        show={showAlert}
-        handleClose={() => setShowAlert(false)}
-        alertTitle={"超出配送范围"}
-        alertButton={"OK"}
-        handleFunc={() => setShowAlert(false)}
-      />
     </>
   );
 }

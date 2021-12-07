@@ -16,6 +16,7 @@ export default function LoginModal() {
   const dispatch = useDispatch();
   const [showPhonePre, setShowPhonePre] = useState(false);
   const [nations, setNations] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
   const [loginData, setLoginData] = useState({
     account: "",
     accountType: "phone",
@@ -94,7 +95,7 @@ export default function LoginModal() {
     system.pwd = loginData.password;
     // //console.log(system);
     const result = await fetch_Prom("/login", "POST", { system });
-    // //console.log(result);
+    console.log(result);
     if (result.status === 200) {
       dispatch(setCurClientInfo(result.data?.curClient));
       localStorage.setItem("accessToken", result.data?.accessToken);
@@ -102,6 +103,8 @@ export default function LoginModal() {
       localStorage.setItem("thirdPartyLogin", "");
       // window.location.replace("/home");
       dispatch(setIsLogin(true));
+    } else if (result.status === 400) {
+      setShowAlert(true);
     }
   };
 
@@ -112,6 +115,7 @@ export default function LoginModal() {
       handleChange={handleChange}
       showPhonePre={showPhonePre}
       nations={nations}
+      showAlert={showAlert}
     />
   );
 }

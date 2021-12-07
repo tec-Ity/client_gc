@@ -114,6 +114,21 @@ const useStyle = makeStyles((theme) => ({
     marginTop: "18px",
     padding: "5px",
   },
+  imgBoxUnSelected: {
+    cursor: "pointer",
+    position: "relative",
+    "&::after": {
+      content: '""',
+      zIndex: "1",
+      borderRadius: "5px 5px 5px 0",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: "#0000001a",
+    },
+  },
   mainImgBox: {
     marginTop: "20px",
     maxHeight: "400px",
@@ -268,6 +283,7 @@ export default function ProdPage() {
   const { _id } = useParams();
   const hist = useHistory();
   const dispatch = useDispatch();
+  const [curImg, setCurImg] = React.useState(0);
   const curProd = useSelector((state) => state.shop.curProd);
   const curProdStatus = useSelector((state) => state.shop.curProdStatus);
   //   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
@@ -390,9 +406,21 @@ export default function ProdPage() {
                   justifyContent='center'
                   className={classes.imgsContainer}
                   xs={1}>
-                  {curProd.img_urls?.map((img) => {
+                  {curProd.img_urls?.map((img, index) => {
                     return (
-                      <Grid item xs={12} key={img} className={classes.imgBox}>
+                      <Grid
+                        item
+                        xs={12}
+                        key={img}
+                        className={clsx(
+                          classes.imgBox,
+                          curImg !== index && classes.imgBoxUnSelected
+                        )}
+                        onClick={() => {
+                          if (curImg !== index) {
+                            setCurImg(index);
+                          }
+                        }}>
                         <img
                           className={classes.mainImg}
                           src={get_DNS() + img}
@@ -413,7 +441,7 @@ export default function ProdPage() {
                   className={classes.mainImgBox}>
                   <img
                     className={classes.mainImg}
-                    src={get_DNS() + curProd.img_urls[0]}
+                    src={get_DNS() + curProd.img_urls[curImg]}
                     alt={curProd.code}
                   />
                 </Grid>

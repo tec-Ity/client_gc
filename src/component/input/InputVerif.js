@@ -8,6 +8,7 @@ import {
   InputAdornment,
   Button,
 } from "@material-ui/core";
+import { set } from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +84,24 @@ export default function InputVerif(props) {
   const { handleSendCode, handleChange, verifCode } = props;
   const classes = useStyles();
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [countDown, setCountDown] = useState(-1);
+  const myTimer = React.useRef(null);
+
+  React.useEffect(() => {
+    console.log("effect", countDown);
+    if (countDown === 0) {
+      console.log("end", countDown);
+      clearInterval(myTimer.current);
+      setBtnDisabled(false);
+    } else if (countDown === 60) {
+      console.log("start", countDown);
+      myTimer.current = setInterval(() => {
+        console.log("timer", countDown);
+        setCountDown((prev) => prev - 1);
+      }, 1000);
+    }
+  }, [countDown]);
+  console.log(countDown);
   const EndADM = (
     <InputAdornment position='end'>
       <Button
@@ -91,8 +110,9 @@ export default function InputVerif(props) {
         onClick={() => {
           setBtnDisabled(true);
           handleSendCode();
+          setCountDown(60);
         }}>
-        RICEVI
+        {countDown > 0 ? countDown + "s" : "RICEVI"}
       </Button>
     </InputAdornment>
   );

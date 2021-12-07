@@ -63,8 +63,10 @@ export default function City() {
           list={sortedShopList}
           disableIndex={disableIndex}
           containerId='shopContainer'
-          handleFunc={(item) => () => {
-            hist.push("/shop/" + item._id);
+          handleFunc={(item, disabled) => () => {
+            hist.push(
+              "/shop/" + item._id + (disabled === true ? "?disabled=true" : "")
+            );
           }}
         />
       </Container>

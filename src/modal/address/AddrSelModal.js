@@ -20,7 +20,7 @@ import { ReactComponent as CurLocationIcon } from "../../component/icon/currentL
 import { ReactComponent as LocateIcon } from "../../component/icon/locate.svg";
 import { ReactComponent as UserIcon } from "../../component/icon/user.svg";
 import { ReactComponent as CheckCircleIcon } from "../../component/icon/check-circle.svg";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 const useStyle = makeStyles({
   root: { fontFamily: "Montserrat", color: "#1d1d38" },
@@ -147,6 +147,7 @@ export default function AddrSelModal() {
   const classes = useStyle();
   const dispatch = useDispatch();
   const hist = useHistory();
+  const location = useLocation();
   // show addr new modal
   const [showNewAddr, setShowNewAddr] = useState(false);
   //store addr._id or 'current' to apply onSelect style
@@ -237,9 +238,22 @@ export default function AddrSelModal() {
           personalInfo,
         })
       );
-      hist.push("/city");
+      if (
+        location.pathname === "/home" ||
+        location.pathname?.includes("/city/")
+      ) {
+        hist.push("/city");
+      }
     },
-    [curCity, curZip, dispatch, hist, personalInfo, selectedAddr]
+    [
+      curCity,
+      curZip,
+      dispatch,
+      hist,
+      location.pathname,
+      personalInfo,
+      selectedAddr,
+    ]
   );
 
   return (

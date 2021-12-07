@@ -51,7 +51,6 @@ export default function RegisterForm(props) {
     handleSubmit,
     handleSendCode,
   } = props;
-
   return (
     <form autoComplete='off'>
       <Grid
@@ -66,7 +65,7 @@ export default function RegisterForm(props) {
         <Grid item xs={10} className={classes.gridItem}>
           <InputAccount
             showPhonePre={showPhonePre}
-            phonepre={registerData.phonePre}
+            phonePre={registerData.phonePre}
             account={registerData.account}
             handleChange={handleChange}
           />

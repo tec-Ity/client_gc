@@ -6,6 +6,7 @@ import {
   setShowAddrSel,
   setShowLogin,
 } from "../../../redux/curClient/curClientSlice";
+import { useLocation } from "react-router-dom";
 export default function ControlMulti(props) {
   const {
     skus, //shopslice prodlistQuery .prod .skus
@@ -14,6 +15,7 @@ export default function ControlMulti(props) {
     large = false,
   } = props;
   const dispatch = useDispatch();
+  const param = new URLSearchParams(useLocation().search);
   const [showSkusModal, setShowSkusModal] = useState(false);
   const [totCount, setTotCount] = useState();
   const isLogin = useSelector((state) => state.curClient.isLogin);
@@ -50,6 +52,11 @@ export default function ControlMulti(props) {
           multi
           handleFunc={handleShowSkuMulti}
           count={curProdInCart && totCount && totCount}
+          disabled={
+            param.get("disabled") === "true" ||
+            !isLogin ||
+            !userSelectedLocation
+          }
         />
       )}
 

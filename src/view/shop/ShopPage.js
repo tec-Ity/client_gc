@@ -9,6 +9,7 @@ import {
   fetchCategList,
   setCurShop,
   fetchCurShopInfo,
+  setShowOutOfRangeAlert,
 } from "../../redux/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,6 +19,7 @@ import {
 } from "../../redux/cart/cartSlice";
 import { Container, Grid } from "@material-ui/core";
 import { goBack } from "../../redux/filter/filterSlice";
+import CustomAlert from "../../component/global/modal/CustomAlert";
 const useStyle = makeStyles((theme) => ({
   root: {
     position: "absolute",
@@ -45,19 +47,23 @@ export default function ShopPage() {
   const categs = useSelector((state) => state.shop.categList);
   const prevShopId = useSelector((state) => state.shop.curShop);
   const categStatus = useSelector((state) => state.shop.categStatus);
+  const showOutOfRangeAlert = useSelector(
+    (state) => state.shop.showOutOfRangeAlert
+  );
+
   // const categError = useSelector((state) => state.shop.categError);
   //   const curShopInfoStatus = useSelector(
   //     (state) => state.shop.curShopInfoStatus
   //   );
-  useEffect(() => {
-    window.document.getElementsByTagName("html")[0].style.scrollBehavior =
-      "smooth";
-    window.scrollTo(0, 0);
+  //   useEffect(() => {
+  //     window.document.getElementsByTagName("html")[0].style.scrollBehavior =
+  //       "smooth";
+  //     window.scrollTo(0, 0);
 
-    setTimeout(function () {
-      window.scrollTo(0, 0);
-    }, 500);
-  }, []);
+  //     setTimeout(function () {
+  //       window.scrollTo(0, 0);
+  //     }, 500);
+  //   }, []);
 
   useEffect(() => {
     // 会渲染好几次sideBar并console好几次
@@ -90,24 +96,38 @@ export default function ShopPage() {
   //   };
 
   return (
-    <Container disableGutters maxWidth={false} className={classes.root}>
-      <ShopBanner />
-      {/* extract shop info from ShopBanner to new compo in the future */}
-      <Container disableGutters>
-        {/* <ShopSelection /> */}
+    <>
+      <Container disableGutters maxWidth={false} className={classes.root}>
+        <ShopBanner />
+        {/* extract shop info from ShopBanner to new compo in the future */}
+        <Container disableGutters>
+          {/* <ShopSelection /> */}
 
-        {/* <DemoSideBar /> */}
-        {categs?.length > 0 && (
-          <Grid container className={classes.mainSecStyle} spacing={3}>
-            <Grid item sm={4} md={3} className={classes.gridItemStyle}>
-              <ShopSideBar categs={categs} />
+          {/* <DemoSideBar /> */}
+          {categs?.length > 0 && (
+            <Grid container className={classes.mainSecStyle} spacing={3}>
+              <Grid item sm={4} md={3} className={classes.gridItemStyle}>
+                <ShopSideBar categs={categs} />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={8}
+                md={9}
+                className={classes.gridItemStyle}>
+                <ShopProdSection />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={8} md={9} className={classes.gridItemStyle}>
-              <ShopProdSection />
-            </Grid>
-          </Grid>
-        )}
+          )}
+        </Container>
       </Container>
-    </Container>
+      <CustomAlert
+        show={showOutOfRangeAlert}
+        handleClose={() => dispatch(setShowOutOfRangeAlert(false))}
+        alertTitle={"超出配送范围"}
+        alertButton={"OK"}
+        handleFunc={() => dispatch(setShowOutOfRangeAlert(false))}
+      />
+    </>
   );
 }
