@@ -36,7 +36,7 @@ const fetchProm = (api, method, bodyObj) => {
   });
 };
 export const fetch_Prom = (api, method = "GET", bodyObj) => {
-//   //console.log(api);
+//   console.log(api);
 //   //console.log(method);
   return new Promise(async (resolve) => {
     try {

@@ -33,6 +33,10 @@ const initialState = {
   /*prodSelection */
   curProd: {},
   curProdStatus: "idle",
+
+  searchProds: [],
+  searchProdsCount: 0,
+  searchProdsStatus: "idle",
 };
 
 const prodPopObj = [
@@ -206,6 +210,22 @@ export const fetchProdById = createAsyncThunk(
   }
 );
 
+export const fetchSearchProds = createAsyncThunk(
+  "shop/fetchSearchProds",
+  async ({ searchValue, pageNum }, { getState, rejectWithValue }) => {
+    const api = `/prods?search=${searchValue}&page=${pageNum}`;
+    const result = await fetch_Prom(api);
+    console.log(result);
+    if (result.status === 200) {
+      return {
+        prods: result.data.objects,
+        pageNum,
+        totalCount: result.data.count,
+      };
+    }
+  }
+);
+
 export const shopSlice = createSlice({
   name: "shop",
   initialState,
@@ -218,6 +238,19 @@ export const shopSlice = createSlice({
     },
   },
   extraReducers: {
+    [fetchSearchProds.pending]: (state) => {
+      state.searchProdsStatus = "loading";
+    },
+    [fetchSearchProds.fulfilled]: (state, action) => {
+      state.searchProdsStatus = "succeed";
+      const { prods, pageNum, totalCount } = action.payload;
+      state.searchProdsCount = totalCount;
+      if (pageNum === 1) state.searchProds = prods;
+      else state.searchProds = [...state.searchProds, ...prods];
+    },
+    [fetchSearchProds.rejected]: (state) => {
+      state.searchProdsStatus = "error";
+    },
     /*shopInfo */
     [fetchCurShopInfo.pending]: (state) => {
       state.curShopInfoStatus = "loading";

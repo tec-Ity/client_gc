@@ -86,7 +86,6 @@ export default function CustomShoppingButton(props) {
     large = false,
   } = props;
   const classes = useStyle();
-  console.log(disabled)
   return (
     <div className={classes.root}>
       <Button

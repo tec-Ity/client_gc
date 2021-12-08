@@ -13,11 +13,12 @@ import {
 import { Link } from "react-router-dom";
 import { setShowCarts } from "../../../redux/cart/cartSlice";
 import { setShowOrders } from "../../../redux/order/orderSlice";
-import { Button } from "@material-ui/core";
+import { Button, InputAdornment } from "@material-ui/core";
 import { ReactComponent as Cart } from "../../icon/cart.svg";
 import { ReactComponent as Order } from "../../icon/order.svg";
 import { ReactComponent as User } from "../../icon/user.svg";
 import { ReactComponent as ArrowDown } from "../../icon/chevron-down.svg";
+import SearchInput from "./SearchInput";
 const useStyle = makeStyles({
   root: {
     zIndex: "1",
@@ -33,6 +34,13 @@ const useStyle = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     fontFamily: "Montserrat",
+  },
+  leftContent: {
+    marginLeft: "80px",
+    display: "flex",
+    alignItems: "center",
+    // justifyContent: "space-between",
+    width: "100%",
   },
   navIcon: {
     width: "200px",
@@ -86,6 +94,7 @@ const useStyle = makeStyles({
   //addr sectionHeader
   addrBox: {
     marginLeft: "60px",
+    minWidth: "235px",
     // consegna a
     "& > :nth-child(1)": {
       fontWeight: "600",
@@ -106,6 +115,8 @@ const useStyle = makeStyles({
       },
     },
   },
+
+
 });
 
 export default function NavTopGlobal() {
@@ -115,9 +126,11 @@ export default function NavTopGlobal() {
   const carts = useSelector((state) => state.cart.carts);
   const curCartTotItem = useSelector((state) => state.cart.curCart.totItem);
   const inShop = useSelector((state) => state.cart.inShop);
+  const curShop = useSelector((state) => state.shop.curShop);
   const userSelectedLocation = useSelector(
     (state) => state.curClient.userSelectedLocation
   );
+//   console.log(curShop);
   useEffect(() => {
     function auth() {
       if (!isLogin) {
@@ -132,8 +145,7 @@ export default function NavTopGlobal() {
   return (
     <>
       <div className={classes.root}>
-        <div
-          style={{ marginLeft: "80px", display: "flex", alignItems: "center" }}>
+        <div className={classes.leftContent}>
           <div>
             <Link to={isLogin && userSelectedLocation ? "/city" : "/home"}>
               <img
@@ -161,9 +173,11 @@ export default function NavTopGlobal() {
               </div>
             </div>
           )}
+
+          {curShop && <SearchInput />}
         </div>
         {isLogin ? (
-          <div style={{ marginRight: "5%" }}>
+          <div style={{ marginRight: "5%", minWidth: "200px" }}>
             <Button
               disableRipple
               classes={{ root: classes.btnStyle }}
