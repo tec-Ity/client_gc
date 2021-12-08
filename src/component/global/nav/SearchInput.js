@@ -149,7 +149,6 @@ export default function SearchInput() {
   useEffect(() => {
     searchValue && dispatch(fetchSearchProds({ searchValue, pageNum }));
   }, [dispatch, pageNum, searchValue]);
-  console.log(searchProds);
   return (
     <div className={classes.root}>
       <OutlinedInput

@@ -215,13 +215,14 @@ export const fetchSearchProds = createAsyncThunk(
   async ({ searchValue, pageNum }, { getState, rejectWithValue }) => {
     const api = `/prods?search=${searchValue}&page=${pageNum}`;
     const result = await fetch_Prom(api);
-    console.log(result);
     if (result.status === 200) {
       return {
         prods: result.data.objects,
         pageNum,
         totalCount: result.data.count,
       };
+    } else {
+      alert(result.message);
     }
   }
 );
