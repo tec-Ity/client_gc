@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useHistory, useParams } from "react-router";
+import { useHistory, useParams, useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { get_DNS } from "../../api";
 import { fetchProdById } from "../../redux/shop/shopSlice";
@@ -15,6 +15,7 @@ import clsx from "clsx";
 import moment from "moment";
 import { ReactComponent as ArrowLeft } from "../../component/icon/chevron-left.svg";
 import bgBottom from "../../component/icon/bgBottom.png";
+
 const useStyle = makeStyles((theme) => ({
   root: {
     fontFamily: "Montserrat",
@@ -288,6 +289,7 @@ export default function ProdPage() {
   const curProdStatus = useSelector((state) => state.shop.curProdStatus);
   //   const curCartStatus = useSelector((state) => state.cart.curCartStatus);
   const classes = useStyle();
+  const param = new URLSearchParams(useLocation().search);
 
   useEffect(() => {
     window.document.getElementsByTagName("html")[0].style.scrollBehavior =
@@ -333,7 +335,6 @@ export default function ProdPage() {
   //     //   }
   //     // }
   //   }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
-
   return (
     <>
       <img alt='bg' src={bgBottom} className={classes.bgBottom} />
@@ -345,9 +346,10 @@ export default function ProdPage() {
             <ArrowLeft />
             &nbsp;
             <Link
-              to=''
-              className={classes.backLink}
-              onClick={() => hist.goBack()}>
+              to={`/shop/${curProd?.Shop}${
+                param.get("disabled") === "true" ? "?disabled=true" : ""
+              }`}
+              className={classes.backLink}>
               BACK
             </Link>
           </div>

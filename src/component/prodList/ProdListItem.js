@@ -4,7 +4,7 @@ import ProdListItemControl from "./itemControl/ProdListItemControl";
 import CustomHr from "../global/modal/component/CustomHr";
 import { Grid, Paper } from "@material-ui/core";
 import api_DNS from "../../conf/_dns";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -92,14 +92,23 @@ const useStyle = makeStyles((theme) => ({
 export default function ProdListItem(props) {
   const { prod, rule, empty = false } = props;
   const classes = useStyle();
-
+  const param = new URLSearchParams(useLocation().search);
+  console.log(param.get("disabled"));
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>
       {empty === false && (
         <div className={classes.innerBoxBg}>
           <Paper className={classes.innerBox} square elevation={0}>
             {/* click area div */}
-            <Link to={"/prod/" + prod._id} className={classes.LinkStyle}>
+            <Link
+              to={
+                "/prod/" +
+                prod._id +
+                (param.get("disabled") === 'true' ? "?disabled=true" : "")
+              }
+              target='_blank'
+              rel='noopener noreferrer'
+              className={classes.LinkStyle}>
               <div className={classes.imgBox}>
                 <div className={classes.imgBoxInner}>
                   {prod.img_urls && (
