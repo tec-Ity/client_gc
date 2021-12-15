@@ -1,21 +1,30 @@
 import React from "react";
-import { default as BgTop } from "../../component/icon/homePageBgTop.svg";
+import { default as BgTop } from "../../component/icon/bgTopNew.png";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
   bgTop: {
     position: "absolute",
-    top: "90px",
+    top: "-150px",
     width: "100%",
     zIndex: "-1",
+
+    [theme.breakpoints.down("md")]: {
+      width: "120%",
+      top: "-120px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "150%",
+      top: "-100px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      top: "-90x",
+      width: "200%",
+    },
   },
-});
+}));
 
 export default function HomeBg({ style }) {
   const classes = useStyle();
-  return (
-    <div>
-      <img src={BgTop} className={classes.bgTop} alt='' style={style} />
-    </div>
-  );
+  return <img src={BgTop} className={classes.bgTop} alt='' style={style} />;
 }

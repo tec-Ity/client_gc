@@ -11,7 +11,7 @@ import HomeActivity from "./HomeActivity";
 import HomeBg from "./HomeBg";
 
 const useStyle = makeStyles({
-  root: { fontFamily: "Montserrat" },
+  root: { fontFamily: "Montserrat",position:'relative'},
 });
 export default function HomePage() {
   //   const dispatch = useDispatch();

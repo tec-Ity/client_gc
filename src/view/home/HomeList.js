@@ -11,17 +11,28 @@ import { makeStyles } from "@material-ui/core/styles";
 import CustomBgText from "../../component/global/background/CustomBgText";
 // import CustomAlert from "../../component/global/modal/CustomAlert";
 
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
   root: {
     height: "150px",
-    marginTop: "50px",
-    // border:'1px solid',
-    // marginLeft: "20px",
-    // marginRight: "20px",
+    [theme.breakpoints.down("xl")]: {
+      marginTop: "350px",
+    },
+    [theme.breakpoints.down("lg")]: {
+      marginTop: "250px",
+    },
+    [theme.breakpoints.down("md")]: {
+      marginTop: "100px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "0", //not working
+    },
   },
   labelBoxStyle: {
     position: "relative",
     marginLeft: "80px",
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: "20px",
+    },
   },
   ///cities container
   itemGrid: {
@@ -39,6 +50,12 @@ const useStyle = makeStyles({
       display: "none",
     },
     flexWrap: "wrap",
+    "& > :nth-child(1)": {
+      paddingTop: "80px",
+      [theme.breakpoints.down("xs")]: {
+        paddingTop: "20px",
+      },
+    },
   },
   itemCard: {
     transform: "rotate(90deg)",
@@ -131,7 +148,7 @@ const useStyle = makeStyles({
     fontSize: "30px",
     paddingBottom: "6px",
   },
-});
+}));
 
 export default function HomeList(props) {
   const { containerId, label, list, handleFunc, disableIndex } = props;
@@ -175,10 +192,7 @@ export default function HomeList(props) {
             list.map((item, index) => {
               const disabled = Boolean(index >= disableIndex);
               return (
-                <Grid
-                  item
-                  key={item._id}
-                  style={{ paddingTop: index === 0 && "80px" }}>
+                <Grid item key={item._id}>
                   <Card
                     className={classes.itemCard}
                     id={item._id}

@@ -17,9 +17,10 @@ import { Button, InputAdornment } from "@material-ui/core";
 import { ReactComponent as Cart } from "../../icon/cart.svg";
 import { ReactComponent as Order } from "../../icon/order.svg";
 import { ReactComponent as User } from "../../icon/user.svg";
-import { ReactComponent as ArrowDown } from "../../icon/chevron-down.svg";
 import SearchInput from "./SearchInput";
-const useStyle = makeStyles({
+import NavAddr from "./NavAddr";
+
+const useStyleWeb = makeStyles({
   root: {
     zIndex: "1",
     position: "fixed",
@@ -43,7 +44,7 @@ const useStyle = makeStyles({
     width: "100%",
   },
   navIcon: {
-    width: "200px",
+    // width: "200px",
     height: "50px",
   },
   menuStyle: {
@@ -91,37 +92,12 @@ const useStyle = makeStyles({
     width: "30px",
     height: "30px",
   },
-  //addr sectionHeader
-  addrBox: {
-    marginLeft: "60px",
-    minWidth: "235px",
-    // consegna a
-    "& > :nth-child(1)": {
-      fontWeight: "600",
-      fontSize: "12px",
-    },
-    // addr + icon
-    "& > :nth-child(2)": {
-      cursor: "pointer",
-      display: "flex",
-      // addr
-      "& > :nth-child(1)": { fontSize: "15px" },
-      //icon box
-      "& > :nth-child(2)": {
-        // icon
-        display: "flex",
-        alignItems: "center",
-        "& > :nth-child(1)": { height: "18px", width: "18px" },
-      },
-    },
-  },
-
-
 });
 
 export default function NavTopGlobal() {
-  const classes = useStyle();
+  const classes = useStyleWeb();
   const dispatch = useDispatch();
+  const view = useSelector((state) => state.root.view);
   const isLogin = useSelector((state) => state.curClient.isLogin);
   const carts = useSelector((state) => state.cart.carts);
   const curCartTotItem = useSelector((state) => state.cart.curCart.totItem);
@@ -130,7 +106,7 @@ export default function NavTopGlobal() {
   const userSelectedLocation = useSelector(
     (state) => state.curClient.userSelectedLocation
   );
-//   console.log(curShop);
+  console.log(view);
   useEffect(() => {
     function auth() {
       if (!isLogin) {
@@ -141,39 +117,46 @@ export default function NavTopGlobal() {
     }
     auth();
   }, [dispatch, isLogin]);
+  const propObj = {
+    isLogin,
+    userSelectedLocation,
+    curShop,
+    inShop,
+    curCartTotItem,
+    logo: {
+      link: isLogin && userSelectedLocation ? "/city" : "/home",
+      imgSrc: process.env.PUBLIC_URL + "/icon/logo.png",
+    },
 
+    btnGroup: {
+      showCarts: () => dispatch(setShowCarts(true)),
+    },
+  };
+
+  const comps = {
+    web: NavWeb,
+    mobile: NavMobile,
+  };
+
+  const UI = comps[view];
+  return <UI {...propObj} />;
+}
+
+function NavWeb(props) {
+  const { isLogin, curShop, inShop, curCartTotItem, carts, logo, btnGroup } =
+    props;
+  const classes = useStyleWeb();
+  const dispatch = useDispatch();
   return (
     <>
       <div className={classes.root}>
         <div className={classes.leftContent}>
           <div>
-            <Link to={isLogin && userSelectedLocation ? "/city" : "/home"}>
-              <img
-                className={classes.navIcon}
-                src={process.env.PUBLIC_URL + "/icon/logo.png"}
-                alt='logo'
-              />
+            <Link to={logo.link}>
+              <img className={classes.navIcon} src={logo.imgSrc} alt='logo' />
             </Link>
           </div>
-
-          {isLogin && (
-            <div className={classes.addrBox}>
-              <div>Consegna a:</div>
-              <div onClick={() => dispatch(setShowAddrSel(true))}>
-                {userSelectedLocation ? (
-                  <>
-                    <div>{userSelectedLocation.addr?.slice(0, 30) + "..."}</div>
-                    <div>
-                      <ArrowDown />
-                    </div>
-                  </>
-                ) : (
-                  <div>Scegli il tuo indirizzo</div>
-                )}
-              </div>
-            </div>
-          )}
-
+          {isLogin && <NavAddr />}
           {curShop && <SearchInput />}
         </div>
         {isLogin ? (
@@ -181,7 +164,7 @@ export default function NavTopGlobal() {
             <Button
               disableRipple
               classes={{ root: classes.btnStyle }}
-              onClick={() => dispatch(setShowCarts(true))}>
+              onClick={btnGroup.showCarts}>
               {/* <Cart /> */}
               <div style={{ position: "relative" }}>
                 <Cart className={classes.btnsIcon} />
@@ -191,7 +174,7 @@ export default function NavTopGlobal() {
                   ? curCartTotItem && (
                       <div className={classes.alertNum}>{curCartTotItem}</div>
                     )
-                  : carts.length > 0 && (
+                  : carts?.length > 0 && (
                       <div className={classes.alertDot}></div>
                     )}
               </div>
@@ -232,5 +215,62 @@ export default function NavTopGlobal() {
       </div>
       <div style={{ height: "83px" }}></div>
     </>
+  );
+}
+
+const useStyleMobile = makeStyles({
+  root: {
+    height: "105px",
+    widht: "100%",
+    background: "#C0E57B",
+    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.25)",
+  },
+  topSection: {
+    zIndex: 2,
+    height: "55px",
+    widht: "100%",
+    background: "#F0F0F0",
+    display: "flex",
+    justifyContent: "space-between",
+    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.25)",
+    alignItems: "center",
+    "& > :nth-child(1)": {
+      width: "55px",
+      height: "20px",
+      border: "1px solid",
+    },
+    "& > :nth-child(2)": {
+      width: "110px",
+      height: "28px",
+    },
+    "& > :nth-child(3)": {
+      width: "55px",
+      height: "20px",
+      border: "1px solid",
+    },
+  },
+  bottomSection: {
+    height: "50px",
+    widht: "100%",
+  },
+  logoStyle: {
+    height: "28px",
+    width: "110px",
+  },
+});
+
+function NavMobile({ logo }) {
+  const classes = useStyleMobile();
+  return (
+    <div className={classes.root}>
+      <div className={classes.topSection}>
+        <div></div>
+        <img src={logo.imgSrc} className={classes.logoStyle} alt='' />
+        <div></div>
+      </div>
+      <div className={classes.bottomSection}>
+        <NavAddr />
+      </div>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import rootReducer from "./rootSlice";
 import curClientReducer from "./curClient/curClientSlice";
 import cartReducer from "./cart/cartSlice";
 import orderReducer from "./order/orderSlice";
@@ -13,6 +14,7 @@ import throttle from "lodash/throttle";
 // //console.log(preloadedState);
 export const store = configureStore({
   reducer: {
+    root: rootReducer,
     curClient: curClientReducer,
     cart: cartReducer,
     order: orderReducer,

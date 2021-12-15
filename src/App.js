@@ -1,14 +1,16 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import NavTopGlobal from "./component/global/nav/NavTopGlobal";
 import Router from "./router/Router";
 import { BrowserRouter } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddrSelModal from "./modal/address/AddrSelModal";
 import { useLoadScript } from "@react-google-maps/api";
+import { setView } from "./redux/rootSlice";
 
 const libraries = ["places"];
 
 export default function App() {
+  const dispatch = useDispatch();
   //lazy imports
   const LoginModal = lazy(() => import("./modal/login/LoginModal"));
   const RegisterModal = lazy(() => import("./modal/register/RegisterModal"));
@@ -29,13 +31,27 @@ export default function App() {
     googleMapsApiKey: "AIzaSyBGjEZfiy-qg-pIE4g_uFHxMGEkALwDc5c",
     libraries, //put library outside compmponent to avoid unnacessary rerenders
   });
-  React.useEffect(() => {
+  useEffect(() => {
     window.document.getElementsByTagName("html")[0].style.scrollBehavior =
       "smooth";
     setTimeout(function () {
       window.scrollTo(0, 0);
     }, 2000);
   }, []);
+
+  useEffect(() => {
+    // console.log(window.innerWidth);
+
+    function adjustWith() {
+      console.log(window.innerWidth);
+      dispatch(setView({ width: window.innerWidth }));
+    }
+    window.addEventListener("resize", adjustWith);
+    return () => {
+      window.removeEventListener("resize", adjustWith());
+    };
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <NavTopGlobal />

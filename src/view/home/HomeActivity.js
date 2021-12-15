@@ -9,7 +9,7 @@ const useStyle = makeStyles({
     width: "100%",
     height: "100%",
     position: "absolute",
-    top:0
+    top: 0,
   },
 
   activityTitle: {
@@ -51,16 +51,16 @@ export default function HomeActivity() {
   return (
     <div className={classes.root}>
       <div className={classes.activityTitle}>
-        <img src={ActivityTitle} alt='' />
-        <div>Click qui a vedere tutti i prodotti della festa</div>
+        {/* <img src={ActivityTitle} alt='' /> */}
+        {/* <div>Click qui a vedere tutti i prodotti della festa</div> */}
       </div>
       <img src={Activity} className={classes.activity} alt='' />
-      <div className={classes.activityText}>
+      {/* <div className={classes.activityText}>
         La festa di metà autunno è una delle festività più importanti del
         calendario cinese, subito dopo la Festa di Primavera (o capodanno
         cinese) ed il solstizio d'inverno. Ad accompagnare le celebrazioni
         figurano alcune tradizioni culturali od usi regionali.
-      </div>
+      </div> */}
     </div>
   );
 }
