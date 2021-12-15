@@ -118,7 +118,7 @@ export default function HomeBanner(props) {
   };
 
   return (
-    <Container disableGutters className={classes.root}>
+    <Container disableGutters className={classes.root} >
       <Grid container className={classes.gridStyle}>
         <Grid item className={classes.msg} xs={12}>
           {/* <div>{t("welcomeMsg")}</div> */}
