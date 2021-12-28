@@ -108,6 +108,19 @@ const zh = {
     language: "语言",
   },
   home: { welcome: "欢迎！", locals: "我们在哪" },
+  citta: {
+    PRATO: "PRATO",
+    FIRENZE: "FIRENZE",
+    ROMA: "罗马",
+    MILANO: "米兰",
+    MONZA: "MONZA",
+    AGRIGENTO: "AGRIGENTO",
+    ALESSANDRIA: "ALESSANDRIA",
+    ANCONA: "ANCONA",
+    AOSTA: "AOSTA",
+    "ASCOLI PICENO": "ASCOLI PICENO",
+    "L'AQUILA": "L'AQUILA",
+  },
 };
 
 export default zh;
