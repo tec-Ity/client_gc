@@ -92,8 +92,7 @@ const it = {
     },
     alert: {
       title: "L'ordine è scaduto",
-      message:
-        "L'ordine è stato automaticamente annullato, si prega di riordinare",
+      message: "L'ordine è stato automaticamente annullato, si prega di riordinare",
     },
   },
   selfCenter: {
@@ -109,6 +108,19 @@ const it = {
     language: "Lingue",
   },
   home: { welcome: "Bevenuti！", locals: "I nostri locali" },
+  citta: {
+    PRATO: "PRATO",
+    FIRENZE: "FIRENZE",
+    ROMA: "ROMA",
+    MILANO: "MILANO",
+    MONZA: "MONZA",
+    AGRIGENTO: "AGRIGENTO",
+    ALESSANDRIA: "ALESSANDRIA",
+    ANCONA: "ANCONA",
+    AOSTA: "AOSTA",
+    "ASCOLI PICENO": "ASCOLI PICENO",
+    "L'AQUILA": "L'AQUILA",
+  },
 };
 
 export default it;
