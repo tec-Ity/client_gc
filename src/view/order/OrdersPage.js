@@ -14,6 +14,7 @@ import { ReactComponent as ToPayIcon } from "../../component/icon/orderStatueUnp
 import { ReactComponent as InProgressIcon } from "../../component/icon/orderStatueInProcess.svg";
 import { ReactComponent as CanceledIcon } from "../../component/icon/orderStatueCanceled.svg";
 import { ReactComponent as CompletedIcon } from "../../component/icon/orderStatueComplete.svg";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles({
   root: { color: "#1d1d38" },
@@ -86,6 +87,7 @@ const useStyle = makeStyles({
 });
 
 export default function OrdersPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = useStyle();
   const orders = useSelector((state) => state.order.orders);
@@ -127,8 +129,8 @@ export default function OrdersPage() {
   useEffect(() => {
     const handleScroll = () => {
       const element = document.getElementById("order-container");
-    //   console.log(element.getBoundingClientRect().bottom);
-    //   console.log("----", window.innerHeight);
+      //   console.log(element.getBoundingClientRect().bottom);
+      //   console.log("----", window.innerHeight);
       //if bottom?
       if (element.getBoundingClientRect().bottom <= window.innerHeight) {
         if (atBottom === false) {
@@ -148,25 +150,25 @@ export default function OrdersPage() {
   const statusSelBtnList = [
     {
       field: "toPay",
-      label: "DA PAGARE",
+      label: t("order.status.toPay"),
       icon: <ToPayIconGray />,
       iconSelect: <ToPayIcon />,
     },
     {
       field: "inProgress",
-      label: "IN PROCESSO",
+      label: t("order.status.inProgress"),
       icon: <InProgressIconGray />,
       iconSelect: <InProgressIcon />,
     },
     {
       field: "canceled",
-      label: "CANCEL",
+      label: t("order.status.canceled"),
       icon: <CanceledIconGray />,
       iconSelect: <CanceledIcon />,
     },
     {
       field: "completed",
-      label: "COMPLETO",
+      label: t("order.status.completed"),
       icon: <CompletedIconGray />,
       iconSelect: <CompletedIcon />,
     },
@@ -175,19 +177,15 @@ export default function OrdersPage() {
   return (
     <Container className={classes.root}>
       <div className={classes.headerStyle}>
-        <BackLink label='CONTINUA LO SHOPPING' link='/home' />
+        <BackLink label={t("components.nav.backShop")} link='/home' />
       </div>
       {/* buttons */}
       <Container>
         <Grid container justifyContent='space-evenly'>
           {statusSelBtnList.map((item) => (
             <Grid item key={item.field}>
-              <div
-                className={classes.btnStyle}
-                onClick={handleOrderStateChange(item.field)}>
-                <div>
-                  {orderBtnSwitch[item.field] ? item.iconSelect : item.icon}
-                </div>
+              <div className={classes.btnStyle} onClick={handleOrderStateChange(item.field)}>
+                <div>{orderBtnSwitch[item.field] ? item.iconSelect : item.icon}</div>
                 <div>{item.label}</div>
               </div>
             </Grid>
@@ -198,12 +196,7 @@ export default function OrdersPage() {
         {orders &&
           orders.map((order) => {
             return (
-              <Grid
-                container
-                item
-                xs={12}
-                justifyContent='center'
-                key={order._id}>
+              <Grid container item xs={12} justifyContent='center' key={order._id}>
                 <OrderCard order={order} />
               </Grid>
             );

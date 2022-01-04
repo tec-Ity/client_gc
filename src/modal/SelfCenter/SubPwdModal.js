@@ -4,6 +4,7 @@ import InputModify from "../../component/input/InputModify";
 import CustomButton from "../../component/global/modal/component/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
   root: {
@@ -15,12 +16,11 @@ const useStyles = makeStyles({
   },
 });
 export default function SubPwdModal(props) {
+  const { t } = useTranslation();
   const { handleClose } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const curClientInfoUpdateStatus = useSelector(
-    (state) => state.curClient.curClientInfoUpdateStatus
-  );
+  const curClientInfoUpdateStatus = useSelector((state) => state.curClient.curClientInfoUpdateStatus);
   const [justSubmitted, setJustSubmitted] = useState(false);
   const [pwdInfo, setPwdInfo] = useState({
     oldPwd: "",
@@ -63,7 +63,7 @@ export default function SubPwdModal(props) {
         <InputModify
           value={pwdInfo.oldPwd}
           handleChange={handleChange("oldPwd")}
-          placeholder='Inserisci la password vecchia:'
+          placeholder={t("login.placeholders.pwdOld")}
         />
       </Grid>
       <Grid item xs={12}>
@@ -71,7 +71,7 @@ export default function SubPwdModal(props) {
           iconType='pwd'
           value={pwdInfo.newPwd}
           handleChange={handleChange("newPwd")}
-          placeholder='Nuova password:'
+          placeholder={t("login.placeholders.pwdNew")}
         />
       </Grid>
       <Grid item xs={12}>
@@ -79,11 +79,11 @@ export default function SubPwdModal(props) {
           iconType='pwd'
           value={pwdInfo.newPwdConfirm}
           handleChange={handleChange("newPwdConfirm")}
-          placeholder='Conferma la tua password:'
+          placeholder={t("login.placeholders.pwdConfirm")}
         />
       </Grid>
       <Grid item xs={12}>
-        <CustomButton label='CONTINUA' handleFunc={handleSubmitPwdInfo} />
+        <CustomButton label={t("components.button.proceed")} handleFunc={handleSubmitPwdInfo} />
       </Grid>
       {/* <Grid item xs={12}>
         <div>o hai dimenticato la tua password?</div>

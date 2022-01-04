@@ -112,7 +112,7 @@ export default function ProdExpand(props) {
               <ProdList queryURL={queryURL} isReload={isReload} />
               {prodListQueryTot > 0 && query.page * pageSize < prodListQueryTot && (
                 <CustomButton
-                  label={t("components.prod.expand").toUpperCase()}
+                  label={t("components.button.expand").toUpperCase()}
                   handleFunc={(setLoading) => {
                     dispatch(setQuery({ page: query.page + 1 }));
                     if (prodListQueryStatus === "succeed") setLoading(false);
@@ -132,7 +132,7 @@ export default function ProdExpand(props) {
       </div>
 
       <div style={{ marginTop: "20px" }}>
-        {props.prods && <CustomButton label={t("components.prod.expand").toUpperCase()} handleFunc={handleFunc} />}
+        {props.prods && <CustomButton label={t("components.button.expand").toUpperCase()} handleFunc={handleFunc} />}
       </div>
     </Container>
   );
