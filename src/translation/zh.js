@@ -68,6 +68,7 @@ const zh = {
       emptyTitle: "暂无订单",
       emptyMsg: "现在就去商店下单吧!",
       allOrders: "全部订单",
+      fillOrder: "请先订下一个订单!",
     },
     page: {
       checkOut: "付款",
@@ -97,6 +98,7 @@ const zh = {
     },
   },
   selfCenter: {
+    welcome: "欢迎! ",
     selfCenter: "个人中心",
     logOut: "登出",
     modify: "更改您的",
@@ -105,8 +107,10 @@ const zh = {
     account: "账号",
     social: "第三方绑定",
     paymentMethod: "付款方式",
+    password: "密码",
     address: "地址",
     language: "语言",
+    userCenter: "用户中心",
   },
   home: {
     welcome: "欢迎！",
@@ -145,15 +149,23 @@ const zh = {
     search: {
       prod: "寻找店面产品",
     },
-    prod: {
+    button: {
       expand: "查看更多",
+      proceed: "继续",
+      modify: "更改",
+      logout: "退出",
     },
     nav: {
       back: "返回",
+      backShop: "继续购买",
     },
     alerts: {
       outOfRange: "超出配送范围",
       success: "完成",
+    },
+    language: "语言",
+    placeholders: {
+      nameInput: "添加名字",
     },
   },
 };

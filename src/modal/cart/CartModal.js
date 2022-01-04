@@ -1,16 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomModal from "../../component/global/modal/CustomModal";
-import {
-  setShowCarts,
-  setIsExpand,
-  setCurCartByShop,
-} from "../../redux/cart/cartSlice";
+import { setShowCarts, setIsExpand, setCurCartByShop } from "../../redux/cart/cartSlice";
 import CartCard from "./CartCard";
 import CardWraper from "../../component/global/modal/component/CardWraper";
 import EmptyLogo from "../Component/EmptyLogo";
+import { useTranslation } from "react-i18next";
 
 export default function CartModal() {
+  const { t } = useTranslation();
   const showCarts = useSelector((state) => state.cart.showCarts);
   const carts = useSelector((state) => state.cart.carts);
   const curCart = useSelector((state) => state.cart.curCart);
@@ -42,22 +40,10 @@ export default function CartModal() {
     if (isExpand) {
       // show expand cart
       if (curCart && curCart.OrderProds?.length > 0) {
-        cartsTemp = (
-          <CartCard
-            cart={curCart}
-            count={CartSkuCountShop}
-            isExpand={isExpand}
-          />
-        );
+        cartsTemp = <CartCard cart={curCart} count={CartSkuCountShop} isExpand={isExpand} />;
         setIsEmptyCart(false);
       } else {
-        cartsTemp = (
-          <EmptyLogo
-            type='cart'
-            label='CARRELLO VUOTO'
-            text='Vai nei negozi a riempire i tuoi carrelli ora!'
-          />
-        );
+        cartsTemp = <EmptyLogo type='cart' label={t("cart.modal.emptyTitle")} text={t("cart.modal.emptyMsg")} />;
         setIsEmptyCart(true);
       }
     } else {
@@ -67,24 +53,13 @@ export default function CartModal() {
           return cart.OrderProds.length > 0;
         });
         cartsTemp = cartsValid.map((cart) => {
-          return (
-            <CartCard
-              key={cart._id}
-              cart={cart}
-              count={cartsSkuCount}
-              isExpand={isExpand}
-            />
-          );
+          return <CartCard key={cart._id} cart={cart} count={cartsSkuCount} isExpand={isExpand} />;
         });
         setIsEmptyCart(false);
       } else {
         setIsEmptyCart(true);
         cartsTemp = (
-          <EmptyLogo
-            type='cart'
-            label='CARRELLO VUOTO'
-            text='Vai nei negozi a riempire i tuoi carrelli ora!'
-          />
+          <EmptyLogo type='cart' label='CARRELLO VUOTO' text='Vai nei negozi a riempire i tuoi carrelli ora!' />
         );
       }
     }
@@ -93,10 +68,7 @@ export default function CartModal() {
   //   //console.log(isEmptyCart);
   return (
     <CustomModal show={showCarts} handleClose={handleClose}>
-      <CardWraper
-        isExpand={isExpand}
-        handleCollapse={!inShop && handleCollapse}
-        type={isEmptyCart === false && "cart"}>
+      <CardWraper isExpand={isExpand} handleCollapse={!inShop && handleCollapse} type={isEmptyCart === false && "cart"}>
         {cartList}
       </CardWraper>
     </CustomModal>

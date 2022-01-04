@@ -9,8 +9,10 @@ import { useHistory } from "react-router";
 import { ReactComponent as ToPay } from "../../component/icon/orderStatueUnpaid.svg";
 import { ReactComponent as InProgress } from "../../component/icon/orderStatueInProcess.svg";
 import EmptyLogo from "../Component/EmptyLogo";
+import { useTranslation } from "react-i18next";
 
 export default function OrderModal() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const hist = useHistory();
   const showOrders = useSelector((state) => state.order.showOrders);
@@ -42,11 +44,7 @@ export default function OrderModal() {
   useEffect(() => {
     const getOrders = () => {
       let orderCardTemp;
-      if (
-        ordersStatus === "succeed" &&
-        newFetch === true &&
-        orders.length > 0
-      ) {
+      if (ordersStatus === "succeed" && newFetch === true && orders.length > 0) {
         orderCardTemp = orders?.map((od, index) => {
           return (
             <CartCard
@@ -62,12 +60,12 @@ export default function OrderModal() {
                 od.status === 100 ? (
                   <>
                     <ToPay />
-                    <div>DA PAGARE</div>
+                    <div>{t("order.status.toPay")}</div>
                   </>
                 ) : [200, 400, 700].includes(od.status) ? (
                   <>
                     <InProgress />
-                    <div>IN PROCESSO</div>
+                    <div>{t("order.status.inProgress")}</div>
                   </>
                 ) : (
                   ""
@@ -78,11 +76,7 @@ export default function OrderModal() {
         });
       } else {
         orderCardTemp = (
-          <EmptyLogo
-            type='order'
-            label='ORDINE VUOTO'
-            text='Vai nei negozi a completare un ordine ora!'
-          />
+          <EmptyLogo type='order' label={t("order.modal.emptyTitle")} text={t("order.modal.fillOrder")} />
         );
       }
       setOrderList(orderCardTemp);
@@ -96,11 +90,7 @@ export default function OrderModal() {
 
   return (
     <CustomModal show={showOrders} handleClose={handleClose}>
-      <CardWraper
-        isExpand={isExpand}
-        handleCollapse={handleCollapse}
-        type='order'
-        handleFunc={handleClose}>
+      <CardWraper isExpand={isExpand} handleCollapse={handleCollapse} type='order' handleFunc={handleClose}>
         {orderList}
       </CardWraper>
     </CustomModal>

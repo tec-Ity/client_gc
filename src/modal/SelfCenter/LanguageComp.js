@@ -63,7 +63,7 @@ const useStyle = makeStyles({
 });
 export default function LanguageComp() {
   const classes = useStyle();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   return (
     <Grid
       container
@@ -71,25 +71,20 @@ export default function LanguageComp() {
       xs={12}
       justifyContent='space-between'
       alignItems='center'
-      className={classes.LanguageRowStyle}>
-      <div>Lingue:</div>
+      className={classes.LanguageRowStyle}
+    >
+      <div>{t("components.language")}</div>
       <div className={classes.nationBox}>
         <Button
-          className={
-            i18n.resolvedLanguage === "zh"
-              ? classes.nationBtnSelected
-              : classes.nationBtn
-          }
-          onClick={() => i18n.changeLanguage("zh")}>
+          className={i18n.resolvedLanguage === "zh" ? classes.nationBtnSelected : classes.nationBtn}
+          onClick={() => i18n.changeLanguage("zh")}
+        >
           <img src={china} alt='中文' />
         </Button>
         <Button
-          className={
-            i18n.resolvedLanguage === "it"
-              ? classes.nationBtnSelected
-              : classes.nationBtn
-          }
-          onClick={() => i18n.changeLanguage("it")}>
+          className={i18n.resolvedLanguage === "it" ? classes.nationBtnSelected : classes.nationBtn}
+          onClick={() => i18n.changeLanguage("it")}
+        >
           <img src={italy} alt='italiano' />
         </Button>
       </div>

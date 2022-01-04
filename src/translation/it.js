@@ -23,9 +23,9 @@ const it = {
     placeholders: {
       account: "Code/Email/Num. di telefono",
       pwd: "Password",
-      pwdNew: "新密码",
-      pwdOld: "旧密码",
-      pwdConfirm: "确认密码",
+      pwdNew: "Nuova password",
+      pwdOld: "Vecchia password",
+      pwdConfirm: "Conferma password",
       verifCode: "Codice di verifica",
     },
   },
@@ -99,16 +99,19 @@ const it = {
     },
   },
   selfCenter: {
+    welcome: "CIAO! ",
     selfCenter: "Profilo",
     logOut: "Esci",
-    modify: "Modifica",
+    modify: "Modifica ",
     notYet: "Non c'è",
     name: "Nome",
     account: "Account",
     social: "Social",
     paymentMethod: "Metodo di pagamento",
+    password: "Password",
     address: "Indirizzi",
     language: "Lingue",
+    userCenter: "Centro utente",
   },
   home: {
     welcome: "Bevenuti！",
@@ -154,15 +157,23 @@ const it = {
     search: {
       prod: "Cerca prodotti nel negozio",
     },
-    prod: {
+    button: {
       expand: "Vedi di più",
+      proceed: "Continua",
+      modify: "Modifica",
+      logout: "Esci",
     },
     nav: {
       back: "Indietro",
+      backShop: "Continua lo shopping",
     },
     alerts: {
       outOfRange: "Fuori dall'area di servizio",
       success: "Ok",
+    },
+    language: "Lingue",
+    placeholders: {
+      nameInput: "Aggiungi il tuo nome",
     },
   },
 };

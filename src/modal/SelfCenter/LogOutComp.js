@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { logout_Prom } from "../../api";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function LogOutComp() {
+  const { t } = useTranslation();
   useEffect(() => {
     if (localStorage.getItem("thirdPartyLogin")) {
       (function (d, s, id) {
@@ -77,7 +79,7 @@ export default function LogOutComp() {
 
   return (
     <Link to='#' onClick={handleLogout}>
-      LOG OUT
+      {t("components.button.logout")}
     </Link>
   );
 }
