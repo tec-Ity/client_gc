@@ -5,8 +5,10 @@ import { setShowAddrSel } from "../../../redux/curClient/curClientSlice";
 import { InputAdornment, OutlinedInput } from "@material-ui/core";
 import { ReactComponent as ArrowDown } from "../../icon/chevron-down.svg";
 import { ReactComponent as Pin } from "../../icon/mapInsertLocation.svg";
+import { useTranslation } from "react-i18next";
 
 export default function NavAddr() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const view = useSelector((state) => state.root.view);
   const userSelectedLocation = useSelector(
@@ -18,7 +20,7 @@ export default function NavAddr() {
     mobile: UIMobile,
   };
   const address = {
-    deliverToMsg: "Consegna a:",
+    deliverToMsg: t("address.shipTo"),
     onClick: () => dispatch(setShowAddrSel(true)),
     addrInfo: (
       <>
@@ -104,17 +106,14 @@ const useStyle = makeStyles({
 });
 
 function UIWeb({ address, userSelectedLocation }) {
+  const { t } = useTranslation();
   const classes = useStyle();
   console.log(address);
   return (
     <div className={classes.addrBoxWeb}>
       <div>{address.deliverToMsg}</div>
       <div onClick={address.onClick}>
-        {userSelectedLocation ? (
-          address.addrInfo
-        ) : (
-          <div>Scegli il tuo indirizzo</div>
-        )}
+        {userSelectedLocation ? address.addrInfo : <div>{t("address.selectAddr")}</div>}
       </div>
     </div>
   );

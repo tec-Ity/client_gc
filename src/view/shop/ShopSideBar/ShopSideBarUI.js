@@ -1,19 +1,13 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  Collapse,
-  Container,
-  Grid,
-  List,
-  ListItem,
-} from "@material-ui/core";
+import { Button, Collapse, Container, Grid, List, ListItem } from "@material-ui/core";
 import CustomHr from "../../../component/global/modal/component/CustomHr";
 import china from "../../../component/icon/china.svg";
 import { ReactComponent as Italy } from "../../../component/icon/italy.svg";
 import { ReactComponent as Japan } from "../../../component/icon/japan.svg";
 import { ReactComponent as Korea } from "../../../component/icon/south korea.svg";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 // import { setScrollNav } from "../../../redux/filter/filterSlice";
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -60,8 +54,7 @@ const useStyle = makeStyles((theme) => ({
     "&.Mui-selected": {
       fontWeight: "600",
       borderRadius: "500px 500px 500px 0",
-      background:
-        " linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
+      background: " linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
     },
   },
   selCategStyle: {},
@@ -122,6 +115,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function ShopSideBarUI(props) {
+  const { t } = useTranslation();
   const {
     isDiscount,
     handleDiscount,
@@ -154,10 +148,7 @@ export default function ShopSideBarUI(props) {
 
       scrollList.current &&
         scrollList.current.getBoundingClientRect().top > 0 &&
-        (scrollList.current.style.height =
-          window.innerHeight -
-          scrollList.current.getBoundingClientRect().top +
-          "px");
+        (scrollList.current.style.height = window.innerHeight - scrollList.current.getBoundingClientRect().top + "px");
 
       // //console.log(window.pageYOffset);
       // //console.log(sideBar.current.getBoundingClientRect().top);
@@ -170,10 +161,7 @@ export default function ShopSideBarUI(props) {
       // //console.log(
       //   window.pageYOffset - sideBar.current?.getBoundingClientRect().top
       // );
-      if (
-        window.pageYOffset - sideBar.current?.getBoundingClientRect().top >
-        240
-      ) {
+      if (window.pageYOffset - sideBar.current?.getBoundingClientRect().top > 240) {
         // sideBar.current.style.position = "sticky";
         // sideBar.current.style.top = "100px";
         setScrollNav(true);
@@ -210,12 +198,9 @@ export default function ShopSideBarUI(props) {
                     onClick={(e) => {
                       e.preventDefault();
                       selSecondCateg !== children._id &&
-                        sendSecondCategData(
-                          children._id,
-                          children.code,
-                          children.img_url
-                        );
-                    }}>
+                        sendSecondCategData(children._id, children.code, children.img_url);
+                    }}
+                  >
                     {children.code}
                   </ListItem>
                 );
@@ -246,40 +231,22 @@ export default function ShopSideBarUI(props) {
               selected={selFirstCateg === categ._id}
               id={categ._id + "categBar"}
               onClick={() => {
-                selFirstCateg !== categ._id
-                  ? sendFirstCategData(categ._id, categ.code, categ.img_url)
-                  : goBackFunc();
-              }}>
+                selFirstCateg !== categ._id ? sendFirstCategData(categ._id, categ.code, categ.img_url) : goBackFunc();
+              }}
+            >
               {categ.code}
             </ListItem>
-            <Collapse
-              in={categ._id === children?.far}
-              key='childrenCollapse'
-              timeout='auto'
-              unmountOnExit>
+            <Collapse in={categ._id === children?.far} key='childrenCollapse' timeout='auto' unmountOnExit>
               {childrenList(categ._id)}
             </Collapse>
           </React.Fragment>
         );
       });
     setCategList(categList);
-  }, [
-    categs,
-    children,
-    childrenList,
-    classes.liStyle,
-    goBackFunc,
-    selFirstCateg,
-    selSecondCateg,
-    sendFirstCategData,
-  ]);
+  }, [categs, children, childrenList, classes.liStyle, goBackFunc, selFirstCateg, selSecondCateg, sendFirstCategData]);
 
   return (
-    <Container
-      className={classes.root}
-      maxWidth='xs'
-      disableGutters
-      ref={sideBar}>
+    <Container className={classes.root} maxWidth='xs' disableGutters ref={sideBar}>
       {/* <div>&nbsp;</div> */}
       <CustomHr position={classes.customHr} />
       <List component='div' disablePadding>
@@ -288,64 +255,49 @@ export default function ShopSideBarUI(props) {
           key='discountButton'
           classes={{ root: classes.liStyle }}
           selected={isDiscount}
-          onClick={handleDiscount}>
-          <span>Scontati</span>
+          onClick={handleDiscount}
+        >
+          <span>{t("shop.sidebar.discounted")}</span>
         </ListItem>
       </List>
       <CustomHr position={classes.customHr} />
       <Grid container className={classes.nationStyle}>
         <Grid item xs={3}>
           <Button
-            className={
-              nations.find((n) => n === "CN")
-                ? classes.nationBtnSelected
-                : classes.nationBtn
-            }
-            onClick={handleNation("CN")}>
+            className={nations.find((n) => n === "CN") ? classes.nationBtnSelected : classes.nationBtn}
+            onClick={handleNation("CN")}
+          >
             {/* <China /> */}
             <img src={china} alt='china' />
           </Button>
         </Grid>
         <Grid item xs={3}>
           <Button
-            className={
-              nations.find((n) => n === "IT")
-                ? classes.nationBtnSelected
-                : classes.nationBtn
-            }
-            onClick={handleNation("IT")}>
+            className={nations.find((n) => n === "IT") ? classes.nationBtnSelected : classes.nationBtn}
+            onClick={handleNation("IT")}
+          >
             <Italy />
           </Button>
         </Grid>
         <Grid item xs={3}>
           <Button
-            className={
-              nations.find((n) => n === "JP")
-                ? classes.nationBtnSelected
-                : classes.nationBtn
-            }
-            onClick={handleNation("JP")}>
+            className={nations.find((n) => n === "JP") ? classes.nationBtnSelected : classes.nationBtn}
+            onClick={handleNation("JP")}
+          >
             <Japan />
           </Button>
         </Grid>
         <Grid item xs={3}>
           <Button
-            className={
-              nations.find((n) => n === "KR")
-                ? classes.nationBtnSelected
-                : classes.nationBtn
-            }
-            onClick={handleNation("KR")}>
+            className={nations.find((n) => n === "KR") ? classes.nationBtnSelected : classes.nationBtn}
+            onClick={handleNation("KR")}
+          >
             <Korea />
           </Button>
         </Grid>
       </Grid>
       <CustomHr position={classes.customHr} />
-      <div
-        ref={scrollList}
-        className={
-          scrollNav === true ? classes.scrollNavStyle : classes.staticNavStyle
-        }>
+      <div ref={scrollList} className={scrollNav === true ? classes.scrollNavStyle : classes.staticNavStyle}>
         <List component='nav' disablePadding>
           {categList}
         </List>

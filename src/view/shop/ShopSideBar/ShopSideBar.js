@@ -11,8 +11,10 @@ import {
   fetchNationIds,
 } from "../../../redux/filter/filterSlice";
 import ShopSideBarUI from "./ShopSideBarUI";
+import { useTranslation } from "react-i18next";
 
 export default function ShopSideBar(props) {
+  const { t } = useTranslation();
   const { categs } = props;
   const [children, setChildren] = useState();
   const [firstCategData, setFirstCategData] = useState({
@@ -31,8 +33,7 @@ export default function ShopSideBar(props) {
   // const nationIds = useSelector((state) => state.filter.nationIds);
   const nationIdsStatus = useSelector((state) => state.filter.nationIdsStatus);
   useEffect(() => {
-    nationIdsStatus === "idle" &&
-      dispatch(fetchNationIds(["CN", "IT", "JP", "KR"]));
+    nationIdsStatus === "idle" && dispatch(fetchNationIds(["CN", "IT", "JP", "KR"]));
   }, [dispatch, nationIdsStatus]);
 
   const goBackFunc = useCallback(() => {
@@ -68,9 +69,7 @@ export default function ShopSideBar(props) {
       );
 
       //find its children categs
-      const selChildren = categs.find(
-        (item) => item._id === categId
-      ).Categ_sons;
+      const selChildren = categs.find((item) => item._id === categId).Categ_sons;
 
       //find all prods belong to it
       dispatch(
@@ -139,7 +138,7 @@ export default function ShopSideBar(props) {
       dispatch(setQuery({ isDiscount: true }));
       dispatch(
         setTitle({
-          desp: "Scontati",
+          desp: t("shop.sidebar.discounted"),
           img: "",
         })
       );

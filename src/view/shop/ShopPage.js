@@ -12,14 +12,12 @@ import {
   setShowOutOfRangeAlert,
 } from "../../redux/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setCurCartByShop,
-  setInShop,
-  setIsExpand,
-} from "../../redux/cart/cartSlice";
+import { setCurCartByShop, setInShop, setIsExpand } from "../../redux/cart/cartSlice";
 import { Container, Grid } from "@material-ui/core";
 import { goBack } from "../../redux/filter/filterSlice";
 import CustomAlert from "../../component/global/modal/CustomAlert";
+import { useTranslation } from "react-i18next";
+
 const useStyle = makeStyles((theme) => ({
   root: {
     position: "absolute",
@@ -40,6 +38,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function ShopPage() {
+  const { t } = useTranslation();
   const classes = useStyle();
   const { _id } = useParams();
   //   const hist = useHistory();
@@ -47,9 +46,7 @@ export default function ShopPage() {
   const categs = useSelector((state) => state.shop.categList);
   const prevShopId = useSelector((state) => state.shop.curShop);
   const categStatus = useSelector((state) => state.shop.categStatus);
-  const showOutOfRangeAlert = useSelector(
-    (state) => state.shop.showOutOfRangeAlert
-  );
+  const showOutOfRangeAlert = useSelector((state) => state.shop.showOutOfRangeAlert);
 
   // const categError = useSelector((state) => state.shop.categError);
   //   const curShopInfoStatus = useSelector(
@@ -76,8 +73,7 @@ export default function ShopPage() {
       dispatch(setCurCartByShop(_id));
 
       //call categ only once for every shops
-      (categStatus === "idle" || categStatus === "error") &&
-        dispatch(fetchCategList());
+      (categStatus === "idle" || categStatus === "error") && dispatch(fetchCategList());
       // //console.log("status", categStatus);
       if (categStatus === "succeed") {
         dispatch(setCurShop(_id));
@@ -109,12 +105,7 @@ export default function ShopPage() {
               <Grid item sm={4} md={3} className={classes.gridItemStyle}>
                 <ShopSideBar categs={categs} />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={8}
-                md={9}
-                className={classes.gridItemStyle}>
+              <Grid item xs={12} sm={8} md={9} className={classes.gridItemStyle}>
                 <ShopProdSection />
               </Grid>
             </Grid>
@@ -124,8 +115,8 @@ export default function ShopPage() {
       <CustomAlert
         show={showOutOfRangeAlert}
         handleClose={() => dispatch(setShowOutOfRangeAlert(false))}
-        alertTitle={"超出配送范围"}
-        alertButton={"OK"}
+        alertTitle={t("components.alerts.outOfRange")}
+        alertButton={t("components.alerts.success")}
         handleFunc={() => dispatch(setShowOutOfRangeAlert(false))}
       />
     </>

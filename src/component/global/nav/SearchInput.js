@@ -8,6 +8,7 @@ import { fetchSearchProds } from "../../../redux/shop/shopSlice";
 import { Grid } from "@material-ui/core";
 import { get_DNS } from "../../../api";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles({
   root: {
@@ -136,6 +137,7 @@ const useStyle = makeStyles({
 
 const pageSize = 30;
 export default function SearchInput() {
+  const { t } = useTranslation();
   const classes = useStyle();
   const dispatch = useDispatch();
   const [pageNum, setPageNum] = useState(1);
@@ -143,9 +145,7 @@ export default function SearchInput() {
   const [showSearchBox, setShowSearchBox] = useState(false);
   const searchProds = useSelector((state) => state.shop.searchProds);
   const searchProdsCount = useSelector((state) => state.shop.searchProdsCount);
-  const searchProdsStatus = useSelector(
-    (state) => state.shop.searchProdsStatus
-  );
+  const searchProdsStatus = useSelector((state) => state.shop.searchProdsStatus);
   useEffect(() => {
     searchValue && dispatch(fetchSearchProds({ searchValue, pageNum }));
   }, [dispatch, pageNum, searchValue]);
@@ -153,7 +153,7 @@ export default function SearchInput() {
     <div className={classes.root}>
       <OutlinedInput
         classes={{ root: classes.searchBox }}
-        placeholder={"cerca in negozio"}
+        placeholder={t("components.search.prod")}
         onChange={(e) => {
           setPageNum(1);
           if (e.target.value) {
@@ -181,46 +181,36 @@ export default function SearchInput() {
                   to={`/prod/${prod._id}`}
                   className={classes.resultLink}
                   key={prod._id}
-                  onClick={() => setShowSearchBox(false)}>
+                  onClick={() => setShowSearchBox(false)}
+                >
                   <Grid container className={classes.resultListItem}>
                     <Grid item xs={4}>
                       {prod.img_urls[0] ? (
-                        <img
-                          src={get_DNS() + prod.img_urls[0]}
-                          alt={prod.nome}
-                        />
+                        <img src={get_DNS() + prod.img_urls[0]} alt={prod.nome} />
                       ) : (
                         <div style={{ backgroundColor: "#c0e57b4d" }}></div>
                       )}
                     </Grid>
                     <Grid item container xs={8}>
                       <Grid item xs={12}>
-                        {prod.nome?.slice(0, 35) +
-                          (prod.nome?.length > 35 ? "..." : "")}
+                        {prod.nome?.slice(0, 35) + (prod.nome?.length > 35 ? "..." : "")}
                       </Grid>
                       <Grid item xs={12}>
-                        €
-                        {prod.price_max === prod.price_min
-                          ? prod.price_sale
-                          : `${prod.price_min} - ${prod.price_max}`}
+                        €{prod.price_max === prod.price_min ? prod.price_sale : `${prod.price_min} - ${prod.price_max}`}
                       </Grid>
                     </Grid>
                   </Grid>
                 </Link>
               ))}
               {pageNum * pageSize < searchProdsCount && (
-                <div
-                  onClick={() => setPageNum((prev) => prev + 1)}
-                  className={classes.viewMore}>
+                <div onClick={() => setPageNum((prev) => prev + 1)} className={classes.viewMore}>
                   <div>view more</div>
                   <div>...</div>
                 </div>
               )}
             </div>
           </div>
-          <div
-            className={classes.resultBackground}
-            onClick={() => setShowSearchBox(false)}></div>
+          <div className={classes.resultBackground} onClick={() => setShowSearchBox(false)}></div>
         </>
       )}
     </div>

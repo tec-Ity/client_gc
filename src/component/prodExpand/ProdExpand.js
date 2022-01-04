@@ -5,20 +5,20 @@ import ProdList from "../prodList/ProdList";
 import ExpandTitle from "./ExpandTitle";
 import Container from "@material-ui/core/Container";
 import CustomButton from "../global/modal/component/CustomButton";
+import { useTranslation } from "react-i18next";
 
 export default function ProdExpand(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const title = useSelector((state) => state.filter.title);
   const query = useSelector((state) => state.filter.query);
   const nationIds = useSelector((state) => state.filter.nationIds);
-  const prodListQueryStatus = useSelector(
-    (state) => state.shop.prodListQueryStatus
-  );
+  const prodListQueryStatus = useSelector((state) => state.shop.prodListQueryStatus);
   const prodListQueryTot = useSelector((state) => state.shop.prodListQueryTot);
   const [queryURL, setQueryURL] = useState(null);
-//   const [pageNum, setPageNum] = useState(1);
+  //   const [pageNum, setPageNum] = useState(1);
   const [isReload, setIsReload] = useState(true);
-//   const [atBottom, setAtBottom] = React.useState(false);
+  //   const [atBottom, setAtBottom] = React.useState(false);
   const pageSize = 30;
   useEffect(() => {
     // //console.log("query", query);
@@ -30,11 +30,7 @@ export default function ProdExpand(props) {
         validQuery = true;
       }
       if (query.nations.length > 0) {
-        queryUrl +=
-          "&Nations=" +
-          query.nations.map(
-            (n) => nationIds?.find((idObj) => idObj.code === n)?.id
-          );
+        queryUrl += "&Nations=" + query.nations.map((n) => nationIds?.find((idObj) => idObj.code === n)?.id);
         validQuery = true;
       }
       if (query.isDiscount === true) {
@@ -44,7 +40,7 @@ export default function ProdExpand(props) {
       //test query field for changing page size
       validQuery === true && (queryUrl += "&pagesize=" + pageSize);
 
-    //   console.log(query);
+      //   console.log(query);
       //valid query
       if (validQuery === true) {
         queryUrl += "&page=" + query.page;
@@ -105,7 +101,8 @@ export default function ProdExpand(props) {
         marginBottom: "30px",
         marginTop: "15px",
         maxWidth: "781px",
-      }}>
+      }}
+    >
       <div id='prod-container'>
         {queryURL || props.prods ? (
           queryURL ? (
@@ -113,16 +110,15 @@ export default function ProdExpand(props) {
               <ExpandTitle title={title} />
               {/* add is reload */}
               <ProdList queryURL={queryURL} isReload={isReload} />
-              {prodListQueryTot > 0 &&
-                query.page * pageSize < prodListQueryTot && (
-                  <CustomButton
-                    label='VEDI DI PIÙ'
-                    handleFunc={(setLoading) => {
-                      dispatch(setQuery({ page: query.page + 1 }));
-                      if (prodListQueryStatus === "succeed") setLoading(false);
-                    }}
-                  />
-                )}
+              {prodListQueryTot > 0 && query.page * pageSize < prodListQueryTot && (
+                <CustomButton
+                  label={t("components.prod.expand").toUpperCase()}
+                  handleFunc={(setLoading) => {
+                    dispatch(setQuery({ page: query.page + 1 }));
+                    if (prodListQueryStatus === "succeed") setLoading(false);
+                  }}
+                />
+              )}
             </>
           ) : (
             <>
@@ -136,9 +132,7 @@ export default function ProdExpand(props) {
       </div>
 
       <div style={{ marginTop: "20px" }}>
-        {props.prods && (
-          <CustomButton label='VEDI DI PIÙ' handleFunc={handleFunc} />
-        )}
+        {props.prods && <CustomButton label={t("components.prod.expand").toUpperCase()} handleFunc={handleFunc} />}
       </div>
     </Container>
   );
