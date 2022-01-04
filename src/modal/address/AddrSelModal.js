@@ -254,16 +254,16 @@ export default function AddrSelModal() {
             <Grid
               container
               item
-              alignItems='flex-start'
-              alignContent='flex-start'
-              justifyContent='center'
+              alignItems="flex-start"
+              alignContent="flex-start"
+              justifyContent="center"
               className={classes.locationBox}
             >
               {/* current location */}
               <Grid item container xs={12}>
                 {/* head */}
                 <Grid item container xs={12} style={{ marginBottom: "15px" }}>
-                  <Grid item container justifyContent='flex-start' xs={1}>
+                  <Grid item container justifyContent="flex-start" xs={1}>
                     <CurLocationIcon className={classes.iconStyle} />
                   </Grid>
                   <Grid item container xs={7} className={classes.locationBoxTitle}>
@@ -309,16 +309,17 @@ export default function AddrSelModal() {
                 {/* head */}
                 <Grid item container xs={12} style={{ marginBottom: "15px" }}>
                   {/* icon */}
-                  <Grid item container justifyContent='flex-start' xs={1}>
+                  <Grid item container justifyContent="flex-start" xs={1}>
                     <UserIcon className={classes.iconStyle} />
                   </Grid>
                   {/* title */}
                   <Grid item container xs={7} className={classes.locationBoxTitle}>
                     {t("address.savedAddr")}
                   </Grid>
-                  <Grid item container justifyContent='center' xs={4} />
+                  <Grid item container justifyContent="center" xs={4} />
                 </Grid>
                 {/* location body */}
+
                 <Grid item container xs={12}>
                   {curClientAddrs
                     ? curClientAddrs.map((addr) => (
@@ -327,9 +328,11 @@ export default function AddrSelModal() {
                           selectedLocation={selectedLocation}
                           addr={addr}
                           handleClick={(setNew) => {
+                            console.log("setNew", setNew);
+                            console.log("addr", addr);
                             if (setNew) {
                               setSelectedLocation(addr._id);
-                              setCurCity(addr.Cita?.code);
+                              setCurCity(addr.Cita?.code || addr.Cita);
                               setSelectedAddr(addr.address);
                               setCurZip(addr.postcode);
                               setPersonalInfo({
@@ -387,7 +390,13 @@ function AddrSelHeader({ title, goBack = null, handleAdd, showInput = true }) {
   const classes = useStyle();
   return (
     <>
-      <Grid item container xs={12} justifyContent='center' className={classes.titleStyle}>
+      <Grid
+        item
+        container
+        xs={12}
+        justifyContent="center"
+        className={classes.titleStyle}
+      >
         {goBack && (
           <div onClick={goBack} className={classes.goBack}>
             <BackArrow />
@@ -396,7 +405,14 @@ function AddrSelHeader({ title, goBack = null, handleAdd, showInput = true }) {
         <div>{title}</div>
       </Grid>
       {showInput && (
-        <Grid item container xs={12} justifyContent='center' onClick={handleAdd} className={classes.inputRowStyle}>
+        <Grid
+          item
+          container
+          xs={12}
+          justifyContent="center"
+          onClick={handleAdd}
+          className={classes.inputRowStyle}
+        >
           <Search disabled />
         </Grid>
       )}
@@ -406,6 +422,7 @@ function AddrSelHeader({ title, goBack = null, handleAdd, showInput = true }) {
 
 function AddrListItem({ selectedLocation, addr, handleClick }) {
   const classes = useStyle();
+  console.log(addr);
   return (
     <>
       {/* info */}
@@ -421,7 +438,7 @@ function AddrListItem({ selectedLocation, addr, handleClick }) {
         {/* offset */}
         <Grid item container xs={1}></Grid>
         {/* info */}
-        <Grid item container justifyContent='center' xs={11}>
+        <Grid item container justifyContent="center" xs={11}>
           <Grid item container xs={10}>
             <Grid item xs={12}>
               {addr.address}
@@ -431,8 +448,16 @@ function AddrListItem({ selectedLocation, addr, handleClick }) {
             </Grid>
           </Grid>
           {/* check icon */}
-          <Grid item container xs={2} justifyContent='center' alignItems='center'>
-            {selectedLocation === addr._id && <CheckCircleIcon className={classes.selectedIcon} />}
+          <Grid
+            item
+            container
+            xs={2}
+            justifyContent="center"
+            alignItems="center"
+          >
+            {selectedLocation === addr._id && (
+              <CheckCircleIcon className={classes.selectedIcon} />
+            )}
           </Grid>
         </Grid>
       </Grid>

@@ -11,7 +11,10 @@ export default function NavAddr() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const view = useSelector((state) => state.root.view);
-  const userSelectedLocation = useSelector((state) => state.curClient.userSelectedLocation);
+  const userSelectedLocation = useSelector(
+    (state) => state.curClient.userSelectedLocation
+  );
+  console.log(userSelectedLocation);
   const comps = {
     web: UIWeb,
     mobile: UIMobile,
@@ -30,7 +33,9 @@ export default function NavAddr() {
     selector: "",
   };
   const Comps = comps[view];
-  return <Comps address={address} />;
+  return (
+    <Comps address={address} userSelectedLocation={userSelectedLocation} />
+  );
 }
 
 const useStyle = makeStyles({
@@ -103,6 +108,7 @@ const useStyle = makeStyles({
 function UIWeb({ address, userSelectedLocation }) {
   const { t } = useTranslation();
   const classes = useStyle();
+  console.log(address);
   return (
     <div className={classes.addrBoxWeb}>
       <div>{address.deliverToMsg}</div>
@@ -124,7 +130,7 @@ function UIMobile({ address, userSelectedLocation }) {
         ) : (
           <OutlinedInput
             classes={{ root: classes.addrInput }}
-            placeholder='Qual è il tuo indirizzo?'
+            placeholder="Qual è il tuo indirizzo?"
             endAdornment={<Pin className={classes.pinIcon} />}
           />
         )}
