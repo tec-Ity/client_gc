@@ -36,6 +36,7 @@ const zh = {
     curLocation: "您当前的位置",
     getCurLocation: "请获取当前地址",
     locate: "定位",
+    locateTooltip: "先查詢您的位置",
     savedAddr: "保存的地址",
     confirmAddr: "确认地址",
     addNewAddr: "添加新地址",
@@ -107,19 +108,53 @@ const zh = {
     address: "地址",
     language: "语言",
   },
-  home: { welcome: "欢迎！", locals: "我们在哪" },
+  home: {
+    welcome: "欢迎！",
+    locals: "我们在哪",
+    slogan: {
+      black: "国际好物\n配送",
+      white: "到家",
+    },
+    adress: {
+      tooltip: "请输入您的地址寻找店面:",
+      placeholder: "您地址在哪？",
+      finder: "使用当前地址",
+    },
+  },
+  shop: {
+    banner: {
+      0: "送到家",
+      1: "货到付款",
+      2: "会员",
+    },
+    sidebar: {
+      discounted: "打折",
+    },
+  },
+  prod: {
+    price: "价格",
+    details: "产品资料",
+    suggestions: "或许兴趣",
+  },
   citta: {
-    PRATO: "PRATO",
-    FIRENZE: "FIRENZE",
     ROMA: "罗马",
     MILANO: "米兰",
     MONZA: "MONZA",
-    AGRIGENTO: "AGRIGENTO",
-    ALESSANDRIA: "ALESSANDRIA",
-    ANCONA: "ANCONA",
-    AOSTA: "AOSTA",
-    "ASCOLI PICENO": "ASCOLI PICENO",
-    "L'AQUILA": "L'AQUILA",
+  },
+  components: {
+    search: {
+      prod: "寻找店面产品",
+    },
+    prod: {
+      expand: "查看更多",
+    },
+    nav: {
+      back: "返回",
+    },
+    alerts: {
+      outOfRange: "超出配送范围",
+      success: "完成",
+    },
   },
 };
 

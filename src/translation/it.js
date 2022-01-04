@@ -32,11 +32,13 @@ const it = {
   address: {
     shipTo: "Consegna a:",
     selectAddr: "Scegli il tuo indirizzo",
-    enterAddr: "Qual è il tuo indirizzo",
+    enterAddr: "Inserisci il tuo indirizzo",
     curLocation: "La tua posizione attuale",
-    getCurLocation: "请获取当前地址",
+    getCurLocation: "Ottieni la posizione attuale",
     locate: "Localizzare",
+    locateTooltip: "Acquisisci la tua posizione",
     savedAddr: "I miei indirizzi salvati",
+    savedAddrError: "Non ci sono indirizzi salvati.",
     confirmAddr: "CONFERMA L'INDIRIZZO",
     addNewAddr: "Inserisci il nuovo indirizzo",
     newAddrDetails: "Scala/Porta/Indicazione ecc...",
@@ -66,7 +68,8 @@ const it = {
     modal: {
       emptyTitle: "ORDINE VUOTO",
       emptyMsg: "现在就去商店下单吧!",
-      allOrders: "Vai nei negozi a completare un ordine ora!",
+      allOrders: "Tutti gli ordini",
+      fillOrder: "Vai nei negozi a completare un ordine ora!",
     },
     page: {
       checkOut: "CASSA",
@@ -107,7 +110,33 @@ const it = {
     address: "Indirizzi",
     language: "Lingue",
   },
-  home: { welcome: "Bevenuti！", locals: "I nostri locali" },
+  home: {
+    welcome: "Bevenuti！",
+    locals: "I nostri locali",
+    slogan: {
+      black: "Spesa mondiale consegnata ",
+      white: "a casa tua.",
+    },
+    adress: {
+      tooltip: "Inserisci il tuo indirizzo per raggiungere i negozi:",
+      finder: "Usa indirizzo attuale",
+    },
+  },
+  shop: {
+    banner: {
+      0: "consegna a casa",
+      1: "paga alla consegna",
+      2: "prime",
+    },
+    sidebar: {
+      discounted: "Scontati",
+    },
+  },
+  prod: {
+    price: "prezzo",
+    details: "Caratteristiche del prodotto",
+    suggestions: "Ti potrebbe interessare",
+  },
   citta: {
     PRATO: "PRATO",
     FIRENZE: "FIRENZE",
@@ -120,6 +149,21 @@ const it = {
     AOSTA: "AOSTA",
     "ASCOLI PICENO": "ASCOLI PICENO",
     "L'AQUILA": "L'AQUILA",
+  },
+  components: {
+    search: {
+      prod: "Cerca prodotti nel negozio",
+    },
+    prod: {
+      expand: "Vedi di più",
+    },
+    nav: {
+      back: "Indietro",
+    },
+    alerts: {
+      outOfRange: "Fuori dall'area di servizio",
+      success: "Ok",
+    },
   },
 };
 

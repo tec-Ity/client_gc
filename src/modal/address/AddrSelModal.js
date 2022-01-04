@@ -21,6 +21,7 @@ import { ReactComponent as LocateIcon } from "../../component/icon/locate.svg";
 import { ReactComponent as UserIcon } from "../../component/icon/user.svg";
 import { ReactComponent as CheckCircleIcon } from "../../component/icon/check-circle.svg";
 import { useHistory, useLocation } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles({
   root: { fontFamily: "Montserrat", color: "#1d1d38" },
@@ -121,8 +122,7 @@ const useStyle = makeStyles({
     "&:hover": {
       cursor: "pointer",
     },
-    background:
-      " linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
+    background: " linear-gradient(270deg, #91E8B3 0%, #C0E57B 100%, #C0E57B 100%)",
     borderRadius: "100px 100px 100px 0",
   },
   selectedIcon: {
@@ -144,6 +144,7 @@ const useStyle = makeStyles({
 });
 
 export default function AddrSelModal() {
+  const { t } = useTranslation();
   const classes = useStyle();
   const dispatch = useDispatch();
   const hist = useHistory();
@@ -161,16 +162,10 @@ export default function AddrSelModal() {
   const [personalInfo, setPersonalInfo] = useState();
   //global var to open this modal
   const showAddrSel = useSelector((state) => state.curClient.showAddrSel);
-  const curClientAddrs = useSelector(
-    (state) => state.curClient.curClientInfo?.addrs
-  );
-  const curClientInfoStatus = useSelector(
-    (state) => state.curClient.curClientInfoStatus
-  );
+  const curClientAddrs = useSelector((state) => state.curClient.curClientInfo?.addrs);
+  const curClientInfoStatus = useSelector((state) => state.curClient.curClientInfoStatus);
   // user GPS
-  const userCurLocation = useSelector(
-    (state) => state.curClient.userCurLocation
-  );
+  const userCurLocation = useSelector((state) => state.curClient.userCurLocation);
   const getCurrentPosition = React.useCallback(() => {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const result = await getGeocode({
@@ -208,12 +203,11 @@ export default function AddrSelModal() {
 
       //if address has location key,
       //extract city, address, and zip from google api
-      const cityShortName = address?.location?.address_components?.find(
-        (addr) =>
-          addr.types?.find((type) => type === "administrative_area_level_2")
+      const cityShortName = address?.location?.address_components?.find((addr) =>
+        addr.types?.find((type) => type === "administrative_area_level_2")
       ).short_name;
-      const zipFromGoogle = address?.location?.address_components?.find(
-        (addr) => addr.types?.find((type) => type === "postal_code")
+      const zipFromGoogle = address?.location?.address_components?.find((addr) =>
+        addr.types?.find((type) => type === "postal_code")
       ).short_name;
 
       const formattedAddress = address?.location?.formatted_address;
@@ -238,22 +232,11 @@ export default function AddrSelModal() {
           personalInfo,
         })
       );
-      if (
-        location.pathname === "/home" ||
-        location.pathname?.includes("/city/")
-      ) {
+      if (location.pathname === "/home" || location.pathname?.includes("/city/")) {
         hist.push("/city");
       }
     },
-    [
-      curCity,
-      curZip,
-      dispatch,
-      hist,
-      location.pathname,
-      personalInfo,
-      selectedAddr,
-    ]
+    [curCity, curZip, dispatch, hist, location.pathname, personalInfo, selectedAddr]
   );
 
   return (
@@ -262,13 +245,11 @@ export default function AddrSelModal() {
       <CustomModal
         timeout={0}
         show={showNewAddr === false && showAddrSel === true}
-        handleClose={() => dispatch(setShowAddrSel(false))}>
+        handleClose={() => dispatch(setShowAddrSel(false))}
+      >
         <Container>
           <Grid container className={classes.root}>
-            <AddrSelHeader
-              title='Scegli il tuo indirizzo'
-              handleAdd={() => setShowNewAddr(true)}
-            />
+            <AddrSelHeader title={t("address.selectAddr")} handleAdd={() => setShowNewAddr(true)} />
             {/* locations section */}
             <Grid
               container
@@ -276,7 +257,8 @@ export default function AddrSelModal() {
               alignItems='flex-start'
               alignContent='flex-start'
               justifyContent='center'
-              className={classes.locationBox}>
+              className={classes.locationBox}
+            >
               {/* current location */}
               <Grid item container xs={12}>
                 {/* head */}
@@ -284,19 +266,13 @@ export default function AddrSelModal() {
                   <Grid item container justifyContent='flex-start' xs={1}>
                     <CurLocationIcon className={classes.iconStyle} />
                   </Grid>
-                  <Grid
-                    item
-                    container
-                    xs={7}
-                    className={classes.locationBoxTitle}>
-                    La tua posizione attuale
+                  <Grid item container xs={7} className={classes.locationBoxTitle}>
+                    {t("address.curLocation")}
                   </Grid>
                   <Grid item container justifyContent='flex-end' xs={4}>
-                    <div
-                      onClick={getCurrentPosition}
-                      className={classes.locateButton}>
+                    <div onClick={getCurrentPosition} className={classes.locateButton}>
                       <LocateIcon className={classes.locateButtonIconStyle} />
-                      Localizzare
+                      {t("address.locate")}
                     </div>
                   </Grid>
                 </Grid>
@@ -307,23 +283,20 @@ export default function AddrSelModal() {
                   xs={12}
                   className={
                     userCurLocation &&
-                    (selectedLocation === "current"
-                      ? classes.selSavedLocation
-                      : classes.savedLocation)
+                    (selectedLocation === "current" ? classes.selSavedLocation : classes.savedLocation)
                   }
                   onClick={() => {
                     userCurLocation && setSelectedLocation("current");
                     setCurCity(userCurLocation?.city);
                     setCurZip(userCurLocation?.zip);
                     setSelectedAddr(userCurLocation?.addr);
-                  }}>
+                  }}
+                >
                   {/* offset  */}
                   <Grid item container xs={1} />
                   {/* current location  */}
                   <Grid item container xs={11}>
-                    {userCurLocation
-                      ? userCurLocation.addr
-                      : "Please get current location"}
+                    {userCurLocation ? userCurLocation.addr : t("address.locateTooltip")}
                   </Grid>
                 </Grid>
               </Grid>
@@ -340,12 +313,8 @@ export default function AddrSelModal() {
                     <UserIcon className={classes.iconStyle} />
                   </Grid>
                   {/* title */}
-                  <Grid
-                    item
-                    container
-                    xs={7}
-                    className={classes.locationBoxTitle}>
-                    I miei indirizzi salvati:
+                  <Grid item container xs={7} className={classes.locationBoxTitle}>
+                    {t("address.savedAddr")}
                   </Grid>
                   <Grid item container justifyContent='center' xs={4} />
                 </Grid>
@@ -377,7 +346,7 @@ export default function AddrSelModal() {
                           }}
                         />
                       ))
-                    : "Non ci sono indirizzi salvati."}
+                    : t("address.savedAddrError")}
                 </Grid>
               </Grid>
             </Grid>
@@ -385,7 +354,7 @@ export default function AddrSelModal() {
             <Grid container item xs={12} style={{ paddingTop: "25px" }}>
               <CustomButton
                 disableBtn={!curCity}
-                label="CONFERMA L'INDIRIZZO"
+                label={t("address.confirmAddr")}
                 alterStyle={classes.customBtnStyle}
                 handleFunc={handleSubmitSelAddr}
               />
@@ -394,22 +363,12 @@ export default function AddrSelModal() {
         </Container>
       </CustomModal>
       {/*------------------------ new location modal ---------------------- */}
-      <CustomModal
-        show={showNewAddr === true}
-        timeout={0}
-        handleClose={() => setShowNewAddr(false)}>
+      <CustomModal show={showNewAddr === true} timeout={0} handleClose={() => setShowNewAddr(false)}>
         <Container>
           <Grid container item xs={12}>
-            <AddrSelHeader
-              title='Inserisci il tuo indirizzo'
-              goBack={() => setShowNewAddr(false)}
-              showInput={false}
-            />
+            <AddrSelHeader title={t("address.savedAddr")} goBack={() => setShowNewAddr(false)} showInput={false} />
             <Grid item xs={12}>
-              <MapContainer
-                btnLabel="CONFERMA L'INDIRIZZO"
-                getSelectedLocation={handleSubmitSelAddr}
-              />
+              <MapContainer btnLabel={t("address.confirmAddr")} getSelectedLocation={handleSubmitSelAddr} />
             </Grid>
             {/* <Grid container item xs={12} style={{ paddingTop: "30px" }}>
               <CustomButton
@@ -428,12 +387,7 @@ function AddrSelHeader({ title, goBack = null, handleAdd, showInput = true }) {
   const classes = useStyle();
   return (
     <>
-      <Grid
-        item
-        container
-        xs={12}
-        justifyContent='center'
-        className={classes.titleStyle}>
+      <Grid item container xs={12} justifyContent='center' className={classes.titleStyle}>
         {goBack && (
           <div onClick={goBack} className={classes.goBack}>
             <BackArrow />
@@ -442,13 +396,7 @@ function AddrSelHeader({ title, goBack = null, handleAdd, showInput = true }) {
         <div>{title}</div>
       </Grid>
       {showInput && (
-        <Grid
-          item
-          container
-          xs={12}
-          justifyContent='center'
-          onClick={handleAdd}
-          className={classes.inputRowStyle}>
+        <Grid item container xs={12} justifyContent='center' onClick={handleAdd} className={classes.inputRowStyle}>
           <Search disabled />
         </Grid>
       )}
@@ -465,14 +413,11 @@ function AddrListItem({ selectedLocation, addr, handleClick }) {
         item
         container
         xs={12}
-        className={
-          selectedLocation === addr._id
-            ? classes.selSavedLocation
-            : classes.savedLocation
-        }
+        className={selectedLocation === addr._id ? classes.selSavedLocation : classes.savedLocation}
         onClick={() => {
           selectedLocation === addr._id ? handleClick() : handleClick(true); //setNew === ture
-        }}>
+        }}
+      >
         {/* offset */}
         <Grid item container xs={1}></Grid>
         {/* info */}
@@ -486,15 +431,8 @@ function AddrListItem({ selectedLocation, addr, handleClick }) {
             </Grid>
           </Grid>
           {/* check icon */}
-          <Grid
-            item
-            container
-            xs={2}
-            justifyContent='center'
-            alignItems='center'>
-            {selectedLocation === addr._id && (
-              <CheckCircleIcon className={classes.selectedIcon} />
-            )}
+          <Grid item container xs={2} justifyContent='center' alignItems='center'>
+            {selectedLocation === addr._id && <CheckCircleIcon className={classes.selectedIcon} />}
           </Grid>
         </Grid>
       </Grid>

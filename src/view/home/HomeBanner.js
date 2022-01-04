@@ -3,17 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ReactComponent as Pin } from "../../component/icon/pin.svg";
 import { ReactComponent as Locate } from "../../component/icon/locate.svg";
 import { useTranslation } from "react-i18next";
-import {
-  Grid,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-  Container,
-} from "@material-ui/core";
-import {
-  setShowAddrSel,
-  setShowLogin,
-} from "../../redux/curClient/curClientSlice";
+import { Grid, OutlinedInput, InputAdornment, IconButton, Container } from "@material-ui/core";
+import { setShowAddrSel, setShowLogin } from "../../redux/curClient/curClientSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#1D1D38",
     marginBottom: "20px",
     textAlign: "center",
+    whiteSpace: "pre-line",
     [theme.breakpoints.down("xs")]: {
       fontSize: "45px",
       height: "150px",
@@ -118,28 +110,22 @@ export default function HomeBanner(props) {
   };
 
   return (
-    <Container disableGutters className={classes.root} >
+    <Container disableGutters className={classes.root}>
       <Grid container className={classes.gridStyle}>
         <Grid item className={classes.msg} xs={12}>
-          {/* <div>{t("welcomeMsg")}</div> */}
-          <span> Spesa mondiale consegnata </span>
-          <span>a casa tua.</span>
+          <span>{t("home.slogan.black")}</span>
+          <span>{t("home.slogan.white")}</span>
         </Grid>
-        <Grid
-          container
-          item
-          xs={12}
-          justifyContent='center'
-          className={classes.addrBox}>
+        <Grid container item xs={12} justifyContent='center' className={classes.addrBox}>
           <Grid item xs={12}>
-            Inserisci il tuo indirizzo per raggiungere i negozi:
+            {t("home.adress.tooltip")}
           </Grid>
           <Grid item xs={12}>
             <OutlinedInput
               disabled
               style={{ cursor: "pointer" }}
               classes={{ root: classes.addrInput }}
-              placeholder='Qual è il tuo indirizzo?'
+              placeholder={t("address.enterAddr")}
               onClick={handleFunc}
               endAdornment={
                 <InputAdornment position='end'>
@@ -152,7 +138,7 @@ export default function HomeBanner(props) {
           </Grid>
           <Grid item xs={12}>
             <Locate />
-            <div>Usa indirizzo attuale</div>
+            <div>{t("home.adress.finder")}</div>
           </Grid>
         </Grid>
       </Grid>

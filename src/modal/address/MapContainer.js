@@ -8,10 +8,7 @@ import {
 } from "@react-google-maps/api";
 // import mapIcon from "../../component/icon/pin.svg";
 //place
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import mapStyle from "../../mapStyle";
 import moment from "moment";
 import { InputAdornment, TextField } from "@material-ui/core";
@@ -21,6 +18,7 @@ import userPin from "../../component/icon/map_user.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomButton from "../../component/global/modal/component/CustomButton";
 import InputModify from "../../component/input/InputModify";
+import { useTranslation } from "react-i18next";
 //parameters avoid re-render for <GoogleMap>
 // const libraries = ["places"];
 
@@ -67,14 +65,8 @@ const useStyle = makeStyles({
   },
 });
 export default function MapContainer(props) {
-  const {
-    inputStyle,
-    getSelectedLocation,
-    btnLabel,
-    mapSize = null,
-    isUpdate,
-    updateAddr,
-  } = props;
+  const { t } = useTranslation();
+  const { inputStyle, getSelectedLocation, btnLabel, mapSize = null, isUpdate, updateAddr } = props;
   const [selected, setSelected] = useState(null);
   const [markers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
@@ -147,7 +139,8 @@ export default function MapContainer(props) {
         center={center}
         options={options}
         // onClick={onMapClick}
-        onLoad={onMapLoad}>
+        onLoad={onMapLoad}
+      >
         {/* markers */}
         {markers.map((marker) => (
           <Marker
@@ -177,9 +170,7 @@ export default function MapContainer(props) {
         )}
         {/* pop window when click marker */}
         {selected && (
-          <InfoWindow
-            position={{ lat: selected.lat, lng: selected.lng }}
-            onCloseClick={() => setSelected(null)}>
+          <InfoWindow position={{ lat: selected.lat, lng: selected.lng }} onCloseClick={() => setSelected(null)}>
             {selected.type === "user" ? (
               <div>You are here</div>
             ) : (
@@ -194,11 +185,9 @@ export default function MapContainer(props) {
       {/* addtional information ex scala numCivico */}
       <div style={{ marginTop: "20px" }}>
         <InputModify
-          placeholder='Scala / porta / indicazione ecc...'
+          placeholder={t("address.newAddrDetails")}
           value={addrDetailToPass.note}
-          handleChange={(note) =>
-            setAddrDetailToPass((prev) => ({ ...prev, note }))
-          }
+          handleChange={(note) => setAddrDetailToPass((prev) => ({ ...prev, note }))}
         />
       </div>
       <div style={{ marginTop: "20px" }}>
@@ -239,6 +228,7 @@ export default function MapContainer(props) {
 
 // {/* search box input */}
 export function Search({ panTo, style, updateAddr, disabled = false }) {
+  const { t } = useTranslation();
   const {
     ready,
     value,
@@ -308,7 +298,7 @@ export function Search({ panTo, style, updateAddr, disabled = false }) {
           size='small'
           classes={{ root: classes.inputStyle }}
           variant='outlined'
-          placeholder='Qual è il tuo indirizzo?'
+          placeholder={t("address.enterAddr")}
           disabled={!ready}
           InputProps={{
             ...params.InputProps,

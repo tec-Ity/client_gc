@@ -7,6 +7,8 @@ import { Container } from "@material-ui/core";
 
 import { useSelector } from "react-redux";
 import BackLink from "../../component/global/link/BackLink";
+import { useTranslation } from "react-i18next";
+
 const useStyle = makeStyles((theme) => ({
   root: {},
   bannerStyle: {
@@ -15,8 +17,7 @@ const useStyle = makeStyles((theme) => ({
     // width: "150%",
     // minWidth:'320vh',
     marginBottom: "100px",
-    background:
-      "linear-gradient(290.29deg, #91E8B3 -12.39%, #C0E57B 21.51%, #D6E57B 110.42%, #C0E57B 110.42%)",
+    background: "linear-gradient(290.29deg, #91E8B3 -12.39%, #C0E57B 21.51%, #D6E57B 110.42%, #C0E57B 110.42%)",
     fontFamily: "Montserrat",
     color: "#1d1d38",
   },
@@ -79,6 +80,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function ShopBanner() {
+  const { t } = useTranslation();
   // const { shopInfo } = props;
 
   const curShopInfo = useSelector((state) => state.shop.curShopInfo);
@@ -101,9 +103,9 @@ export default function ShopBanner() {
 
         <CustomHr position={classes.customHr} />
         <div className={classes.moreInfo}>
-          <div>consegna a casa</div>
-          <div>paga alla consegna</div>
-          <div>prime</div>
+          <div>{t("shop.banner.0")}</div>
+          <div>{t("shop.banner.1")}</div>
+          <div>{t("shop.banner.2")}</div>
         </div>
       </div>
     </Container>

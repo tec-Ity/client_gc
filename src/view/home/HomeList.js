@@ -194,11 +194,15 @@ export default function HomeList(props) {
                           />
                         </>
                       )}
-                      <div className={item.img_url ? classes.cardBackground : classes.cardNoBackground}>
+                      {/* <div className={item.img_url ? classes.cardBackground : classes.cardNoBackground}>
                         {`citta.${item.nome}` === t(`citta.${item.nome}`)
                           ? "WIP " + item.nome
                           : t(`citta.${item.nome}`)}
+                      </div> */}
+                      <div className={item.img_url ? classes.cardBackground : classes.cardNoBackground}>
+                        {item.nome}
                       </div>
+
                       {/* <CardContent
                       className={
                         disabled
