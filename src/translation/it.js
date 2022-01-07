@@ -138,6 +138,12 @@ const it = {
     address: "Indirizzi",
     language: "Lingue",
     userCenter: "Centro utente",
+    placeholders: {
+      name: "Aggiungi il tuo nome",
+      social: "Nessun social connesso",
+      paymentMethod: "Nessun metodo di pagamento impostato",
+      address: "Nessun indirizzo impostato",
+    },
   },
   home: {
     welcome: "Bevenuti！",

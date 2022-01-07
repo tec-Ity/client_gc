@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import CustomModal from "../../component/global/modal/CustomModal";
 import CardWraper from "../../component/global/modal/component/CardWraper";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCurClientInfo, setShowSelfCenter } from "../../redux/curClient/curClientSlice";
+import {
+  fetchCurClientInfo,
+  setShowSelfCenter,
+} from "../../redux/curClient/curClientSlice";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import CustomHr from "../../component/global/modal/component/CustomHr";
@@ -32,8 +35,12 @@ export default function SelfCenterModal() {
   const showSelfCenter = useSelector((state) => state.curClient.showSelfCenter);
   const curClientInfo = useSelector((state) => state.curClient.curClientInfo);
   // //console.log(curClientInfo);
-  const curClientInfoStatus = useSelector((state) => state.curClient.curClientInfoStatus);
-  const curClientInfoUpdateStatus = useSelector((state) => state.curClient.curClientInfoUpdateStatus);
+  const curClientInfoStatus = useSelector(
+    (state) => state.curClient.curClientInfoStatus
+  );
+  const curClientInfoUpdateStatus = useSelector(
+    (state) => state.curClient.curClientInfoUpdateStatus
+  );
   const [tempInfo, setTempInfo] = useState(curClientInfo);
   const [justSubmitted, setJustSubmitted] = useState(null);
 
@@ -106,11 +113,15 @@ export default function SelfCenterModal() {
 
   return (
     <>
-      <CustomModal timeout={0} show={showSelfCenter && showMainModal} handleClose={handleCloseAll}>
+      <CustomModal
+        timeout={0}
+        show={showSelfCenter && showMainModal}
+        handleClose={handleCloseAll}
+      >
         {curClientInfoStatus === "succeed" && curClientInfo && (
           // header
           <CardWraper
-            type='user'
+            type="user"
             title={
               curClientInfo.nome
                 ? t("selfCenter.welcome") + curClientInfo.nome
@@ -127,7 +138,9 @@ export default function SelfCenterModal() {
                 <SelfCenterRow
                   handleFunc={handleShowSub("name")}
                   label={t("selfCenter.name")}
-                  value={curClientInfo.nome || t("components.placeholders.nameInput")}
+                  value={
+                    curClientInfo.nome || t("selfCenter.placeholders.name")
+                  }
                 />
               </Grid>
               <Grid container item xs={12} className={classes.infoRowStyle}>
@@ -144,7 +157,7 @@ export default function SelfCenterModal() {
                   value={
                     curClientInfo.socials.length > 0
                       ? curClientInfo.socials.map((s) => s.social_type + " ")
-                      : "暂无第三方登录"
+                      : t("selfCenter.placeholders.social")
                   }
                 />
               </Grid>
@@ -152,7 +165,7 @@ export default function SelfCenterModal() {
                 <SelfCenterRow
                   handleFunc={handleShowSub("method")}
                   label={t("selfCenter.paymentMethod")}
-                  value={"暂无支付方式"}
+                  value={t("selfCenter.placeholders.paymentMethod")}
                 />
               </Grid>
               <Grid container item xs={12} className={classes.infoRowStyle}>
@@ -160,7 +173,9 @@ export default function SelfCenterModal() {
                   handleFunc={handleShowSub("addr")}
                   label={t("selfCenter.address")}
                   value={
-                    curClientInfo?.addrs?.length > 0 ? curClientInfo.addrs[0].address?.slice(0, 35) + "..." : "暂无地址"
+                    curClientInfo?.addrs?.length > 0
+                      ? curClientInfo.addrs[0].address?.slice(0, 35) + "..."
+                      : t("selfCenter.placeholders.address")
                   }
                 />
               </Grid>
@@ -178,7 +193,12 @@ export default function SelfCenterModal() {
             <Grid container item xs={12} className={classes.gridItemStyle}>
               <CustomHr position={classes.hrStyle} />
             </Grid>
-            <Grid container item xs={12} className={clsx(classes.gridItemStyle, classes.logoutRow)}>
+            <Grid
+              container
+              item
+              xs={12}
+              className={clsx(classes.gridItemStyle, classes.logoutRow)}
+            >
               <div>{t("selfCenter.userCenter")}</div>
               <LogOutComp />
             </Grid>
@@ -202,12 +222,22 @@ const SelfCenterRow = (props) => {
   const { label, value, handleFunc } = props;
   const classes = useStyle();
   return (
-    <Grid container item xs={12} justifyContent='space-between' alignItems='center'>
+    <Grid
+      container
+      item
+      xs={12}
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <div className={classes.desp}>
         <div>{label}</div>
         <div>{value}</div>
       </div>
-      <CustomButton label={t("components.button.modify")} handleFunc={handleFunc} alterStyle={classes.modifyBtnStyle} />
+      <CustomButton
+        label={t("components.button.modify")}
+        handleFunc={handleFunc}
+        alterStyle={classes.modifyBtnStyle}
+      />
     </Grid>
   );
 };
