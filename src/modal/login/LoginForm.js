@@ -5,6 +5,7 @@ import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -59,19 +60,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LoginForm(props) {
+  const { t } = useTranslation();
   const { handleLogin, handleChange, loginData, showPhonePre, showAlert } =
     props;
   const classes = useStyles();
 
   return (
-    <form autoComplete='off'>
+    <form autoComplete="off">
       <Grid
         container
-        direction='column'
-        alignItems='center'
-        className={classes.root}>
+        direction="column"
+        alignItems="center"
+        className={classes.root}
+      >
         <Grid item xs={6}>
-          <div className={classes.welcome}>CIAO!</div>
+          <div className={classes.welcome}>{t("selfCenter.welcome")}</div>
         </Grid>
         {showAlert && (
           <Grid item xs={10} container>
@@ -81,8 +84,9 @@ export default function LoginForm(props) {
                 fontSize: "12px",
                 paddingLeft: "10px",
                 paddingBottom: "5px",
-              }}>
-              Incorrect password or account
+              }}
+            >
+              {t("login.alert.wrongCred")}
             </div>
           </Grid>
         )}
@@ -97,14 +101,14 @@ export default function LoginForm(props) {
 
         <Grid item xs={10} className={classes.gridItem}>
           <InputPassword
-            pwdLabel='Password'
+            pwdLabel="Password"
             password={loginData.password}
             handleChange={handleChange}
           />
           <div style={{ width: "400px", position: "relative" }}>
             <div className={classes.forgetPwd}>
-              <Link to='/' className={classes.forgetLink}>
-                hai dimenticato la tua password?
+              <Link to="/" className={classes.forgetLink}>
+                {t("login.forgetPwd")}
               </Link>
             </div>
           </div>
@@ -116,12 +120,13 @@ export default function LoginForm(props) {
               classes={{
                 root: classes.loginButton,
               }}
-              variant='outlined'
-              type='submit'
-              size='large'
+              variant="outlined"
+              type="submit"
+              size="large"
               // color='primary'
-              onClick={handleLogin}>
-              ACCEDI
+              onClick={handleLogin}
+            >
+              {t("login.login")}
             </Button>
           </div>
         </Grid>

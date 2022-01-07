@@ -7,8 +7,10 @@ import ProofModal from "./component/ProofModal";
 import { fetchOrderPost } from "../../redux/order/orderSlice";
 import { cartDelete, selectCurCart } from "../../redux/cart/cartSlice";
 import CustomAlert from "../../component/global/modal/CustomAlert";
+import { useTranslation } from "react-i18next";
 
 export default function CartDetailPage() {
+  const { t } = useTranslation();
   const { _id } = useParams();
   const dispatch = useDispatch();
   const [showProof, setShowProof] = React.useState();
@@ -58,7 +60,10 @@ export default function CartDetailPage() {
         handleFunc={handleConfirmOrder}
         // _id={_id}
         disableBtn={disableBtn}
-        header={{ backLink: "DIETRO", nextLink: "CONFERMA" }}
+        header={{
+          backLink: t("global.general.goBack"),
+          nextLink: t("global.button.confirm"),
+        }}
         isCart
       />
 
@@ -72,9 +77,8 @@ export default function CartDetailPage() {
       <CustomAlert
         show={showAlert}
         handleClose={() => setShowAlert(false)}
-        alertTitle='INFO INCOMPLETE'
-        alertMessage='Si prega di inserire le informazioni
-        di consegna complete!'
+        alertTitle={t("cart.alert.title")}
+        alertMessage={t("cart.alert.message")}
       />
     </>
   );

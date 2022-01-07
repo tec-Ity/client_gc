@@ -1,6 +1,21 @@
 const global = {
-  general: { goBack: "DIETRO" },
-
+  general: { goBack: "Indietro" },
+  button: {
+    expand: "Vedi di più",
+    proceed: "Continua",
+    confirm: "Conferma",
+    modify: "Modifica",
+    logout: "Esci",
+    checkout: "Check out",
+  },
+  payment: {
+    payMethod: "Segli il metodo di pagamento",
+    payMethod_online: "Paga online",
+    payMethod_offline: "Paga alla consegna",
+    payMethod_selected: "Metodo di pagamento",
+    priceShipping: "Spesa di consegna",
+    priceTot: "Totale",
+  },
   prodTable: {
     prod: "Prodotto",
     quantity: "Quantità",
@@ -10,7 +25,7 @@ const global = {
   },
 };
 const it = {
-  global: global.general,
+  global: global,
   login: {
     login: "ACCEDI",
     register: "REGISTRATI",
@@ -18,15 +33,20 @@ const it = {
     firstTime: "Prima volta qui?",
     hasAccount: "Hai già l’account?",
     forgetPwd: "hai dimenticato la tua password?",
-    recieve: "RICEVI",
+    receive: "RICEVI",
+    timer: "s",
     phoneAreaSel: "Prefisso",
     placeholders: {
       account: "Code/Email/Num. di telefono",
+      region: "--scegli il paese--",
       pwd: "Password",
       pwdNew: "Nuova password",
       pwdOld: "Vecchia password",
       pwdConfirm: "Conferma password",
       verifCode: "Codice di verifica",
+    },
+    alert: {
+      wrongCred: "Nome utente o Password errata",
     },
   },
   address: {
@@ -46,6 +66,7 @@ const it = {
   cart: {
     title: "CARRELLO",
     modal: {
+      shopLabel: "SHOP NO. ",
       emptyTitle: "CARRELLO VUOTO",
       emptyMsg: "Vai nei negozi a riempire i tuoi carrelli ora!",
       order: "ORDINARE",
@@ -62,6 +83,8 @@ const it = {
     alert: {
       title: "INFO INCOMPLETE",
       message: "Si prega di inserire le informazioni di consegna complete!",
+      recipient: "Pregasi inserire il nome del recipiente",
+      number: "Pregasi inserire un numero di telefono",
     },
   },
   order: {
@@ -69,19 +92,21 @@ const it = {
       emptyTitle: "ORDINE VUOTO",
       emptyMsg: "现在就去商店下单吧!",
       allOrders: "Tutti gli ordini",
+      orderOpen: "Vedere l'ordine",
       fillOrder: "Vai nei negozi a completare un ordine ora!",
     },
     page: {
       checkOut: "CASSA",
       orderInfo: "DETTAGLIO ORDINE",
-      orderInfo_number: "NUMERO D’ORDINE",
-      orderInfo_date: "DATA",
-      shipInfo: "DETTAGLIO CONSEGNA",
+      orderInfo_number: "Ordine num.",
+      orderInfo_date: "Data",
+      shipInfo: "Dettaglio consegna",
       prodInfo: "DETTAGLIO SPESA",
-      shipPrice: "SPESA CONSEGNA",
-      selPayment: "SCEGLI IL METODO DI PAGAMENTO",
-      payOnline: "PAGA ONLINE",
-      //   payOffline: "PAGA ALLA CONSEGNA",
+      shipPrice: global.payment.priceShipping,
+      selPayment: global.payment.payMethod,
+      payOnline: global.payment.payMethod_online,
+      payOffline: global.payment.payMethod_offline,
+      labelShop: "Negozio",
     },
     table: global.prodTable,
     status: {
@@ -95,7 +120,8 @@ const it = {
     },
     alert: {
       title: "L'ordine è scaduto",
-      message: "L'ordine è stato automaticamente annullato, si prega di riordinare",
+      message:
+        "L'ordine è stato automaticamente annullato, si prega di riordinare",
     },
   },
   selfCenter: {

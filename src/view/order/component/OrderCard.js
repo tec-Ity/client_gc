@@ -8,6 +8,7 @@ import { ReactComponent as ToPayIcon } from "../../../component/icon/orderStatue
 import { ReactComponent as InProgressIcon } from "../../../component/icon/orderStatueInProcess.svg";
 import { ReactComponent as CanceledIcon } from "../../../component/icon/orderStatueCanceled.svg";
 import { ReactComponent as CompletedIcon } from "../../../component/icon/orderStatueComplete.svg";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles({
   root: {
@@ -133,33 +134,34 @@ const useStyle = makeStyles({
 });
 
 function OrderStatusLogo({ status }) {
+  const { t } = useTranslation();
   const classes = useStyle();
   const logoList = {
     100: {
-      label: "DA PAGARE",
+      label: t("order.status.toPay"),
       icon: <ToPayIcon />,
     },
     200: {
-      label: "IN PROCESSO",
+      label: t("order.status.reciving"),
       icon: <InProgressIcon />,
       msg: "In Ricezione",
     },
     400: {
-      label: "IN PROCESSO",
+      label: t("order.status.preparing"),
       icon: <InProgressIcon />,
       msg: "In Preparazione",
     },
     700: {
-      label: "IN PROCESSO",
+      label: t("order.status.delivering"),
       icon: <InProgressIcon />,
       msg: "In Consegna",
     },
     800: {
-      label: "COMPLETO",
+      label: t("order.status.completed"),
       icon: <CompletedIcon />,
     },
     10: {
-      label: "CANCEL",
+      label: t("order.status.canceled"),
       icon: <CanceledIcon />,
     },
   };
@@ -180,6 +182,7 @@ function OrderStatusLogo({ status }) {
 }
 
 export default function OrderCard(props) {
+  const { t } = useTranslation();
   const { order } = props;
   const classes = useStyle();
 
@@ -190,12 +193,12 @@ export default function OrderCard(props) {
         {/* main grid */}
         <Grid container className={classes.mainGrid}>
           {/* left col */}
-          <Grid container item xs={9} alignContent='flex-start'>
+          <Grid container item xs={9} alignContent="flex-start">
             {/* general info row */}
-            <Grid container item xs={12} alignContent='flex-start'>
+            <Grid container item xs={12} alignContent="flex-start">
               {/* upper left */}
               <Grid container item xs={12} sm={7} className={classes.infoForm}>
-                <div>Num. ordine</div>
+                <div>{t("order.page.orderInfo_number")}</div>
                 <div>{order.code}</div>
               </Grid>
               {/* upper right */}
@@ -204,14 +207,15 @@ export default function OrderCard(props) {
                 item
                 xs={12}
                 sm={5}
-                justifyContent='flex-end'
-                className={classes.infoForm}>
-                <div>DATA</div>
+                justifyContent="flex-end"
+                className={classes.infoForm}
+              >
+                <div>{t("order.page.orderInfo_date")}</div>
                 <div>{moment(order.at_upd).format("DD/MM/YYYY HH:mm")}</div>
               </Grid>
               {/* down left */}
               <Grid container item xs={12} sm={7} className={classes.infoForm}>
-                <div>Consegna a</div>
+                <div>{t("address.shipTo")}</div>
                 <div>
                   {order.ship?.address} &nbsp; {order.ship?.postcode}
                 </div>
@@ -222,8 +226,9 @@ export default function OrderCard(props) {
                 item
                 xs={12}
                 sm={5}
-                justifyContent='space-between'
-                className={classes.infoForm}>
+                justifyContent="space-between"
+                className={classes.infoForm}
+              >
                 <div>GREENCITY</div>
                 <div>773830484</div>
               </Grid>
@@ -251,9 +256,10 @@ export default function OrderCard(props) {
               container
               item
               xs={12}
-              justifyContent='space-between'
-              style={{ fontWeight: "700" }}>
-              <div>TOTALE</div>
+              justifyContent="space-between"
+              style={{ fontWeight: "700" }}
+            >
+              <div>{t("global.payment.priceTot")}</div>
               <div>€{order.total_sale?.toFixed(2)}</div>
             </Grid>
           </Grid>
@@ -262,7 +268,7 @@ export default function OrderCard(props) {
           <Grid item xs={2} className={classes.rightSection}>
             <div className={classes.shopTag}>
               <div>
-                <div>NEGOZIO</div>
+                <div>{t("order.page.labelShop")}</div>
                 <div>{order.Shop?.nome}</div>
               </div>
               <div></div>

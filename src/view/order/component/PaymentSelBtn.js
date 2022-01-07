@@ -6,6 +6,7 @@ import { fetch_Prom } from "../../../api";
 import stripeIcon from "../../../component/icon/Stripe.svg";
 import CustomModal from "../../../component/global/modal/CustomModal";
 import { my_Domain } from "../../../conf/_dns";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -69,9 +70,10 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function PaymentSelBtn({ orderId }) {
+  const { t } = useTranslation();
   const classes = useStyle();
   const [showPayment, setShowPayment] = useState(false);
-//   //console.log(my_Domain);
+  //   //console.log(my_Domain);
   useEffect(() => {
     (async function (d, s, id) {
       var js,
@@ -93,13 +95,15 @@ export default function PaymentSelBtn({ orderId }) {
     <>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <div className={classes.msg}>SCEGLI IL METODO DI PAGAMENTO*</div>
+          <div className={classes.msg}>{t("global.payment.payMethod")}</div>
         </Grid>
         <Grid item xs={12} className={classes.btnBox}>
           <Button className={classes.btn} onClick={handlePayment}>
-            PAGA ONLINE
+            {t("global.payment.payMethod_online")}
           </Button>
-          <Button className={classes.btn}>PAGA ALLA CONSEGNA</Button>
+          <Button className={classes.btn}>
+            {t("global.payment.payMethod_offline")}
+          </Button>
         </Grid>
       </Grid>
       <PaymentSelModal
@@ -131,10 +135,10 @@ const PaymentSelModal = ({ show, handleClose, orderId }) => {
   return (
     <CustomModal show={show} handleClose={handleClose} small>
       <Container className={classes.modalContainer}>
-        <Grid container alignContent='center' className={classes.modalGrid}>
+        <Grid container alignContent="center" className={classes.modalGrid}>
           <Grid item xs={12}>
             <div className={classes.stripeBtn} onClick={handleStripe}>
-              <img src={stripeIcon} className={classes.stripeIcon} alt='' />
+              <img src={stripeIcon} className={classes.stripeIcon} alt="" />
             </div>
           </Grid>
           <Grid item xs={12}>
@@ -178,5 +182,5 @@ const PayPalBtn = ({ orderId }) => {
         .render("#paypal-button");
   }, [orderId]);
 
-  return <div id='paypal-button'></div>;
+  return <div id="paypal-button"></div>;
 };

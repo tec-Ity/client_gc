@@ -14,6 +14,7 @@ import {
   makeStyles,
   //  withStyles
 } from "@material-ui/core/styles";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function InputAccount(props) {
+  const { t } = useTranslation();
   const { showPhonePre, phonePre, account, handleChange } = props;
   const [nations, setNations] = useState([]);
   const classes = useStyles();
@@ -78,11 +80,13 @@ export default function InputAccount(props) {
   return (
     <FormControl
       className={clsx(classes.margin, classes.textField)}
-      variant='outlined'>
+      variant="outlined"
+    >
       <InputLabel
         classes={{ root: classes.labelStyle }}
-        htmlFor='outlined-adornment-password'>
-        Code / Email / Num. di telefono:
+        htmlFor="outlined-adornment-password"
+      >
+        {t("login.placeholders.account")}
       </InputLabel>
       <OutlinedInput
         classes={{
@@ -93,16 +97,17 @@ export default function InputAccount(props) {
         onChange={handleChange("account")}
         startAdornment={
           showPhonePre === true && (
-            <InputAdornment position='start'>
+            <InputAdornment position="start">
               <FormControl>
                 <Select
                   className={classes.noBorderColor}
-                  labelId='country-select-label'
-                  id='country-select'
+                  labelId="country-select-label"
+                  id="country-select"
                   value={phonePre}
                   onChange={handleChange("phonePre")}
-                  label='Age'>
-                  <MenuItem value=''>--请选择区号--</MenuItem>
+                  label="Age"
+                >
+                  <MenuItem value="">{t("login.placeholders.region")}</MenuItem>
                   {nations?.map((nation) => {
                     return (
                       <MenuItem value={nation.tel} key={nation._id}>

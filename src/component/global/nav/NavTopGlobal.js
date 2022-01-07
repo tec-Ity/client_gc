@@ -19,6 +19,7 @@ import { ReactComponent as Order } from "../../icon/order.svg";
 import { ReactComponent as User } from "../../icon/user.svg";
 import SearchInput from "./SearchInput";
 import NavAddr from "./NavAddr";
+import { useTranslation } from "react-i18next";
 
 const useStyleWeb = makeStyles({
   root: {
@@ -143,6 +144,7 @@ export default function NavTopGlobal() {
 }
 
 function NavWeb(props) {
+  const { t } = useTranslation();
   const { isLogin, curShop, inShop, curCartTotItem, carts, logo, btnGroup } =
     props;
   const classes = useStyleWeb();
@@ -153,7 +155,7 @@ function NavWeb(props) {
         <div className={classes.leftContent}>
           <div>
             <Link to={logo.link}>
-              <img className={classes.navIcon} src={logo.imgSrc} alt='logo' />
+              <img className={classes.navIcon} src={logo.imgSrc} alt="logo" />
             </Link>
           </div>
           {isLogin && <NavAddr />}
@@ -164,7 +166,8 @@ function NavWeb(props) {
             <Button
               disableRipple
               classes={{ root: classes.btnStyle }}
-              onClick={btnGroup.showCarts}>
+              onClick={btnGroup.showCarts}
+            >
               {/* <Cart /> */}
               <div style={{ position: "relative" }}>
                 <Cart className={classes.btnsIcon} />
@@ -182,7 +185,8 @@ function NavWeb(props) {
             <Button
               disableRipple
               classes={{ root: classes.btnStyle }}
-              onClick={() => dispatch(setShowOrders(true))}>
+              onClick={() => dispatch(setShowOrders(true))}
+            >
               <div style={{ position: "relative" }}>
                 <Order className={classes.btnsIcon} />
               </div>
@@ -190,7 +194,8 @@ function NavWeb(props) {
             <Button
               disableRipple
               classes={{ root: classes.btnStyle }}
-              onClick={() => dispatch(setShowSelfCenter(true))}>
+              onClick={() => dispatch(setShowSelfCenter(true))}
+            >
               <div style={{ position: "relative" }}>
                 <User className={classes.btnsIcon} />
               </div>
@@ -204,10 +209,11 @@ function NavWeb(props) {
               onClick={() => {
                 dispatch(setShowLogin(true));
                 // //console.log("login open");
-              }}>
+              }}
+            >
               <div className={classes.loginButton}>
                 <User />
-                <div>LOG IN</div>
+                <div>{t("login.login")}</div>
               </div>
             </Button>
           </div>
@@ -265,7 +271,7 @@ function NavMobile({ logo }) {
     <div className={classes.root}>
       <div className={classes.topSection}>
         <div></div>
-        <img src={logo.imgSrc} className={classes.logoStyle} alt='' />
+        <img src={logo.imgSrc} className={classes.logoStyle} alt="" />
         <div></div>
       </div>
       <div className={classes.bottomSection}>

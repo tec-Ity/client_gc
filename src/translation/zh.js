@@ -1,6 +1,21 @@
 const global = {
   general: { goBack: "返回" },
-
+  button: {
+    expand: "查看更多",
+    proceed: "继续",
+    confirm: "确认",
+    modify: "更改",
+    logout: "退出",
+    checkout: "付单",
+  },
+  payment: {
+    payMethod: "选择付款方式",
+    payMethod_online: "网上支付",
+    payMethod_offline: "货到付款",
+    payMethod_selected: "付款方式",
+    priceShipping: "配送费用",
+    priceTot: "总价",
+  },
   prodTable: {
     prod: "商品",
     quantity: "数量",
@@ -10,7 +25,7 @@ const global = {
   },
 };
 const zh = {
-  global: global.general,
+  global: global,
   login: {
     login: "登录",
     register: "注册",
@@ -18,15 +33,20 @@ const zh = {
     firstTime: "第一次访问？",
     hasAccount: "已有账号？",
     forgetPwd: "忘记密码？",
-    recieve: "获取",
+    receive: "获取",
+    timer: "秒",
     phoneAreaSel: "请选择区号",
     placeholders: {
       account: "编号/邮箱/手机号",
+      region: "--请选择区号--",
       pwd: "密码",
       pwdNew: "新密码",
       pwdOld: "旧密码",
       pwdConfirm: "确认密码",
       verifCode: "验证码",
+    },
+    alert: {
+      wrongCred: "用户名或密码错误",
     },
   },
   address: {
@@ -45,6 +65,7 @@ const zh = {
   cart: {
     name: "购物车",
     modal: {
+      shopLabel: "店门号： ",
       emptyTitle: "空购物车",
       emptyMsg: "现在就去商店把你的购物车装满吧!",
       order: "下单",
@@ -61,12 +82,15 @@ const zh = {
     alert: {
       title: "信息不完整",
       message: "请输入完整的送货信息!",
+      recipient: "请选择收货人姓名",
+      number: "请选择收货人电话",
     },
   },
   order: {
     modal: {
       emptyTitle: "暂无订单",
       emptyMsg: "现在就去商店下单吧!",
+      orderOpen: "查看订单",
       allOrders: "全部订单",
       fillOrder: "请先订下一个订单!",
     },
@@ -77,15 +101,16 @@ const zh = {
       orderInfo_date: "订单日期",
       shipInfo: "配送信息",
       prodInfo: "商品详情",
-      shipPrice: "配送费用",
-      selPayment: "选择付款方式",
-      payOnline: "网上支付",
-      //   payOffline: "货到付款",
+      shipPrice: global.payment.priceShipping,
+      selPayment: global.payment.payMethod,
+      payOnline: global.payment.payMethod_online,
+      payOffline: global.payment.payMethod_offline,
+      labelShop: "店面",
     },
     table: global.prodTable,
     status: {
       canceled: "已取消",
-      toPay: "去付款",
+      toPay: "等待付款",
       inProgress: "进行中",
       reciving: "接单中",
       preparing: "备货中",

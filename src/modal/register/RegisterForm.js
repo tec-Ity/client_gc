@@ -5,6 +5,7 @@ import InputAccount from "../../component/input/InputAccount";
 import InputPassword from "../../component/input/InputPassword";
 import { makeStyles } from "@material-ui/core/styles";
 import InputVerif from "../../component/input/InputVerif";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles((theme) => ({
   welcome: {
@@ -43,6 +44,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function RegisterForm(props) {
+  const { t } = useTranslation();
   const classes = useStyle();
   const {
     showPhonePre,
@@ -52,14 +54,15 @@ export default function RegisterForm(props) {
     handleSendCode,
   } = props;
   return (
-    <form autoComplete='off'>
+    <form autoComplete="off">
       <Grid
         container
-        direction='column'
-        alignItems='center'
-        className={classes.root}>
+        direction="column"
+        alignItems="center"
+        className={classes.root}
+      >
         <Grid item xs={6}>
-          <div className={classes.welcome}>CIAO!</div>
+          <div className={classes.welcome}>{t("selfCenter.welcome")}</div>
         </Grid>
 
         <Grid item xs={10} className={classes.gridItem}>
@@ -80,7 +83,7 @@ export default function RegisterForm(props) {
 
         <Grid item xs={10} className={classes.gridItem}>
           <InputPassword
-            pwdLabel='Confirm Password'
+            pwdLabel="Confirm Password"
             pwdLabelWidth={135}
             password={registerData.passwordConfirm}
             handleChange={handleChange}
@@ -100,12 +103,13 @@ export default function RegisterForm(props) {
               classes={{
                 root: classes.registerButton,
               }}
-              variant='outlined'
-              type='submit'
-              size='large'
+              variant="outlined"
+              type="submit"
+              size="large"
               // color='primary'
-              onClick={handleSubmit}>
-              REGISTRA
+              onClick={handleSubmit}
+            >
+              {t("login.register")}
             </Button>
           </div>
         </Grid>
