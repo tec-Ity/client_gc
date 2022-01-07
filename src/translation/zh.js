@@ -136,6 +136,12 @@ const zh = {
     address: "地址",
     language: "语言",
     userCenter: "用户中心",
+    placeholders: {
+      name: "添加名字",
+      social: "暂无第三方登录",
+      paymentMethod: "暂无支付方式",
+      address: "暂无地址",
+    },
   },
   home: {
     welcome: "欢迎！",
