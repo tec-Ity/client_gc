@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import SectionHeader from "./SectionHeader";
 import { Container } from "@material-ui/core";
 import AddrModifyModal from "../address/AddrModifyModal";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -47,13 +48,14 @@ export default function DeliveryDetail({
   isCart, //cart._id same as Shop._id
   clientInfo,
 }) {
+  const { t } = useTranslation();
   const classes = useStyle();
   const [showAddrModal, setShowAddrModal] = useState(false);
-//   //console.log(clientInfo);
+  //   //console.log(clientInfo);
 
   return (
     <>
-      <SectionHeader title='DETTAGLIO CONSEGNA' />
+      <SectionHeader title={t("cart.page.shipInfo")} />
       <Container>
         <Grid container className={classes.root}>
           <Grid item xs={6} className={classes.addrBox}>
@@ -62,19 +64,21 @@ export default function DeliveryDetail({
           </Grid>
           <Grid item xs={3} className={classes.recipient}>
             <div>
-              {clientInfo?.personalInfo?.name || (isCart && "请选择收货人姓名")}
+              {clientInfo?.personalInfo?.name ||
+                (isCart && t("cart.alert.recipient"))}
             </div>
             <div>
               {clientInfo?.personalInfo?.phone ||
-                (isCart && "请选择收货人电话")}
+                (isCart && t("cart.alert.number"))}
             </div>
           </Grid>
           {isCart && (
             <Grid container item xs={3}>
               <Button
                 className={classes.btnStyle}
-                onClick={() => setShowAddrModal(true)}>
-                MODIFICA
+                onClick={() => setShowAddrModal(true)}
+              >
+                {t("global.button.modify")}
               </Button>
             </Grid>
           )}

@@ -4,6 +4,7 @@ import CustomHr from "../../../component/global/modal/component/CustomHr";
 import { makeStyles } from "@material-ui/core/styles";
 import { Fragment } from "react";
 import CustomBgText from "../../../component/global/background/CustomBgText";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -80,6 +81,7 @@ export default function TotPriceDetail(props) {
 }
 
 const DeliveryCost = ({ priceShip }) => {
+  const { t } = useTranslation();
   const classes = useStyle();
   return (
     <>
@@ -87,7 +89,9 @@ const DeliveryCost = ({ priceShip }) => {
         <CustomHr position={classes.customHr} />
       </Grid>
       <Grid item xs={12} className={classes.itemStyle}>
-        <div className={classes.deliveryTxt}>SPESA CONSEGNA</div>
+        <div className={classes.deliveryTxt}>
+          {t("global.payment.priceShipping")}
+        </div>
         <div className={classes.deliveryPrice}>
           {"€" + priceShip?.toFixed(2)}
         </div>
@@ -97,6 +101,7 @@ const DeliveryCost = ({ priceShip }) => {
 };
 
 const PaymentMethod = ({ paymentMethod }) => {
+  const { t } = useTranslation();
   const classes = useStyle();
   return (
     <>
@@ -117,6 +122,7 @@ const PaymentMethod = ({ paymentMethod }) => {
 };
 
 const TotalCost = ({ priceTotal }) => {
+  const { t } = useTranslation();
   const classes = useStyle();
   return (
     <>
@@ -126,7 +132,7 @@ const TotalCost = ({ priceTotal }) => {
       <Grid item xs={12} className={classes.itemStyle}>
         <div className={classes.totale}>
           <CustomBgText
-            label={"TOTALE"}
+            label={t("global.payment.priceTot")}
             style={{ bg: classes.totaleBg, txt: classes.totaleTxt }}
           />
         </div>

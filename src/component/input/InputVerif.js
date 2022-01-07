@@ -9,6 +9,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { set } from "lodash";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function InputVerif(props) {
+  const { t } = useTranslation();
   const { handleSendCode, handleChange, verifCode } = props;
   const classes = useStyles();
   const [btnDisabled, setBtnDisabled] = useState(false);
@@ -103,7 +105,7 @@ export default function InputVerif(props) {
   }, [countDown]);
   console.log(countDown);
   const EndADM = (
-    <InputAdornment position='end'>
+    <InputAdornment position="end">
       <Button
         disabled={btnDisabled}
         className={classes.recieveButton}
@@ -111,20 +113,22 @@ export default function InputVerif(props) {
           setBtnDisabled(true);
           handleSendCode();
           setCountDown(60);
-        }}>
-        {countDown > 0 ? countDown + "s" : "RICEVI"}
+        }}
+      >
+        {countDown > 0 ? countDown + t("login.timer") : t("login.receive")}
       </Button>
     </InputAdornment>
   );
   return (
     <FormControl
       className={clsx(classes.margin, classes.textField)}
-      variant='outlined'>
+      variant="outlined"
+    >
       <InputLabel
         classes={{ root: classes.labelStyle }}
         // htmlFor='outlined-adornment-password'
       >
-        Codice di verifica:
+        {t("login.placeholders.verifCode")}
       </InputLabel>
       <OutlinedInput
         classes={{

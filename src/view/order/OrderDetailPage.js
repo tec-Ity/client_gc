@@ -12,8 +12,10 @@ import { ReactComponent as Canceled } from "../../component/icon/orderStatueCanc
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import CustomAlert from "../../component/global/modal/CustomAlert";
+import { useTranslation } from "react-i18next";
 
 export default function OrderDetailPage() {
+  const { t } = useTranslation();
   const { _id } = useParams();
   const dispatch = useDispatch();
   const curOrder = useSelector((state) => state.order.curOrder);
@@ -62,8 +64,8 @@ export default function OrderDetailPage() {
           fetchStatus={curOrderStatus}
           handleFunc={curOrder.status === 100 && handleFunc}
           header={{
-            backLink: "DIETRO",
-            nextLink: curOrder.status === 100 && "CHECK OUT",
+            backLink: t("global.general.goBack"),
+            nextLink: curOrder.status === 100 && t("global.button.checkout"),
           }}
         />
       )}
@@ -98,22 +100,23 @@ const useStyle = makeStyles({
 
 ////////////////////////// in progress
 const InProgressLogo = ({ orderStatus }) => {
+  const { t } = useTranslation();
   const classes = useStyle();
   return (
     <div className={classes.logoBox} style={{ width: "100%" }}>
       <div className={classes.logoBox}>
         <InProgress />
-        <div className={classes.logoText}>IN PROCESSO</div>
+        <div className={classes.logoText}>{t("order.status.inProgress")}</div>
       </div>
       <div className={classes.inProgressStatus}>
         <span style={{ color: orderStatus === 200 && "#000" }}>
-          In Ricezione&nbsp;——&nbsp;
+          {t("order.status.receiving")}&nbsp;——&nbsp;
         </span>
         <span style={{ color: orderStatus === 400 && "#000" }}>
-          In Preparazione&nbsp;——&nbsp;
+          {t("order.status.preparing")}&nbsp;——&nbsp;
         </span>
         <span style={{ color: orderStatus === 700 && "#000" }}>
-          In Consegna
+          {t("order.status.delivering")}
         </span>
       </div>
     </div>
@@ -123,6 +126,7 @@ const InProgressLogo = ({ orderStatus }) => {
 //////////////////////////////// to pay
 // const validTime = 2 * 60 * 1000;
 const ToPayLogo = ({ orderTime, _id }) => {
+  const { t } = useTranslation();
   const interval = 1000;
   const validTime = 2 * 60 * 60 * 1000;
   const classes = useStyle();
@@ -171,7 +175,7 @@ const ToPayLogo = ({ orderTime, _id }) => {
     <>
       <div className={classes.logoBox}>
         <ToPay />
-        <div className={classes.logoText}>DA PAGARE</div>
+        <div className={classes.logoText}>{t("order.status.toPay")}</div>
         <div style={{ color: "#e47f10", fontSize: "20px" }}>
           {duration &&
             duration?.hours() +
@@ -188,9 +192,9 @@ const ToPayLogo = ({ orderTime, _id }) => {
       </div>
       <CustomAlert
         show={showAlert}
-        alertTitle='订单已超时'
-        alertMessage='此订单已自动变为取消订单，请重新下单'
-        alertButton='OK'
+        alertTitle={t("order.alert.title")}
+        alertMessage={t("order.alert.message")}
+        alertButton="OK"
         handleFunc={() => window.location.reload()}
       />
     </>
@@ -198,11 +202,12 @@ const ToPayLogo = ({ orderTime, _id }) => {
 };
 
 const CancelLogo = () => {
+  const { t } = useTranslation();
   const classes = useStyle();
   return (
     <div className={classes.logoBox}>
       <Canceled />
-      <div className={classes.logoText}>CANCELLATO</div>
+      <div className={classes.logoText}>{t("order.status.canceled")}</div>
     </div>
   );
 };

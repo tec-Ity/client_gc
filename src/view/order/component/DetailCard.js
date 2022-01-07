@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCurShopInfo } from "../../../redux/shop/shopSlice";
 import { ReactComponent as LeftArrow } from "../../../component/icon/chevron-left.svg";
 import BackLink from "../../../component/global/link/BackLink";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -205,6 +206,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function DetailCard(props) {
+  const { t } = useTranslation();
   const classes = useStyle();
   const {
     orderLogo = null,
@@ -260,22 +262,25 @@ export default function DetailCard(props) {
         {/* body */}
         <Container
           className={classes.detailCardStyle}
-          style={{ paddingTop: orderLogo && "40px" }}>
+          style={{ paddingTop: orderLogo && "40px" }}
+        >
           {orderLogo && (
             <Grid
               container
               item
               xs={12}
-              justifyContent='center'
-              alignItems='center'
-              style={{ marginBottom: "100px" }}>
+              justifyContent="center"
+              alignItems="center"
+              style={{ marginBottom: "100px" }}
+            >
               {orderLogo}
             </Grid>
           )}
           {/* float tag */}
           <div
             className={classes.shopTag}
-            style={{ top: orderLogo && "160px" }}>
+            style={{ top: orderLogo && "160px" }}
+          >
             <div>
               <div>{curShopInfo.nome}</div>
               <div>{curShopInfo.addr}</div>
@@ -287,13 +292,13 @@ export default function DetailCard(props) {
             {isOrder && (
               <Grid item xs={12} className={classes.gridItemStyle}>
                 <InfoDetail
-                  title='DETTAGLIO ORDINE'
+                  title={t("order.page.orderInfo")}
                   info1={{
-                    line1: "NUMERO D’ORDINE",
+                    line1: t("order.page.orderInfo_number"),
                     line2: order?.code,
                   }}
                   info2={{
-                    line1: "DATA",
+                    line1: t("order.page.orderInfo_date"),
                     line2:
                       order?.at_confirm?.slice(0, 10) +
                       " " +
@@ -314,7 +319,7 @@ export default function DetailCard(props) {
             <Grid item xs={12} className={classes.gridItemStyle}>
               {Object.keys(order).length > 0 && (
                 <>
-                  <SectionHeader title='DETTAGLIO SPESA' />
+                  <SectionHeader title={t("order.page.shipInfo")} />
                   <CartTable
                     OrderProds={order?.OrderProds}
                     isCart={isCart}
@@ -343,11 +348,12 @@ export default function DetailCard(props) {
                   <Grid
                     item
                     xs={12}
-                    className={clsx(classes.gridItemStyle, classes.btnGroup)}>
+                    className={clsx(classes.gridItemStyle, classes.btnGroup)}
+                  >
                     {/* <ConfirmOrderBtn /> */}
                     <CustomButton
                       disableBtn={disableBtn}
-                      label='CONFERMA L’ORDINE'
+                      label={t("cart.page.confirm")}
                       handleFunc={handleFunc}
                       alterStyle={classes.cusButtonStyle}
                     />
@@ -356,14 +362,16 @@ export default function DetailCard(props) {
                   <Grid
                     container
                     item
-                    justifyContent='center'
+                    justifyContent="center"
                     xs={12}
-                    className={clsx(classes.gridItemStyle, classes.btnGroup)}>
+                    className={clsx(classes.gridItemStyle, classes.btnGroup)}
+                  >
                     <Link
                       to={"/shop/" + order?.Shop}
-                      className={classes.backToShop}>
+                      className={classes.backToShop}
+                    >
                       <LeftArrow />
-                      <span> NON ADESSO, CONTINUA LO SHOPPING</span>
+                      <span>{t("cart.page.continueShopping")}</span>
                     </Link>
                   </Grid>
                 </Grid>

@@ -15,6 +15,7 @@ import { useHistory } from "react-router";
 import CustomButton from "../../component/global/modal/component/CustomButton";
 import moment from "moment";
 import CustomHr from "../../component/global/modal/component/CustomHr";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles((props) => ({
   root: {
@@ -100,12 +101,12 @@ const useStyle = makeStyles((props) => ({
   },
   //order info header
   orderInfoHeader: {
-      paddingBottom: "10px",
+    paddingBottom: "10px",
     "& > :nth-child(3)": {
       "& > :nth-child(1)": {
         color: "#1d1d384d",
-        fontWeight:'400',
-        fontSize: "12px"
+        fontWeight: "400",
+        fontSize: "12px",
       },
       "& > :nth-child(2)": {},
     },
@@ -150,6 +151,7 @@ const useStyle = makeStyles((props) => ({
 }));
 
 export default function CartCard(props) {
+  const { t } = useTranslation();
   const {
     cart,
     count = 3,
@@ -192,13 +194,15 @@ export default function CartCard(props) {
           item
           container
           className={classes.gridItem}
-          style={{ paddingBottom: "10px" }}>
+          style={{ paddingBottom: "10px" }}
+        >
           <div className={clsx(classes.shopTitle, classes.marginHead)}>
-            SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
+            {t("cart.modal.shopLabel")}
+            <span title={Shop?.nome}>{Shop?.nome}</span>
           </div>
           <div className={classes.marginHead}>
             <CustomButton
-              label='ORDINARE'
+              label={t("cart.modal.order")}
               handleFunc={handleOrderFunc}
               alterStyle={classes.orderBtn}
             />
@@ -209,7 +213,8 @@ export default function CartCard(props) {
         <Grid
           item
           container
-          className={clsx(classes.gridItem, classes.orderInfoHeader)}>
+          className={clsx(classes.gridItem, classes.orderInfoHeader)}
+        >
           <Grid item xs={2}>
             <div className={classes.orderLabelStyle}>{orderLabel}</div>
           </Grid>
@@ -217,15 +222,17 @@ export default function CartCard(props) {
           <Grid item xs={5}>
             <div>{moment(cart.at_upd).format("DD/MM/YYYY HH:mm")}</div>
             <div>
-              SHOP NO. <span title={Shop?.nome}>{Shop?.nome}</span>
+              {t("cart.modal.shopLabel")}
+              <span title={Shop?.nome}>{Shop?.nome}</span>
             </div>
           </Grid>
           <Grid
             item
             container
             xs={4}
-            justifyContent='flex-end'
-            alignItems='flex-end'>
+            justifyContent="flex-end"
+            alignItems="flex-end"
+          >
             €{cart.total_sale?.toFixed(2)}
           </Grid>
           <Grid item container xs={12}>
@@ -247,13 +254,13 @@ export default function CartCard(props) {
           <Grid item className={classes.gridItem}>
             {/* <div className={clsx(classes.moreInfo, classes.margin)}>^</div> */}
             <div className={clsx(classes.totalAmount, classes.marginFoot)}>
-              <div>TOTALE</div>
+              <div>{t("global.prodTable.totalPrice")}</div>
               <div>€{curCart.totPrice?.toFixed(2)}</div>
             </div>
           </Grid>
           <Grid item className={classes.gridItem}>
             <CustomButton
-              label='ORDINARE'
+              label={t("cart.modal.order")}
               handleFunc={handleOrderFunc}
               //   alterStyle={classes.orderBtnXL}
             />
@@ -263,9 +270,12 @@ export default function CartCard(props) {
         <Grid item className={classes.gridItem}>
           <div
             onClick={orderCard ? orderExpandMore : expandMore}
-            className={classes.expandMoreStyle}>
+            className={classes.expandMoreStyle}
+          >
             <div>
-              {orderCard ? "Vedere l'ordine" : "Vedere la lista completa"}
+              {orderCard
+                ? t("order.modal.orderOpen")
+                : t("order.modal.allOrders")}
             </div>
             <div>.&nbsp;.&nbsp;.</div>
           </div>

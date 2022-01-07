@@ -9,6 +9,7 @@ import {
 import RegisterForm from "./RegisterForm";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomHr from "../../component/global/modal/component/CustomHr";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles((theme) => ({
   registerForm: {
@@ -22,12 +23,13 @@ const useStyle = makeStyles((theme) => ({
   },
   loginLink: {
     color: "#1d1d38",
-    textDecoration:'underline',
+    textDecoration: "underline",
     "&:hover": { color: "#C0E57B", fontWeight: "700" },
   },
 }));
 
 export default function RegisterModalUI(props) {
+  const { t } = useTranslation();
   const classes = useStyle();
   const dispatch = useDispatch();
   const showRegister = useSelector((state) => state.curClient.showRegister);
@@ -39,25 +41,26 @@ export default function RegisterModalUI(props) {
 
   return (
     <CustomModal show={showRegister} handleClose={handleClose}>
-      <Grid container direction='column' alignItems='center'>
+      <Grid container direction="column" alignItems="center">
         <Grid item className={classes.registerForm}>
           <RegisterForm {...props} />
         </Grid>
 
         <Grid item xs={10}>
-          <CustomHr/>
+          <CustomHr />
         </Grid>
 
         <Grid item container className={classes.loginStyle}>
-          <div style={{ margin: "8px" }}>Hai già l’account? &nbsp;</div>
+          <div style={{ margin: "8px" }}>{t("login.hasAccount")} &nbsp;</div>
           <div>
             <span
               className={classes.loginLink}
               onClick={() => {
                 dispatch(setShowRegister(false));
                 dispatch(setShowLogin(true));
-              }}>
-              ACCEDI
+              }}
+            >
+              {t("login.login")}
             </span>
           </div>
         </Grid>

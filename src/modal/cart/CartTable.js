@@ -5,6 +5,7 @@ import CartSkuCtrl from "../../component/prodList/itemControl/CartSkuCtrl";
 import { get_DNS } from "../../api";
 import { Grid } from "@material-ui/core";
 import { cartSkuPut, cartSkuDelete } from "../../redux/cart/cartSlice";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles((theme) => ({
   tableStyle: {
@@ -124,7 +125,8 @@ const TableRow = (props) => {
           xs={12}
           className={
             customTableRowStyle ? customTableRowStyle : classes.tableRow
-          }>
+          }
+        >
           {showImg && (
             <Grid item xs={2}>
               <img
@@ -169,6 +171,7 @@ const TableRow = (props) => {
 };
 
 export default function CartTable(props) {
+  const { t } = useTranslation();
   const {
     OrderProds,
     count = 1000,
@@ -239,7 +242,8 @@ export default function CartTable(props) {
       {OrderProds && (
         <Grid
           container
-          className={customTableStyle ? customTableStyle : classes.tableStyle}>
+          className={customTableStyle ? customTableStyle : classes.tableStyle}
+        >
           {orderCard === false &&
             showHeader === true &&
             (showCusHeader === true ? (
@@ -248,13 +252,13 @@ export default function CartTable(props) {
                 <Grid item xs={2}></Grid>
                 <Grid item xs={4}></Grid>
                 <Grid item xs={2}>
-                  Quantità
+                  {t("global.prodTable.prod")}
                 </Grid>
                 <Grid item xs={2}>
-                  Prezzo Unità
+                  {t("global.prodTable.prodUnitPrice")}
                 </Grid>
                 <Grid item xs={2}>
-                  Prezzo Totale
+                  {t("global.prodTable.prodTotalPrice")}
                 </Grid>
               </Grid>
             ) : (
@@ -262,16 +266,16 @@ export default function CartTable(props) {
               <Grid container item xs={12} className={classes.tableHeadRow}>
                 <Grid item xs={7}>
                   {/* <Grid item xs={4}> */}
-                  Prodotto
+                  {t("global.prodTable.prod")}
                 </Grid>
                 <Grid item xs={2}>
-                  Quantità
+                  {t("global.prodTable.quantity")}
                 </Grid>
                 {/* <Grid item xs={3}>
                   Prezzo Unità
                 </Grid> */}
                 <Grid item xs={3}>
-                  Prezzo Totale
+                  {t("global.prodTable.prodTotalPrice")}
                 </Grid>
               </Grid>
             ))}
