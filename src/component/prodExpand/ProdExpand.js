@@ -13,7 +13,9 @@ export default function ProdExpand(props) {
   const title = useSelector((state) => state.filter.title);
   const query = useSelector((state) => state.filter.query);
   const nationIds = useSelector((state) => state.filter.nationIds);
-  const prodListQueryStatus = useSelector((state) => state.shop.prodListQueryStatus);
+  const prodListQueryStatus = useSelector(
+    (state) => state.shop.prodListQueryStatus
+  );
   const prodListQueryTot = useSelector((state) => state.shop.prodListQueryTot);
   const [queryURL, setQueryURL] = useState(null);
   //   const [pageNum, setPageNum] = useState(1);
@@ -30,7 +32,11 @@ export default function ProdExpand(props) {
         validQuery = true;
       }
       if (query.nations.length > 0) {
-        queryUrl += "&Nations=" + query.nations.map((n) => nationIds?.find((idObj) => idObj.code === n)?.id);
+        queryUrl +=
+          "&Nations=" +
+          query.nations.map(
+            (n) => nationIds?.find((idObj) => idObj.code === n)?.id
+          );
         validQuery = true;
       }
       if (query.isDiscount === true) {
@@ -100,25 +106,26 @@ export default function ProdExpand(props) {
         padding: 0,
         marginBottom: "30px",
         marginTop: "15px",
-        maxWidth: "781px",
+        maxWidth: "800px",
       }}
     >
-      <div id='prod-container'>
+      <div id="prod-container">
         {queryURL || props.prods ? (
           queryURL ? (
             <>
               <ExpandTitle title={title} />
               {/* add is reload */}
               <ProdList queryURL={queryURL} isReload={isReload} />
-              {prodListQueryTot > 0 && query.page * pageSize < prodListQueryTot && (
-                <CustomButton
-                  label={t("components.button.expand").toUpperCase()}
-                  handleFunc={(setLoading) => {
-                    dispatch(setQuery({ page: query.page + 1 }));
-                    if (prodListQueryStatus === "succeed") setLoading(false);
-                  }}
-                />
-              )}
+              {prodListQueryTot > 0 &&
+                query.page * pageSize < prodListQueryTot && (
+                  <CustomButton
+                    label={t("components.button.expand").toUpperCase()}
+                    handleFunc={(setLoading) => {
+                      dispatch(setQuery({ page: query.page + 1 }));
+                      if (prodListQueryStatus === "succeed") setLoading(false);
+                    }}
+                  />
+                )}
             </>
           ) : (
             <>
@@ -132,7 +139,12 @@ export default function ProdExpand(props) {
       </div>
 
       <div style={{ marginTop: "20px" }}>
-        {props.prods && <CustomButton label={t("components.button.expand").toUpperCase()} handleFunc={handleFunc} />}
+        {props.prods && (
+          <CustomButton
+            label={t("components.button.expand").toUpperCase()}
+            handleFunc={handleFunc}
+          />
+        )}
       </div>
     </Container>
   );

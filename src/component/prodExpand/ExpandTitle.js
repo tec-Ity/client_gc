@@ -48,8 +48,9 @@ const useStyle = makeStyles((theme) => ({
   },
   imgStyle: {
     width: "97%",
-    height: "145px",
-    objectFit: "cover",
+    height: "140px",
+    objectFit: "scale-down",
+    margin: "0 10px",
   },
 }));
 
