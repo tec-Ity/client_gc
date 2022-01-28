@@ -37,7 +37,7 @@ const zh = {
     timer: "秒",
     phoneAreaSel: "请选择区号",
     placeholders: {
-      account: "编号/邮箱/手机号",
+      account: "账号/邮箱/手机号",
       region: "--请选择区号--",
       pwd: "密码",
       pwdNew: "新密码",
@@ -168,8 +168,8 @@ const zh = {
   },
   prod: {
     price: "价格",
-    details: "产品资料",
-    suggestions: "或许兴趣",
+    details: "商品详情",
+    suggestions: "可能感兴趣的商品",
   },
   citta: {
     ROMA: "罗马",

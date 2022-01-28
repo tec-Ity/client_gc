@@ -149,7 +149,7 @@ const it = {
     welcome: "Bevenuti！",
     locals: "I nostri locali",
     slogan: {
-      black: "Spesa mondiale consegnata ",
+      black: "Spesa mondiale\nconsegnata ",
       white: "a casa tua.",
     },
     adress: {
