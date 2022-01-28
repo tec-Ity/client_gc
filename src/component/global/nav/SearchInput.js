@@ -17,6 +17,7 @@ const useStyle = makeStyles({
     maxWidth: "390px",
     marginLeft: "60px",
     marginRight: "35px",
+    transition: "all 0.3s",
   },
   searchBox: {
     zIndex: 99,
@@ -66,6 +67,7 @@ const useStyle = makeStyles({
     overflowY: "scroll",
     width: "100%",
     maxWidth: "285px",
+    minWidth: "275px",
     "&::-webkit-scrollbar": {
       display: "none",
     },
@@ -145,7 +147,9 @@ export default function SearchInput() {
   const [showSearchBox, setShowSearchBox] = useState(false);
   const searchProds = useSelector((state) => state.shop.searchProds);
   const searchProdsCount = useSelector((state) => state.shop.searchProdsCount);
-  const searchProdsStatus = useSelector((state) => state.shop.searchProdsStatus);
+  const searchProdsStatus = useSelector(
+    (state) => state.shop.searchProdsStatus
+  );
   useEffect(() => {
     searchValue && dispatch(fetchSearchProds({ searchValue, pageNum }));
   }, [dispatch, pageNum, searchValue]);
@@ -164,7 +168,7 @@ export default function SearchInput() {
           }
         }}
         endAdornment={
-          <InputAdornment className={classes.searchIcon} position='end'>
+          <InputAdornment className={classes.searchIcon} position="end">
             <Magnifier />
           </InputAdornment>
         }
@@ -186,31 +190,44 @@ export default function SearchInput() {
                   <Grid container className={classes.resultListItem}>
                     <Grid item xs={4}>
                       {prod.img_urls[0] ? (
-                        <img src={get_DNS() + prod.img_urls[0]} alt={prod.nome} />
+                        <img
+                          src={get_DNS() + prod.img_urls[0]}
+                          alt={prod.nome}
+                        />
                       ) : (
                         <div style={{ backgroundColor: "#c0e57b4d" }}></div>
                       )}
                     </Grid>
                     <Grid item container xs={8}>
                       <Grid item xs={12}>
-                        {prod.nome?.slice(0, 35) + (prod.nome?.length > 35 ? "..." : "")}
+                        {prod.nome?.slice(0, 35) +
+                          (prod.nome?.length > 35 ? "..." : "")}
                       </Grid>
                       <Grid item xs={12}>
-                        €{prod.price_max === prod.price_min ? prod.price_sale : `${prod.price_min} - ${prod.price_max}`}
+                        €
+                        {prod.price_max === prod.price_min
+                          ? prod.price_sale
+                          : `${prod.price_min} - ${prod.price_max}`}
                       </Grid>
                     </Grid>
                   </Grid>
                 </Link>
               ))}
               {pageNum * pageSize < searchProdsCount && (
-                <div onClick={() => setPageNum((prev) => prev + 1)} className={classes.viewMore}>
+                <div
+                  onClick={() => setPageNum((prev) => prev + 1)}
+                  className={classes.viewMore}
+                >
                   <div>view more</div>
                   <div>...</div>
                 </div>
               )}
             </div>
           </div>
-          <div className={classes.resultBackground} onClick={() => setShowSearchBox(false)}></div>
+          <div
+            className={classes.resultBackground}
+            onClick={() => setShowSearchBox(false)}
+          ></div>
         </>
       )}
     </div>

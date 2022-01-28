@@ -187,7 +187,7 @@ export default function CartCard(props) {
     hist.push("/cart/" + cart._id);
   };
 
-  console.log(curShopInfo);
+  // console.log(curShopInfo);
 
   return (
     <Grid container item xs={11} className={classes.root}>

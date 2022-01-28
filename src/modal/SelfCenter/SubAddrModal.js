@@ -79,7 +79,7 @@ const useStyle = makeStyles({
     marginTop: "14px",
     paddingLeft: "20px",
     paddingRight: "11px",
-    borderRadius: "30px 30px 30px 0"
+    borderRadius: "30px 30px 30px 0",
   },
   addrHover: {
     background: "#fff",
@@ -108,7 +108,7 @@ export default function SubAddrModal(props) {
   const [justSubmitted, setJustSubmitted] = useState(false);
   const [selectedAddr, setSelectedAddr] = useState();
   const handleSortAddr = (addrId) => () => {};
-  
+
   const handleSelectAddr = (addr) => () => {
     dispatch(cartAddrPut({ addr, cartId: inCart }));
     setSelectedAddr(addr._id);
@@ -183,9 +183,9 @@ export default function SubAddrModal(props) {
   ) : (
     // empty
     <EmptyLogo
-      type='user'
-      label='INDIRIZZO VUOTO'
-      text='Aggiungi il tuo indirizzo ora!'
+      type="user"
+      label="INDIRIZZO VUOTO"
+      text="Aggiungi il tuo indirizzo ora!"
     />
   );
 }
@@ -204,7 +204,8 @@ function DefaultAddr(props) {
         inCart && !selected && classes.addrHover,
         selected && classes.addrSelected
       )}
-      onClick={inCart && handleSelectAddr(addr)}>
+      onClick={inCart && handleSelectAddr(addr)}
+    >
       <Grid container item xs={6} className={classes.nameRow}>
         <div>{addr.name?.toUpperCase()}</div>
         <div>{addr.phone}</div>
@@ -220,7 +221,8 @@ function DefaultAddr(props) {
           item
           xs={1}
           className={classes.pointer}
-          onClick={handleOpenEditAddr(addr)}>
+          onClick={handleOpenEditAddr(addr)}
+        >
           <Pen className={classes.penIconStyle} />
         </Grid>
         <Grid item xs={1} style={{ position: "relative" }}>
@@ -260,7 +262,8 @@ function ListItemAddr(props) {
           inCart && !selected && classes.addrHover,
           selected && classes.addrSelected
         )}
-        onClick={inCart && handleSelectAddr(addr)}>
+        onClick={inCart && handleSelectAddr(addr)}
+      >
         <Grid container item xs={6} className={classes.nameRow}>
           <div>{addr.name?.toUpperCase()}11</div>
           <div>{addr.phone}</div>
@@ -276,12 +279,13 @@ function ListItemAddr(props) {
             item
             xs={1}
             container
-            alignItems='flex-end'
+            alignItems="flex-end"
             className={classes.pointer}
-            onClick={handleOpenEditAddr(addr)}>
+            onClick={handleOpenEditAddr(addr)}
+          >
             <Pen className={classes.penIconStyle} />
           </Grid>
-          <Grid item xs={1} container alignItems='flex-end'>
+          <Grid item xs={1} container alignItems="flex-end">
             <div onClick={handleDeleteAddr(addr._id)}>
               <AddButton del />
             </div>
@@ -291,6 +295,7 @@ function ListItemAddr(props) {
     </>
   );
 }
+
 export function AddrAddModal(props) {
   const {
     addr,
@@ -331,7 +336,7 @@ export function AddrAddModal(props) {
       postcode: postCode,
       note: address?.note,
     };
-    // //console.log(value);
+    // console.log(value);
     if (isUpdate) {
       value._id = isUpdate && addr._id && addr._id;
       dispatch(fetchPutCurClient({ type: "addr_put", value }));
@@ -345,14 +350,14 @@ export function AddrAddModal(props) {
     <>
       <Grid item style={{ width: "100%", marginBottom: "10px" }}>
         <InputModify
-          placeholder='Il nome del destinatario'
+          placeholder="Il nome del destinatario"
           value={newAddr.nome}
           handleChange={(value) => handleChange("nome", value)}
         />
       </Grid>
       <Grid item style={{ width: "100%", marginBottom: "10px" }}>
         <InputModify
-          placeholder='Num. di telefono del destinatario'
+          placeholder="Num. di telefono del destinatario"
           value={newAddr.tel}
           handleChange={(value) => handleChange("tel", value)}
         />
@@ -362,7 +367,7 @@ export function AddrAddModal(props) {
           isUpdate={isUpdate}
           updateAddr={isUpdate && addr}
           mapSize={{ height: "230px" }}
-          btnLabel='OK'
+          btnLabel="OK"
           getSelectedLocation={handleSubmit}
         />
       </Grid>

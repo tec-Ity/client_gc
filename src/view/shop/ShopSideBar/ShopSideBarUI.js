@@ -242,8 +242,7 @@ export default function ShopSideBarUI(props) {
     const categList =
       categs &&
       categs?.map((categ) => {
-        console.log(categ);
-
+        // console.log(categ);
         return (
           <React.Fragment key={categ._id}>
             <ListItem
