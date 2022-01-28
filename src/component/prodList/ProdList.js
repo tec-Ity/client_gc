@@ -14,7 +14,9 @@ export default function ProdList(props) {
   } = props;
   const dispatch = useDispatch();
   const prodListQuery = useSelector((state) => state.shop.prodListQuery);
-  const prodListQueryStatus = useSelector((state) => state.shop.prodListQueryStatus);
+  const prodListQueryStatus = useSelector(
+    (state) => state.shop.prodListQueryStatus
+  );
   //   const prodErrorQuery = useSelector((state) => state.shop.prodErrorQuery);
 
   const [list, setList] = useState();
@@ -43,7 +45,7 @@ export default function ProdList(props) {
         if (prodListTemp.length % 3 > 1) {
           prodListTemp.push(
             <ProdListItem
-              key='empty'
+              key="empty"
               empty={true}
               rule={type === "expand" ? expandRule : notExpRule}
             />
@@ -59,11 +61,9 @@ export default function ProdList(props) {
       if (prodListQueryStatus === "loading") {
         isReload === true && setList(<Grid item>Loading......</Grid>);
       } else if (prodListQueryStatus === "succeed") {
-        prodListQuery?.length > 0 ? (
-          setList(getProdList(prodListQuery))
-        ) : (
-          <Grid item>暂无产品</Grid>
-        );
+        prodListQuery?.length > 0
+          ? setList(getProdList(prodListQuery))
+          : setList(<Grid item>暂无产品</Grid>);
       }
     };
     displayResult();
@@ -72,7 +72,7 @@ export default function ProdList(props) {
   // const displayProdsFromParent = () => {};
 
   return (
-    <Grid container alignItems='center' justifyContent='space-between'>
+    <Grid container alignItems="center" justifyContent="space-between">
       {queryURL ? list : getProdList(prods)}
     </Grid>
   );

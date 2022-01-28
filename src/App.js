@@ -43,7 +43,7 @@ export default function App() {
     // console.log(window.innerWidth);
 
     function adjustWith() {
-      console.log(window.innerWidth);
+      // console.log(window.innerWidth);
       dispatch(setView({ width: window.innerWidth }));
     }
     window.addEventListener("resize", adjustWith);

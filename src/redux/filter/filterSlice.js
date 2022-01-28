@@ -62,7 +62,7 @@ export const filterSilce = createSlice({
     setQuery: (state, action) => {
       if (action.payload) {
         const { page } = action.payload;
-        console.log(page);
+        // console.log(page);
         state.query = action.payload
           ? page
             ? { ...state.query, ...action.payload }

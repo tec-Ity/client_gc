@@ -14,7 +14,7 @@ export default function NavAddr() {
   const userSelectedLocation = useSelector(
     (state) => state.curClient.userSelectedLocation
   );
-  console.log(userSelectedLocation);
+  // console.log(userSelectedLocation);
   const comps = {
     web: UIWeb,
     mobile: UIMobile,
@@ -108,12 +108,16 @@ const useStyle = makeStyles({
 function UIWeb({ address, userSelectedLocation }) {
   const { t } = useTranslation();
   const classes = useStyle();
-  console.log(address);
+  // console.log(address);
   return (
     <div className={classes.addrBoxWeb}>
       <div>{address.deliverToMsg}</div>
       <div onClick={address.onClick}>
-        {userSelectedLocation ? address.addrInfo : <div>{t("address.selectAddr")}</div>}
+        {userSelectedLocation ? (
+          address.addrInfo
+        ) : (
+          <div>{t("address.selectAddr")}</div>
+        )}
       </div>
     </div>
   );

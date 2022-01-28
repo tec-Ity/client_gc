@@ -294,7 +294,8 @@ export default function ProdPage() {
   const param = new URLSearchParams(useLocation().search);
 
   useEffect(() => {
-    window.document.getElementsByTagName("html")[0].style.scrollBehavior = "smooth";
+    window.document.getElementsByTagName("html")[0].style.scrollBehavior =
+      "smooth";
     window.scrollTo(0, 0);
     setTimeout(function () {
       window.scrollTo(0, 0);
@@ -308,7 +309,9 @@ export default function ProdPage() {
         //first time fetch
         curProdStatus === "idle" ||
         //fetch for different prods
-        (curProdStatus === "succeed" && Object.keys(curProd).length > 0 && curProd._id !== _id)
+        (curProdStatus === "succeed" &&
+          Object.keys(curProd).length > 0 &&
+          curProd._id !== _id)
       ) {
         dispatch(fetchProdById(_id));
       } else if (curProdStatus === "error") {
@@ -336,7 +339,7 @@ export default function ProdPage() {
   //   }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
   return (
     <>
-      <img alt='bg' src={bgBottom} className={classes.bgBottom} />
+      <img alt="bg" src={bgBottom} className={classes.bgBottom} />
       {/* header */}
       <Container maxWidth={false} style={{ background: "transparent" }}>
         <div className={classes.headerStyle}>
@@ -345,7 +348,9 @@ export default function ProdPage() {
             <ArrowLeft />
             &nbsp;
             <Link
-              to={`/shop/${curProd?.Shop}${param.get("disabled") === "true" ? "?disabled=true" : ""}`}
+              to={`/shop/${curProd?.Shop?._id || curProd?.Shop}${
+                param.get("disabled") === "true" ? "?disabled=true" : ""
+              }`}
               className={classes.backLink}
             >
               {t("components.nav.back")}
@@ -355,7 +360,7 @@ export default function ProdPage() {
           {curProdStatus === "succeed" && (
             <div className={classes.bread}>
               <Link
-                to=''
+                to=""
                 className={classes.backLink}
                 onClick={() => {
                   // setClickCategFromRemote(curProd.Categs[0].Categ_far._id)
@@ -366,7 +371,7 @@ export default function ProdPage() {
               </Link>
               <span> &gt; </span>
               <Link
-                to=''
+                to=""
                 className={classes.backLink}
                 onClick={() => {
                   // dispatch(setClickCategFromRemote(curProd.Categs[0]._id));
@@ -404,21 +409,34 @@ export default function ProdPage() {
                 style={{ paddingTop: "20px" }}
               >
                 {/* ------------side imgs ------------*/}
-                <Grid container item justifyContent='center' className={classes.imgsContainer} xs={1}>
+                <Grid
+                  container
+                  item
+                  justifyContent="center"
+                  className={classes.imgsContainer}
+                  xs={1}
+                >
                   {curProd.img_urls?.map((img, index) => {
                     return (
                       <Grid
                         item
                         xs={12}
                         key={img}
-                        className={clsx(classes.imgBox, curImg !== index && classes.imgBoxUnSelected)}
+                        className={clsx(
+                          classes.imgBox,
+                          curImg !== index && classes.imgBoxUnSelected
+                        )}
                         onClick={() => {
                           if (curImg !== index) {
                             setCurImg(index);
                           }
                         }}
                       >
-                        <img className={classes.mainImg} src={get_DNS() + img} alt={curProd.code} />
+                        <img
+                          className={classes.mainImg}
+                          src={get_DNS() + img}
+                          alt={curProd.code}
+                        />
                       </Grid>
                     );
                   })}
@@ -430,13 +448,23 @@ export default function ProdPage() {
                   container
                   xs={5}
                   //   md={5}
-                  justifyContent='center'
+                  justifyContent="center"
                   className={classes.mainImgBox}
                 >
-                  <img className={classes.mainImg} src={get_DNS() + curProd.img_urls[curImg]} alt={curProd.code} />
+                  <img
+                    className={classes.mainImg}
+                    src={get_DNS() + curProd.img_urls[curImg]}
+                    alt={curProd.code}
+                  />
                 </Grid>
                 {/* ------------detail------------ */}
-                <Grid container item xs={4} alignContent='space-between' className={classes.prodDetailBox}>
+                <Grid
+                  container
+                  item
+                  xs={4}
+                  alignContent="space-between"
+                  className={classes.prodDetailBox}
+                >
                   <Grid container item xs={12}>
                     {/* +++ name and hr+++ */}
                     <Grid item xs={12} className={classes.prodDetailNameBox}>
@@ -448,11 +476,22 @@ export default function ProdPage() {
                       {curProd?.Attrs?.map((attr, index) => {
                         // +++ attr row +++
                         return (
-                          <Grid container item xs={12} key={attr.nome + index} className={classes.attrRow}>
+                          <Grid
+                            container
+                            item
+                            xs={12}
+                            key={attr.nome + index}
+                            className={classes.attrRow}
+                          >
                             <Grid container item xs={4}>
                               {attr.nome}
                             </Grid>
-                            <Grid container item xs={8} className={classes.attrList}>
+                            <Grid
+                              container
+                              item
+                              xs={8}
+                              className={classes.attrList}
+                            >
                               {attr?.options?.map((op, index) => {
                                 return (
                                   <Grid item xs={3} key={op + index}>
@@ -471,19 +510,38 @@ export default function ProdPage() {
                       )}
                       {/* +++ price +++ */}
                       <Grid container item xs={12} className={classes.attrRow}>
-                        <div className={classes.priceStyle} style={{ marginRight: "20px" }}>
+                        <div
+                          className={classes.priceStyle}
+                          style={{ marginRight: "20px" }}
+                        >
                           {t("prod.price")}
                         </div>
                         <div style={{ fontWeight: "700" }}>
                           {curProd.price_max === curProd.price_min ? (
                             <div className={classes.priceStyle}>
-                              €{String(curProd.price_unit?.toFixed(2))?.replace(".", ",")}
+                              €
+                              {String(curProd.price_unit?.toFixed(2))?.replace(
+                                ".",
+                                ","
+                              )}
                             </div>
                           ) : (
                             <div className={classes.priceStyle}>
-                              <span>€{String(curProd.price_min.toFixed(2))?.replace(".", ",")}</span>
+                              <span>
+                                €
+                                {String(curProd.price_min.toFixed(2))?.replace(
+                                  ".",
+                                  ","
+                                )}
+                              </span>
                               <span>~</span>
-                              <span>€{String(curProd.price_max.toFixed(2))?.replace(".", ",")}</span>
+                              <span>
+                                €
+                                {String(curProd.price_max.toFixed(2))?.replace(
+                                  ".",
+                                  ","
+                                )}
+                              </span>
                             </div>
                           )}
                         </div>
@@ -513,7 +571,13 @@ export default function ProdPage() {
                     />
                   </div>
                 </Grid>
-                <Grid container item xs={12} className={classes.gridItem} justifyContent='center'>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  className={classes.gridItem}
+                  justifyContent="center"
+                >
                   <div className={classes.desp}>{curProd?.desp}</div>
                 </Grid>
                 <Grid container item xs={12} className={classes.gridItem}>
@@ -528,7 +592,12 @@ export default function ProdPage() {
                     />
                   </div>
                 </Grid>
-                <Grid container item xs={12} className={clsx(classes.gridItem, classes.prodRow)}>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  className={clsx(classes.gridItem, classes.prodRow)}
+                >
                   <ProdList
                     type={null}
                     queryURL={

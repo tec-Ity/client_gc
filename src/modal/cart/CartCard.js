@@ -164,6 +164,8 @@ export default function CartCard(props) {
   const dispatch = useDispatch();
   const hist = useHistory();
   const curCart = useSelector((state) => state.cart.curCart);
+  const curShopInfo = useSelector((state) => state.shop.curShopInfo);
+
   const classes = useStyle(props);
   //console.log(orderLabel && orderCard);
   const expandMore = () => {
@@ -185,7 +187,7 @@ export default function CartCard(props) {
     hist.push("/cart/" + cart._id);
   };
 
-  // //console.log(handleBtn);
+  console.log(curShopInfo);
 
   return (
     <Grid container item xs={11} className={classes.root}>
@@ -198,7 +200,7 @@ export default function CartCard(props) {
         >
           <div className={clsx(classes.shopTitle, classes.marginHead)}>
             {t("cart.modal.shopLabel")}
-            <span title={Shop?.nome}>{Shop?.nome}</span>
+            <span title={curShopInfo?.nome}>{curShopInfo?.nome}</span>
           </div>
           <div className={classes.marginHead}>
             <CustomButton

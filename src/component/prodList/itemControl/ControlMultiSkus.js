@@ -30,7 +30,8 @@ export default function ControlMultiSkus(props) {
                     container
                     item
                     xs={6}
-                    className={clsx(classes.attrList)}>
+                    className={clsx(classes.attrList)}
+                  >
                     {sku.attrs &&
                       sku.attrs.map((attr) => {
                         return (
@@ -39,8 +40,9 @@ export default function ControlMultiSkus(props) {
                             container
                             key={attr.nome}
                             item
-                            xs={4}
-                            style={{ paddingLeft: "10px" }}>
+                            xs={5}
+                            style={{ paddingLeft: "10px" }}
+                          >
                             <span key={attr.nome}>
                               <span>{attr.nome}</span>:
                               <span>{attr.option}</span>
@@ -73,7 +75,7 @@ export default function ControlMultiSkus(props) {
         </Grid>
         <Grid item xs={12} className={classes.gridItem}>
           <CustomButton
-            label='OK'
+            label="OK"
             handleFunc={handleClose}
             alterStyle={classes.btnStyle}
           />
@@ -101,7 +103,7 @@ const useStyle = makeStyles({
   },
   hrBetweenRow: {
     width: "90%",
-    height: "0.5px",
+    height: "1px",
     marginTop: "5px",
     marginBottom: "5px",
   },

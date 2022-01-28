@@ -93,7 +93,7 @@ export default function ProdListItem(props) {
   const { prod, rule, empty = false } = props;
   const classes = useStyle();
   const param = new URLSearchParams(useLocation().search);
-  console.log(param.get("disabled"));
+  // console.log(param.get("disabled"));
   return (
     <Grid item xs={rule.xs} sm={rule.sm} md={rule.md} className={classes.root}>
       {empty === false && (
@@ -104,11 +104,12 @@ export default function ProdListItem(props) {
               to={
                 "/prod/" +
                 prod._id +
-                (param.get("disabled") === 'true' ? "?disabled=true" : "")
+                (param.get("disabled") === "true" ? "?disabled=true" : "")
               }
-              target='_blank'
-              rel='noopener noreferrer'
-              className={classes.LinkStyle}>
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.LinkStyle}
+            >
               <div className={classes.imgBox}>
                 <div className={classes.imgBoxInner}>
                   {prod.img_urls && (

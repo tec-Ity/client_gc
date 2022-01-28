@@ -90,7 +90,7 @@ const useStyle = makeStyles((theme) => ({
       justifyContent: "flex-start",
       //nome
       "& :nth-child(1)": {
-        fontSize: "20px",
+        fontSize: "16px",
         fontWeight: "700",
       },
       //desp (attrs)
@@ -329,6 +329,7 @@ export default function DetailCard(props) {
                     customTableStyle={classes.tableStyle}
                     customTableRowStyle={classes.tableRowStyle}
                     customTableHeaderStyle={classes.tableHeaderStyle}
+                    page={true}
                   />
                 </>
               )}

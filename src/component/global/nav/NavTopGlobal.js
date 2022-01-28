@@ -107,7 +107,7 @@ export default function NavTopGlobal() {
   const userSelectedLocation = useSelector(
     (state) => state.curClient.userSelectedLocation
   );
-  console.log(view);
+  // console.log(view);
   useEffect(() => {
     function auth() {
       if (!isLogin) {

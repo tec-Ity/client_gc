@@ -213,7 +213,9 @@ export const fetchProdById = createAsyncThunk(
 export const fetchSearchProds = createAsyncThunk(
   "shop/fetchSearchProds",
   async ({ searchValue, pageNum }, { getState, rejectWithValue }) => {
-    const api = `/prods?search=${searchValue}&page=${pageNum}`;
+    const api = `/prods?search=${searchValue}&page=${pageNum}&Shops=${
+      getState().curShop
+    }`;
     const result = await fetch_Prom(api);
     if (result.status === 200) {
       return {

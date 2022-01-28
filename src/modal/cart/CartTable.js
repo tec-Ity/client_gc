@@ -84,6 +84,7 @@ const TableRow = (props) => {
     customTableRowStyle,
     isExpand,
     prod,
+    page,
   } = props;
   // const isExpand = useSelector((state) => state.cart.isExpand);
   const dispatch = useDispatch();
@@ -137,7 +138,7 @@ const TableRow = (props) => {
             </Grid>
           )}
 
-          <Grid item xs={7}>
+          <Grid item xs={page ? 4 : 7}>
             {/* <Grid item xs={4}> */}
             <div title={prodName} style={{ overflow: "hidden" }}>
               {prodName?.slice(0, 35) + (prodName?.length > 35 ? "..." : "")}
@@ -156,10 +157,12 @@ const TableRow = (props) => {
             <div>&nbsp;</div>
           </Grid>
 
-          {/* <Grid item xs={showImg ? 2 : 3}>
-            <div>€{oSku.price_sale?.toFixed(2)}</div>
-            <div>&nbsp;</div>
-          </Grid> */}
+          {page && (
+            <Grid item xs={showImg ? 2 : 3}>
+              <div>€{oSku.price_sale?.toFixed(2)}</div>
+              <div>&nbsp;</div>
+            </Grid>
+          )}
           <Grid item xs={showImg ? 2 : 3}>
             <div>€{oSku.price_tot?.toFixed(2)}</div>
             <div>&nbsp;</div>
@@ -185,6 +188,7 @@ export default function CartTable(props) {
     customTableStyle = null,
     customTableRowStyle = null,
     customTableHeaderStyle = null,
+    page = false,
   } = props;
   const classes = useStyle();
   const [tableBody, setTableBody] = React.useState();
@@ -213,6 +217,7 @@ export default function CartTable(props) {
               showCtrl={showCtrl}
               customTableRowStyle={customTableRowStyle}
               prod={op}
+              page={page}
             />
           );
         } else return rows;
@@ -228,6 +233,7 @@ export default function CartTable(props) {
     showImg,
     showCtrl,
     customTableRowStyle,
+    page,
   ]);
 
   React.useEffect(() => {
@@ -252,7 +258,7 @@ export default function CartTable(props) {
                 <Grid item xs={2}></Grid>
                 <Grid item xs={4}></Grid>
                 <Grid item xs={2}>
-                  {t("global.prodTable.prod")}
+                  {t("global.prodTable.quantity")}
                 </Grid>
                 <Grid item xs={2}>
                   {t("global.prodTable.prodUnitPrice")}
