@@ -201,25 +201,26 @@ export default function ShopSideBarUI(props) {
         if (children.list.length > 0) {
           return (
             <List component="div" key="childrenList" disablePadding>
-              {children.list.map((children) => {
+              {children.list.map((child) => {
                 return (
                   <ListItem
                     button
                     // className={classes.subItemStyle}
                     classes={{ root: classes.subItemStyle }}
-                    selected={selSecondCateg === children._id}
-                    key={children._id}
+                    selected={selSecondCateg === child._id}
+                    key={child._id}
                     onClick={(e) => {
                       e.preventDefault();
-                      selSecondCateg !== children._id &&
+                      selSecondCateg !== child._id &&
                         sendSecondCategData(
-                          children._id,
-                          children.code,
-                          children.img_url
+                          child._id,
+                          child.code,
+                          children.farImg,
+                          children.farCode
                         );
                     }}
                   >
-                    {children.code}
+                    {child.code}
                   </ListItem>
                 );
               })}
@@ -241,6 +242,7 @@ export default function ShopSideBarUI(props) {
     const categList =
       categs &&
       categs?.map((categ) => {
+        // console.log(categ);
         return (
           <React.Fragment key={categ._id}>
             <ListItem
@@ -249,9 +251,10 @@ export default function ShopSideBarUI(props) {
               selected={selFirstCateg === categ._id}
               id={categ._id + "categBar"}
               onClick={() => {
-                selFirstCateg !== categ._id
-                  ? sendFirstCategData(categ._id, categ.code, categ.img_url)
-                  : goBackFunc();
+                sendFirstCategData(categ._id, categ.code, categ.img_url);
+                // selFirstCateg !== categ._id
+                //   ? sendFirstCategData(categ._id, categ.code, categ.img_url)
+                //   : goBackFunc();
               }}
             >
               {categ.code}

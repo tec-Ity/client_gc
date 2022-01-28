@@ -48,7 +48,15 @@ const useStyle = makeStyles({
 
 export default function SubSelfModals(props) {
   const { t } = useTranslation();
-  const { showSubModal, handleCloseSub, tempInfo, handleChange, handleSubmit, handleShowSub, inCart = false } = props;
+  const {
+    showSubModal,
+    handleCloseSub,
+    tempInfo,
+    handleChange,
+    handleSubmit,
+    handleShowSub,
+    inCart = false,
+  } = props;
   const classes = useStyle();
   return (
     <>
@@ -60,8 +68,10 @@ export default function SubSelfModals(props) {
         >
           <InputModify
             value={tempInfo.nome || ""}
-            iconType='done'
-            placeholder={tempInfo.nome ? null : t("components.placeholders.nameInput")}
+            iconType="done"
+            placeholder={
+              tempInfo.nome ? null : t("components.placeholders.nameInput")
+            }
             handleChange={(value) => handleChange("nome", value)}
             handleFunc={handleSubmit("general")}
           />
@@ -105,10 +115,18 @@ export default function SubSelfModals(props) {
       {showSubModal.addr === true && (
         <RowModal
           show={showSubModal.addr}
-          handleClose={showSubModal.addrAdd === true ? handleShowSub("addrAdd", false) : handleCloseSub}
+          handleClose={
+            showSubModal.addrAdd === true
+              ? handleShowSub("addrAdd", false)
+              : handleCloseSub
+          }
           label={t("selfCenter.modify") + t("selfCenter.address")}
           large={true}
-          extraIcon={showSubModal.addrAdd === false && <AddButton handleFunc={handleShowSub("addrAdd")} />}
+          extraIcon={
+            showSubModal.addrAdd === false && (
+              <AddButton handleFunc={handleShowSub("addrAdd")} />
+            )
+          }
         >
           <SubAddrModal
             showAddrAdd={showSubModal.addrAdd}
@@ -117,7 +135,13 @@ export default function SubSelfModals(props) {
             closeUpdate={handleShowSub("addrAdd", false)}
             inCart={inCart}
           />
-          {inCart && <CustomButton label='OK' alterStyle={classes.confirmButton} handleFunc={handleCloseSub} />}
+          {inCart && !showSubModal.addrAdd && (
+            <CustomButton
+              label="OK"
+              alterStyle={classes.confirmButton}
+              handleFunc={handleCloseSub}
+            />
+          )}
         </RowModal>
       )}
       {showSubModal.pwd === true && (
@@ -135,13 +159,31 @@ export default function SubSelfModals(props) {
 }
 
 const RowModal = (props) => {
-  const { show, handleClose, label, extraIcon, children, large = false } = props;
+  const {
+    show,
+    handleClose,
+    label,
+    extraIcon,
+    children,
+    large = false,
+  } = props;
   const classes = useStyle();
   return (
-    <CustomModal timeout={0} show={show} handleClose={handleClose} small={large === false}>
+    <CustomModal
+      timeout={0}
+      show={show}
+      handleClose={handleClose}
+      small={large === false}
+    >
       <Container style={{ height: "100%", position: "relative" }}>
-        <Grid container justifyContent='center' className={classes.subModal}>
-          <Grid container item xs={12} alignItems='center' className={classes.subHeader}>
+        <Grid container justifyContent="center" className={classes.subModal}>
+          <Grid
+            container
+            item
+            xs={12}
+            alignItems="center"
+            className={classes.subHeader}
+          >
             <div className={classes.subBackBtn} onClick={handleClose}>
               <ArrowBackIosIcon />
               <div>{label}</div>
@@ -152,7 +194,7 @@ const RowModal = (props) => {
           <Grid container item xs={12}>
             <CustomHr position={classes.subHrStyle} />
           </Grid>
-          <Grid container item xs={12} justifyContent='center'>
+          <Grid container item xs={12} justifyContent="center">
             {children}
           </Grid>
         </Grid>

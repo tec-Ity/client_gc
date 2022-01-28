@@ -51,7 +51,7 @@ export const fetchPutCurClient = createAsyncThunk(
     formData[type] = value;
     // //console.log(formData);
     const res = await fetch_Prom("/Client", "PUT", formData);
-    // //console.log(res);
+    // console.log(res);
     if (res.status === 200) {
       return res.data.object;
     } else {

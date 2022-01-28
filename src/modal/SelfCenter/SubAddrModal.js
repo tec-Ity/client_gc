@@ -242,7 +242,6 @@ function DefaultAddr(props) {
         <Grid item xs={10}>
           <div>{addr.note}</div>
         </Grid>
-
         <Grid item xs={1} style={{ position: "relative" }}>
           <div className={classes.tagBox}>
             <div className={classes.tag}>
@@ -284,6 +283,7 @@ function ListItemAddr(props) {
       >
         <Grid container item xs={12} className={classes.nameRow}>
           <div>{addr.name?.toUpperCase()}</div>
+
           <div>{addr.phone}</div>
           <div>
             <button className={classes.button}>
@@ -305,6 +305,7 @@ function ListItemAddr(props) {
             <div>{addr.note}</div>
           </Grid>
           {/* <Grid item xs={1} container alignItems="flex-end">
+
             <div onClick={handleDeleteAddr(addr._id)}>
               <AddButton del />
             </div>
@@ -314,6 +315,7 @@ function ListItemAddr(props) {
     </>
   );
 }
+
 export function AddrAddModal(props) {
   const { t } = useTranslation();
   const classes = useStyle();
@@ -357,7 +359,7 @@ export function AddrAddModal(props) {
       postcode: postCode,
       note: address?.note,
     };
-    // //console.log(value);
+    // console.log(value);
     if (isUpdate) {
       value._id = isUpdate && addr._id && addr._id;
       dispatch(fetchPutCurClient({ type: "addr_put", value }));
