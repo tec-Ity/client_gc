@@ -52,30 +52,58 @@ const useStyle = makeStyles((theme) => ({
     objectFit: "scale-down",
     margin: "0 10px",
   },
+  subTitle: {
+    display: "flex",
+    width: "100%",
+    height: 30,
+    paddingBottom: "21px",
+    "& > div": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  },
 }));
 
 export default function ExpandTitle(props) {
   const { title } = props;
   const classes = useStyle();
-  // //console.log("title", title);
+  // console.log("title", title);
   return (
     <>
       {title.desp && (
-        <div className={classes.root}>
-          <div className={classes.titleStyle}>{title.desp}</div>
-          <CustomHr position={classes.hrStyle} />
-          {title.img ? (
-            <img
-              className={classes.imgStyle}
-              src={get_DNS() + title.img}
-              alt={title.desp}
-            />
-          ) : (
-            <div className={classes.bannerDefault}>
-              <div>{title.desp}</div>
+        <>
+          <div className={classes.root}>
+            <div className={classes.titleStyle}>{title.desp}</div>
+            <CustomHr position={classes.hrStyle} />
+            {title.img ? (
+              <img
+                className={classes.imgStyle}
+                src={get_DNS() + title.img}
+                alt={title.desp}
+              />
+            ) : (
+              <div className={classes.bannerDefault}>
+                <div>{title.desp}</div>
+              </div>
+            )}
+          </div>
+          {title.code && (
+            <div className={classes.subTitle}>
+              <div style={{ width: "40%" }}>
+                <CustomHr position={classes.hrStyle} />
+              </div>
+              <div
+                style={{ width: "20%", fontSize: "24px", fontWeight: "700" }}
+              >
+                {title.code}
+              </div>
+              <div style={{ width: "40%" }}>
+                <CustomHr position={classes.hrStyle} />
+              </div>
             </div>
           )}
-        </div>
+        </>
       )}
     </>
   );

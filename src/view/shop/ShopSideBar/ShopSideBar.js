@@ -33,7 +33,8 @@ export default function ShopSideBar(props) {
   // const nationIds = useSelector((state) => state.filter.nationIds);
   const nationIdsStatus = useSelector((state) => state.filter.nationIdsStatus);
   useEffect(() => {
-    nationIdsStatus === "idle" && dispatch(fetchNationIds(["CN", "IT", "JP", "KR"]));
+    nationIdsStatus === "idle" &&
+      dispatch(fetchNationIds(["CN", "IT", "JP", "KR"]));
   }, [dispatch, nationIdsStatus]);
 
   const goBackFunc = useCallback(() => {
@@ -42,9 +43,10 @@ export default function ShopSideBar(props) {
 
   const displayChildren = useCallback(
     //find children of current first categ, for dispaly nested second categs
-    (_id) => {
+    (_id, farCode, farImg) => {
+      console.log(farImg);
       const children = categs.find((item) => item._id === _id).Categ_sons;
-      setChildren({ far: _id, list: children });
+      setChildren({ far: _id, farCode, farImg, list: children });
     },
     [categs]
   );
@@ -57,19 +59,23 @@ export default function ShopSideBar(props) {
 
   const sendFirstCategData = useCallback(
     (categId, categCode, img) => {
+      console.log(categId, categCode, img);
       //find its children
-      displayChildren(categId);
+      displayChildren(categId, categCode, img);
       //inform selection
       dispatch(setSelFirstCateg(categId));
       dispatch(
         setTitle({
           desp: categCode,
           img,
+          code: "",
         })
       );
 
       //find its children categs
-      const selChildren = categs.find((item) => item._id === categId).Categ_sons;
+      const selChildren = categs.find(
+        (item) => item._id === categId
+      ).Categ_sons;
 
       //find all prods belong to it
       dispatch(
@@ -92,15 +98,16 @@ export default function ShopSideBar(props) {
   );
 
   const sendSecondCategData = useCallback(
-    (categId, categCode, img) => {
+    (categId, categCode, img, farCode) => {
       //check first time seleciton
       if (categId !== selSecondCateg) {
         dispatch(setIsHome(false));
         dispatch(setSelSecondCateg(categId));
         dispatch(
           setTitle({
-            desp: categCode,
+            desp: farCode,
             img,
+            code: categCode,
           })
         );
         dispatch(
