@@ -242,6 +242,8 @@ export default function ShopSideBarUI(props) {
     const categList =
       categs &&
       categs?.map((categ) => {
+        console.log(categ);
+
         return (
           <React.Fragment key={categ._id}>
             <ListItem
@@ -250,9 +252,10 @@ export default function ShopSideBarUI(props) {
               selected={selFirstCateg === categ._id}
               id={categ._id + "categBar"}
               onClick={() => {
-                selFirstCateg !== categ._id
-                  ? sendFirstCategData(categ._id, categ.code, categ.img_url)
-                  : goBackFunc();
+                sendFirstCategData(categ._id, categ.code, categ.img_url);
+                // selFirstCateg !== categ._id
+                //   ? sendFirstCategData(categ._id, categ.code, categ.img_url)
+                //   : goBackFunc();
               }}
             >
               {categ.code}
