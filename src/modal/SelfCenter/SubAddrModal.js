@@ -6,11 +6,14 @@ import MapContainer from "../address/MapContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPutCurClient } from "../../redux/curClient/curClientSlice";
 import { makeStyles } from "@material-ui/core/styles";
-import { ReactComponent as Pen } from "../../component/icon/pen-edit.svg";
+// import { ReactComponent as Pen } from "../../component/icon/pen-edit.svg";
+import { ReactComponent as Pen } from "../../component/icon/iconEdit.svg";
+import { ReactComponent as IconUpward } from "../../component/icon/iconUpward.svg";
 import AddButton from "../Component/AddButton";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import { cartAddrPut } from "../../redux/cart/cartSlice";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 const useStyle = makeStyles({
   root: {},
@@ -43,6 +46,15 @@ const useStyle = makeStyles({
   pointer: {
     "&:hover": { cursor: "pointer" },
   },
+  button: {
+    borderRadius: "5px",
+    backgroundColor: "transparent",
+    border: "none",
+    "&:hover": {
+      cursor: "pointer",
+      // backgroundColor: "#00000030",
+    },
+  },
   penIconStyle: {
     "& path": { stroke: "#91e8b3" },
   },
@@ -61,7 +73,7 @@ const useStyle = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontWeight: "700",
+    fontWeight: "400",
   },
   tagFoot: {
     position: "absolute",
@@ -123,6 +135,7 @@ export default function SubAddrModal(props) {
   // delete address
   const handleDeleteAddr = (addrId) => () => {
     dispatch(fetchPutCurClient({ type: "addr_del", value: { addrId } }));
+    setUpdateAddr(null);
   };
 
   // used for closing addr detail modal after update 'success'
@@ -195,6 +208,7 @@ function DefaultAddr(props) {
   const { addr, handleOpenEditAddr, handleSelectAddr, inCart, selected } =
     props;
   const classes = useStyle();
+  const { t } = useTranslation();
   return (
     <Grid
       container
@@ -210,6 +224,17 @@ function DefaultAddr(props) {
         <div>{addr.name?.toUpperCase()}</div>
         <div>{addr.phone}</div>
       </Grid>
+      <Grid item xs={5}>
+        {" "}
+      </Grid>
+      <Grid
+        item
+        xs={1}
+        className={classes.pointer}
+        onClick={handleOpenEditAddr(addr)}
+      >
+        <Pen className={classes.penIconStyle} />
+      </Grid>
       <Grid container item xs={12} className={classes.addrRow}>
         {addr.address}
       </Grid>
@@ -217,18 +242,10 @@ function DefaultAddr(props) {
         <Grid item xs={10}>
           <div>{addr.note}</div>
         </Grid>
-        <Grid
-          item
-          xs={1}
-          className={classes.pointer}
-          onClick={handleOpenEditAddr(addr)}
-        >
-          <Pen className={classes.penIconStyle} />
-        </Grid>
         <Grid item xs={1} style={{ position: "relative" }}>
           <div className={classes.tagBox}>
             <div className={classes.tag}>
-              <div>ORA</div>
+              <div>{t("selfCenter.defaultAddressLabel")}</div>
             </div>
             <div className={classes.tagFoot}></div>
           </div>
@@ -264,32 +281,35 @@ function ListItemAddr(props) {
         )}
         onClick={inCart && handleSelectAddr(addr)}
       >
-        <Grid container item xs={6} className={classes.nameRow}>
-          <div>{addr.name?.toUpperCase()}11</div>
+        <Grid container item xs={12} className={classes.nameRow}>
+          <div>{addr.name?.toUpperCase()}</div>
+
           <div>{addr.phone}</div>
+          <div>
+            <button className={classes.button}>
+              <IconUpward className={classes.penIconStyle} />
+            </button>
+            <button
+              className={classes.button}
+              onClick={handleOpenEditAddr(addr)}
+            >
+              <Pen className={classes.penIconStyle} />
+            </button>
+          </div>
         </Grid>
         <Grid container item xs={12} className={classes.addrRow}>
           {addr.address}
         </Grid>
         <Grid container item xs={12} className={classes.noteRow}>
-          <Grid item xs={10}>
+          <Grid item xs={12}>
             <div>{addr.note}</div>
           </Grid>
-          <Grid
-            item
-            xs={1}
-            container
-            alignItems="flex-end"
-            className={classes.pointer}
-            onClick={handleOpenEditAddr(addr)}
-          >
-            <Pen className={classes.penIconStyle} />
-          </Grid>
-          <Grid item xs={1} container alignItems="flex-end">
+          {/* <Grid item xs={1} container alignItems="flex-end">
+
             <div onClick={handleDeleteAddr(addr._id)}>
               <AddButton del />
             </div>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </>
@@ -297,11 +317,14 @@ function ListItemAddr(props) {
 }
 
 export function AddrAddModal(props) {
+  const { t } = useTranslation();
+  const classes = useStyle();
   const {
     addr,
     isUpdate = addr ? true : false,
     resetAddr,
     setJustSubmitted,
+    handleDeleteAddr,
   } = props;
   const dispatch = useDispatch();
   const [newAddr, setNewAddr] = useState({
@@ -350,14 +373,14 @@ export function AddrAddModal(props) {
     <>
       <Grid item style={{ width: "100%", marginBottom: "10px" }}>
         <InputModify
-          placeholder="Il nome del destinatario"
+          placeholder={t("address.modal.placeholder.recipient")}
           value={newAddr.nome}
           handleChange={(value) => handleChange("nome", value)}
         />
       </Grid>
       <Grid item style={{ width: "100%", marginBottom: "10px" }}>
         <InputModify
-          placeholder="Num. di telefono del destinatario"
+          placeholder={t("address.modal.placeholder.recipientPhone")}
           value={newAddr.tel}
           handleChange={(value) => handleChange("tel", value)}
         />
@@ -366,11 +389,20 @@ export function AddrAddModal(props) {
         <MapContainer
           isUpdate={isUpdate}
           updateAddr={isUpdate && addr}
-          mapSize={{ height: "230px" }}
-          btnLabel="OK"
+          mapSize={{ height: "200px" }}
+          btnLabel={t("global.button.confirm")}
           getSelectedLocation={handleSubmit}
         />
       </Grid>
+      {isUpdate && (
+        <button
+          onClick={handleDeleteAddr(addr._id)}
+          className={classes.button}
+          style={{ marginTop: "5px" }}
+        >
+          {t("global.button.delete")}
+        </button>
+      )}
     </>
   );
 }
