@@ -4,11 +4,11 @@ import { ReactComponent as Pin } from "../../component/icon/pin.svg";
 import { ReactComponent as Locate } from "../../component/icon/locate.svg";
 import { useTranslation } from "react-i18next";
 import {
+  Box,
   Grid,
   OutlinedInput,
   InputAdornment,
   IconButton,
-  Container,
 } from "@material-ui/core";
 import {
   setShowAddrSel,
@@ -20,29 +20,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: "transparent",
     display: "flex",
-    justifyContent: "flex-end",
+    flexDirection: "row-reverse",
+    // justifyContent:"flex-end",
     alignItems: "center",
-    paddingTop: "150px",
-    paddingRight: "150px",
+    paddingTop: "22vh",
+    paddingRight: "5vw",
     [theme.breakpoints.down("sm")]: {
       paddingRight: "0",
-      justifyContent: "center",
-      paddingTop: "100px",
-    },
-    [theme.breakpoints.down("xs")]: {
-      paddingTop: "50px",
-    },
-  },
-  root2: {
-    background: "transparent",
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingTop: "150px",
-    // paddingRight: "150px",
-    [theme.breakpoints.down("sm")]: {
-      paddingRight: "0",
-      justifyContent: "center",
+      // justifyContent: "center",
       paddingTop: "100px",
     },
     [theme.breakpoints.down("xs")]: {
@@ -50,36 +35,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   gridStyle: {
-    width: "100%",
-    maxWidth: "508px",
-  },
-  gridStyle2: {
-    maxWidth: "1000px",
+    maxWidth: "50vw",
   },
   msg: {
-    maxWidth: "508.03px",
-    width: "100%",
-    height: "105px",
+    paddingBottom: "30px",
     fontWeight: "700",
-    fontSize: "40px",
-    color: "#1D1D38",
-    marginBottom: "20px",
+    fontSize: "4vw",
     textAlign: "center",
-    whiteSpace: "pre-line",
+    whiteSpace: "pre-wrap",
+    // letterSpacing: "0.1em",
     [theme.breakpoints.down("xs")]: {
       fontSize: "45px",
       height: "150px",
     },
-    "& > :nth-child(2)": { color: "#fff" },
-  },
-  msg2: {
-    // width: "100%",
-    fontWeight: "700",
-    fontSize: "80px",
-    textAlign: "center",
-    whiteSpace: "pre-wrap",
-    // alignItems: "center",
-    // justifyContent: "center",
     "& > :nth-child(2)": { color: "#fff" },
   },
   addrBox: {
@@ -148,9 +116,9 @@ export default function HomeBanner(props) {
   };
 
   return (
-    <Container disableGutters className={classes.root2}>
-      <Grid container className={classes.gridStyle2}>
-        <Grid item className={classes.msg2} xs={12}>
+    <Box className={classes.root}>
+      <Grid container className={classes.gridStyle}>
+        <Grid item className={classes.msg} xs={12}>
           <span>{t("home.slogan.black")}</span>
           <span>{t("home.slogan.white")}</span>
         </Grid>
@@ -186,6 +154,6 @@ export default function HomeBanner(props) {
           </Grid>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 }

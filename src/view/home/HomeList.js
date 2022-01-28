@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { Grid, Container, Card, CardMedia, CardActionArea } from "@material-ui/core";
+import {
+  Grid,
+  Container,
+  Card,
+  CardMedia,
+  CardActionArea,
+} from "@material-ui/core";
 import { get_DNS } from "../../api";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomBgText from "../../component/global/background/CustomBgText";
@@ -10,7 +16,7 @@ const useStyle = makeStyles((theme) => ({
   root: {
     height: "150px",
     [theme.breakpoints.down("xl")]: {
-      marginTop: "350px",
+      marginTop: "27vh",
     },
     [theme.breakpoints.down("lg")]: {
       marginTop: "250px",
@@ -155,7 +161,8 @@ export default function HomeList(props) {
   //   //console.log(list);
   useEffect(() => {
     const setStyle = () => {
-      ref.current.style.height = document.getElementById(containerId)?.clientWidth + "px";
+      ref.current.style.height =
+        document.getElementById(containerId)?.clientWidth + "px";
     };
     //init width
     setStyle();
@@ -168,10 +175,18 @@ export default function HomeList(props) {
 
   return (
     <>
-      <Container disableGutters maxWidth={false} className={classes.root} id={containerId}>
+      <Container
+        disableGutters
+        maxWidth={false}
+        className={classes.root}
+        id={containerId}
+      >
         {label && (
           <div className={classes.labelBoxStyle}>
-            <CustomBgText label={label} style={{ bg: classes.bg, txt: classes.txt }} />
+            <CustomBgText
+              label={label}
+              style={{ bg: classes.bg, txt: classes.txt }}
+            />
           </div>
         )}
         <Grid ref={ref} container className={classes.itemGrid} spacing={5}>
@@ -181,12 +196,19 @@ export default function HomeList(props) {
               const disabled = Boolean(index >= disableIndex);
               return (
                 <Grid item key={item._id}>
-                  <Card className={classes.itemCard} id={item._id} elevation={0}>
-                    <CardActionArea classes={{ root: classes.cardActionArea }} onClick={handleFunc(item, disabled)}>
+                  <Card
+                    className={classes.itemCard}
+                    id={item._id}
+                    elevation={0}
+                  >
+                    <CardActionArea
+                      classes={{ root: classes.cardActionArea }}
+                      onClick={handleFunc(item, disabled)}
+                    >
                       {item.img_url && (
                         <>
                           <CardMedia
-                            component='img'
+                            component="img"
                             image={get_DNS() + item.img_url}
                             alt={item.nome}
                             title={item.nome}
@@ -199,7 +221,13 @@ export default function HomeList(props) {
                           ? "WIP " + item.nome
                           : t(`citta.${item.nome}`)}
                       </div> */}
-                      <div className={item.img_url ? classes.cardBackground : classes.cardNoBackground}>
+                      <div
+                        className={
+                          item.img_url
+                            ? classes.cardBackground
+                            : classes.cardNoBackground
+                        }
+                      >
                         {item.nome}
                       </div>
 
