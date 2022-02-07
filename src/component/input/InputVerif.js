@@ -90,20 +90,20 @@ export default function InputVerif(props) {
   const myTimer = React.useRef(null);
 
   React.useEffect(() => {
-    console.log("effect", countDown);
+    // console.log("effect", countDown);
     if (countDown === 0) {
-      console.log("end", countDown);
+      // console.log("end", countDown);
       clearInterval(myTimer.current);
       setBtnDisabled(false);
     } else if (countDown === 60) {
-      console.log("start", countDown);
+      // console.log("start", countDown);
       myTimer.current = setInterval(() => {
-        console.log("timer", countDown);
+        // console.log("timer", countDown);
         setCountDown((prev) => prev - 1);
       }, 1000);
     }
   }, [countDown]);
-  console.log(countDown);
+  // console.log(countDown);
   const EndADM = (
     <InputAdornment position="end">
       <Button

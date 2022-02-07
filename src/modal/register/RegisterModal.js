@@ -8,11 +8,11 @@ export default function RegisterModal(props) {
   const [registerData, setRegisterData] = useState({
     phonePre: "0039",
     account: "",
-    password: "",
-    passwordConfirm: "",
+    pwd: "",
+    pwdConfirm: "",
     otp: "",
   });
-
+  const [error, setError] = useState("");
   useEffect(() => {
     async function getNation() {
       const result = await fetch_Prom("/Nations");
@@ -68,7 +68,15 @@ export default function RegisterModal(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const obj = {};
-    obj.pwd = registerData.password;
+    if (!registerData.otp) {
+      setError("Enter OTP!");
+      return;
+    }
+    if (registerData.pwd !== registerData.pwdConfirm) {
+      setError("Password not match!");
+      return;
+    }
+    obj.pwd = registerData.pwd;
     if (showPhonePre === true) {
       obj.phonePre = registerData.phonePre;
       obj.phoneNum = registerData.account;
@@ -76,16 +84,17 @@ export default function RegisterModal(props) {
       obj.email = registerData.account;
     }
     obj.otp = registerData.otp;
-    //console.log(obj);
+    // console.log(obj);
     const result = await fetch_Prom("/register", "POST", obj);
-    //console.log(result);
+    // console.log(result);
     if (result.status === 200) {
       //console.log("success");
       window.location.replace("/login");
-    }
+    } else setError(result.message);
   };
   return (
     <RegisterModalUI
+      error={error}
       registerData={registerData}
       nations={nations}
       showPhonePre={showPhonePre}

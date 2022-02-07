@@ -121,6 +121,7 @@ export const fetchOrderPost = createAsyncThunk(
     const obj = {};
     if (cartObj) {
       //get user selected location from curclient slice as the ship info to pass
+      console.log(cartObj);
       obj.Shop = cartObj.Shop;
       obj.OrderProds = cartObj.OrderProds;
       obj.type_ship = typeShip;
@@ -137,7 +138,7 @@ export const fetchOrderPost = createAsyncThunk(
       const orderPostRes = await fetch_Prom("/Order", "POST", {
         obj,
       });
-      //console.log("orderPostRes", orderPostRes);
+      console.log("orderPostRes", orderPostRes);
 
       if (orderPostRes.status === 200) {
         return orderPostRes.data.object;

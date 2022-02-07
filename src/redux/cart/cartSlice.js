@@ -23,7 +23,21 @@ const initialState = {
   //proof
   proofStatus: "idle",
   proofObjs: [],
+  orderPutStatus: "idle",
 };
+
+export const fetchOrderChangeStatus = createAsyncThunk(
+  "cart/fetchOrderChangeStatus",
+  async ({ id }) => {
+    const statusRes = await fetch_Prom(`/Order_change_status/${id}`, "PUT", {
+      action: "PLACE",
+    });
+    console.log(statusRes);
+    if (statusRes.status === 200) {
+      return true;
+    }
+  }
+);
 
 // export const cartSkuPost = (sku, qty, prod) => (dispatch, getState) => {
 //   try {
@@ -422,7 +436,7 @@ export const cartSlice = createSlice({
     cartDelete: (state, action) => {
       const shopId = action.payload;
       let i = 0;
-    //   console.log("DELETE", shopId);
+      //   console.log("DELETE", shopId);
       for (; i < state.carts.length; i++) {
         if (state.carts[i].Shop === shopId) {
           break;
@@ -430,7 +444,7 @@ export const cartSlice = createSlice({
       }
       //console.log(shopId);
       //console.log(i);
-      state.curCart={}
+      state.curCart = {};
       if (i < state.carts.length) {
         state.carts.splice(i, 1);
       }
@@ -473,6 +487,12 @@ export const cartSlice = createSlice({
     },
     [fetchProofOrder.rejected]: (state, action) => {
       state.proofStatus = "error";
+    },
+    [fetchOrderChangeStatus.pending]: (state, action) => {
+      state.orderPutStatus = "loading";
+    },
+    [fetchOrderChangeStatus.fulfilled]: (state, action) => {
+      state.orderPutStatus = "succeed";
     },
   },
 });

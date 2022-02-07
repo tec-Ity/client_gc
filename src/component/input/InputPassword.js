@@ -10,6 +10,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,12 +52,13 @@ const useStyles = makeStyles((theme) => ({
 
 const EndADM = ({ showPwd, toggleShowPwd }) => {
   return (
-    <InputAdornment position='end'>
+    <InputAdornment position="end">
       <IconButton
-        aria-label='toggle password visibility'
+        aria-label="toggle password visibility"
         onClick={toggleShowPwd}
         onMouseDown={(e) => e.preventDefault()}
-        edge='end'>
+        edge="end"
+      >
         {showPwd ? <Visibility /> : <VisibilityOff />}
       </IconButton>
     </InputAdornment>
@@ -65,23 +67,25 @@ const EndADM = ({ showPwd, toggleShowPwd }) => {
 
 export default function InputPassword(props) {
   const {
-    pwdLabel = "Password",
+    type = "pwd" || "pwdConfirm",
     pwdLabelWidth = 70,
     password,
     handleChange,
   } = props;
+  const { t } = useTranslation();
   const [showPwd, setShowPwd] = useState(false);
 
   const classes = useStyles();
   return (
     <FormControl
       className={clsx(classes.margin, classes.textField)}
-      variant='outlined'>
+      variant="outlined"
+    >
       <InputLabel
         classes={{ root: classes.labelStyle }}
         // htmlFor='outlined-adornment-password'
       >
-        {pwdLabel}
+        {t(`login.placeholders.${type}`)}
       </InputLabel>
       <OutlinedInput
         classes={{
@@ -90,11 +94,7 @@ export default function InputPassword(props) {
         }}
         type={showPwd ? "text" : "password"}
         value={password}
-        onChange={
-          pwdLabel === "Password"
-            ? handleChange("password")
-            : handleChange("passwordConfirm")
-        }
+        onChange={handleChange(type)}
         endAdornment={
           <EndADM
             showPwd={showPwd}

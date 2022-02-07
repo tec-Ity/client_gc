@@ -17,6 +17,12 @@ const useStyle = makeStyles((theme) => ({
     margin: "40px 0 30px 0",
     color: " #1D1D38",
   },
+  errorMsg: {
+    fontFamily: "Montserrat",
+    color: "red",
+    fontsize: "20px",
+    paddingBottom: "10px",
+  },
   gridItem: {
     width: "100%",
   },
@@ -52,6 +58,7 @@ export default function RegisterForm(props) {
     handleChange,
     handleSubmit,
     handleSendCode,
+    error,
   } = props;
   return (
     <form autoComplete="off">
@@ -64,6 +71,17 @@ export default function RegisterForm(props) {
         <Grid item xs={6}>
           <div className={classes.welcome}>{t("selfCenter.welcome")}</div>
         </Grid>
+        {error && (
+          <Grid
+            item
+            xs={12}
+            container
+            justifyContent="center"
+            alignItems="center"
+          >
+            <div className={classes.errorMsg}>{error}</div>
+          </Grid>
+        )}
 
         <Grid item xs={10} className={classes.gridItem}>
           <InputAccount
@@ -83,7 +101,7 @@ export default function RegisterForm(props) {
 
         <Grid item xs={10} className={classes.gridItem}>
           <InputPassword
-            pwdLabel="Confirm Password"
+            type="pwdConfirm"
             pwdLabelWidth={135}
             password={registerData.passwordConfirm}
             handleChange={handleChange}

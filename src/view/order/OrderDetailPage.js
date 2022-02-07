@@ -42,7 +42,7 @@ export default function OrderDetailPage() {
     }, 100);
   };
 
-  //   //console.log(curOrder);
+  console.log(curOrder);
 
   return (
     <>

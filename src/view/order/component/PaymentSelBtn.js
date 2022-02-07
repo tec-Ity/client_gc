@@ -7,6 +7,8 @@ import stripeIcon from "../../../component/icon/Stripe.svg";
 import CustomModal from "../../../component/global/modal/CustomModal";
 import { my_Domain } from "../../../conf/_dns";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOrderChangeStatus } from "../../../redux/cart/cartSlice";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -73,6 +75,9 @@ export default function PaymentSelBtn({ orderId }) {
   const { t } = useTranslation();
   const classes = useStyle();
   const [showPayment, setShowPayment] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const dispatch = useDispatch();
+  const prodPutStatus = useSelector((state) => state.cart.prodPutStatus);
   //   //console.log(my_Domain);
   useEffect(() => {
     (async function (d, s, id) {
@@ -88,8 +93,18 @@ export default function PaymentSelBtn({ orderId }) {
     // //console.log(window.paypal);
     // //console.log(window.paypal_sdk);
   }, []);
-  const handlePayment = async () => {
-    setShowPayment(true);
+  const handlePayment = async (type) => {
+    switch (type) {
+      // case 1:
+      //   setShowPayment(true);
+      //   break;
+      case 2:
+        dispatch(fetchOrderChangeStatus({ id: orderId }));
+        setSubmitted(true);
+        break;
+      default:
+        break;
+    }
   };
   return (
     <>
@@ -98,10 +113,10 @@ export default function PaymentSelBtn({ orderId }) {
           <div className={classes.msg}>{t("global.payment.payMethod")}</div>
         </Grid>
         <Grid item xs={12} className={classes.btnBox}>
-          <Button className={classes.btn} onClick={handlePayment}>
+          <Button className={classes.btn} onClick={() => handlePayment(1)}>
             {t("global.payment.payMethod_online")}
           </Button>
-          <Button className={classes.btn}>
+          <Button className={classes.btn} onClick={() => handlePayment(2)}>
             {t("global.payment.payMethod_offline")}
           </Button>
         </Grid>
