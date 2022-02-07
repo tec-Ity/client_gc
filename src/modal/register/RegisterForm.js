@@ -94,7 +94,7 @@ export default function RegisterForm(props) {
 
         <Grid item xs={10} className={classes.gridItem}>
           <InputPassword
-            password={registerData.password}
+            password={registerData.pwd}
             handleChange={handleChange}
           />
         </Grid>
@@ -103,7 +103,7 @@ export default function RegisterForm(props) {
           <InputPassword
             type="pwdConfirm"
             pwdLabelWidth={135}
-            password={registerData.passwordConfirm}
+            password={registerData.pwdConfirm}
             handleChange={handleChange}
           />
         </Grid>

@@ -100,11 +100,7 @@ export default function LoginForm(props) {
         </Grid>
 
         <Grid item xs={10} className={classes.gridItem}>
-          <InputPassword
-            pwdLabel="Password"
-            password={loginData.password}
-            handleChange={handleChange}
-          />
+          <InputPassword password={loginData.pwd} handleChange={handleChange} />
           <div style={{ width: "400px", position: "relative" }}>
             <div className={classes.forgetPwd}>
               <Link to="/" className={classes.forgetLink}>

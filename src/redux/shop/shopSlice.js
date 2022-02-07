@@ -139,15 +139,16 @@ export const fetchProdListQuery = createAsyncThunk(
   async ({ queryURL, isReload = true }, { getState, rejectWithValue }) => {
     // //console.log(ProdPop);
     if (queryURL) {
-      //   console.log("queryURL", queryURL);
+      console.log("queryURL", queryURL);
       //   console.log("reload", isReload);
+      console.log("shop", getState().shop.curShop);
       const prodsRes = await fetch_Prom(
         "/Prods?" +
           queryURL +
           "&Shops=" +
           [getState().shop.curShop] +
           "&populateObjs=" +
-          JSON.stringify(prodPopObj)
+          JSON.stringify([prodPopObj[0]])
       );
       // //console.log(prodsRes.data.objects);
       //   console.log("prodsRes", prodsRes);

@@ -21,7 +21,7 @@ export default function LoginModal() {
     account: "",
     accountType: "phone",
     phonePre: "0039",
-    password: "",
+    pwd: "",
   });
 
   (function (d, s, id) {
@@ -92,7 +92,7 @@ export default function LoginModal() {
         break;
     }
 
-    system.pwd = loginData.password;
+    system.pwd = loginData.pwd;
     // //console.log(system);
     const result = await fetch_Prom("/login", "POST", { system });
     console.log(result);

@@ -206,7 +206,7 @@ export default function SearchInput() {
                       <Grid item xs={12}>
                         €
                         {prod.price_max === prod.price_min
-                          ? prod.price_sale
+                          ? prod.price_max
                           : `${prod.price_min} - ${prod.price_max}`}
                       </Grid>
                     </Grid>
