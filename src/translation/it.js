@@ -4,6 +4,7 @@ const global = {
     expand: "Vedi di più",
     proceed: "Continua",
     confirm: "Conferma",
+    delete: "Elimina",
     modify: "Modifica",
     logout: "Esci",
     checkout: "Check out",
@@ -62,6 +63,12 @@ const it = {
     confirmAddr: "CONFERMA L'INDIRIZZO",
     addNewAddr: "Inserisci il nuovo indirizzo",
     newAddrDetails: "Scala/Porta/Indicazione ecc...",
+    modal: {
+      placeholder: {
+        recipient: "Il nome del destinatario",
+        recipientPhone: "Num. di telefono del destinatario",
+      },
+    },
   },
   cart: {
     title: "CARRELLO",
@@ -136,6 +143,7 @@ const it = {
     paymentMethod: "Metodo di pagamento",
     password: "Password",
     address: "Indirizzi",
+    defaultAddressLabel: "Default",
     language: "Lingue",
     userCenter: "Centro utente",
     placeholders: {
@@ -149,7 +157,7 @@ const it = {
     welcome: "Bevenuti！",
     locals: "I nostri locali",
     slogan: {
-      black: "Spesa mondiale consegnata ",
+      black: "Spesa mondiale\nconsegnata ",
       white: "a casa tua.",
     },
     adress: {

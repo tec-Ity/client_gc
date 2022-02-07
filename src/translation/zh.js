@@ -4,6 +4,7 @@ const global = {
     expand: "查看更多",
     proceed: "继续",
     confirm: "确认",
+    delete: "删除",
     modify: "更改",
     logout: "退出",
     checkout: "付单",
@@ -37,7 +38,7 @@ const zh = {
     timer: "秒",
     phoneAreaSel: "请选择区号",
     placeholders: {
-      account: "编号/邮箱/手机号",
+      account: "账号/邮箱/手机号",
       region: "--请选择区号--",
       pwd: "密码",
       pwdNew: "新密码",
@@ -53,19 +54,25 @@ const zh = {
     shipTo: "配送至：",
     selectAddr: "请选择地址",
     enterAddr: "请输入地址",
-    curLocation: "您当前的位置",
+    curLocation: "当前定位",
     getCurLocation: "请获取当前地址",
     locate: "定位",
-    locateTooltip: "先查詢您的位置",
+    locateTooltip: "请定位",
     savedAddr: "保存的地址",
     confirmAddr: "确认地址",
     addNewAddr: "添加新地址",
     newAddrDetails: "栋/门牌/其他信息",
+    modal: {
+      placeholder: {
+        recipient: "收件人姓名",
+        recipientPhone: "电话号码",
+      },
+    },
   },
   cart: {
     name: "购物车",
     modal: {
-      shopLabel: "店门号： ",
+      shopLabel: "店铺： ",
       emptyTitle: "空购物车",
       emptyMsg: "现在就去商店把你的购物车装满吧!",
       order: "下单",
@@ -134,6 +141,7 @@ const zh = {
     paymentMethod: "付款方式",
     password: "密码",
     address: "地址",
+    defaultAddressLabel: "默认",
     language: "语言",
     userCenter: "用户中心",
     placeholders: {
@@ -163,13 +171,13 @@ const zh = {
       2: "会员",
     },
     sidebar: {
-      discounted: "打折",
+      discounted: "折扣商品",
     },
   },
   prod: {
     price: "价格",
-    details: "产品资料",
-    suggestions: "或许兴趣",
+    details: "商品详情",
+    suggestions: "可能感兴趣的商品",
   },
   citta: {
     ROMA: "罗马",
@@ -178,7 +186,7 @@ const zh = {
   },
   components: {
     search: {
-      prod: "寻找店面产品",
+      prod: "搜索店内商品",
     },
     button: {
       expand: "查看更多",
