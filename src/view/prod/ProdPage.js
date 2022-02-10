@@ -520,7 +520,7 @@ export default function ProdPage() {
                           {curProd.price_max === curProd.price_min ? (
                             <div className={classes.priceStyle}>
                               €
-                              {String(curProd.price_unit?.toFixed(2))?.replace(
+                              {String(curProd.price_max?.toFixed(2))?.replace(
                                 ".",
                                 ","
                               )}
