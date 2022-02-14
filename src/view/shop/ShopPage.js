@@ -84,7 +84,7 @@ export default function ShopPage() {
       // //console.log("status", categStatus);
       if (categStatus === "succeed") {
         dispatch(setCurShop(_id));
-        dispatch(fetchProdList(categs));
+        dispatch(fetchProdList());
         dispatch(setIsExpand(_id));
       }
     }
@@ -92,7 +92,7 @@ export default function ShopPage() {
       dispatch(setInShop(false));
       dispatch(goBack());
     };
-  }, [_id, categStatus, categs, dispatch, prevShopId]);
+  }, [_id, categStatus, dispatch, prevShopId]);
 
   //   const goBack = () => {
   //     hist.goBack();

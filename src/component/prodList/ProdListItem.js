@@ -146,7 +146,7 @@ export default function ProdListItem(props) {
               </div>
               <div className={classes.ctrlStyle}>
                 <>
-                  <ProdListItemControl prod={prod} />
+                  <ProdListItemControl prod={prod} Shop={prod.Shop} />
                 </>
               </div>
             </div>

@@ -21,9 +21,11 @@ const useStyle = makeStyles({
   },
   searchBox: {
     zIndex: 99,
+    transition: "all 0.3s",
     height: "35px",
     width: "100%",
     maxWidth: "390px",
+    minWidth: "0px",
     backgroundColor: "#fff",
     fontFamily: "Montserrat",
     borderRadius: "17.5px 18.5px 18.5px 0px",
@@ -158,6 +160,12 @@ export default function SearchInput() {
       <OutlinedInput
         classes={{ root: classes.searchBox }}
         placeholder={t("components.search.prod")}
+        onClick={(e) => {
+          e.target.style.minWidth = "200px";
+        }}
+        onBlur={(e) => {
+          e.target.style.minWidth = "0px";
+        }}
         onChange={(e) => {
           setPageNum(1);
           if (e.target.value) {

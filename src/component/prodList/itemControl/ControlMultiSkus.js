@@ -8,7 +8,7 @@ import clsx from "clsx";
 import ControlSimple from "./ControlSimple";
 export default function ControlMultiSkus(props) {
   const { skus, curProdInCart, show, handleClose, onSkuChange } = props;
-
+  // console.log(curProdInCart);
   const classes = useStyle();
   return (
     <CustomModal show={show} handleClose={handleClose} small>
@@ -42,6 +42,7 @@ export default function ControlMultiSkus(props) {
                             item
                             xs={5}
                             style={{ paddingLeft: "10px" }}
+                            alignItems="flex-end"
                           >
                             <span key={attr.nome}>
                               <span>{attr.nome}</span>:
@@ -52,11 +53,14 @@ export default function ControlMultiSkus(props) {
                       })}
                   </Grid>
                   {/* price */}
-                  <Grid item xs={3} className={classes.gridItem}>
-                    €{String(sku.price_regular?.toFixed(2))?.replace(".", ",")}
+                  <Grid container item xs={3} alignItems="flex-end">
+                    <span>
+                      €
+                      {String(sku.price_regular?.toFixed(2))?.replace(".", ",")}
+                    </span>
                   </Grid>
                   {/* ctrl */}
-                  <Grid item xs={3} className={classes.gridItem}>
+                  <Grid item xs={3}>
                     <ControlSimple
                       sku={sku}
                       onSkuChange={onSkuChange}

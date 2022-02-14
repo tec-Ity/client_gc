@@ -24,11 +24,13 @@ export default function ShopProdSectionHome(props) {
       );
     });
 
-  return (
-    <>
-      {prodListStatus === "loading" && <div>loading......</div>}
-      {prodListStatus === "failed" && <div>{prodListerror}</div>}
-      {prodListStatus === "succeed" && <div>{expandList}</div>}
-    </>
-  );
+  return expandList;
+
+  // return (
+  //   <>
+  //     {prodListStatus === "loading" && <div>loading......</div>}
+  //     {prodListStatus === "failed" && <div>{prodListerror}</div>}
+  //     {prodListStatus === "succeed" && <div>{expandList}</div>}
+  //   </>
+  // );
 }

@@ -27,8 +27,9 @@ export default function ProdListItemControl(props) {
       dispatch(cartSkuPost({ sku, qty, prod }));
     }
   };
-
-  const curProdInCart = useSelector(selectCurProdInCart(prodId, shop?._id));
+  const curProdInCart = useSelector(selectCurProdInCart(prodId, shop));
+  // console.log(curProdInCart);
+  // console.log(shop);
 
   return (
     <Suspense fallback={<div>Loading......</div>}>

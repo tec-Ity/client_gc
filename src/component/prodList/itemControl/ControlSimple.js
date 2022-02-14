@@ -25,7 +25,7 @@ export default function ControlSimple(props) {
     else onSkuChange(null, sku, 1);
   };
   return (
-    <div>
+    <>
       {curSkuInCart && curSkuInCart.quantity > 0 ? (
         <CartSkuCtrl
           oSku={curSkuInCart}
@@ -43,6 +43,6 @@ export default function ControlSimple(props) {
           }
         />
       )}
-    </div>
+    </>
   );
 }

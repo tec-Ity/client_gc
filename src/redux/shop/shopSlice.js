@@ -96,17 +96,26 @@ export const fetchCategList = createAsyncThunk(
 
 export const fetchProdList = createAsyncThunk(
   "shop/fetchProdList",
-  async (categs, { getState, rejectWithValue }) => {
+  async (foo = true, { getState, rejectWithValue }) => {
     const prodsArr = [];
+    const duration = 6;
     // //console.log("categs", categs);
-    for (let i = 0; i < categs?.length; i++) {
-      //   //console.log("index", i);
-      //   //console.log(categs[i].Categ_sons[0]._id);
+    const categs = getState().shop.categList;
+    const prodList = getState().shop.prodList;
+    let startIndex = prodList.length - 1 > 0 ? prodList.length - 1 : 0;
+    const endIndex = startIndex + duration;
+    for (
+      startIndex;
+      startIndex < categs?.length && startIndex < endIndex;
+      startIndex++
+    ) {
+      //   //console.log("index", startIndex);
+      //   //console.log(categs[startIndex].Categ_sons[0]._id);
       //   //console.log(getState().shop.curShop);
-      if (categs[i].Categ_sons.length > 0) {
+      if (categs[startIndex].Categ_sons.length > 0) {
         const prodListResult = await fetch_Prom(
-          "/Prods?pagesize=6&Categs=" +
-            categs[i].Categ_sons?.map((cs) => cs._id) +
+          "/Prods?pagesize=6&page=1&Categs=" +
+            categs[startIndex].Categ_sons?.map((cs) => cs._id) +
             "&Shops=" +
             [getState().shop.curShop] +
             "&populateObjs=" +
@@ -115,11 +124,11 @@ export const fetchProdList = createAsyncThunk(
         // //console.log("prodListResult", prodListResult);
 
         if (prodListResult.status === 200) {
-          // //console.log(i);
+          // //console.log(startIndex);
           prodsArr.push({
-            id: categs[i].Categ_sons[0]._id,
-            far: { id: categs[i]._id, code: categs[i].code },
-            img: categs[i].img_url,
+            id: categs[startIndex].Categ_sons[0]._id,
+            far: { id: categs[startIndex]._id, code: categs[startIndex].code },
+            img: categs[startIndex].img_url,
             list: prodListResult.data.objects,
           });
           // //console.log("g", prodsArr);
@@ -289,7 +298,7 @@ export const shopSlice = createSlice({
     [fetchProdList.fulfilled]: (state, action) => {
       state.prodStatus = "succeed";
       // //console.log("fulfilled", action.payload);
-      state.prodList = action.payload;
+      state.prodList = [...state.prodList, ...action.payload];
     },
     [fetchProdList.rejected]: (state, action) => {
       //console.log("error");

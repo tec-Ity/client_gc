@@ -7,7 +7,7 @@ import { ReactComponent as Cart } from "../../icon/cart.svg";
 const useStyle = makeStyles({
   root: {
     position: "relative",
-    height: "40px",
+    height: "35px",
     width: "73px",
     // border: "1px solid",
   },
@@ -95,7 +95,8 @@ export default function CustomShoppingButton(props) {
           large === true ? classes.btnStyleLarge : classes.btnStyle,
           alterStyle
         )}
-        style={{ background: disabled === true && "#0000004d" }}>
+        style={{ background: disabled === true && "#0000004d" }}
+      >
         {multi ? (
           "scegli"
         ) : (
