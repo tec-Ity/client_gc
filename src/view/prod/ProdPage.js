@@ -332,11 +332,12 @@ export default function ProdPage() {
 
   useEffect(() => {
     if (curProd) {
+      const shopId = curProd?.Shop?._id ? curProd?.Shop?._id : curProd?.Shop;
       console.log(curProd);
       dispatch(setInShop(true));
-      dispatch(setCurShop(curProd?.Shop));
-      dispatch(setCurCartByShop(curProd?.Shop));
-      dispatch(setIsExpand(curProd?.Shop));
+      dispatch(setCurShop(shopId));
+      dispatch(setCurCartByShop(shopId));
+      dispatch(setIsExpand(shopId));
     }
   }, [curProd, dispatch]);
 
@@ -615,7 +616,7 @@ export default function ProdPage() {
                   <ProdList
                     type={null}
                     queryURL={
-                      "?Categs=" +
+                      "Categs=" +
                       [curProd?.Categ._id] +
                       "&Shops=" +
                       curProd?.Shop._id +

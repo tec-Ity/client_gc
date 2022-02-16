@@ -114,6 +114,8 @@ const it = {
       payOnline: global.payment.payMethod_online,
       payOffline: global.payment.payMethod_offline,
       labelShop: "Negozio",
+      shipDetail:
+        "Costo di spedizione : - Spedizione standard 8€ - Spedizione gratuita entro 3 km per acquisti superiori a 50 euro - spedizione gratuita entro 6 chilometri per acquisti superiori a 100 euro I grandi sacchi di riso e l’acqua non sono inclusi nel calcolo base di spedizione gratuita e verranno consegnati dopo la conferma dell'ordine entro 3~4 ore. Il prezzo di spedizione di verdure, carne, alcune ortofrutte, frutti di mare e altri prodotti oscillerà leggermente perché non è possibile ottenere il peso esatto. Il costo di spedizione è basato sull'importo dello scontrino. Vi auguriamo un buon acquisto",
     },
     table: global.prodTable,
     status: {

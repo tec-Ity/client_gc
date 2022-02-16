@@ -113,6 +113,8 @@ const zh = {
       payOnline: global.payment.payMethod_online,
       payOffline: global.payment.payMethod_offline,
       labelShop: "店面",
+      shipDetail:
+        "绿城运费通知：运费8€ 凡购物满50欧3公里内免运费，满100欧6公里内免运费大袋米跟水不计算在免运份额内，下单后3-4小时送到。蔬菜、肉类、部分水果、海鲜等商品价格因无法准确重量，所以价格会稍有浮动最终价格以收据小票的价格为准，祝大家购物愉快",
     },
     table: global.prodTable,
     status: {

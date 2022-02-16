@@ -30,6 +30,7 @@ const useStyle = makeStyles((theme) => ({
   },
   deliveryPrice: {
     fontSize: "15px",
+    fontWeight: "700",
   },
 
   //payment
@@ -93,8 +94,12 @@ const DeliveryCost = ({ priceShip }) => {
           {t("global.payment.priceShipping")}
         </div>
         <div className={classes.deliveryPrice}>
-          {"€" + priceShip?.toFixed(2)}
+          {/* {"€" + priceShip?.toFixed(2)} */}
+          €0,00 ~ €8,00
         </div>
+      </Grid>
+      <Grid item xs={12}>
+        <p style={{ fontSize: "12px" }}>* {t("order.page.shipDetail")}</p>
       </Grid>
     </>
   );
@@ -136,7 +141,9 @@ const TotalCost = ({ priceTotal }) => {
             style={{ bg: classes.totaleBg, txt: classes.totaleTxt }}
           />
         </div>
-        <div className={classes.totalePrice}>{"€" + priceTotal.toFixed(2)}</div>
+        <div className={classes.totalePrice}>
+          {"€" + String(priceTotal.toFixed(2)).replace(".", ",")}
+        </div>
       </Grid>
     </>
   );

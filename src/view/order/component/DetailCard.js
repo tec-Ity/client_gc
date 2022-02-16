@@ -131,7 +131,7 @@ const useStyle = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "8px",
+
     opacity: "0.5",
     color: "#1d1d38",
 
