@@ -2,13 +2,17 @@ import React, { useEffect } from "react";
 import { useHistory, useParams, useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { get_DNS } from "../../api";
-import { fetchProdById } from "../../redux/shop/shopSlice";
+import { fetchProdById, setCurShop } from "../../redux/shop/shopSlice";
 import { Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import CustomHr from "../../component/global/modal/component/CustomHr";
 import ProdListItemControl from "../../component/prodList/itemControl/ProdListItemControl";
-import { setInShop } from "../../redux/cart/cartSlice";
+import {
+  setCurCartByShop,
+  setInShop,
+  setIsExpand,
+} from "../../redux/cart/cartSlice";
 import CustomBgText from "../../component/global/background/CustomBgText";
 import ProdList from "../../component/prodList/ProdList";
 import clsx from "clsx";
@@ -311,7 +315,7 @@ export default function ProdPage() {
         //fetch for different prods
         (curProdStatus === "succeed" &&
           Object.keys(curProd).length > 0 &&
-          curProd._id !== _id)
+          curProd?._id !== _id)
       ) {
         dispatch(fetchProdById(_id));
       } else if (curProdStatus === "error") {
@@ -322,21 +326,31 @@ export default function ProdPage() {
     };
     fetchProd();
     return () => {
-      dispatch(setInShop(false));
+      // dispatch(setInShop(false));
     };
   }, [_id, curProd, curProdStatus, dispatch]);
 
+  useEffect(() => {
+    if (curProd) {
+      console.log(curProd);
+      dispatch(setInShop(true));
+      dispatch(setCurShop(curProd?.Shop));
+      dispatch(setCurCartByShop(curProd?.Shop));
+      dispatch(setIsExpand(curProd?.Shop));
+    }
+  }, [curProd, dispatch]);
+
   //   useEffect(() => {
-  //     // if (curProdStatus === "succeed" && curProd.Shop) {
+  //     // if (curProdStatus === "succeed" && curProd?.Shop) {
   //     //   if (curCartStatus === "idle") {
-  //     //     dispatch(fetchCartByShop(curProd.Shop));
+  //     //     dispatch(fetchCartByShop(curProd?.Shop));
   //     //   } else if (curCartStatus === "error") {
   //     //     setTimeout(() => {
-  //     //       dispatch(fetchCartByShop(curProd.Shop));
+  //     //       dispatch(fetchCartByShop(curProd?.Shop));
   //     //     }, 2000);
   //     //   }
   //     // }
-  //   }, [curCartStatus, curProd.Shop, curProdStatus, dispatch]);
+  //   }, [curCartStatus, curProd?.Shop, curProdStatus, dispatch]);
   return (
     <>
       <img alt="bg" src={bgBottom} className={classes.bgBottom} />
@@ -363,18 +377,18 @@ export default function ProdPage() {
                 to=""
                 className={classes.backLink}
                 onClick={() => {
-                  // setClickCategFromRemote(curProd.Categs[0].Categ_far._id)
+                  // setClickCategFromRemote(curProd?.Categs[0].Categ_far._id)
                   hist.goBack();
                 }}
               >
-                {curProd.Categ?.Categ_far?.code}
+                {curProd?.Categ?.Categ_far?.code}
               </Link>
               <span> &gt; </span>
               <Link
                 to=""
                 className={classes.backLink}
                 onClick={() => {
-                  // dispatch(setClickCategFromRemote(curProd.Categs[0]._id));
+                  // dispatch(setClickCategFromRemote(curProd?.Categs[0]._id));
                   hist.goBack();
                 }}
               >
@@ -416,7 +430,7 @@ export default function ProdPage() {
                   className={classes.imgsContainer}
                   xs={1}
                 >
-                  {curProd.img_urls?.map((img, index) => {
+                  {curProd?.img_urls?.map((img, index) => {
                     return (
                       <Grid
                         item
@@ -435,7 +449,7 @@ export default function ProdPage() {
                         <img
                           className={classes.mainImg}
                           src={get_DNS() + img}
-                          alt={curProd.code}
+                          alt={curProd?.code}
                         />
                       </Grid>
                     );
@@ -453,8 +467,8 @@ export default function ProdPage() {
                 >
                   <img
                     className={classes.mainImg}
-                    src={get_DNS() + curProd.img_urls[curImg]}
-                    alt={curProd.code}
+                    src={get_DNS() + curProd?.img_urls[curImg]}
+                    alt={curProd?.code}
                   />
                 </Grid>
                 {/* ------------detail------------ */}
@@ -468,7 +482,7 @@ export default function ProdPage() {
                   <Grid container item xs={12}>
                     {/* +++ name and hr+++ */}
                     <Grid item xs={12} className={classes.prodDetailNameBox}>
-                      <div>{curProd.nome}</div>
+                      <div>{curProd?.nome}</div>
                       <CustomHr position={classes.hrStyle} />
                     </Grid>
                     {/* +++attr and price section+++ */}
@@ -517,10 +531,10 @@ export default function ProdPage() {
                           {t("prod.price")}
                         </div>
                         <div style={{ fontWeight: "700" }}>
-                          {curProd.price_max === curProd.price_min ? (
+                          {curProd?.price_max === curProd?.price_min ? (
                             <div className={classes.priceStyle}>
                               €
-                              {String(curProd.price_max?.toFixed(2))?.replace(
+                              {String(curProd?.price_max?.toFixed(2))?.replace(
                                 ".",
                                 ","
                               )}
@@ -529,7 +543,7 @@ export default function ProdPage() {
                             <div className={classes.priceStyle}>
                               <span>
                                 €
-                                {String(curProd.price_min.toFixed(2))?.replace(
+                                {String(curProd?.price_min.toFixed(2))?.replace(
                                   ".",
                                   ","
                                 )}
@@ -537,7 +551,7 @@ export default function ProdPage() {
                               <span>~</span>
                               <span>
                                 €
-                                {String(curProd.price_max.toFixed(2))?.replace(
+                                {String(curProd?.price_max.toFixed(2))?.replace(
                                   ".",
                                   ","
                                 )}
@@ -550,7 +564,7 @@ export default function ProdPage() {
                   </Grid>
                   {/* ---------------control------------ */}
                   <Grid container item xs={12} className={classes.btnStyle}>
-                    <ProdListItemControl prod={curProd} large />
+                    {curProd && <ProdListItemControl prod={curProd} large />}
                   </Grid>
                 </Grid>
               </Grid>
@@ -602,18 +616,18 @@ export default function ProdPage() {
                     type={null}
                     queryURL={
                       "?Categs=" +
-                      [curProd.Categ._id] +
+                      [curProd?.Categ._id] +
                       "&Shops=" +
-                      curProd.Shop._id +
+                      curProd?.Shop._id +
                       "&pagesize=4" +
                       "&upd_after=" +
-                      moment(curProd.at_crt).format("MM/DD/YYYY") +
+                      moment(curProd?.at_crt).format("MM/DD/YYYY") +
                       "&excludes=" +
-                      [curProd._id] +
+                      [curProd?._id] +
                       "&sortKey=at_upd&sortVal=1"
                     }
                   />
-                  {/* {//console.log(moment(curProd.at_crt).format("MM/DD/YYYY"))} */}
+                  {/* {//console.log(moment(curProd?.at_crt).format("MM/DD/YYYY"))} */}
                 </Grid>
               </Grid>
             </Container>

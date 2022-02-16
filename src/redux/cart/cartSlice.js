@@ -498,7 +498,8 @@ export const cartSlice = createSlice({
 });
 
 export const selectCurProdInCart = (prodId, shop) => (state) => {
-  if (state.cart.curCart.Shop === shop) {
+  const shopId = state.shop.curShop;
+  if (state.cart.curCart.Shop === shopId) {
     const foundOp = state.cart.curCart.OrderProds?.find((op) => {
       return op.Prod === prodId;
     });

@@ -31,7 +31,7 @@ const useStyle = makeStyles((theme) => ({
   //custom Small
   backTemplateSm: {
     width: "500px",
-    height: "250px",
+    height: "280px",
     padding: "3px",
     borderRadius: "20px 0",
     background:
@@ -62,7 +62,8 @@ export default function CustomModal({
       onClose={handleClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
-      BackdropProps={{ timeout }}>
+      BackdropProps={{ timeout }}
+    >
       <Fade in={show}>
         <div className={small ? classes.backTemplateSm : classes.backTemplate}>
           <div className={small ? classes.paperStyleSm : classes.paperStyle}>

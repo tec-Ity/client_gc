@@ -121,7 +121,7 @@ export const fetchProdList = createAsyncThunk(
             "&populateObjs=" +
             JSON.stringify(prodPopObj)
         );
-        // //console.log("prodListResult", prodListResult);
+        //console.log("prodListResult", prodListResult);
 
         if (prodListResult.status === 200) {
           // //console.log(startIndex);
@@ -148,9 +148,9 @@ export const fetchProdListQuery = createAsyncThunk(
   async ({ queryURL, isReload = true }, { getState, rejectWithValue }) => {
     // //console.log(ProdPop);
     if (queryURL) {
-      console.log("queryURL", queryURL);
+      // console.log("queryURL", queryURL);
       //   console.log("reload", isReload);
-      console.log("shop", getState().shop.curShop);
+      // console.log("shop", getState().shop.curShop);
       const prodsRes = await fetch_Prom(
         "/Prods?" +
           queryURL +
@@ -160,7 +160,7 @@ export const fetchProdListQuery = createAsyncThunk(
           JSON.stringify([prodPopObj[0]])
       );
       // //console.log(prodsRes.data.objects);
-      //   console.log("prodsRes", prodsRes);
+      console.log("prodsRes", prodsRes);
       if (prodsRes.status === 200) {
         return {
           objects: prodsRes.data.objects,
@@ -180,40 +180,40 @@ export const fetchProdListQuery = createAsyncThunk(
 export const fetchProdById = createAsyncThunk(
   "shop/fetchProdById",
   async (_id, { getState, rejectWithValue }) => {
-    //search prodListHome
-    const prodList = getState().shop.prodList;
-    // //console.log(prodList);
-    if (prodList.length > 0) {
-      for (let i = 0; i < prodList.length; i++) {
-        const foundProd = prodList[i].list.find((prod) => {
-          return prod._id === _id;
-        });
+    // //search prodListHome
+    // const prodList = getState().shop.prodList;
+    // // //console.log(prodList);
+    // if (prodList.length > 0) {
+    //   for (let i = 0; i < prodList.length; i++) {
+    //     const foundProd = prodList[i].list.find((prod) => {
+    //       return prod._id === _id;
+    //     });
 
-        if (foundProd) {
-          //console.log("found in home");
-          return foundProd;
-        }
-      }
-    }
+    //     if (foundProd) {
+    //       //console.log("found in home");
+    //       return foundProd;
+    //     }
+    //   }
+    // }
 
-    //search ProdList Query
-    const prodListQuery = getState().shop.prodListQuery;
-    if (prodListQuery.length > 0) {
-      const foundProd = prodListQuery.find((prod) => {
-        return prod._id === _id;
-      });
+    // //search ProdList Query
+    // const prodListQuery = getState().shop.prodListQuery;
+    // if (prodListQuery.length > 0) {
+    //   const foundProd = prodListQuery.find((prod) => {
+    //     return prod._id === _id;
+    //   });
 
-      if (foundProd) {
-        //console.log("found in query");
-        return foundProd;
-      }
-    }
+    //   if (foundProd) {
+    //     //console.log("found in query");
+    //     return foundProd;
+    //   }
+    // }
 
     //neither found in redux, call server
     const prodRes = await fetch_Prom(
       "/Prod/" + _id + "?populateObjs=" + JSON.stringify(prodPopObj)
     );
-    // //console.log("prodRes", prodRes);
+    console.log("prodRes", prodRes);
     if (prodRes.status === 200) {
       return prodRes.data.object;
     } else return rejectWithValue(prodRes.message);

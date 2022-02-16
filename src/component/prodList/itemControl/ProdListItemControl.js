@@ -28,8 +28,7 @@ export default function ProdListItemControl(props) {
     }
   };
   const curProdInCart = useSelector(selectCurProdInCart(prodId, shop));
-  // console.log(curProdInCart);
-  // console.log(shop);
+  // console.log(skus);
 
   return (
     <Suspense fallback={<div>Loading......</div>}>

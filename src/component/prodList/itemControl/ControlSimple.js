@@ -17,6 +17,7 @@ export default function ControlSimple(props) {
   const userSelectedLocation = useSelector(
     (state) => state.curClient.userSelectedLocation
   );
+
   const handleClickAddSku = () => {
     if (!isLogin) dispatch(setShowLogin(true));
     else if (!userSelectedLocation) dispatch(setShowAddrSel(true));
@@ -24,6 +25,7 @@ export default function ControlSimple(props) {
       dispatch(setShowOutOfRangeAlert(true));
     else onSkuChange(null, sku, 1);
   };
+
   return (
     <>
       {curSkuInCart && curSkuInCart.quantity > 0 ? (

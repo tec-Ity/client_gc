@@ -129,7 +129,10 @@ export default function ProdListItem(props) {
                   {prod.nome?.slice(0, 35) +
                     (prod.nome?.length > 35 ? "..." : "")}
                 </div>
-                <div>{prod.desp}</div>
+                <div>
+                  {prod.desp?.slice(0, 20) +
+                    (prod.desp?.length > 20 ? "..." : "")}
+                </div>
               </div>
             </Link>
             <div>

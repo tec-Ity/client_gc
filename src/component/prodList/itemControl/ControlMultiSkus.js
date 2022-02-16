@@ -12,15 +12,21 @@ export default function ControlMultiSkus(props) {
   const classes = useStyle();
   return (
     <CustomModal show={show} handleClose={handleClose} small>
-      <Grid container className={classes.root}>
+      <Grid container className={classes.root} alignContent="flex-start">
         <Grid item xs={12} className={classes.gridItem}>
           <div className={classes.title}>Scegli la taglia</div>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
+        <Grid item xs={12} style={{ height: "20px" }}>
           <CustomHr position={classes.cusTomHr} />
         </Grid>
         {/* table */}
-        <Grid container item xs={12} className={clsx(classes.attrTable)}>
+        <Grid
+          container
+          item
+          xs={12}
+          className={clsx(classes.attrTable)}
+          alignContent="flex-start"
+        >
           {skus?.map((sku, index) => {
             return (
               index > 0 && (
@@ -89,7 +95,7 @@ export default function ControlMultiSkus(props) {
   );
 }
 const useStyle = makeStyles({
-  root: {},
+  root: { height: "100%" },
   gridItem: {
     display: "flex",
     justifyContent: "center",
@@ -104,6 +110,7 @@ const useStyle = makeStyles({
   },
   cusTomHr: {
     width: "90%",
+    marginbottom: "5px",
   },
   hrBetweenRow: {
     width: "90%",
@@ -113,13 +120,14 @@ const useStyle = makeStyles({
   },
   attrTable: {
     padding: "0 20px 0 20px",
-    height: "120px",
+    height: "160px",
     overflowY: "scroll",
     // overflow: "auto",
     fontSize: "15px",
     "&::-webkit-scrollbar": {
       display: "none",
     },
+    "&>div": { maxHeight: "40px" },
   },
   attrList: {
     minHeight: "0",
