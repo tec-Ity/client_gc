@@ -14,6 +14,9 @@ const useStyle = makeStyles((theme) => ({
   //default LG
   backTemplate: {
     width: "500px",
+    [theme.breakpoints.down("sm")]: {
+      width: "90%",
+    },
     height: "600px",
     padding: "3px",
     borderRadius: "20px 0",
@@ -22,6 +25,9 @@ const useStyle = makeStyles((theme) => ({
   },
   paperStyle: {
     width: "auto",
+    // [theme.breakpoints.down("sm")]: {
+    //   width: "100%",
+    // },
     height: "100%",
     backgroundColor: "#fff",
     borderRadius: "20px 0",

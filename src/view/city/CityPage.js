@@ -20,6 +20,7 @@ export default function City() {
   const [sortedShopList, setSortedShopList] = useState([]);
   const [disableIndex, setDisableIndex] = useState();
   //   //console.log(cityCode);
+  const view = useSelector((state) => state.root.view);
   useEffect(() => {
     function getShops() {
       shopsStatus === "idle" && dispatch(fetchShops());
@@ -52,7 +53,7 @@ export default function City() {
 
   return (
     <>
-      <HomeBg style={{ top: "-200px" }} />
+      <HomeBg style={view === "web" ? { top: "-200px" } : {}} />
       <div style={{ position: "relative", top: "-130px" }}>
         <HomeActivity />
       </div>
@@ -62,7 +63,7 @@ export default function City() {
         <HomeList
           list={sortedShopList}
           disableIndex={disableIndex}
-          containerId='shopContainer'
+          containerId="shopContainer"
           handleFunc={(item, disabled) => () => {
             hist.push(
               "/shop/" + item._id + (disabled === true ? "?disabled=true" : "")

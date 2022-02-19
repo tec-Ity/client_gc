@@ -17,7 +17,8 @@ const useStyle = makeStyles((theme) => ({
     // width: "150%",
     // minWidth:'320vh',
     marginBottom: "100px",
-    background: "linear-gradient(290.29deg, #91E8B3 -12.39%, #C0E57B 21.51%, #D6E57B 110.42%, #C0E57B 110.42%)",
+    background:
+      "linear-gradient(290.29deg, #91E8B3 -12.39%, #C0E57B 21.51%, #D6E57B 110.42%, #C0E57B 110.42%)",
     fontFamily: "Montserrat",
     color: "#1d1d38",
   },
@@ -47,6 +48,10 @@ const useStyle = makeStyles((theme) => ({
     background: "#fff",
     boxShadow: "0 0 30px rgba(0,0,0,0.1)",
     borderRadius: "20px 20px 20px 0",
+    [theme.breakpoints.down("sm")]: {
+      left: 0,
+      width: "100vw",
+    },
   },
   shopInfo: {
     position: "relative",
@@ -90,9 +95,9 @@ export default function ShopBanner() {
     <Container maxWidth={false} className={classes.bannerStyle}>
       <div className={classes.backLink}>
         <BackLink
-          label='DIETRO A
-        TUTTI I NEGOZI'
-          link='/city'
+          label="DIETRO A
+        TUTTI I NEGOZI"
+          link="/city"
         />
       </div>
       <div className={classes.shopDetailBox}>

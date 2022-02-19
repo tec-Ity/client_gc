@@ -42,13 +42,27 @@ export default function App() {
   useEffect(() => {
     // console.log(window.innerWidth);
 
-    function adjustWith() {
+    function adjustWidth() {
       // console.log(window.innerWidth);
       dispatch(setView({ width: window.innerWidth }));
     }
-    window.addEventListener("resize", adjustWith);
+
+    // if (
+    //   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    //     navigator.userAgent
+    //   )
+    // ) {
+    //   // true for mobile device
+    //   console.log("mobile");
+
+    // } else {
+    //   // false for not mobile device
+    //   console.log("web");
+    // }
+    adjustWidth();
+    window.addEventListener("resize", adjustWidth);
     return () => {
-      window.removeEventListener("resize", adjustWith());
+      window.removeEventListener("resize", adjustWidth());
     };
   }, [dispatch]);
 

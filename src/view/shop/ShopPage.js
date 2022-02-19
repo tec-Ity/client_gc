@@ -25,6 +25,9 @@ import { useTranslation } from "react-i18next";
 const useStyle = makeStyles((theme) => ({
   root: {
     position: "absolute",
+    // [theme.breakpoints.down("xs")]: {
+    //   paddingTop: "105px",
+    // },
     width: "100%",
     minWidth: "640px",
     left: "0",

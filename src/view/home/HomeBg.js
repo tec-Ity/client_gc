@@ -18,13 +18,14 @@ const useStyle = makeStyles((theme) => ({
       top: "-100px",
     },
     [theme.breakpoints.down("xs")]: {
-      top: "-90x",
-      width: "200%",
+      // top: "-90x",
+      top: 90,
+      width: "100%",
     },
   },
 }));
 
 export default function HomeBg({ style }) {
   const classes = useStyle();
-  return <img src={BgTop} className={classes.bgTop} alt='' style={style} />;
+  return <img src={BgTop} className={classes.bgTop} alt="" style={style} />;
 }

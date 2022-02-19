@@ -37,6 +37,8 @@ const initialState = {
   searchProds: [],
   searchProdsCount: 0,
   searchProdsStatus: "idle",
+
+  showDrawer: false,
 };
 
 const prodPopObj = [
@@ -250,6 +252,9 @@ export const shopSlice = createSlice({
     setShowOutOfRangeAlert: (state, action) => {
       state.showOutOfRangeAlert = action.payload;
     },
+    setShowDrawer: (state, action) => {
+      state.showDrawer = action.payload;
+    },
   },
   extraReducers: {
     [fetchSearchProds.pending]: (state) => {
@@ -352,6 +357,7 @@ export const shopSlice = createSlice({
   },
 });
 
-export const { setCurShop, setShowOutOfRangeAlert } = shopSlice.actions;
+export const { setCurShop, setShowOutOfRangeAlert, setShowDrawer } =
+  shopSlice.actions;
 
 export default shopSlice.reducer;

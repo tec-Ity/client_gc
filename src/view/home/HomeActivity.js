@@ -30,6 +30,8 @@ const useStyle = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       top: "500px",
+      width: "30%",
+      left: 0,
     },
   },
   activity: {
@@ -49,6 +51,8 @@ const useStyle = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       top: "800px",
+      width: "100%",
+      left: 0,
     },
   },
   activityText: {
@@ -67,6 +71,8 @@ const useStyle = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       top: "700px",
+      width: "90%",
+      left: 20,
     },
   },
 }));
@@ -76,10 +82,10 @@ export default function HomeActivity() {
   return (
     <div className={classes.root}>
       <div className={classes.activityTitle}>
-        <img src={ActivityTitle} alt='' />
+        <img src={ActivityTitle} alt="" />
         <div>Click qui a vedere tutti i prodotti della festa</div>
       </div>
-      <img src={Activity} className={classes.activity} alt='' />
+      <img src={Activity} className={classes.activity} alt="" />
       <div className={classes.activityText}>
         La festa di metà autunno è una delle festività più importanti del
         calendario cinese, subito dopo la Festa di Primavera (o capodanno

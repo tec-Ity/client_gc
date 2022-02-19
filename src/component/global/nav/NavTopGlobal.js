@@ -20,6 +20,9 @@ import { ReactComponent as User } from "../../icon/user.svg";
 import SearchInput from "./SearchInput";
 import NavAddr from "./NavAddr";
 import { useTranslation } from "react-i18next";
+import MenuIcon from "@material-ui/icons/Menu";
+import PersonIcon from "@material-ui/icons/Person";
+import { setShowDrawer } from "../../../redux/shop/shopSlice";
 
 const useStyleWeb = makeStyles({
   root: {
@@ -138,7 +141,7 @@ export default function NavTopGlobal() {
     web: NavWeb,
     mobile: NavMobile,
   };
-
+  console.log(view);
   const UI = comps[view];
   return <UI {...propObj} />;
 }
@@ -226,8 +229,11 @@ function NavWeb(props) {
 
 const useStyleMobile = makeStyles({
   root: {
+    zIndex: "1",
+    position: "fixed",
+    top: 0,
     height: "105px",
-    widht: "100%",
+    width: "100vw",
     background: "#C0E57B",
     boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.25)",
   },
@@ -242,8 +248,9 @@ const useStyleMobile = makeStyles({
     alignItems: "center",
     "& > :nth-child(1)": {
       width: "55px",
-      height: "20px",
-      border: "1px solid",
+      height: 30,
+      // border: "1px solid",
+      padding: "5px 0 0 10px",
     },
     "& > :nth-child(2)": {
       width: "110px",
@@ -251,8 +258,10 @@ const useStyleMobile = makeStyles({
     },
     "& > :nth-child(3)": {
       width: "55px",
-      height: "20px",
-      border: "1px solid",
+      height: 30,
+      // border: "1px solid",
+      padding: "5px 10px 0 0 ",
+      textAlign: "end",
     },
   },
   bottomSection: {
@@ -265,14 +274,25 @@ const useStyleMobile = makeStyles({
   },
 });
 
-function NavMobile({ logo }) {
+function NavMobile({ logo, isLogin, inShop, curShop }) {
   const classes = useStyleMobile();
+  const dispatch = useDispatch();
   return (
     <div className={classes.root}>
       <div className={classes.topSection}>
-        <div></div>
-        <img src={logo.imgSrc} className={classes.logoStyle} alt="" />
-        <div></div>
+        <div
+          onClick={() =>
+            isLogin && inShop && curShop && dispatch(setShowDrawer(true))
+          }
+        >
+          {isLogin && inShop && curShop && <MenuIcon />}
+        </div>
+        <Link to="/">
+          <img src={logo.imgSrc} className={classes.logoStyle} alt="" />
+        </Link>
+        <div onClick={() => dispatch(setShowSelfCenter(true))}>
+          <PersonIcon />
+        </div>
       </div>
       <div className={classes.bottomSection}>
         <NavAddr />

@@ -12,6 +12,8 @@ import {
 } from "../../../redux/filter/filterSlice";
 import ShopSideBarUI from "./ShopSideBarUI";
 import { useTranslation } from "react-i18next";
+import { Drawer } from "@material-ui/core";
+import { setShowDrawer } from "../../../redux/shop/shopSlice";
 
 export default function ShopSideBar(props) {
   const { t } = useTranslation();
@@ -29,6 +31,7 @@ export default function ShopSideBar(props) {
   const backToFirst = useSelector((state) => state.filter.backToFirst);
   const isDiscount = useSelector((state) => state.filter.query.isDiscount);
   const nations = useSelector((state) => state.filter.query.nations);
+
   //nation ids
   // const nationIds = useSelector((state) => state.filter.nationIds);
   const nationIdsStatus = useSelector((state) => state.filter.nationIdsStatus);
@@ -197,8 +200,9 @@ export default function ShopSideBar(props) {
       }
     }
   };
-
-  return (
+  const view = useSelector((state) => state.root.view);
+  const showDrawer = useSelector((state) => state.shop.showDrawer);
+  return view === "web" ? (
     <ShopSideBarUI
       nations={nations}
       isDiscount={isDiscount}
@@ -212,5 +216,21 @@ export default function ShopSideBar(props) {
       sendFirstCategData={sendFirstCategData}
       sendSecondCategData={sendSecondCategData}
     />
+  ) : (
+    <Drawer open={showDrawer} onClose={() => dispatch(setShowDrawer(false))}>
+      <ShopSideBarUI
+        nations={nations}
+        isDiscount={isDiscount}
+        handleDiscount={handleDiscount}
+        handleNation={handleNation}
+        categs={categs}
+        children={children}
+        selFirstCateg={selFirstCateg}
+        selSecondCateg={selSecondCateg}
+        goBackFunc={goBackFunc}
+        sendFirstCategData={sendFirstCategData}
+        sendSecondCategData={sendSecondCategData}
+      />
+    </Drawer>
   );
 }
