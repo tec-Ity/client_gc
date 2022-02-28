@@ -313,6 +313,7 @@ export default function DetailCard(props) {
               <DeliveryDetail
                 isCart={isCart && order._id}
                 clientInfo={order.clientInfo}
+                shipInfo={order.ship_info}
               />
             </Grid>
             {/* prods detail */}

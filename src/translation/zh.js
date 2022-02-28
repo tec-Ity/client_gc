@@ -121,7 +121,7 @@ const zh = {
       canceled: "已取消",
       toPay: "等待付款",
       inProgress: "进行中",
-      reciving: "接单中",
+      receiving: "接单中",
       preparing: "备货中",
       delivering: "配送中",
       completed: "已完成",

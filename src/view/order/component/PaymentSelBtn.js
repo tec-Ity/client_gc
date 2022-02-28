@@ -9,6 +9,7 @@ import { my_Domain } from "../../../conf/_dns";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrderChangeStatus } from "../../../redux/cart/cartSlice";
+import { useHistory } from "react-router";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -74,10 +75,11 @@ const useStyle = makeStyles((theme) => ({
 export default function PaymentSelBtn({ orderId }) {
   const { t } = useTranslation();
   const classes = useStyle();
+  const hist = useHistory();
   const [showPayment, setShowPayment] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const dispatch = useDispatch();
-  const prodPutStatus = useSelector((state) => state.cart.prodPutStatus);
+  const orderPutStatus = useSelector((state) => state.cart.orderPutStatus);
   //   //console.log(my_Domain);
   useEffect(() => {
     (async function (d, s, id) {
@@ -93,6 +95,13 @@ export default function PaymentSelBtn({ orderId }) {
     // //console.log(window.paypal);
     // //console.log(window.paypal_sdk);
   }, []);
+
+  useEffect(() => {
+    if (submitted === true && orderPutStatus === "succeed") {
+      window.location.reload();
+    }
+  });
+
   const handlePayment = async (type) => {
     switch (type) {
       // case 1:

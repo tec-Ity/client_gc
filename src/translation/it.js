@@ -122,7 +122,7 @@ const it = {
       canceled: "CANCELLATO",
       toPay: "DA PAGARE",
       inProgress: "IN PROCESSO",
-      reciving: "In Ricezione",
+      receiving: "In Ricezione",
       preparing: "In Preparazione",
       delivering: "In Consegna",
       completed: "COMPLETO",

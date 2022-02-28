@@ -47,6 +47,7 @@ const useStyle = makeStyles((theme) => ({
 export default function DeliveryDetail({
   isCart, //cart._id same as Shop._id
   clientInfo,
+  shipInfo,
 }) {
   const { t } = useTranslation();
   const classes = useStyle();
@@ -59,8 +60,8 @@ export default function DeliveryDetail({
       <Container>
         <Grid container className={classes.root}>
           <Grid item xs={6} className={classes.addrBox}>
-            <div>{clientInfo?.addr}</div>
-            <div>{clientInfo?.zip}</div>
+            <div>{clientInfo?.addr || shipInfo?.address}</div>
+            <div>{clientInfo?.zip || shipInfo?.postcode}</div>
           </Grid>
           <Grid item xs={3} className={classes.recipient}>
             <div>
@@ -69,6 +70,7 @@ export default function DeliveryDetail({
             </div>
             <div>
               {clientInfo?.personalInfo?.phone ||
+                shipInfo?.phone ||
                 (isCart && t("cart.alert.number"))}
             </div>
           </Grid>
