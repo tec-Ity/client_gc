@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddrSelModal from "./modal/address/AddrSelModal";
 import { useLoadScript } from "@react-google-maps/api";
 import { setView } from "./redux/rootSlice";
+import CartUpdateComp from "./component/global/nav/CartUpdateComp";
 
 const libraries = ["places"];
 
@@ -82,6 +83,7 @@ export default function App() {
         {showOrders === true && <OrderModal />}
         {/* address selection & new address modal */}
         {showAddrSel === true && <AddrSelModal />}
+        <CartUpdateComp />
       </Suspense>
       <Router />
     </BrowserRouter>

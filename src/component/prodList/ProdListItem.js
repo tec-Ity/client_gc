@@ -22,7 +22,7 @@ const useStyle = makeStyles((theme) => ({
     maxWidth: "240px",
     width: "100%",
     // margin: "1px",
-    height: "317px",
+    height: "320px",
     background: "#fff",
     position: "relative",
     boxShadow: "0px 0px 20.6152px rgba(0, 0, 0, 0.1)",
@@ -72,13 +72,13 @@ const useStyle = makeStyles((theme) => ({
     fontFamily: "Montserrat",
     fontWeight: "600",
     position: "absolute",
-    bottom: "16px",
+    bottom: "10px",
     left: "17px",
     fontSize: "20px",
   },
   ctrlStyle: {
     position: "absolute",
-    bottom: "16px",
+    bottom: "10px",
     right: "17.5px",
   },
   LinkStyle: {
@@ -129,10 +129,12 @@ export default function ProdListItem(props) {
                   {prod.nome?.slice(0, 35) +
                     (prod.nome?.length > 35 ? "..." : "")}
                 </div>
-                <div>
-                  {prod.desp?.slice(0, 20) +
-                    (prod.desp?.length > 20 ? "..." : "")}
-                </div>
+                {prod.desp && (
+                  <div>
+                    {prod.desp?.slice(0, 20) +
+                      (prod.desp?.length > 20 ? "..." : "")}
+                  </div>
+                )}
               </div>
             </Link>
             <div>

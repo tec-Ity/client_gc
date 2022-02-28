@@ -227,6 +227,7 @@ export default function HomeList(props) {
                             ? classes.cardBackground
                             : classes.cardNoBackground
                         }
+                        style={{ color: "#e47f10" }}
                       >
                         {item.nome}
                       </div>

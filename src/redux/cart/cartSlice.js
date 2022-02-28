@@ -4,6 +4,7 @@ import {
   // current
 } from "@reduxjs/toolkit";
 import { fetch_Prom } from "../../api";
+import moment from "moment";
 
 const initialState = {
   //show
@@ -24,6 +25,8 @@ const initialState = {
   proofStatus: "idle",
   proofObjs: [],
   orderPutStatus: "idle",
+
+  cartsUpdateTime: localStorage.getItem("cartsUpdateTime"),
 };
 
 export const fetchOrderChangeStatus = createAsyncThunk(
@@ -189,10 +192,42 @@ export const calCartPrice = (OrderProds) => {
 //   }
 // };
 
+// export const setCartsUpdateTime = createAsyncThunk(
+//   "cart/setCartsUpdateTime",
+//   async (date) => {
+//     return date;
+//   }
+// );
+
+// export const checkCartsUpdate = createAsyncThunk(
+//   "cart/checkCartsUpdate",
+//   (foo = true, { getState, rejectWithValue }) => {
+//     console.log(111);
+
+//   }
+// );
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    checkCartsUpdate: (state, action) => {
+      // console.log(222222222222, action.payload);
+      if (action.payload) {
+        const { storageCarts, storageTime } = action.payload;
+        state.carts = storageCarts;
+        state.cartsUpdateTime = storageTime;
+        // console.log(3333333333);
+        for (let i = 0; i < storageCarts.length; i++) {
+          const cart = storageCarts[i];
+          if (cart.Shop === state.curCart.Shop) {
+            // console.log(cart);
+            state.curCart = cart;
+            break;
+          }
+        }
+      }
+    },
     setCarts: (state, action) => {
       state.carts = action.payload;
     },
@@ -222,7 +257,7 @@ export const cartSlice = createSlice({
       state.curCart = cartReturn;
     },
     setCurCartByShop: (state, action) => {
-      const cart = state.carts.find((cart) => {
+      const cart = state.carts?.find((cart) => {
         return cart.Shop === action.payload;
       });
       state.curCart = cart || {};
@@ -233,127 +268,81 @@ export const cartSlice = createSlice({
       });
       state.curCart = cart || {};
     },
-    cartSkuPost: (state, action) => {
-      // //console.log(action.payload);
-      const { sku, qty, prod } = action.payload;
-      try {
-        //create new sku template
-        const oSkuTemp = {
-          //--Sku
-          Sku: sku._id,
-          //--price_sale
-          price_sale: sku.price_sale,
-          //--attrs ---desp
-          attrs: sku.attrs
-            ? sku.attrs.map((attr) => attr.nome + ":" + attr.option + " ")
-            : "",
-          //--quantity
-          quantity: qty,
-          //--price_tot
-          price_tot: sku.price_sale * qty,
-        };
+    cartSkuPost: {
+      reducer(state, action) {
+        try {
+          const { sku, qty, prod, date } = action.payload;
+          state.cartsUpdateTime = date;
+          //create new sku template
+          const oSkuTemp = {
+            //--Sku
+            Sku: sku._id,
+            //--price_sale
+            price_sale: sku.price_sale,
+            //--attrs ---desp
+            attrs: sku.attrs
+              ? sku.attrs.map((attr) => attr.nome + ":" + attr.option + " ")
+              : "",
+            //--quantity
+            quantity: qty,
+            //--price_tot
+            price_tot: sku.price_sale * qty,
+          };
 
-        //create new prod template
-        const opTemp = {
-          //-Prod
-          Prod: prod._id,
-          img_url: prod.img_urls[0],
-          nome: prod.nome,
-          //-OrderSkus[{}]
-          OrderSkus: [oSkuTemp],
-          //Shop
-        };
+          //create new prod template
+          const opTemp = {
+            //-Prod
+            Prod: prod._id,
+            img_url: prod.img_urls[0],
+            nome: prod.nome,
+            //-OrderSkus[{}]
+            OrderSkus: [oSkuTemp],
+            //Shop
+          };
 
-        const curCart = state.curCart;
-        let curCartTemp = {};
+          const curCart = state.curCart;
+          let curCartTemp = {};
 
-        //------------add new cart if empty cart or existing cart is other shop's--------------
-        if (!curCart.OrderProds || curCart.Shop !== sku.Shop) {
-          // //console.log("new cart");
-          curCartTemp._id = sku.Shop;
-          //Shop
-          curCartTemp.Shop = sku.Shop;
-          //OrderProds[{}]
-          curCartTemp.OrderProds = [opTemp];
-          //totPrice
-          curCartTemp.totPrice = sku.price_regular * qty;
-          //totItem
-          curCartTemp.totItem = qty;
-          //initial location
-          curCartTemp.clientInfo = JSON.parse(
-            localStorage.getItem("userSelAddr")
-          );
-        } else if (curCart.OrderProds) {
-          //modify orderProds
-          curCartTemp = { ...curCart };
-          let foundProd = false;
-          for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
-            const oProd = curCartTemp.OrderProds[i];
-            if (oProd.Prod === prod._id) {
-              //--------- add new sku in exist prod-----------
-              // //console.log("new sku");
-              oProd.OrderSkus.push(oSkuTemp);
-              foundProd = true;
-              break;
-            }
-          }
-          //--------- add new prod -----------
-          if (!foundProd) {
-            // //console.log("new prod");
-            curCartTemp.OrderProds.push(opTemp);
-          }
-          //--------------modify cart properties --------------
-          curCartTemp.totPrice += oSkuTemp.price_tot;
-          curCartTemp.totItem += oSkuTemp.quantity;
-        } else {
-          throw new Error("failed adding sku");
-        }
-        //modify carts
-        let foundCart = false;
-        for (let i = 0; i < state.carts.length; i++) {
-          // let test = state.carts[i];
-          // make test = curCartTemp not working
-          //must use  state.carts[i] = curCartTemp; to change
-          if (state.carts[i].Shop === curCartTemp.Shop) {
-            state.carts[i] = curCartTemp;
-            foundCart = true;
-            break;
-          }
-        }
-        if (!foundCart) {
-          state.carts.unshift(curCartTemp);
-        }
-        state.curCart = curCartTemp;
-      } catch (e) {
-        //console.log(e);
-      }
-    },
-    cartSkuPut: (state, action) => {
-      const { oSkuId, qty, prodId } = action.payload;
-      try {
-        if (state.curCart.OrderProds) {
-          const curCartTemp = { ...state.curCart };
-          for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
-            const oProd = curCartTemp.OrderProds[i];
-            //find existing prod
-            if (oProd.Prod === prodId) {
-              for (let j = 0; j < oProd.OrderSkus.length; j++) {
-                const oSku = oProd.OrderSkus[j];
-                //find existing sku
-                if (oSku.Sku === oSkuId) {
-                  //modify quantity
-                  curCartTemp.totItem -= oSku.quantity;
-                  curCartTemp.totItem += qty;
-                  oSku.quantity = qty;
-                  //modify price
-                  curCartTemp.totPrice -= oSku.price_tot;
-                  curCartTemp.totPrice += oSku.price_sale * qty;
-                  oSku.price_tot = oSku.price_sale * qty;
-                  break;
-                }
+          //------------add new cart if empty cart or existing cart is other shop's--------------
+          if (!curCart.OrderProds || curCart.Shop !== sku.Shop) {
+            // //console.log("new cart");
+            curCartTemp._id = sku.Shop;
+            //Shop
+            curCartTemp.Shop = sku.Shop;
+            //OrderProds[{}]
+            curCartTemp.OrderProds = [opTemp];
+            //totPrice
+            curCartTemp.totPrice = sku.price_regular * qty;
+            //totItem
+            curCartTemp.totItem = qty;
+            //initial location
+            curCartTemp.clientInfo = JSON.parse(
+              localStorage.getItem("userSelAddr")
+            );
+          } else if (curCart.OrderProds) {
+            //modify orderProds
+            curCartTemp = { ...curCart };
+            let foundProd = false;
+            for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
+              const oProd = curCartTemp.OrderProds[i];
+              if (oProd.Prod === prod._id) {
+                //--------- add new sku in exist prod-----------
+                // //console.log("new sku");
+                oProd.OrderSkus.push(oSkuTemp);
+                foundProd = true;
+                break;
               }
-              break;
             }
+            //--------- add new prod -----------
+            if (!foundProd) {
+              // //console.log("new prod");
+              curCartTemp.OrderProds.push(opTemp);
+            }
+            //--------------modify cart properties --------------
+            curCartTemp.totPrice += oSkuTemp.price_tot;
+            curCartTemp.totItem += oSkuTemp.quantity;
+          } else {
+            throw new Error("failed adding sku");
           }
           //modify carts
           let foundCart = false;
@@ -368,70 +357,153 @@ export const cartSlice = createSlice({
             }
           }
           if (!foundCart) {
-            state.carts.push(curCartTemp);
+            state.carts.unshift(curCartTemp);
           }
           state.curCart = curCartTemp;
+
+          // state.cartsUpdateTime = new Date();
+        } catch (e) {
+          //console.log(e);
         }
-      } catch (e) {
-        //console.log(e);
-      }
+      },
+      prepare(payload) {
+        const date = JSON.stringify(new Date());
+        localStorage.setItem("cartsUpdateTime", date);
+
+        return {
+          payload: { ...payload, date },
+        };
+      },
     },
-    cartSkuDelete: (state, action) => {
-      const { oSkuId, prodId } = action.payload;
-      const curCartTemp = state.curCart;
-      let delProdIndex = -1;
-      for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
-        const oProd = curCartTemp.OrderProds[i];
-        if (oProd.Prod === prodId) {
-          let delSkuIndex = -1;
-          for (let j = 0; j < oProd.OrderSkus.length; j++) {
-            const oSku = oProd.OrderSkus[j];
-            if (oSku.Sku === oSkuId) {
-              delSkuIndex = j;
-              curCartTemp.totItem -= 1;
-              curCartTemp.totPrice -= oSku.price_sale;
+    cartSkuPut: {
+      reducer(state, action) {
+        try {
+          const { oSkuId, qty, prodId, date } = action.payload;
+          state.cartsUpdateTime = date;
+
+          if (state.curCart.OrderProds) {
+            const curCartTemp = { ...state.curCart };
+            for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
+              const oProd = curCartTemp.OrderProds[i];
+              //find existing prod
+              if (oProd.Prod === prodId) {
+                for (let j = 0; j < oProd.OrderSkus.length; j++) {
+                  const oSku = oProd.OrderSkus[j];
+                  //find existing sku
+                  if (oSku.Sku === oSkuId) {
+                    //modify quantity
+                    curCartTemp.totItem -= oSku.quantity;
+                    curCartTemp.totItem += qty;
+                    oSku.quantity = qty;
+                    //modify price
+                    curCartTemp.totPrice -= oSku.price_tot;
+                    curCartTemp.totPrice += oSku.price_sale * qty;
+                    oSku.price_tot = oSku.price_sale * qty;
+                    break;
+                  }
+                }
+                break;
+              }
+            }
+            //modify carts
+            let foundCart = false;
+            for (let i = 0; i < state.carts.length; i++) {
+              // let test = state.carts[i];
+              // make test = curCartTemp not working
+              //must use  state.carts[i] = curCartTemp; to change
+              if (state.carts[i].Shop === curCartTemp.Shop) {
+                state.carts[i] = curCartTemp;
+                foundCart = true;
+                break;
+              }
+            }
+            if (!foundCart) {
+              state.carts.push(curCartTemp);
+            }
+            state.curCart = curCartTemp;
+            // state.cartsUpdateTime = new Date();
+          }
+        } catch (e) {
+          //console.log(e);
+        }
+      },
+      prepare(payload) {
+        const date = JSON.stringify(new Date());
+        localStorage.setItem("cartsUpdateTime", date);
+
+        return {
+          payload: { ...payload, date },
+        };
+      },
+    },
+    cartSkuDelete: {
+      reducer(state, action) {
+        const { oSkuId, prodId, date } = action.payload;
+        state.cartsUpdateTime = date;
+        const curCartTemp = state.curCart;
+        let delProdIndex = -1;
+        for (let i = 0; i < curCartTemp.OrderProds.length; i++) {
+          const oProd = curCartTemp.OrderProds[i];
+          if (oProd.Prod === prodId) {
+            let delSkuIndex = -1;
+            for (let j = 0; j < oProd.OrderSkus.length; j++) {
+              const oSku = oProd.OrderSkus[j];
+              if (oSku.Sku === oSkuId) {
+                delSkuIndex = j;
+                curCartTemp.totItem -= 1;
+                curCartTemp.totPrice -= oSku.price_sale;
+                break;
+              }
+            }
+            if (delSkuIndex !== -1) {
+              oProd.OrderSkus.splice(delSkuIndex, 1);
+              if (oProd.OrderSkus.length <= 0) {
+                delProdIndex = i;
+              }
               break;
             }
           }
-          if (delSkuIndex !== -1) {
-            oProd.OrderSkus.splice(delSkuIndex, 1);
-            if (oProd.OrderSkus.length <= 0) {
-              delProdIndex = i;
+        }
+        if (delProdIndex !== -1) {
+          curCartTemp.OrderProds.splice(delProdIndex, 1);
+        }
+        //delete cart
+        let delCartIndex = -1;
+        //modify carts
+        let foundCart = false;
+        for (let i = 0; i < state.carts.length; i++) {
+          // let test = state.carts[i];
+          // make test = curCartTemp not working
+          //must use  state.carts[i] = curCartTemp; to change
+          if (state.carts[i].Shop === curCartTemp.Shop) {
+            if (curCartTemp.OrderProds.length <= 0) {
+              delCartIndex = i;
+            } else {
+              state.carts[i] = curCartTemp;
+              foundCart = true;
             }
             break;
           }
         }
-      }
-      if (delProdIndex !== -1) {
-        curCartTemp.OrderProds.splice(delProdIndex, 1);
-      }
-      //delete cart
-      let delCartIndex = -1;
-      //modify carts
-      let foundCart = false;
-      for (let i = 0; i < state.carts.length; i++) {
-        // let test = state.carts[i];
-        // make test = curCartTemp not working
-        //must use  state.carts[i] = curCartTemp; to change
-        if (state.carts[i].Shop === curCartTemp.Shop) {
-          if (curCartTemp.OrderProds.length <= 0) {
-            delCartIndex = i;
-          } else {
-            state.carts[i] = curCartTemp;
-            foundCart = true;
+        if (delCartIndex !== -1) {
+          state.carts.splice(delCartIndex, 1);
+          state.curCart = {};
+        } else {
+          if (!foundCart) {
+            state.carts.push(curCartTemp);
           }
-          break;
+          state.curCart = curCartTemp;
         }
-      }
-      if (delCartIndex !== -1) {
-        state.carts.splice(delCartIndex, 1);
-        state.curCart = {};
-      } else {
-        if (!foundCart) {
-          state.carts.push(curCartTemp);
-        }
-        state.curCart = curCartTemp;
-      }
+        // state.cartsUpdateTime = new Date();
+      },
+      prepare(payload) {
+        const date = JSON.stringify(new Date());
+        localStorage.setItem("cartsUpdateTime", date);
+
+        return {
+          payload: { ...payload, date },
+        };
+      },
     },
     cartDelete: (state, action) => {
       const shopId = action.payload;
@@ -448,6 +520,7 @@ export const cartSlice = createSlice({
       if (i < state.carts.length) {
         state.carts.splice(i, 1);
       }
+      // state.cartsUpdateTime = new Date();
     },
     cartAddrPut: (state, action) => {
       const { addr, cartId } = action.payload;
@@ -475,6 +548,7 @@ export const cartSlice = createSlice({
         const cart = state.carts[i];
         if (cart._id === cartId) state.carts[i] = cartTemp;
       }
+      // state.cartsUpdateTime = new Date();
     },
   },
   extraReducers: {
@@ -513,6 +587,7 @@ export const selectCurCart = (cartId) => (state) => {
 };
 
 export const {
+  checkCartsUpdate,
   setShowCarts,
   setIsExpand,
   setCurCartByShop,

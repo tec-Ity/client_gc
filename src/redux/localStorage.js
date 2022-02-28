@@ -14,11 +14,11 @@ export const loadState = () => {
   }
 };
 
-export const saveState = (state) => {
+export const saveState = (state, name) => {
   try {
     // Serialize the state. Redux store is recommended to be serializable.
     const serializedState = JSON.stringify(state);
-    localStorage.setItem("carts", serializedState);
+    localStorage.setItem(name, serializedState);
   } catch (error) {
     //console.log(error);
   }
