@@ -228,7 +228,7 @@ export const fetchSearchProds = createAsyncThunk(
     console.log(searchValue, getState().shop.curShop);
     const api = `/prods?search=${searchValue}&page=${pageNum}&Shops=${
       getState().shop.curShop
-    }`;
+    }&populateObjs=${JSON.stringify(prodPopObj)}`;
     const result = await fetch_Prom(api);
     if (result.status === 200) {
       return {

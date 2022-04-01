@@ -214,8 +214,16 @@ export default function SearchInput() {
                       <Grid item xs={12}>
                         €
                         {prod.price_max === prod.price_min
-                          ? prod.price_max
-                          : `${prod.price_min} - ${prod.price_max}`}
+                          ? String(
+                              prod?.Skus[0]?.price_sale?.toFixed(2)
+                            )?.replace(".", ",")
+                          : `${String(prod?.price_min.toFixed(2))?.replace(
+                              ".",
+                              ","
+                            )} - ${String(prod?.price_min.toFixed(2))?.replace(
+                              ".",
+                              ","
+                            )}`}
                       </Grid>
                     </Grid>
                   </Grid>

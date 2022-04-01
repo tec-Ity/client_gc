@@ -535,10 +535,9 @@ export default function ProdPage() {
                           {curProd?.price_max === curProd?.price_min ? (
                             <div className={classes.priceStyle}>
                               €
-                              {String(curProd?.price_max?.toFixed(2))?.replace(
-                                ".",
-                                ","
-                              )}
+                              {String(
+                                curProd?.Skus[0]?.price_sale?.toFixed(2)
+                              )?.replace(".", ",")}
                             </div>
                           ) : (
                             <div className={classes.priceStyle}>
