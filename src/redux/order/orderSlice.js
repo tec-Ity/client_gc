@@ -127,7 +127,7 @@ export const fetchOrderPost = createAsyncThunk(
       obj.type_ship = typeShip;
       if (typeShip === 1) {
         obj.ship_info = {
-          Cita_code: cartObj.clientInfo?.city,
+          Cita_code: cartObj.clientInfo?.city || "PO",
           Client_nome: cartObj.clientInfo?.personalInfo?.name,
           address: cartObj.clientInfo?.addr,
           postcode: cartObj.clientInfo?.zip,

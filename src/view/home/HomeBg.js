@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   bgTop: {
     position: "absolute",
-    top: "-150px",
+    top: "-300px",
     width: "100%",
     zIndex: "-1",
 

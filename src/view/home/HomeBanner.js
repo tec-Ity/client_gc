@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row-reverse",
     // justifyContent:"flex-end",
     alignItems: "center",
-    paddingTop: "22vh",
+    paddingTop: "15vh",
     paddingRight: "5vw",
     [theme.breakpoints.down("sm")]: {
       paddingRight: "0",
@@ -148,7 +148,7 @@ export default function HomeBanner(props) {
               }
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} onClick={handleFunc} style={{ cursor: "pointer" }}>
             <Locate />
             <div>{t("home.adress.finder")}</div>
           </Grid>

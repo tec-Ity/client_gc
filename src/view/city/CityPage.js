@@ -7,7 +7,9 @@ import { fetchShops } from "../../redux/shop/shopSlice";
 import HomeActivity from "../home/HomeActivity";
 import HomeBanner from "../home/HomeBanner";
 import HomeBg from "../home/HomeBg";
+import { useTranslation } from "react-i18next";
 export default function City() {
+  const { t } = useTranslation();
   const { cityCode } = useParams();
   const dispatch = useDispatch();
   const hist = useHistory();
@@ -61,6 +63,7 @@ export default function City() {
         {sortedShopList.length === 0 && <HomeBanner />}
         <div style={{ height: "100px" }}></div>
         <HomeList
+          label={t("home.shops")}
           list={sortedShopList}
           disableIndex={disableIndex}
           containerId="shopContainer"

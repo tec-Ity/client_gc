@@ -16,14 +16,14 @@ const useStyle = makeStyles((theme) => ({
   root: {
     height: "150px",
     [theme.breakpoints.down("xl")]: {
-      marginTop: "27vh",
+      marginTop: "20vh",
     },
     [theme.breakpoints.down("lg")]: {
-      marginTop: "250px",
+      marginTop: "0",
     },
-    [theme.breakpoints.down("md")]: {
-      marginTop: "100px",
-    },
+    // [theme.breakpoints.down("md")]: {
+    //   marginTop: "100px",
+    // },
     [theme.breakpoints.down("sm")]: {
       marginTop: "0", //not working
     },
@@ -41,6 +41,7 @@ const useStyle = makeStyles((theme) => ({
     marginTop: "300px",
     // marginLeft: "10px",
     display: "flex",
+    alignContent: "flex-start",
     overflowY: "scroll",
     overflowX: "hidden",
     transform: "rotate(-90deg)",

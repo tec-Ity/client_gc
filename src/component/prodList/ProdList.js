@@ -59,7 +59,7 @@ export default function ProdList(props) {
   useEffect(() => {
     const displayResult = () => {
       if (prodListQueryStatus === "loading") {
-        isReload === true && setList(<Grid item>Loading......</Grid>);
+        isReload === true && setList(<Grid item></Grid>);
       } else if (prodListQueryStatus === "succeed") {
         prodListQuery?.length > 0
           ? setList(getProdList(prodListQuery))

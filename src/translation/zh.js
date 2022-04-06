@@ -156,6 +156,7 @@ const zh = {
   home: {
     welcome: "欢迎！",
     locals: "我们在哪",
+    shops: "选择店铺",
     slogan: {
       black: "国际好物\n配送",
       white: "到家",

@@ -97,7 +97,8 @@ export default function ShopBanner() {
         <BackLink
           label="DIETRO A
         TUTTI I NEGOZI"
-          link="/city"
+          link="/home"
+          // link="/city"
         />
       </div>
       <div className={classes.shopDetailBox}>

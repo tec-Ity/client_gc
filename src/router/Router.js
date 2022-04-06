@@ -16,40 +16,46 @@ export default function Router() {
     (state) => state.curClient.userSelectedLocation
   );
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div></div>}>
       <Switch>
-        <Route exact path='/register'>
+        <Route exact path="/register">
           <RegisterModal />
         </Route>
-        {!userSelectedLocation && (
-          <Route exact path='/home'>
+
+        <Route exact path="/home">
+          <HomePage />
+        </Route>
+
+        {/* {!userSelectedLocation && (
+          <Route exact path="/home">
             <HomePage />
           </Route>
-        )}
+        )} */}
         {/* introduction without loging in */}
-        <Route exact path='/city/:cityCode'>
+        <Route exact path="/city/:cityCode">
           <CityPage />
         </Route>
-        <Route exact path='/city'>
+        <Route exact path="/city">
           <CityPage />
         </Route>
-        <Route exact path='/shop/:_id'>
+        <Route exact path="/shop/:_id">
           <ShopPage />
         </Route>
-        <Route exact path='/prod/:_id'>
+        <Route exact path="/prod/:_id">
           <ProdPage />
         </Route>
-        <Route exact path='/cart/:_id'>
+        <Route exact path="/cart/:_id">
           <CartDetailPage />
         </Route>
-        <Route exact path='/order/:_id'>
+        <Route exact path="/order/:_id">
           <OrderDetailPage />
         </Route>
-        <Route exact path='/orders'>
+        <Route exact path="/orders">
           <OrdersPage />
         </Route>
 
-        <Redirect to={userSelectedLocation ? "/city/" : "/home"} />
+        <Redirect to={"/home"} />
+        {/* <Redirect to={userSelectedLocation ? "/city/" : "/home"} /> */}
       </Switch>
     </Suspense>
   );

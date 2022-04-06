@@ -128,7 +128,8 @@ export default function NavTopGlobal() {
     inShop,
     curCartTotItem,
     logo: {
-      link: isLogin && userSelectedLocation ? "/city" : "/home",
+      link: "/home",
+      // link: isLogin && userSelectedLocation ? "/city" : "/home",
       imgSrc: process.env.PUBLIC_URL + "/icon/logo.png",
     },
 
