@@ -86,6 +86,7 @@ export default function ShopSideBar(props) {
           categs: selChildren?.map((child) => child._id),
         })
       );
+      window.scrollTo(0, 250);
 
       //display expand
       dispatch(setIsHome(false));
@@ -119,6 +120,7 @@ export default function ShopSideBar(props) {
           })
         );
       }
+      window.scrollTo(0, 250);
     },
     [dispatch, selSecondCateg]
   );

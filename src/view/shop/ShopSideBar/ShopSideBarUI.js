@@ -112,6 +112,7 @@ const useStyle = makeStyles((theme) => ({
   },
   scrollNavStyle: {
     height: "100%",
+    paddingBottom: 100,
     overflowY: "auto",
     "&::-webkit-scrollbar": {
       display: "none",
@@ -361,7 +362,7 @@ export default function ShopSideBarUI(props) {
           scrollNav === true ? classes.scrollNavStyle : classes.staticNavStyle
         }
       >
-        <List component="nav" disablePadding>
+        <List component="nav" disablePadding style={{ paddingBottom: 100 }}>
           {categList}
         </List>
       </div>

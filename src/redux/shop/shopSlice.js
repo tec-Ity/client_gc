@@ -84,9 +84,9 @@ export const fetchCategList = createAsyncThunk(
   "shop/fetchCategList",
   async () => {
     const categListResult = await fetch_Prom(
-      '/Categs?populateObjs=[{"path":"Categ_sons", "select":"code"}]'
+      '/Categs?pagesize=50&populateObjs=[{"path":"Categ_sons", "select":"code"}]'
     );
-    // //console.log(categListResult);
+    console.log(categListResult);
     if (categListResult.status === 200) {
       return categListResult.data.objects;
     } else {

@@ -89,6 +89,7 @@ export default function InputAccount(props) {
         {t("login.placeholders.account")}
       </InputLabel>
       <OutlinedInput
+        required
         classes={{
           root: classes.inputStyle,
           notchedOutline: classes.notchedOutline,

@@ -58,6 +58,7 @@ export default function RegisterForm(props) {
     handleChange,
     handleSubmit,
     handleSendCode,
+    handleFormCheck,
     error,
   } = props;
   return (
@@ -110,6 +111,7 @@ export default function RegisterForm(props) {
 
         <Grid item xs={10} className={classes.gridItem}>
           <InputVerif
+            handleFormCheck={handleFormCheck}
             handleChange={handleChange}
             handleSendCode={handleSendCode}
           />

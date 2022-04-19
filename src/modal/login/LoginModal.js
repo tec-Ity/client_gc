@@ -12,7 +12,7 @@ import {
 } from "../../redux/curClient/curClientSlice";
 import LoginModalUI from "./LoginModalUI";
 
-export default function LoginModal() {
+export default function LoginModal({ open }) {
   const dispatch = useDispatch();
   const [showPhonePre, setShowPhonePre] = useState(false);
   const [nations, setNations] = useState([]);
@@ -24,15 +24,27 @@ export default function LoginModal() {
     pwd: "",
   });
 
-  (function (d, s, id) {
-    var js,
-      fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s);
-    js.id = id;
-    js.src = "/thirdPartyLogin.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  })(document, "script", "ThirdPartyLogin");
+  // (function (d, s, id) {
+  //   var js,
+  //     fjs = d.getElementsByTagName(s)[0];
+  //   if (d.getElementById(id)) return;
+  //   js = d.createElement(s);
+  //   js.id = id;
+  //   js.src = "/thirdPartyLogin.js";
+  //   fjs.parentNode.insertBefore(js, fjs);
+  // })(document, "script", "ThirdPartyLogin");
+
+  useEffect(() => {
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "/thirdPartyLogin.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "ThirdPartyLogin");
+  }, []);
 
   useEffect(() => {
     async function getNation() {
@@ -110,6 +122,7 @@ export default function LoginModal() {
 
   return (
     <LoginModalUI
+      open={open}
       loginData={loginData}
       handleLogin={handleLogin}
       handleChange={handleChange}

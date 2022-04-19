@@ -65,6 +65,19 @@ export default function RegisterModal(props) {
     //console.log(result);
   };
 
+  const handleFormCheck = () => {
+    if (!registerData.account) setError("Enter username!");
+    else if (!registerData.pwd) setError("Enter Password!");
+    else if (
+      !registerData.pwdConfirm ||
+      registerData.pwd !== registerData.pwdConfirm
+    )
+      setError("Password not match!");
+    else return true;
+
+    return false;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const obj = {};
@@ -101,6 +114,7 @@ export default function RegisterModal(props) {
       handleChange={handleChange}
       handleSendCode={handleSendCode}
       handleSubmit={handleSubmit}
+      handleFormCheck={handleFormCheck}
     />
   );
 }

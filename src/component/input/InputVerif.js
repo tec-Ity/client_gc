@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InputVerif(props) {
   const { t } = useTranslation();
-  const { handleSendCode, handleChange, verifCode } = props;
+  const { handleSendCode, handleChange, verifCode, handleFormCheck } = props;
   const classes = useStyles();
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [countDown, setCountDown] = useState(-1);
@@ -110,9 +110,11 @@ export default function InputVerif(props) {
         disabled={btnDisabled}
         className={classes.recieveButton}
         onClick={() => {
-          setBtnDisabled(true);
-          handleSendCode();
-          setCountDown(60);
+          if (handleFormCheck()) {
+            setBtnDisabled(true);
+            handleSendCode();
+            setCountDown(60);
+          }
         }}
       >
         {countDown > 0 ? countDown + t("login.timer") : t("login.receive")}

@@ -16,17 +16,17 @@ const useStyle = makeStyles((theme) => ({
   root: {
     height: "150px",
     [theme.breakpoints.down("xl")]: {
-      marginTop: "20vh",
+      marginTop: "-12vh",
     },
-    [theme.breakpoints.down("lg")]: {
-      marginTop: "0",
-    },
-    // [theme.breakpoints.down("md")]: {
-    //   marginTop: "100px",
+    // [theme.breakpoints.down("lg")]: {
+    //   marginTop: "0",
     // },
-    [theme.breakpoints.down("sm")]: {
-      marginTop: "0", //not working
-    },
+    // // [theme.breakpoints.down("md")]: {
+    // //   marginTop: "100px",
+    // // },
+    // [theme.breakpoints.down("sm")]: {
+    //   marginTop: "0", //not working
+    // },
   },
   labelBoxStyle: {
     position: "relative",
@@ -222,7 +222,7 @@ export default function HomeList(props) {
                           ? "WIP " + item.nome
                           : t(`citta.${item.nome}`)}
                       </div> */}
-                      <div
+                      {/* <div
                         className={
                           item.img_url
                             ? classes.cardBackground
@@ -231,7 +231,7 @@ export default function HomeList(props) {
                         style={{ color: "#e47f10" }}
                       >
                         {item.nome}
-                      </div>
+                      </div> */}
 
                       {/* <CardContent
                       className={
