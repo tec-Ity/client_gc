@@ -104,8 +104,10 @@ export const fetchProdList = createAsyncThunk(
     // //console.log("categs", categs);
     const categs = getState().shop.categList;
     const prodList = getState().shop.prodList;
-    let startIndex = prodList.length - 1 > 0 ? prodList.length - 1 : 0;
-    const endIndex = startIndex + duration;
+    // let startIndex = prodList.length - 1 > 0 ? prodList.length - 1 : 0;
+    // const endIndex = startIndex + duration;
+    let startIndex = 0;
+    let endIndex = duration;
     for (
       startIndex;
       startIndex < categs?.length && startIndex < endIndex;
@@ -123,7 +125,7 @@ export const fetchProdList = createAsyncThunk(
             "&populateObjs=" +
             JSON.stringify(prodPopObj)
         );
-        //console.log("prodListResult", prodListResult);
+        console.log("prodListResult", prodListResult);
 
         if (prodListResult.status === 200) {
           // //console.log(startIndex);
@@ -232,6 +234,7 @@ export const fetchSearchProds = createAsyncThunk(
     const result = await fetch_Prom(api);
     if (result.status === 200) {
       return {
+        searchValue,
         prods: result.data.objects,
         pageNum,
         totalCount: result.data.count,
@@ -255,6 +258,9 @@ export const shopSlice = createSlice({
     setShowDrawer: (state, action) => {
       state.showDrawer = action.payload;
     },
+    clearProdList: (state, action) => {
+      state.prodList = [];
+    },
   },
   extraReducers: {
     [fetchSearchProds.pending]: (state) => {
@@ -262,10 +268,12 @@ export const shopSlice = createSlice({
     },
     [fetchSearchProds.fulfilled]: (state, action) => {
       state.searchProdsStatus = "succeed";
-      const { prods, pageNum, totalCount } = action.payload;
+      const { prods, pageNum, totalCount, searchValue } = action.payload;
       state.searchProdsCount = totalCount;
       if (pageNum === 1) state.searchProds = prods;
       else state.searchProds = [...state.searchProds, ...prods];
+      state.searchValue = searchValue;
+      state.pageNum = pageNum;
     },
     [fetchSearchProds.rejected]: (state) => {
       state.searchProdsStatus = "error";
@@ -303,7 +311,8 @@ export const shopSlice = createSlice({
     [fetchProdList.fulfilled]: (state, action) => {
       state.prodStatus = "succeed";
       // //console.log("fulfilled", action.payload);
-      state.prodList = [...state.prodList, ...action.payload];
+      state.prodList = action.payload;
+      // state.prodList = [...state.prodList, ...action.payload];
     },
     [fetchProdList.rejected]: (state, action) => {
       //console.log("error");
@@ -357,7 +366,11 @@ export const shopSlice = createSlice({
   },
 });
 
-export const { setCurShop, setShowOutOfRangeAlert, setShowDrawer } =
-  shopSlice.actions;
+export const {
+  setCurShop,
+  setShowOutOfRangeAlert,
+  setShowDrawer,
+  clearProdList,
+} = shopSlice.actions;
 
 export default shopSlice.reducer;

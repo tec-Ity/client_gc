@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 // import LoginModal from "../modal/login/LoginModal";
 import RegisterModal from "../modal/register/RegisterModal";
 import { useSelector } from "react-redux";
+import SearchPage from "../view/search/SearchPage";
 const HomePage = lazy(() => import("../view/home/HomePage"));
 const ShopPage = lazy(() => import("../view/shop/ShopPage"));
 const CityPage = lazy(() => import("../view/city/CityPage"));
@@ -24,6 +25,9 @@ export default function Router() {
 
         <Route exact path="/home">
           <HomePage />
+        </Route>
+        <Route exact path="/search">
+          <SearchPage />
         </Route>
 
         {/* {!userSelectedLocation && (

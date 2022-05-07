@@ -12,9 +12,8 @@ import HomeActivity from "./HomeActivity";
 import HomeBg from "./HomeBg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchShops } from "../../redux/shop/shopSlice";
-import CustomBgText from "../../component/global/background/CustomBgText";
 import ucShipRange from "../../component/icon/unioncityhomerange.jpg";
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
   root: { fontFamily: "Montserrat", position: "relative" },
   bg: {
     width: "200px",
@@ -24,7 +23,15 @@ const useStyle = makeStyles({
     fontSize: "30px",
     paddingBottom: "6px",
   },
-});
+  shipBox: {
+    position: "absolute",
+    top: "100vh",
+    [theme.breakpoints.up("lg")]: {
+      top: "110vh",
+    },
+    paddingLeft: 80,
+  },
+}));
 export default function HomePage() {
   const { t } = useTranslation();
   //   const dispatch = useDispatch();
@@ -126,7 +133,7 @@ export default function HomePage() {
           );
         }}
       />
-      <div style={{ position: "relative", top: 200, paddingLeft: 80 }}>
+      <div className={classes.shipBox}>
         {/* <CustomBgText
           label={"配送须知"}
           style={{ bg: classes.bg, txt: classes.txt }}
@@ -154,7 +161,18 @@ export default function HomePage() {
           </Grid>
           <Grid item xs={4}>
             <p style={{ fontSize: 18 }}>意大利境内配送货物：</p>
-            <p>xxx</p>
+            <p>意大利全国快递寄送，2-4天送达。</p>
+            <p>因疫情、地区原因，送达时间或有延长。</p>
+            <p> 因运输时间问题，新鲜肉类、鸡蛋、果蔬、</p>
+            <p>奶制品等商品无法寄送，请不要下单，</p>
+            <p>以免给您带来不好的购物体验。</p>
+            <br />
+            <p>全境快递费用为15€</p>
+            <p>（费用包含包装费、运费）</p>
+            <p>我们为您的商品提供了保护性的打包，</p>
+            <p>并为每份快递购买了保险，</p>
+            <p>保险费用为每公斤赔付6欧元，</p>
+            <p>请放心下单！</p>
           </Grid>
           <Grid
             container

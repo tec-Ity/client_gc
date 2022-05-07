@@ -39,13 +39,15 @@ export default function CustomButton({
   return (
     <Button
       onClick={() => {
-        setLoading(true);
-        loading === false &&
-          handleFunc &&
-          handleFunc((newLoading) => setLoading(newLoading));
+        // setLoading(true);
+        // loading === false &&
+        //   handleFunc &&
+        //   handleFunc((newLoading) => setLoading(newLoading));
+        handleFunc && handleFunc();
       }}
       disabled={disableBtn}
-      className={clsx(classes.root, alterStyle)}>
+      className={clsx(classes.root, alterStyle)}
+    >
       {loading === false ? (
         label
       ) : (

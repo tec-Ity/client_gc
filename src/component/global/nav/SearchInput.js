@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchProds } from "../../../redux/shop/shopSlice";
 import { Grid } from "@material-ui/core";
 import { get_DNS } from "../../../api";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 const useStyle = makeStyles({
   root: {
@@ -45,9 +46,11 @@ const useStyle = makeStyles({
     height: "22px",
     width: "22px",
     paddingLeft: "5px",
+    cursor: "pointer",
     borderLeft: "1.5px solid #c0e57b",
     "& > :nth-child(1)": {
       height: "22px",
+      width: "22px",
       "& path:nth-of-type(1)": { fill: "#c0e57b" },
       "& path:nth-of-type(2)": { stroke: "#c0e57b" },
       "& circle": { fill: "#c0e57b" },
@@ -143,6 +146,10 @@ const pageSize = 30;
 export default function SearchInput() {
   const { t } = useTranslation();
   const classes = useStyle();
+  const hist = useHistory();
+  const location = useLocation();
+  const isSearchPage = location.pathname === "/search";
+  console.log(location, isSearchPage);
   const dispatch = useDispatch();
   const [pageNum, setPageNum] = useState(1);
   const [searchValue, setSearchValue] = useState("");
@@ -152,6 +159,7 @@ export default function SearchInput() {
   const searchProdsStatus = useSelector(
     (state) => state.shop.searchProdsStatus
   );
+
   useEffect(() => {
     searchValue && dispatch(fetchSearchProds({ searchValue, pageNum }));
   }, [dispatch, pageNum, searchValue]);
@@ -161,10 +169,10 @@ export default function SearchInput() {
         classes={{ root: classes.searchBox }}
         placeholder={t("components.search.prod")}
         onClick={(e) => {
-          e.target.style.minWidth = "200px";
+          // e.target.style.width = "200px";
         }}
         onBlur={(e) => {
-          e.target.style.minWidth = "0px";
+          // e.target.style.minWidth = "0px";
         }}
         onChange={(e) => {
           setPageNum(1);
@@ -176,12 +184,18 @@ export default function SearchInput() {
           }
         }}
         endAdornment={
-          <InputAdornment className={classes.searchIcon} position="end">
-            <Magnifier />
+          <InputAdornment
+            className={classes.searchIcon}
+            onClick={() => {
+              setShowSearchBox(false);
+              !isSearchPage && hist.push("/search");
+            }}
+          >
+            <Magnifier style={{ width: "22px", minWidth: "22px" }} />
           </InputAdornment>
         }
       />
-      {showSearchBox === true && (
+      {showSearchBox === true && !isSearchPage && (
         <>
           <div className={classes.resultBox}>
             <div className={classes.resultList}>

@@ -10,6 +10,7 @@ import {
   setCurShop,
   fetchCurShopInfo,
   setShowOutOfRangeAlert,
+  clearProdList,
 } from "../../redux/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -93,6 +94,7 @@ export default function ShopPage() {
     }
     return () => {
       dispatch(setInShop(false));
+      dispatch(clearProdList());
       dispatch(goBack());
     };
   }, [_id, categStatus, dispatch, prevShopId]);
